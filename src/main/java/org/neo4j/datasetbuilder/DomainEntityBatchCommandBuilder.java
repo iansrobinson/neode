@@ -8,7 +8,7 @@ import org.neo4j.graphdb.Node;
 
 public class DomainEntityBatchCommandBuilder
 {
-    public static DomainEntityBatchCommandBuilder commandFor( String entityName )
+    public static DomainEntityBatchCommandBuilder createEntities( String entityName )
     {
         return new DomainEntityBatchCommandBuilder( entityName );
     }
@@ -42,15 +42,18 @@ public class DomainEntityBatchCommandBuilder
         return this;
     }
 
-    public DomainEntityBatchCommandBuilder isIndexable(boolean value)
+    public DomainEntityBatchCommandBuilder isIndexable( boolean value )
     {
         isIndexable = value;
         return this;
     }
 
-    public BatchCommand<List<Long>> build()
+    public List<Long> execute( BatchCommandExecutor executor )
     {
-        return new DomainEntityBatchCommand( entityName, numberOfIterations, batchSize, propertyName, isIndexable );
+        DomainEntityBatchCommand command = new DomainEntityBatchCommand(
+                entityName, numberOfIterations, batchSize, propertyName, isIndexable );
+        Results<List<Long>> results = executor.execute( command );
+        return results.value();
     }
 
     private class DomainEntityBatchCommand implements BatchCommand<List<Long>>
@@ -70,7 +73,7 @@ public class DomainEntityBatchCommandBuilder
             this.batchSize = batchSize;
             this.propertyName = propertyName;
             this.isIndexable = isIndexable;
-            nodeIds = new ArrayList<Long>(  );
+            nodeIds = new ArrayList<Long>();
         }
 
         @Override
@@ -91,7 +94,7 @@ public class DomainEntityBatchCommandBuilder
             Node node = db.createNode();
             String value = String.format( "%s-%s", entityName, index );
             node.setProperty( propertyName, value );
-            if (isIndexable)
+            if ( isIndexable )
             {
                 db.index().forNodes( entityName ).add( node, propertyName, value );
             }

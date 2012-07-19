@@ -3,7 +3,7 @@ package org.neo4j.datasetbuilder;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.neo4j.datasetbuilder.DomainEntityBatchCommandBuilder.commandFor;
+import static org.neo4j.datasetbuilder.DomainEntityBatchCommandBuilder.createEntities;
 
 import java.util.List;
 
@@ -18,11 +18,10 @@ public class DomainEntityBatchCommandTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        BatchCommand<List<Long>> command = commandFor( "user" ).numberOfIterations( 1 ).batchSize( 1 ).build();
         BatchCommandExecutor executor = new BatchCommandExecutor( db, SysOutLog.INSTANCE );
 
         // when
-        executor.execute( command );
+        createEntities( "user" ).numberOfIterations( 1 ).batchSize( 1 ).execute( executor );
 
         // then
         assertEquals( "user-0", db.getNodeById( 1 ).getProperty( "name" ) );
@@ -33,12 +32,10 @@ public class DomainEntityBatchCommandTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        BatchCommand<List<Long>> command = commandFor( "user" ).numberOfIterations( 1 ).batchSize( 1 )
-                .isIndexable( true ).build();
         BatchCommandExecutor executor = new BatchCommandExecutor( db, SysOutLog.INSTANCE );
 
         // when
-        executor.execute( command );
+        createEntities( "user" ).numberOfIterations( 1 ).batchSize( 1 ).isIndexable( true ).execute(executor);
 
         // then
         assertNotNull( db.index().forNodes( "user" ).get( "name", "user-0" ).getSingle() );
@@ -49,12 +46,10 @@ public class DomainEntityBatchCommandTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        BatchCommand<List<Long>> command = commandFor( "user" ).numberOfIterations( 1 ).batchSize( 1 ).propertyName( "key" )
-                .build();
         BatchCommandExecutor executor = new BatchCommandExecutor( db, SysOutLog.INSTANCE );
 
         // when
-        executor.execute( command );
+        createEntities( "user" ).numberOfIterations( 1 ).batchSize( 1 ).propertyName( "key" ).execute(executor);
 
         // then
         assertEquals( "user-0", db.getNodeById( 1 ).getProperty( "key" ) );
@@ -65,13 +60,12 @@ public class DomainEntityBatchCommandTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        BatchCommand<List<Long>> command = commandFor( "user" ).numberOfIterations( 5 ).build();
         BatchCommandExecutor executor = new BatchCommandExecutor( db, SysOutLog.INSTANCE );
 
         // when
-        Results<List<Long>> results = executor.execute( command );
+        List<Long> ids = createEntities( "user" ).numberOfIterations( 5 ).execute(executor);
 
         // then
-        assertEquals( asList( 1l, 2l, 3l, 4l, 5l ), results.value() );
+        assertEquals( asList( 1l, 2l, 3l, 4l, 5l ), ids );
     }
 }
