@@ -8,7 +8,7 @@ import org.neo4j.graphdb.Node;
 
 public class DomainEntityBatchCommandBuilder
 {
-    public static DomainEntityBatchCommandBuilder createEntities( String entityName )
+    public static DomainEntityBatchCommandBuilder createEntity( String entityName )
     {
         return new DomainEntityBatchCommandBuilder( entityName );
     }
@@ -56,7 +56,7 @@ public class DomainEntityBatchCommandBuilder
         return results.value();
     }
 
-    private class DomainEntityBatchCommand implements BatchCommand<List<Long>>
+    private static class DomainEntityBatchCommand implements BatchCommand<List<Long>>
     {
         private final String entityName;
         private final int numberOfIterations;
@@ -104,7 +104,19 @@ public class DomainEntityBatchCommandBuilder
         @Override
         public String description()
         {
-            return "Creating '" + entityName + "' nodes";
+            return "Creating '" + entityName + "' nodes.";
+        }
+
+        @Override
+        public void onBegin( Log log )
+        {
+            // Do nothing
+        }
+
+        @Override
+        public void onEnd( Log log )
+        {
+            // Do nothing
         }
 
         @Override

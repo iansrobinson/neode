@@ -145,6 +145,16 @@ public class BatchCommandExecutorTest
             return "Dummy batch command";
         }
 
+        @Override
+        public void onBegin( Log log )
+        {
+        }
+
+        @Override
+        public void onEnd( Log log )
+        {
+        }
+
         public int callCount()
         {
             return callCount;

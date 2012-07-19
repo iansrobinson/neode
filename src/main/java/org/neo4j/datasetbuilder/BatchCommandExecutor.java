@@ -18,20 +18,23 @@ public class BatchCommandExecutor
     {
         long startTime = System.nanoTime();
 
-        log.write( "Begin [" + command.description() + "]" );
+        log.write( String.format( "Begin [%s Iterations: %s, BatchSize: %s.]",
+                command.description(), command.numberOfIterations(), command.batchSize() ) );
+        command.onBegin( log );
         for ( int index = 0; index < command.numberOfIterations(); index += command.batchSize() )
         {
             doExecute( index, command, startTime );
         }
-        log.write( "End   [" + command.description() + "] (" + elapsedTime( startTime ) +")" );
+        command.onEnd( log );
+        log.write( "End   [" + command.description() + "] " + elapsedTime( startTime ) );
         log.write( "" );
         return command;
     }
 
-    private void doExecute( int startIndex, BatchCommand command, long startTime )
+    private <T> void doExecute( int startIndex, BatchCommand<T> command, long startTime )
     {
-        log.write( "       " + startIndex + "/" + command.numberOfIterations() +
-                " [batch size: " + command.batchSize() + "] (" + elapsedTime( startTime ) + ")" );
+        log.write( "      [Beginning " + startIndex + " of " + command.numberOfIterations() + "] " + elapsedTime( startTime ) );
+
         Transaction tx = db.beginTx();
         try
         {
@@ -45,6 +48,7 @@ public class BatchCommandExecutor
         {
             tx.finish();
         }
+
     }
 
     private static boolean indexIsInRange( int startIndex, BatchCommand command, int index )
@@ -54,7 +58,8 @@ public class BatchCommandExecutor
 
     private static String elapsedTime( long startTime )
     {
-        return String.valueOf( (System.nanoTime() - startTime) / 1000000 );
+        String ms = String.valueOf( (System.nanoTime() - startTime) / 1000000 );
+        return String.format( "(elapsed: %s)", ms );
     }
 
 }

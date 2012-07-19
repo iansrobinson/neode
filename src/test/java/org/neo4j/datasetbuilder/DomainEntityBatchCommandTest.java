@@ -3,7 +3,7 @@ package org.neo4j.datasetbuilder;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.neo4j.datasetbuilder.DomainEntityBatchCommandBuilder.createEntities;
+import static org.neo4j.datasetbuilder.DomainEntityBatchCommandBuilder.createEntity;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class DomainEntityBatchCommandTest
         BatchCommandExecutor executor = new BatchCommandExecutor( db, SysOutLog.INSTANCE );
 
         // when
-        createEntities( "user" ).numberOfIterations( 1 ).batchSize( 1 ).execute( executor );
+        createEntity( "user" ).numberOfIterations( 1 ).batchSize( 1 ).execute( executor );
 
         // then
         assertEquals( "user-0", db.getNodeById( 1 ).getProperty( "name" ) );
@@ -35,7 +35,7 @@ public class DomainEntityBatchCommandTest
         BatchCommandExecutor executor = new BatchCommandExecutor( db, SysOutLog.INSTANCE );
 
         // when
-        createEntities( "user" ).numberOfIterations( 1 ).batchSize( 1 ).isIndexable( true ).execute(executor);
+        createEntity( "user" ).numberOfIterations( 1 ).batchSize( 1 ).isIndexable( true ).execute( executor );
 
         // then
         assertNotNull( db.index().forNodes( "user" ).get( "name", "user-0" ).getSingle() );
@@ -49,7 +49,7 @@ public class DomainEntityBatchCommandTest
         BatchCommandExecutor executor = new BatchCommandExecutor( db, SysOutLog.INSTANCE );
 
         // when
-        createEntities( "user" ).numberOfIterations( 1 ).batchSize( 1 ).propertyName( "key" ).execute(executor);
+        createEntity( "user" ).numberOfIterations( 1 ).batchSize( 1 ).propertyName( "key" ).execute(executor);
 
         // then
         assertEquals( "user-0", db.getNodeById( 1 ).getProperty( "key" ) );
@@ -63,7 +63,7 @@ public class DomainEntityBatchCommandTest
         BatchCommandExecutor executor = new BatchCommandExecutor( db, SysOutLog.INSTANCE );
 
         // when
-        List<Long> ids = createEntities( "user" ).numberOfIterations( 5 ).execute(executor);
+        List<Long> ids = createEntity( "user" ).numberOfIterations( 5 ).execute(executor);
 
         // then
         assertEquals( asList( 1l, 2l, 3l, 4l, 5l ), ids );
