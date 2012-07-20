@@ -1,20 +1,20 @@
-package org.neo4j.datasetbuilder;
+package org.neo4j.datasetbuilder.randomnumbers;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class UniqueRandNumberGenerator implements RandomNumberGenerator
+abstract class BaseUniqueRandomNumberGenerator implements RandomNumberGenerator
 {
     private final Random random;
 
-    public UniqueRandNumberGenerator( Random random )
+    protected BaseUniqueRandomNumberGenerator( Random random )
     {
         this.random = random;
     }
 
     @Override
-    public List<Integer> generate( int minNumberOfResults, int maxNumberOfResults, int min, int max )
+    public final List<Integer> generate( int minNumberOfResults, int maxNumberOfResults, int min, int max )
     {
         if ( maxNumberOfResults < minNumberOfResults )
         {
@@ -22,10 +22,10 @@ public class UniqueRandNumberGenerator implements RandomNumberGenerator
                     "maxNumberOfResults must be greater than or equal to minNumberOfResults)" );
         }
 
-        if ( max < min )
+        if ( max <= min )
         {
             throw new IllegalArgumentException(
-                    "max must be greater than or equal to min" );
+                    "max must be greater than min" );
         }
 
         if ( minNumberOfResults < 0 )
@@ -38,12 +38,6 @@ public class UniqueRandNumberGenerator implements RandomNumberGenerator
             throw new IllegalArgumentException( "min must be greater than or equal to 0" );
         }
 
-        if ( (max - min == 0) && (maxNumberOfResults > 1) )
-        {
-            throw new IllegalArgumentException(
-                    "When (max - min == 0), maxNumberOfResults must be 0 or 1" );
-        }
-
         if ( (max - min) < (maxNumberOfResults - minNumberOfResults) )
         {
             throw new IllegalArgumentException(
@@ -51,15 +45,14 @@ public class UniqueRandNumberGenerator implements RandomNumberGenerator
         }
 
         int numberOfResults = (maxNumberOfResults == minNumberOfResults) ? maxNumberOfResults :
-                minNumberOfResults + random.nextInt( maxNumberOfResults - minNumberOfResults );
+                minNumberOfResults + random().nextInt( maxNumberOfResults - minNumberOfResults );
         List<Integer> generatedNumbers = new ArrayList<Integer>( numberOfResults );
         int i = 0;
-        int upTo = max - min + 1;
+        int upTo = max - min;
         while ( i < numberOfResults )
         {
-            int nextNumber = min + random.nextInt( upTo );
-            System.out.println( nextNumber );
-            if ( !generatedNumbers.contains( nextNumber ) )
+            int nextNumber = getNextNumber( min, upTo );
+            if ( nextNumber >= min && nextNumber <= max && !generatedNumbers.contains( nextNumber ) )
             {
                 generatedNumbers.add( nextNumber );
                 i++;
@@ -69,13 +62,13 @@ public class UniqueRandNumberGenerator implements RandomNumberGenerator
     }
 
     @Override
-    public List<Integer> generate( int numberOfResults, int min, int max )
+    public final List<Integer> generate( int numberOfResults, int min, int max )
     {
         return generate( numberOfResults, numberOfResults, min, max );
     }
 
     @Override
-    public int generateSingle( int min, int max )
+    public final int generateSingle( int min, int max )
     {
         if ( max < min )
         {
@@ -88,8 +81,19 @@ public class UniqueRandNumberGenerator implements RandomNumberGenerator
             throw new IllegalArgumentException( "min must be greater than or equal to 0" );
         }
 
-        int upTo = max - min + 1;
-        return min + random.nextInt( upTo );
+        int nextNumber = getNextNumber( min, max-min );
+        while (nextNumber < min || nextNumber > max)
+        {
+            nextNumber = getNextNumber( min, max-min );
+        }
+
+        return nextNumber;
     }
 
+    protected final Random random()
+    {
+        return random;
+    }
+
+    protected abstract int getNextNumber( int min, int upTo );
 }

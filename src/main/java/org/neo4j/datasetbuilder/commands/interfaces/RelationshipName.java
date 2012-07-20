@@ -2,7 +2,7 @@
  * Copyright (C) 2012 Neo Technology
  * All rights reserved
  */
-package org.neo4j.datasetbuilder.commandinterfaces;
+package org.neo4j.datasetbuilder.commands.interfaces;
 
 public interface RelationshipName
 {

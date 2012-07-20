@@ -1,13 +1,15 @@
-package org.neo4j.datasetbuilder;
+package org.neo4j.datasetbuilder.commands;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.neo4j.datasetbuilder.DomainEntityBatchCommandBuilder.createEntity;
+import static org.neo4j.datasetbuilder.commands.DomainEntityBatchCommandBuilder.createEntity;
 
 import java.util.List;
 
 import org.junit.Test;
+import org.neo4j.datasetbuilder.BatchCommandExecutor;
+import org.neo4j.datasetbuilder.SysOutLog;
 import org.neo4j.datasetbuilder.test.Db;
 import org.neo4j.graphdb.GraphDatabaseService;
 

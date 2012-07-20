@@ -1,8 +1,9 @@
-package org.neo4j.datasetbuilder;
+package org.neo4j.datasetbuilder.finders;
 
 import java.util.Iterator;
 import java.util.List;
 
+import org.neo4j.datasetbuilder.randomnumbers.RandomNumberGenerator;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 

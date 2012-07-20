@@ -1,6 +1,7 @@
-package org.neo4j.datasetbuilder;
+package org.neo4j.datasetbuilder.commands;
 
 import static java.util.Collections.emptyList;
+import static org.neo4j.datasetbuilder.randomnumbers.FlatDistributionUniqueRandomNumberGenerator.flatDistribution;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -8,13 +9,18 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import org.neo4j.datasetbuilder.commandinterfaces.BatchSize;
-import org.neo4j.datasetbuilder.commandinterfaces.EndNodeName;
-import org.neo4j.datasetbuilder.commandinterfaces.Execute;
-import org.neo4j.datasetbuilder.commandinterfaces.FindEndNodes;
-import org.neo4j.datasetbuilder.commandinterfaces.MinMaxNumberOfRels;
-import org.neo4j.datasetbuilder.commandinterfaces.RelationshipName;
-import org.neo4j.datasetbuilder.commandinterfaces.StartNodeName;
+import org.neo4j.datasetbuilder.BatchCommand;
+import org.neo4j.datasetbuilder.BatchCommandExecutor;
+import org.neo4j.datasetbuilder.Log;
+import org.neo4j.datasetbuilder.commands.interfaces.BatchSize;
+import org.neo4j.datasetbuilder.commands.interfaces.EndNodeName;
+import org.neo4j.datasetbuilder.commands.interfaces.Execute;
+import org.neo4j.datasetbuilder.commands.interfaces.FindEndNodes;
+import org.neo4j.datasetbuilder.commands.interfaces.MinMaxNumberOfRels;
+import org.neo4j.datasetbuilder.commands.interfaces.RelationshipName;
+import org.neo4j.datasetbuilder.commands.interfaces.StartNodeName;
+import org.neo4j.datasetbuilder.finders.NodeFinder;
+import org.neo4j.datasetbuilder.randomnumbers.RandomNumberGenerator;
 import org.neo4j.graphdb.DynamicRelationshipType;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -129,7 +135,7 @@ public class RelateNodesBatchCommandBuilder implements StartNodeName, EndNodeNam
             this.maxRelsPerNode = maxRelsPerNode;
             this.nodeFinder = nodeFinder;
             relationshipType = DynamicRelationshipType.withName( relationshipName );
-            generator = new UniqueRandNumberGenerator( new Random() );
+            generator = flatDistribution( new Random() );
         }
 
 

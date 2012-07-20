@@ -1,20 +1,21 @@
-package org.neo4j.datasetbuilder;
+package org.neo4j.datasetbuilder.randomnumbers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.neo4j.datasetbuilder.randomnumbers.FlatDistributionUniqueRandomNumberGenerator.flatDistribution;
 
 import java.util.List;
 import java.util.Random;
 
 import org.junit.Test;
 
-public class UniqueRandNumberGeneratorTest
+public class FlatDistributionUniqueRandomNumberGeneratorTest
 {
     @Test
     public void shouldReturnListOfNumbers() throws Exception
     {
         // given
-        RandomNumberGenerator generator = new UniqueRandNumberGenerator( new Random( ) ) ;
+        RandomNumberGenerator generator = flatDistribution( new Random() ) ;
 
         // when
         List<Integer> results = generator.generate( 5, 1, 5 );
@@ -31,10 +32,10 @@ public class UniqueRandNumberGeneratorTest
     public void shouldAllowForZeroNumbersToBeGenerated() throws Exception
     {
         // given
-        RandomNumberGenerator generator = new UniqueRandNumberGenerator( new Random( ) ) ;
+        RandomNumberGenerator generator = flatDistribution( new Random( ) ) ;
 
         // when
-        List<Integer> results = generator.generate( 0, 0, 0, 0 );
+        List<Integer> results = generator.generate( 0, 0, 0, 1 );
 
         // then
         assertEquals( 0, results.size() );
@@ -44,7 +45,7 @@ public class UniqueRandNumberGeneratorTest
     public void shouldReturnSingleNumber() throws Exception
     {
         // given
-        RandomNumberGenerator generator = new UniqueRandNumberGenerator( new Random( ) ) ;
+        RandomNumberGenerator generator = flatDistribution( new Random( ) ) ;
 
         // when
         int result = generator.generateSingle( 1, 1 );

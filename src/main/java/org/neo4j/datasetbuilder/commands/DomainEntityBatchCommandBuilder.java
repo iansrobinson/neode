@@ -1,8 +1,12 @@
-package org.neo4j.datasetbuilder;
+package org.neo4j.datasetbuilder.commands;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.neo4j.datasetbuilder.BatchCommand;
+import org.neo4j.datasetbuilder.BatchCommandExecutor;
+import org.neo4j.datasetbuilder.Log;
+import org.neo4j.datasetbuilder.Results;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
