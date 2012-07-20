@@ -6,25 +6,25 @@ import java.util.Random;
 
 import org.neo4j.datasetbuilder.BatchCommand;
 import org.neo4j.datasetbuilder.BatchCommandExecutor;
-import org.neo4j.datasetbuilder.Log;
 import org.neo4j.datasetbuilder.DomainEntityInfo;
+import org.neo4j.datasetbuilder.Log;
 import org.neo4j.graphdb.GraphDatabaseService;
 
 public class DomainEntityBatchCommandBuilder
 {
+    private static final int DEFAULT_BATCH_SIZE = 10000;
 
-    public static DomainEntityBatchCommandBuilder createEntities( DomainEntityBuilder domainEntityBuilder )
+    public static DomainEntityBatchCommandBuilder createEntities( DomainEntity domainEntity )
     {
-        return new DomainEntityBatchCommandBuilder( domainEntityBuilder );
+        return new DomainEntityBatchCommandBuilder( domainEntity );
     }
 
-    private DomainEntityBuilder domainEntityBuilder;
+    private DomainEntity domainEntity;
     private int numberOfIterations = 0;
-    private int batchSize = 10000;
 
-    private DomainEntityBatchCommandBuilder( DomainEntityBuilder domainEntityBuilder )
+    private DomainEntityBatchCommandBuilder( DomainEntity domainEntity )
     {
-        this.domainEntityBuilder = domainEntityBuilder;
+        this.domainEntity = domainEntity;
     }
 
     public DomainEntityBatchCommandBuilder quantity( int value )
@@ -33,30 +33,29 @@ public class DomainEntityBatchCommandBuilder
         return this;
     }
 
-    public DomainEntityBatchCommandBuilder batchSize( int value )
+    public DomainEntityInfo execute( BatchCommandExecutor executor, int batchSize )
     {
-        batchSize = value;
-        return this;
+        DomainEntityBatchCommand command =
+                new DomainEntityBatchCommand( domainEntity, numberOfIterations, batchSize );
+        return executor.execute( command );
     }
 
     public DomainEntityInfo execute( BatchCommandExecutor executor )
     {
-        DomainEntityBatchCommand command =
-                new DomainEntityBatchCommand( domainEntityBuilder, numberOfIterations, batchSize );
-        return executor.execute( command );
+        return execute( executor, DEFAULT_BATCH_SIZE );
     }
 
     private static class DomainEntityBatchCommand implements BatchCommand
     {
-        private final DomainEntityBuilder domainEntityBuilder;
+        private final DomainEntity domainEntity;
         private final int numberOfIterations;
         private final int batchSize;
         private final List<Long> nodeIds;
 
-        public DomainEntityBatchCommand( DomainEntityBuilder domainEntityBuilder, int numberOfIterations,
+        public DomainEntityBatchCommand( DomainEntity domainEntity, int numberOfIterations,
                                          int batchSize )
         {
-            this.domainEntityBuilder = domainEntityBuilder;
+            this.domainEntity = domainEntity;
             this.numberOfIterations = numberOfIterations;
             this.batchSize = batchSize;
             nodeIds = new ArrayList<Long>();
@@ -77,13 +76,13 @@ public class DomainEntityBatchCommandBuilder
         @Override
         public void execute( GraphDatabaseService db, int index, Random random )
         {
-            nodeIds.add( domainEntityBuilder.build( db, index ) );
+            nodeIds.add( domainEntity.build( db, index ) );
         }
 
         @Override
         public String description()
         {
-            return "Creating '" + domainEntityBuilder.entityName() + "' nodes.";
+            return "Creating '" + domainEntity.entityName() + "' nodes.";
         }
 
         @Override
@@ -101,7 +100,7 @@ public class DomainEntityBatchCommandBuilder
         @Override
         public DomainEntityInfo results()
         {
-            return new DomainEntityInfo(domainEntityBuilder.entityName(), nodeIds );
+            return new DomainEntityInfo( domainEntity.entityName(), nodeIds );
         }
     }
 }

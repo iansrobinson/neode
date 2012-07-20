@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import org.neo4j.datasetbuilder.commands.DomainEntityBuilder;
+import org.neo4j.datasetbuilder.commands.DomainEntity;
 import org.neo4j.datasetbuilder.randomnumbers.RandomNumberGenerator;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -40,8 +40,8 @@ public class GetOrCreateUniqueNodeFinderStrategy implements NodeFinderStrategy
     }
 
     @Override
-    public Iterable<Node> getNodes( final GraphDatabaseService db, int numberOfNodes, DomainEntityBuilder
-            domainEntityBuilder, Random random )
+    public Iterable<Node> getNodes( final GraphDatabaseService db, int numberOfNodes, DomainEntity
+            domainEntity, Random random )
     {
         final List<Integer> nodeIdIndexes = randomNumberGenerator.generate( numberOfNodes, 0,
                 maxNumberOfNodes - 1, random );
@@ -49,7 +49,7 @@ public class GetOrCreateUniqueNodeFinderStrategy implements NodeFinderStrategy
         {
             if ( nodeIds.get( nodeIdIndex ) == null )
             {
-                nodeIds.set( nodeIdIndex, domainEntityBuilder.build( db, nodeIdIndex ) );
+                nodeIds.set( nodeIdIndex, domainEntity.build( db, nodeIdIndex ) );
             }
 
         }

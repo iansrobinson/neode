@@ -8,5 +8,5 @@ import org.neo4j.graphdb.RelationshipType;
 
 public interface RelationshipName
 {
-    BatchSize relationship( RelationshipType value );
+    NumberOfRels relationship( RelationshipType value );
 }

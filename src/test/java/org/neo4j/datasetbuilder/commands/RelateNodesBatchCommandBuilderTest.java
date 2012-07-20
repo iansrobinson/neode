@@ -4,7 +4,7 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.neo4j.datasetbuilder.commands.DomainEntityBatchCommandBuilder.createEntities;
-import static org.neo4j.datasetbuilder.commands.DomainEntityBuilder.domainEntity;
+import static org.neo4j.datasetbuilder.commands.DomainEntity.domainEntity;
 import static org.neo4j.datasetbuilder.commands.RelateNodesBatchCommandBuilder.relateEntities;
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 
@@ -30,14 +30,14 @@ public class RelateNodesBatchCommandBuilderTest
         GraphDatabaseService db = Db.impermanentDb();
         BatchCommandExecutor executor = new BatchCommandExecutor( db, SysOutLog.INSTANCE );
         DomainEntityInfo users = createEntities( domainEntity( "user" ) ).quantity( 3 ).execute( executor );
-        DomainEntityBuilder product = domainEntity( "product" );
+        DomainEntity product = domainEntity( "product" );
         final DomainEntityInfo products = createEntities( product ).quantity( 3 ).execute( executor );
         NodeFinderStrategy finderStrategy = new NodeFinderStrategy()
         {
             int index = 0;
 
             @Override
-            public Iterable<Node> getNodes( GraphDatabaseService db, int numberOfNodes, DomainEntityBuilder
+            public Iterable<Node> getNodes( GraphDatabaseService db, int numberOfNodes, DomainEntity
                     domainEntityBuilder, Random random )
             {
                 return asList( db.getNodeById( products.nodeIds().get( index++ ) ) );
@@ -46,7 +46,7 @@ public class RelateNodesBatchCommandBuilderTest
 
         // when
         relateEntities( users ).to( product, finderStrategy ).relationship( withName("BOUGHT") )
-                .batchSize( 10 ).minMaxNumberOfRels( 1, 1 ).execute( executor );
+                .numberOfRels( MinMax.exactly( 1 ) ).execute( executor );
 
         // then
         DynamicRelationshipType bought = withName( "BOUGHT" );

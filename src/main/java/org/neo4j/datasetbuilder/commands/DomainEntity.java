@@ -3,26 +3,26 @@ package org.neo4j.datasetbuilder.commands;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
-public class DomainEntityBuilder
+public class DomainEntity
 {
-    public static DomainEntityBuilder domainEntity( String name )
+    public static DomainEntity domainEntity( String name )
     {
-        return new DomainEntityBuilder( name, "name", false );
+        return new DomainEntity( name, "name", false );
     }
 
-    public static DomainEntityBuilder domainEntity( String name, String propertyName )
+    public static DomainEntity domainEntity( String name, String propertyName )
     {
-        return new DomainEntityBuilder( name, propertyName, false );
+        return new DomainEntity( name, propertyName, false );
     }
 
-    public static DomainEntityBuilder domainEntity( String name, boolean isIndexable )
+    public static DomainEntity domainEntity( String name, boolean isIndexable )
     {
-        return new DomainEntityBuilder( name, "name", isIndexable );
+        return new DomainEntity( name, "name", isIndexable );
     }
 
-    public static DomainEntityBuilder domainEntity( String name, String propertyName, boolean isIndexable )
+    public static DomainEntity domainEntity( String name, String propertyName, boolean isIndexable )
     {
-        return new DomainEntityBuilder( name, propertyName, isIndexable );
+        return new DomainEntity( name, propertyName, isIndexable );
     }
 
 
@@ -30,7 +30,7 @@ public class DomainEntityBuilder
     private final String propertyName;
     private boolean isIndexable;
 
-    private DomainEntityBuilder( String entityName, String propertyName, boolean isIndexable )
+    private DomainEntity( String entityName, String propertyName, boolean isIndexable )
     {
         this.entityName = entityName;
         this.propertyName = propertyName;
