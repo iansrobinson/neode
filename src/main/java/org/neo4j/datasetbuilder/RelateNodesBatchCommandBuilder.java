@@ -1,8 +1,12 @@
 package org.neo4j.datasetbuilder;
 
+import static java.util.Collections.emptyList;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import org.neo4j.datasetbuilder.commandinterfaces.BatchSize;
 import org.neo4j.datasetbuilder.commandinterfaces.EndNodeName;
@@ -15,7 +19,7 @@ import org.neo4j.graphdb.DynamicRelationshipType;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
-public class RelateNodesBatchCommandBuilder implements StartNodeName,EndNodeName, RelationshipName,
+public class RelateNodesBatchCommandBuilder implements StartNodeName, EndNodeName, RelationshipName,
         BatchSize, MinMaxNumberOfRels,
         FindEndNodes, Execute
 {
@@ -32,10 +36,11 @@ public class RelateNodesBatchCommandBuilder implements StartNodeName,EndNodeName
     private int maxRelsPerNode = 1;
     private NodeFinder nodeFinder = new NodeFinder()
     {
+
         @Override
-        public Node getNode( GraphDatabaseService db )
+        public Iterable<Node> getNodes( GraphDatabaseService db, int numberOfNodes )
         {
-            return db.getReferenceNode();
+            return emptyList();
         }
     };
     private String relationshipName = "UNKNOWN";
@@ -60,7 +65,7 @@ public class RelateNodesBatchCommandBuilder implements StartNodeName,EndNodeName
     }
 
     @Override
-    public BatchSize relationshipName(String value)
+    public BatchSize relationshipName( String value )
     {
         relationshipName = value;
         return this;
@@ -96,7 +101,7 @@ public class RelateNodesBatchCommandBuilder implements StartNodeName,EndNodeName
         executor.execute( command );
     }
 
-    private class RelateNodesBatchCommand implements BatchCommand<Object>
+    private class RelateNodesBatchCommand implements BatchCommand<List<Long>>
     {
         private final List<Long> startNodeIds;
         private final int batchSize;
@@ -106,12 +111,15 @@ public class RelateNodesBatchCommandBuilder implements StartNodeName,EndNodeName
         private final int maxRelsPerNode;
         private final NodeFinder nodeFinder;
         private final DynamicRelationshipType relationshipType;
-        private final Random rand;
+        private final RandomNumberGenerator generator;
 
         private long totalRels = 0;
+        private Set<Long> endNodeIds = new HashSet<Long>();
 
-        public RelateNodesBatchCommand( List<Long> startNodeIds, int batchSize, String relationshipName, String startNodeName,
-                            String endNodeName, int minRelsPerNode, int maxRelsPerNode, NodeFinder nodeFinder )
+        public RelateNodesBatchCommand( List<Long> startNodeIds, int batchSize, String relationshipName,
+                                        String startNodeName,
+                                        String endNodeName, int minRelsPerNode, int maxRelsPerNode,
+                                        NodeFinder nodeFinder )
         {
             this.startNodeIds = startNodeIds;
             this.batchSize = batchSize;
@@ -121,7 +129,7 @@ public class RelateNodesBatchCommandBuilder implements StartNodeName,EndNodeName
             this.maxRelsPerNode = maxRelsPerNode;
             this.nodeFinder = nodeFinder;
             relationshipType = DynamicRelationshipType.withName( relationshipName );
-            rand = new Random();
+            generator = new UniqueRandNumberGenerator( new Random() );
         }
 
 
@@ -140,25 +148,17 @@ public class RelateNodesBatchCommandBuilder implements StartNodeName,EndNodeName
         @Override
         public void execute( GraphDatabaseService db, int index )
         {
-            int numberOfRels = calculateNumberOfRels();
-            totalRels+=numberOfRels;
-
             Node startNode = db.getNodeById( startNodeIds.get( index ) );
-            for ( int i = 0; i < numberOfRels; i++ )
+
+            int numberOfRels = generator.generateSingle( minRelsPerNode, maxRelsPerNode );
+            totalRels += numberOfRels;
+
+            Iterable<Node> nodes = nodeFinder.getNodes( db, numberOfRels );
+            for ( Node endNode : nodes )
             {
-                Node endNode = nodeFinder.getNode( db );
+                endNodeIds.add( endNode.getId() );
                 startNode.createRelationshipTo( endNode, relationshipType );
             }
-        }
-
-        private int calculateNumberOfRels()
-        {
-            if (maxRelsPerNode == minRelsPerNode)
-            {
-                return maxRelsPerNode;
-            }
-
-            return minRelsPerNode + rand.nextInt( maxRelsPerNode - minRelsPerNode );
         }
 
         @Override
@@ -171,19 +171,20 @@ public class RelateNodesBatchCommandBuilder implements StartNodeName,EndNodeName
         @Override
         public void onBegin( Log log )
         {
-            log.write( String.format("      [Min: %s, Max: %s]", minRelsPerNode, maxRelsPerNode) );
+            log.write( String.format( "      [Min: %s, Max: %s]", minRelsPerNode, maxRelsPerNode ) );
         }
 
         @Override
         public void onEnd( Log log )
         {
-            log.write( String.format("      [Avg: %s relationship(s) per %s]", totalRels/startNodeIds.size(), startNodeName) );
+            log.write( String.format( "      [Avg: %s relationship(s) per %s]", totalRels / startNodeIds.size(),
+                    startNodeName ) );
         }
 
         @Override
-        public Object value()
+        public List<Long> value()
         {
-            return null;
+            return new ArrayList<Long>( endNodeIds );
         }
     }
 }

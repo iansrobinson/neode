@@ -9,5 +9,5 @@ import org.neo4j.graphdb.Node;
 
 public interface NodeFinder
 {
-    Node getNode( GraphDatabaseService db );
+    Iterable<Node> getNodes(GraphDatabaseService db, int numberOfNodes);
 }

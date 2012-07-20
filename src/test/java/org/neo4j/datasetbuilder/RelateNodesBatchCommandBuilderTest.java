@@ -1,5 +1,6 @@
 package org.neo4j.datasetbuilder;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.neo4j.datasetbuilder.DomainEntityBatchCommandBuilder.createEntity;
@@ -30,9 +31,9 @@ public class RelateNodesBatchCommandBuilderTest
             int index = 0;
 
             @Override
-            public Node getNode( GraphDatabaseService db )
+            public Iterable<Node> getNodes( GraphDatabaseService db, int numberOfNodes )
             {
-                return db.getNodeById( productIds.get( index++ ) );
+                return asList( db.getNodeById( productIds.get( index++ ) ) );
             }
         };
 
