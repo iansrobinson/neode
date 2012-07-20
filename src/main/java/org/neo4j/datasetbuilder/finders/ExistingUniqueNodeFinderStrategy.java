@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Random;
 
 import org.neo4j.datasetbuilder.DomainEntityInfo;
-import org.neo4j.datasetbuilder.commands.DomainEntity;
 import org.neo4j.datasetbuilder.randomnumbers.RandomNumberGenerator;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -17,36 +16,43 @@ public class ExistingUniqueNodeFinderStrategy implements NodeFinderStrategy
     public static NodeFinderStrategy getExisting( DomainEntityInfo domainEntities,
                                                   RandomNumberGenerator randomNumberGenerator )
     {
-        return new ExistingUniqueNodeFinderStrategy( domainEntities.nodeIds(), randomNumberGenerator );
+        return new ExistingUniqueNodeFinderStrategy( domainEntities, randomNumberGenerator );
     }
 
     public static NodeFinderStrategy getExisting( DomainEntityInfo domainEntities )
     {
-        return new ExistingUniqueNodeFinderStrategy( domainEntities.nodeIds(), normalDistribution() );
+        return new ExistingUniqueNodeFinderStrategy( domainEntities, normalDistribution() );
     }
 
-    private final List<Long> nodeIds;
+    private final DomainEntityInfo domainEntityInfo;
     private final RandomNumberGenerator randomNumberGenerator;
 
-    private ExistingUniqueNodeFinderStrategy( List<Long> nodeIds, RandomNumberGenerator randomNumberGenerator )
+    private ExistingUniqueNodeFinderStrategy( DomainEntityInfo domainEntityInfo, RandomNumberGenerator randomNumberGenerator )
     {
-        this.nodeIds = nodeIds;
+        this.domainEntityInfo = domainEntityInfo;
         this.randomNumberGenerator = randomNumberGenerator;
     }
 
     @Override
     public Iterable<Node> getNodes( final GraphDatabaseService db, int numberOfNodes,
-                                    DomainEntity domainEntity, Random random )
+                                    Random random )
     {
-        final List<Integer> indexes = randomNumberGenerator.generate( numberOfNodes, 0, nodeIds.size() - 1, random );
+        final List<Integer> indexes = randomNumberGenerator.generate( numberOfNodes, 0,
+                domainEntityInfo.nodeIds().size() - 1, random );
         return new Iterable<Node>()
         {
             @Override
             public Iterator<Node> iterator()
             {
-                return new NodeIterator( nodeIds, indexes, db );
+                return new NodeIterator( domainEntityInfo.nodeIds(), indexes, db );
             }
         };
+    }
+
+    @Override
+    public String entityName()
+    {
+        return domainEntityInfo.entityName();
     }
 
 }

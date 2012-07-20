@@ -6,11 +6,11 @@ package org.neo4j.datasetbuilder.finders;
 
 import java.util.Random;
 
-import org.neo4j.datasetbuilder.commands.DomainEntity;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
 public interface NodeFinderStrategy
 {
-    Iterable<Node> getNodes( GraphDatabaseService db, int numberOfNodes, DomainEntity domainEntity, Random random );
+    Iterable<Node> getNodes( GraphDatabaseService db, int numberOfNodes, Random random );
+    String entityName();
 }

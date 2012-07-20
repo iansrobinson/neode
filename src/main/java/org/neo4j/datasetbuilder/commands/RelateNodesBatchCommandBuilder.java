@@ -1,6 +1,5 @@
 package org.neo4j.datasetbuilder.commands;
 
-import static java.util.Collections.emptyList;
 import static org.neo4j.datasetbuilder.randomnumbers.FlatDistributionUniqueRandomNumberGenerator.flatDistribution;
 
 import java.util.ArrayList;
@@ -32,19 +31,9 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
     private static final int DEFAULT_BATCH_SIZE = 1000;
 
     private DomainEntityInfo domainEntityInfo;
-    private DomainEntity endNodeDomainEntity;
     private MinMax minMax;
-    private NodeFinderStrategy nodeFinderStrategyStrategy = new NodeFinderStrategy()
-    {
-
-        @Override
-        public Iterable<Node> getNodes( GraphDatabaseService db, int numberOfNodes, DomainEntity
-                domainEntity, Random random )
-        {
-            return emptyList();
-        }
-    };
-    private RelationshipType relationshipType = null;
+    private NodeFinderStrategy nodeFinderStrategy;
+    private RelationshipType relationshipType;
 
     private RelateNodesBatchCommandBuilder( DomainEntityInfo domainEntityInfo )
     {
@@ -52,10 +41,9 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
     }
 
     @Override
-    public RelationshipName to( DomainEntity domainEntity, NodeFinderStrategy nodeStrategyStrategy )
+    public RelationshipName to( NodeFinderStrategy nodeFinderStrategy )
     {
-        endNodeDomainEntity = domainEntity;
-        nodeFinderStrategyStrategy = nodeStrategyStrategy;
+        this.nodeFinderStrategy = nodeFinderStrategy;
         return this;
     }
 
@@ -76,8 +64,8 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
     @Override
     public void execute( BatchCommandExecutor executor, int batchSize )
     {
-        RelateNodesBatchCommand command = new RelateNodesBatchCommand( domainEntityInfo, endNodeDomainEntity,
-                batchSize, relationshipType, minMax, nodeFinderStrategyStrategy );
+        RelateNodesBatchCommand command = new RelateNodesBatchCommand( domainEntityInfo, batchSize,
+                relationshipType, minMax, nodeFinderStrategy );
         executor.execute( command );
     }
 
@@ -91,7 +79,6 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
     private class RelateNodesBatchCommand implements BatchCommand
     {
         private final DomainEntityInfo startNodeDomainEntityInfo;
-        private final DomainEntity endNodeDomainEntity;
 
         private final int batchSize;
         private final MinMax minMax;
@@ -102,13 +89,10 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
         private long totalRels = 0;
         private Set<Long> endNodeIds = new HashSet<Long>();
 
-        public RelateNodesBatchCommand( DomainEntityInfo startNodeDomainEntityInfo, DomainEntity
-                endNodeDomainEntity, int batchSize, RelationshipType relationshipType,
-                                        MinMax minMax,
-                                        NodeFinderStrategy nodeFinderStrategy )
+        public RelateNodesBatchCommand( DomainEntityInfo startNodeDomainEntityInfo, int batchSize, RelationshipType relationshipType,
+                                        MinMax minMax, NodeFinderStrategy nodeFinderStrategy )
         {
             this.startNodeDomainEntityInfo = startNodeDomainEntityInfo;
-            this.endNodeDomainEntity = endNodeDomainEntity;
             this.batchSize = batchSize;
             this.relationshipType = relationshipType;
             this.minMax = minMax;
@@ -116,7 +100,6 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
 
             numberOfRelsGenerator = flatDistribution();
         }
-
 
         @Override
         public int numberOfIterations()
@@ -138,7 +121,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
             int numberOfRels = numberOfRelsGenerator.generateSingle( minMax.min(), minMax.max(), random );
             totalRels += numberOfRels;
 
-            Iterable<Node> nodes = nodeFinderStrategy.getNodes( db, numberOfRels, endNodeDomainEntity, random );
+            Iterable<Node> nodes = nodeFinderStrategy.getNodes( db, numberOfRels, random );
             for ( Node endNode : nodes )
             {
                 endNodeIds.add( endNode.getId() );
@@ -150,7 +133,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
         public String description()
         {
             return String.format( "Creating '(%s)-[:%s]->(%s)' relationships.", startNodeDomainEntityInfo.entityName(),
-                    relationshipType.name(), endNodeDomainEntity.entityName() );
+                    relationshipType.name(), nodeFinderStrategy.entityName() );
         }
 
         @Override
@@ -169,7 +152,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
         @Override
         public DomainEntityInfo results()
         {
-            return new DomainEntityInfo( endNodeDomainEntity.entityName(), new ArrayList<Long>( endNodeIds ) );
+            return new DomainEntityInfo( nodeFinderStrategy.entityName(), new ArrayList<Long>( endNodeIds ) );
         }
     }
 }

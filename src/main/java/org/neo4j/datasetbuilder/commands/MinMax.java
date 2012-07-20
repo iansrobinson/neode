@@ -17,6 +17,16 @@ public class MinMax
 
     public MinMax( int min, int max )
     {
+        if (min < 0)
+        {
+            throw new IllegalArgumentException( "Min must be greater or equal to 0" );
+        }
+
+        if (max < min)
+        {
+            throw new IllegalArgumentException( "Max must be greater or equal to min" );
+        }
+
         this.min = min;
         this.max = max;
     }

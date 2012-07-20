@@ -33,13 +33,13 @@ public class ExampleDataset
                 .execute( executor );
 
         relateEntities( users )
-                .to( topic, getOrCreate( 10, normalDistribution() ) )
+                .to( getOrCreate( topic, 10, normalDistribution() ) )
                 .relationship( withName( "INTERESTED_IN" ) )
                 .numberOfRels( minMax( 3, 10 ) )
                 .execute( executor );
 
         relateEntities( users )
-                .to( company, getOrCreate( 20 ) )
+                .to( getOrCreate( company, 20 ) )
                 .relationship( withName( "WORKS_FOR" ) )
                 .numberOfRels( exactly( 1 ) )
                 .execute( executor );

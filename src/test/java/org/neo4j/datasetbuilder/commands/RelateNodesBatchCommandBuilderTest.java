@@ -37,15 +37,20 @@ public class RelateNodesBatchCommandBuilderTest
             int index = 0;
 
             @Override
-            public Iterable<Node> getNodes( GraphDatabaseService db, int numberOfNodes, DomainEntity
-                    domainEntityBuilder, Random random )
+            public Iterable<Node> getNodes( GraphDatabaseService db, int numberOfNodes, Random random )
             {
                 return asList( db.getNodeById( products.nodeIds().get( index++ ) ) );
+            }
+
+            @Override
+            public String entityName()
+            {
+                return null;
             }
         };
 
         // when
-        relateEntities( users ).to( product, finderStrategy ).relationship( withName("BOUGHT") )
+        relateEntities( users ).to( finderStrategy ).relationship( withName("BOUGHT") )
                 .numberOfRels( MinMax.exactly( 1 ) ).execute( executor );
 
         // then
