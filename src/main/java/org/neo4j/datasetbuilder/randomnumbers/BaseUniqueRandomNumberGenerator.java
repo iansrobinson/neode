@@ -6,15 +6,9 @@ import java.util.Random;
 
 abstract class BaseUniqueRandomNumberGenerator implements RandomNumberGenerator
 {
-    private final Random random;
-
-    protected BaseUniqueRandomNumberGenerator( Random random )
-    {
-        this.random = random;
-    }
-
     @Override
-    public final List<Integer> generate( int minNumberOfResults, int maxNumberOfResults, int min, int max )
+    public final List<Integer> generate( int minNumberOfResults, int maxNumberOfResults, int min, int max,
+                                         Random random )
     {
         if ( maxNumberOfResults < minNumberOfResults )
         {
@@ -45,13 +39,13 @@ abstract class BaseUniqueRandomNumberGenerator implements RandomNumberGenerator
         }
 
         int numberOfResults = (maxNumberOfResults == minNumberOfResults) ? maxNumberOfResults :
-                minNumberOfResults + random().nextInt( maxNumberOfResults - minNumberOfResults );
+                minNumberOfResults + random.nextInt( maxNumberOfResults - minNumberOfResults );
         List<Integer> generatedNumbers = new ArrayList<Integer>( numberOfResults );
         int i = 0;
         int upTo = max - min;
         while ( i < numberOfResults )
         {
-            int nextNumber = getNextNumber( min, upTo );
+            int nextNumber = getNextNumber( min, upTo, random );
             if ( nextNumber >= min && nextNumber <= max && !generatedNumbers.contains( nextNumber ) )
             {
                 generatedNumbers.add( nextNumber );
@@ -62,13 +56,13 @@ abstract class BaseUniqueRandomNumberGenerator implements RandomNumberGenerator
     }
 
     @Override
-    public final List<Integer> generate( int numberOfResults, int min, int max )
+    public final List<Integer> generate( int numberOfResults, int min, int max, Random random )
     {
-        return generate( numberOfResults, numberOfResults, min, max );
+        return generate( numberOfResults, numberOfResults, min, max, random );
     }
 
     @Override
-    public final int generateSingle( int min, int max )
+    public final int generateSingle( int min, int max, Random random )
     {
         if ( max < min )
         {
@@ -81,19 +75,14 @@ abstract class BaseUniqueRandomNumberGenerator implements RandomNumberGenerator
             throw new IllegalArgumentException( "min must be greater than or equal to 0" );
         }
 
-        int nextNumber = getNextNumber( min, max-min );
+        int nextNumber = getNextNumber( min, max-min, random );
         while (nextNumber < min || nextNumber > max)
         {
-            nextNumber = getNextNumber( min, max-min );
+            nextNumber = getNextNumber( min, max-min, random );
         }
 
         return nextNumber;
     }
 
-    protected final Random random()
-    {
-        return random;
-    }
-
-    protected abstract int getNextNumber( int min, int upTo );
+    protected abstract int getNextNumber( int min, int upTo, Random random );
 }

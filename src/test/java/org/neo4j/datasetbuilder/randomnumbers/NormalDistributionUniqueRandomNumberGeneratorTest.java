@@ -14,10 +14,11 @@ public class NormalDistributionUniqueRandomNumberGeneratorTest
         public void shouldReturnListOfNumbers() throws Exception
         {
             // given
-            RandomNumberGenerator generator = normalDistribution( new Random() ) ;
+            Random random = new Random(  );
+            RandomNumberGenerator generator = normalDistribution() ;
 
             // when
-            List<Integer> results = generator.generate( 5, 1, 5 );
+            List<Integer> results = generator.generate( 5, 1, 5, random );
 
             // then
             assertTrue( results.contains( 1 ) );

@@ -15,10 +15,11 @@ public class FlatDistributionUniqueRandomNumberGeneratorTest
     public void shouldReturnListOfNumbers() throws Exception
     {
         // given
-        RandomNumberGenerator generator = flatDistribution( new Random() ) ;
+        Random random = new Random(  );
+        RandomNumberGenerator generator = flatDistribution() ;
 
         // when
-        List<Integer> results = generator.generate( 5, 1, 5 );
+        List<Integer> results = generator.generate( 5, 1, 5, random );
 
         // then
         assertTrue( results.contains( 1 ) );
@@ -32,10 +33,11 @@ public class FlatDistributionUniqueRandomNumberGeneratorTest
     public void shouldAllowForZeroNumbersToBeGenerated() throws Exception
     {
         // given
-        RandomNumberGenerator generator = flatDistribution( new Random( ) ) ;
+        Random random = new Random(  );
+        RandomNumberGenerator generator = flatDistribution() ;
 
         // when
-        List<Integer> results = generator.generate( 0, 0, 0, 1 );
+        List<Integer> results = generator.generate( 0, 0, 0, 1, random );
 
         // then
         assertEquals( 0, results.size() );
@@ -45,10 +47,11 @@ public class FlatDistributionUniqueRandomNumberGeneratorTest
     public void shouldReturnSingleNumber() throws Exception
     {
         // given
-        RandomNumberGenerator generator = flatDistribution( new Random( ) ) ;
+        Random random = new Random(  );
+        RandomNumberGenerator generator = flatDistribution() ;
 
         // when
-        int result = generator.generateSingle( 1, 1 );
+        int result = generator.generateSingle( 1, 1, random );
 
         // then
         assertEquals( 1, result );

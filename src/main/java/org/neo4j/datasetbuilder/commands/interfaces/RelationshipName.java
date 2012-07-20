@@ -4,7 +4,9 @@
  */
 package org.neo4j.datasetbuilder.commands.interfaces;
 
+import org.neo4j.graphdb.RelationshipType;
+
 public interface RelationshipName
 {
-    BatchSize relationshipName(String value);
+    BatchSize relationship( RelationshipType value );
 }

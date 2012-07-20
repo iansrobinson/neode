@@ -2,6 +2,8 @@ package org.neo4j.datasetbuilder;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Random;
+
 import org.junit.Test;
 import org.neo4j.datasetbuilder.test.Db;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -108,7 +110,7 @@ public class BatchCommandExecutorTest
     }
 
 
-    private class DummyBatchCommand implements BatchCommand<Object>
+    private class DummyBatchCommand implements BatchCommand
     {
         private final int numberOfIterations;
         private final int batchSize;
@@ -133,7 +135,7 @@ public class BatchCommandExecutorTest
         }
 
         @Override
-        public void execute( GraphDatabaseService db, int index )
+        public void execute( GraphDatabaseService db, int index, Random random )
         {
             db.createNode();
             callCount++;
@@ -155,15 +157,15 @@ public class BatchCommandExecutorTest
         {
         }
 
+        @Override
+        public DomainEntityInfo results()
+        {
+            return null;
+        }
+
         public int callCount()
         {
             return callCount;
-        }
-
-        @Override
-        public Object value()
-        {
-            return null;
         }
     }
 }

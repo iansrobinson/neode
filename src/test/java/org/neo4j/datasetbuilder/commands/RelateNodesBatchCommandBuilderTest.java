@@ -3,16 +3,18 @@ package org.neo4j.datasetbuilder.commands;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.neo4j.datasetbuilder.commands.DomainEntityBatchCommandBuilder.createEntity;
-import static org.neo4j.datasetbuilder.commands.RelateNodesBatchCommandBuilder.relateNodes;
+import static org.neo4j.datasetbuilder.commands.DomainEntityBatchCommandBuilder.createEntities;
+import static org.neo4j.datasetbuilder.commands.DomainEntityBuilder.domainEntity;
+import static org.neo4j.datasetbuilder.commands.RelateNodesBatchCommandBuilder.relateEntities;
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 
-import java.util.List;
+import java.util.Random;
 
 import org.junit.Test;
 import org.neo4j.datasetbuilder.BatchCommandExecutor;
-import org.neo4j.datasetbuilder.finders.NodeFinder;
+import org.neo4j.datasetbuilder.DomainEntityInfo;
 import org.neo4j.datasetbuilder.SysOutLog;
+import org.neo4j.datasetbuilder.finders.NodeFinderStrategy;
 import org.neo4j.datasetbuilder.test.Db;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.DynamicRelationshipType;
@@ -27,24 +29,24 @@ public class RelateNodesBatchCommandBuilderTest
         // given
         GraphDatabaseService db = Db.impermanentDb();
         BatchCommandExecutor executor = new BatchCommandExecutor( db, SysOutLog.INSTANCE );
-        List<Long> userIds = createEntity( "user" ).numberOfIterations( 3 ).execute( executor );
-        final List<Long> productIds = createEntity( "product" ).numberOfIterations( 3 ).execute( executor );
-        NodeFinder finder = new NodeFinder()
+        DomainEntityInfo users = createEntities( domainEntity( "user" ) ).quantity( 3 ).execute( executor );
+        DomainEntityBuilder product = domainEntity( "product" );
+        final DomainEntityInfo products = createEntities( product ).quantity( 3 ).execute( executor );
+        NodeFinderStrategy finderStrategy = new NodeFinderStrategy()
         {
             int index = 0;
 
             @Override
-            public Iterable<Node> getNodes( GraphDatabaseService db, int numberOfNodes )
+            public Iterable<Node> getNodes( GraphDatabaseService db, int numberOfNodes, DomainEntityBuilder
+                    domainEntityBuilder, Random random )
             {
-                return asList( db.getNodeById( productIds.get( index++ ) ) );
+                return asList( db.getNodeById( products.nodeIds().get( index++ ) ) );
             }
         };
 
         // when
-        relateNodes( userIds ).startNodeName( "user" ).endNodeName( "product" ).relationshipName( "BOUGHT" )
-                .batchSize( 10 ).minMaxNumberOfRels( 1, 1 )
-                .findEndNodesUsing( finder )
-                .execute( executor );
+        relateEntities( users ).to( product, finderStrategy ).relationship( withName("BOUGHT") )
+                .batchSize( 10 ).minMaxNumberOfRels( 1, 1 ).execute( executor );
 
         // then
         DynamicRelationshipType bought = withName( "BOUGHT" );

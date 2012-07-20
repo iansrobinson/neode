@@ -4,19 +4,14 @@ import java.util.Random;
 
 public class NormalDistributionUniqueRandomNumberGenerator extends BaseUniqueRandomNumberGenerator
 {
-    public static RandomNumberGenerator normalDistribution( Random random )
+    public static RandomNumberGenerator normalDistribution()
     {
-        return new NormalDistributionUniqueRandomNumberGenerator( random );
+        return new NormalDistributionUniqueRandomNumberGenerator( );
     }
 
-    private NormalDistributionUniqueRandomNumberGenerator( Random random )
+    protected int getNextNumber( int min, int upTo, Random random )
     {
-        super( random );
-    }
-
-    protected int getNextNumber( int min, int upTo )
-    {
-        double gaussian = random().nextGaussian();
+        double gaussian = random.nextGaussian();
         int standardDeviation = upTo / 2;
         return (int) (min + standardDeviation + (gaussian * standardDeviation));
     }

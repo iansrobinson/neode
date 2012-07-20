@@ -4,18 +4,13 @@ import java.util.Random;
 
 public class FlatDistributionUniqueRandomNumberGenerator extends BaseUniqueRandomNumberGenerator
 {
-    public static RandomNumberGenerator flatDistribution(Random random)
+    public static RandomNumberGenerator flatDistribution()
     {
-        return new FlatDistributionUniqueRandomNumberGenerator( random );
+        return new FlatDistributionUniqueRandomNumberGenerator( );
     }
 
-    private FlatDistributionUniqueRandomNumberGenerator( Random random )
+    protected int getNextNumber( int min, int upTo, Random random )
     {
-        super( random );
-    }
-
-    protected int getNextNumber( int min, int upTo )
-    {
-        return min + random().nextInt( upTo + 1 );
+        return min + random.nextInt( upTo + 1 );
     }
 }

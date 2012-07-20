@@ -2,33 +2,32 @@ package org.neo4j.datasetbuilder.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.neo4j.datasetbuilder.BatchCommand;
 import org.neo4j.datasetbuilder.BatchCommandExecutor;
 import org.neo4j.datasetbuilder.Log;
-import org.neo4j.datasetbuilder.Results;
+import org.neo4j.datasetbuilder.DomainEntityInfo;
 import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
 
 public class DomainEntityBatchCommandBuilder
 {
-    public static DomainEntityBatchCommandBuilder createEntity( String entityName )
+
+    public static DomainEntityBatchCommandBuilder createEntities( DomainEntityBuilder domainEntityBuilder )
     {
-        return new DomainEntityBatchCommandBuilder( entityName );
+        return new DomainEntityBatchCommandBuilder( domainEntityBuilder );
     }
 
-    private String entityName = "";
+    private DomainEntityBuilder domainEntityBuilder;
     private int numberOfIterations = 0;
     private int batchSize = 10000;
-    private String propertyName = "name";
-    private boolean isIndexable = false;
 
-    private DomainEntityBatchCommandBuilder( String entityName )
+    private DomainEntityBatchCommandBuilder( DomainEntityBuilder domainEntityBuilder )
     {
-        this.entityName = entityName;
+        this.domainEntityBuilder = domainEntityBuilder;
     }
 
-    public DomainEntityBatchCommandBuilder numberOfIterations( int value )
+    public DomainEntityBatchCommandBuilder quantity( int value )
     {
         numberOfIterations = value;
         return this;
@@ -40,43 +39,26 @@ public class DomainEntityBatchCommandBuilder
         return this;
     }
 
-    public DomainEntityBatchCommandBuilder propertyName( String name )
+    public DomainEntityInfo execute( BatchCommandExecutor executor )
     {
-        propertyName = name;
-        return this;
+        DomainEntityBatchCommand command =
+                new DomainEntityBatchCommand( domainEntityBuilder, numberOfIterations, batchSize );
+        return executor.execute( command );
     }
 
-    public DomainEntityBatchCommandBuilder isIndexable( boolean value )
+    private static class DomainEntityBatchCommand implements BatchCommand
     {
-        isIndexable = value;
-        return this;
-    }
-
-    public List<Long> execute( BatchCommandExecutor executor )
-    {
-        DomainEntityBatchCommand command = new DomainEntityBatchCommand(
-                entityName, numberOfIterations, batchSize, propertyName, isIndexable );
-        Results<List<Long>> results = executor.execute( command );
-        return results.value();
-    }
-
-    private static class DomainEntityBatchCommand implements BatchCommand<List<Long>>
-    {
-        private final String entityName;
+        private final DomainEntityBuilder domainEntityBuilder;
         private final int numberOfIterations;
         private final int batchSize;
-        private final String propertyName;
-        private final boolean isIndexable;
         private final List<Long> nodeIds;
 
-        public DomainEntityBatchCommand( String entityName, int numberOfIterations, int batchSize, String propertyName,
-                                         boolean isIndexable )
+        public DomainEntityBatchCommand( DomainEntityBuilder domainEntityBuilder, int numberOfIterations,
+                                         int batchSize )
         {
-            this.entityName = entityName;
+            this.domainEntityBuilder = domainEntityBuilder;
             this.numberOfIterations = numberOfIterations;
             this.batchSize = batchSize;
-            this.propertyName = propertyName;
-            this.isIndexable = isIndexable;
             nodeIds = new ArrayList<Long>();
         }
 
@@ -93,22 +75,15 @@ public class DomainEntityBatchCommandBuilder
         }
 
         @Override
-        public void execute( GraphDatabaseService db, int index )
+        public void execute( GraphDatabaseService db, int index, Random random )
         {
-            Node node = db.createNode();
-            String value = String.format( "%s-%s", entityName, index );
-            node.setProperty( propertyName, value );
-            if ( isIndexable )
-            {
-                db.index().forNodes( entityName ).add( node, propertyName, value );
-            }
-            nodeIds.add( node.getId() );
+            nodeIds.add( domainEntityBuilder.build( db, index ) );
         }
 
         @Override
         public String description()
         {
-            return "Creating '" + entityName + "' nodes.";
+            return "Creating '" + domainEntityBuilder.entityName() + "' nodes.";
         }
 
         @Override
@@ -124,9 +99,9 @@ public class DomainEntityBatchCommandBuilder
         }
 
         @Override
-        public List<Long> value()
+        public DomainEntityInfo results()
         {
-            return nodeIds;
+            return new DomainEntityInfo(domainEntityBuilder.entityName(), nodeIds );
         }
     }
 }
