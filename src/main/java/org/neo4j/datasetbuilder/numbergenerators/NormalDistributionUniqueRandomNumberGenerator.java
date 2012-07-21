@@ -1,10 +1,10 @@
-package org.neo4j.datasetbuilder.randomnumbers;
+package org.neo4j.datasetbuilder.numbergenerators;
 
 import java.util.Random;
 
-public class NormalDistributionUniqueRandomNumberGenerator extends BaseUniqueRandomNumberGenerator
+public class NormalDistributionUniqueRandomNumberGenerator extends BaseUniqueNumberGenerator
 {
-    public static RandomNumberGenerator normalDistribution()
+    public static NumberGenerator normalDistribution()
     {
         return new NormalDistributionUniqueRandomNumberGenerator( );
     }

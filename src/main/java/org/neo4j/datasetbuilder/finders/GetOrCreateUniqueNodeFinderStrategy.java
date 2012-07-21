@@ -1,6 +1,6 @@
 package org.neo4j.datasetbuilder.finders;
 
-import static org.neo4j.datasetbuilder.randomnumbers.NormalDistributionUniqueRandomNumberGenerator.normalDistribution;
+import static org.neo4j.datasetbuilder.numbergenerators.NormalDistributionUniqueRandomNumberGenerator.normalDistribution;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -8,15 +8,15 @@ import java.util.List;
 import java.util.Random;
 
 import org.neo4j.datasetbuilder.commands.DomainEntity;
-import org.neo4j.datasetbuilder.randomnumbers.RandomNumberGenerator;
+import org.neo4j.datasetbuilder.numbergenerators.NumberGenerator;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
 public class GetOrCreateUniqueNodeFinderStrategy implements NodeFinderStrategy
 {
-    public static NodeFinderStrategy getOrCreate( DomainEntity domainEntity, int maxNumberOfNodes, RandomNumberGenerator randomNumberGenerator )
+    public static NodeFinderStrategy getOrCreate( DomainEntity domainEntity, int maxNumberOfNodes, NumberGenerator numberGenerator )
     {
-        return new GetOrCreateUniqueNodeFinderStrategy( domainEntity, maxNumberOfNodes, randomNumberGenerator );
+        return new GetOrCreateUniqueNodeFinderStrategy( domainEntity, maxNumberOfNodes, numberGenerator );
     }
 
     public static NodeFinderStrategy getOrCreate( DomainEntity domainEntity, int maxNumberOfNodes )
@@ -26,14 +26,14 @@ public class GetOrCreateUniqueNodeFinderStrategy implements NodeFinderStrategy
 
     private final DomainEntity domainEntity;
     private final int maxNumberOfNodes;
-    private final RandomNumberGenerator randomNumberGenerator;
+    private final NumberGenerator numberGenerator;
     private final List<Long> nodeIds;
 
-    private GetOrCreateUniqueNodeFinderStrategy( DomainEntity domainEntity, int maxNumberOfNodes, RandomNumberGenerator randomNumberGenerator )
+    private GetOrCreateUniqueNodeFinderStrategy( DomainEntity domainEntity, int maxNumberOfNodes, NumberGenerator numberGenerator )
     {
         this.domainEntity = domainEntity;
         this.maxNumberOfNodes = maxNumberOfNodes;
-        this.randomNumberGenerator = randomNumberGenerator;
+        this.numberGenerator = numberGenerator;
         nodeIds = new ArrayList<Long>( maxNumberOfNodes );
         for ( int i = 0; i < maxNumberOfNodes; i++ )
         {
@@ -44,7 +44,7 @@ public class GetOrCreateUniqueNodeFinderStrategy implements NodeFinderStrategy
     @Override
     public Iterable<Node> getNodes( final GraphDatabaseService db, Node currentNode, int numberOfNodes, Random random )
     {
-        final List<Integer> nodeIdIndexes = randomNumberGenerator.generate( numberOfNodes, 0,
+        final List<Integer> nodeIdIndexes = numberGenerator.generate( numberOfNodes, 0,
                 maxNumberOfNodes - 1, random );
         for ( Integer nodeIdIndex : nodeIdIndexes )
         {

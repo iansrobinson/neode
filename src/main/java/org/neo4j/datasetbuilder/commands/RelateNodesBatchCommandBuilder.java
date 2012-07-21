@@ -1,6 +1,6 @@
 package org.neo4j.datasetbuilder.commands;
 
-import static org.neo4j.datasetbuilder.randomnumbers.FlatDistributionUniqueRandomNumberGenerator.flatDistribution;
+import static org.neo4j.datasetbuilder.numbergenerators.FlatDistributionUniqueRandomNumberGenerator.flatDistribution;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,7 +16,7 @@ import org.neo4j.datasetbuilder.commands.interfaces.NumberOfRels;
 import org.neo4j.datasetbuilder.commands.interfaces.RelationshipName;
 import org.neo4j.datasetbuilder.commands.interfaces.To;
 import org.neo4j.datasetbuilder.finders.NodeFinderStrategy;
-import org.neo4j.datasetbuilder.randomnumbers.RandomNumberGenerator;
+import org.neo4j.datasetbuilder.numbergenerators.NumberGenerator;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -95,7 +95,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
         private final NodeFinderStrategy nodeFinderStrategy;
         private final RelationshipType relationshipType;
         private final Direction direction;
-        private final RandomNumberGenerator numberOfRelsGenerator;
+        private final NumberGenerator numberOfRelsGenerator;
         private long totalRels = 0;
         private Set<Long> endNodeIds = new HashSet<Long>();
 

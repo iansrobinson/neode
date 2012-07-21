@@ -1,8 +1,8 @@
-package org.neo4j.datasetbuilder.randomnumbers;
+package org.neo4j.datasetbuilder.numbergenerators;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.neo4j.datasetbuilder.randomnumbers.FlatDistributionUniqueRandomNumberGenerator.flatDistribution;
+import static org.neo4j.datasetbuilder.numbergenerators.FlatDistributionUniqueRandomNumberGenerator.flatDistribution;
 
 import java.util.List;
 import java.util.Random;
@@ -16,7 +16,7 @@ public class FlatDistributionUniqueRandomNumberGeneratorTest
     {
         // given
         Random random = new Random(  );
-        RandomNumberGenerator generator = flatDistribution() ;
+        NumberGenerator generator = flatDistribution() ;
 
         // when
         List<Integer> results = generator.generate( 5, 1, 5, random );
@@ -34,7 +34,7 @@ public class FlatDistributionUniqueRandomNumberGeneratorTest
     {
         // given
         Random random = new Random(  );
-        RandomNumberGenerator generator = flatDistribution() ;
+        NumberGenerator generator = flatDistribution() ;
 
         // when
         List<Integer> results = generator.generate( 0, 0, 0, 1, random );
@@ -48,7 +48,7 @@ public class FlatDistributionUniqueRandomNumberGeneratorTest
     {
         // given
         Random random = new Random(  );
-        RandomNumberGenerator generator = flatDistribution() ;
+        NumberGenerator generator = flatDistribution() ;
 
         // when
         int result = generator.generateSingle( 1, 1, random );

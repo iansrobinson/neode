@@ -1,6 +1,6 @@
 package org.neo4j.datasetbuilder.finders;
 
-import static org.neo4j.datasetbuilder.randomnumbers.FlatDistributionUniqueRandomNumberGenerator.flatDistribution;
+import static org.neo4j.datasetbuilder.numbergenerators.FlatDistributionUniqueRandomNumberGenerator.flatDistribution;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.neo4j.datasetbuilder.commands.DomainEntity;
-import org.neo4j.datasetbuilder.randomnumbers.RandomNumberGenerator;
+import org.neo4j.datasetbuilder.numbergenerators.NumberGenerator;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.traversal.TraversalDescription;
@@ -42,9 +42,9 @@ public class ContextualGetOrCreate implements NodeFinderStrategy
             returnNodes.add( null );
         }
 
-        RandomNumberGenerator randomNumberGenerator = flatDistribution();
+        NumberGenerator numberGenerator = flatDistribution();
 
-        List<Integer> contextIndexes = randomNumberGenerator.generate( numberOfNodes, 1, numberOfNodes, random );
+        List<Integer> contextIndexes = numberGenerator.generate( numberOfNodes, 1, numberOfNodes, random );
         Traverser traverse = traversal.traverse( currentNode );
 
         Iterator<Integer> contextIndexesIterator = contextIndexes.iterator();
@@ -55,7 +55,7 @@ public class ContextualGetOrCreate implements NodeFinderStrategy
             returnNodes.set( contextIndexesIterator.next() - 1, existingNodesIterator.next() );
         }
 
-        List<Integer> currentNodeIndexes = randomNumberGenerator.generate( numberOfNodes, 1, numberOfNodes, random );
+        List<Integer> currentNodeIndexes = numberGenerator.generate( numberOfNodes, 1, numberOfNodes, random );
         for ( Integer currentNodeIndex : currentNodeIndexes )
         {
             if ( returnNodes.get( currentNodeIndex - 1 ) == null )

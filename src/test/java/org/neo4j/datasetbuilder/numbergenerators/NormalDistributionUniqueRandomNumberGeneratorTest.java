@@ -1,7 +1,7 @@
-package org.neo4j.datasetbuilder.randomnumbers;
+package org.neo4j.datasetbuilder.numbergenerators;
 
 import static org.junit.Assert.assertTrue;
-import static org.neo4j.datasetbuilder.randomnumbers.NormalDistributionUniqueRandomNumberGenerator.normalDistribution;
+import static org.neo4j.datasetbuilder.numbergenerators.NormalDistributionUniqueRandomNumberGenerator.normalDistribution;
 
 import java.util.List;
 import java.util.Random;
@@ -15,7 +15,7 @@ public class NormalDistributionUniqueRandomNumberGeneratorTest
         {
             // given
             Random random = new Random(  );
-            RandomNumberGenerator generator = normalDistribution() ;
+            NumberGenerator generator = normalDistribution() ;
 
             // when
             List<Integer> results = generator.generate( 5, 1, 5, random );
