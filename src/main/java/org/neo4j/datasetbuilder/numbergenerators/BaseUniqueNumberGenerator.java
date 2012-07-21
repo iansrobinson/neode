@@ -13,29 +13,37 @@ abstract class BaseUniqueNumberGenerator implements NumberGenerator
         if ( maxNumberOfResults < minNumberOfResults )
         {
             throw new IllegalArgumentException(
-                    "maxNumberOfResults must be greater than or equal to minNumberOfResults)" );
+                    formatErrorMessage( "maxNumberOfResults must be greater than or equal to minNumberOfResults",
+                            minNumberOfResults, maxNumberOfResults, min, max ) );
         }
 
-//        if ( max <= min )
-//        {
-//            throw new IllegalArgumentException(
-//                    "max must be greater than min" );
-//        }
+        if ( max < min )
+        {
+            throw new IllegalArgumentException(
+                    formatErrorMessage( "max must be greater than or equal to min",
+                            minNumberOfResults, maxNumberOfResults, min, max ) );
+        }
 
         if ( minNumberOfResults < 0 )
         {
-            throw new IllegalArgumentException( "minNumberOfResults must be greater than or equal to 0" );
+            throw new IllegalArgumentException(
+                    formatErrorMessage( "minNumberOfResults must be greater than or equal to zero",
+                            minNumberOfResults, maxNumberOfResults, min, max ) );
         }
 
         if ( min < 0 )
         {
-            throw new IllegalArgumentException( "min must be greater than or equal to 0" );
+            throw new IllegalArgumentException(
+                    formatErrorMessage( "min must be greater than or equal to zero",
+                            minNumberOfResults, maxNumberOfResults, min, max ) );
         }
 
-        if ( (max - min) < (maxNumberOfResults - minNumberOfResults) )
+
+        if ( (max - min + 1) < maxNumberOfResults )
         {
             throw new IllegalArgumentException(
-                    "(maxNumberOfResults - minNumberOfResults) must be greater than (max - min)" );
+                                formatErrorMessage( "(max - min + 1) must be greater or equal to maxNumberOfResults",
+                                        minNumberOfResults, maxNumberOfResults, min, max ) );
         }
 
         int numberOfResults = (maxNumberOfResults == minNumberOfResults) ? maxNumberOfResults :
@@ -75,14 +83,21 @@ abstract class BaseUniqueNumberGenerator implements NumberGenerator
             throw new IllegalArgumentException( "min must be greater than or equal to 0" );
         }
 
-        int nextNumber = getNextNumber( min, max-min, random );
-        while (nextNumber < min || nextNumber > max)
+        int nextNumber = getNextNumber( min, max - min, random );
+        while ( nextNumber < min || nextNumber > max )
         {
-            nextNumber = getNextNumber( min, max-min, random );
+            nextNumber = getNextNumber( min, max - min, random );
         }
 
         return nextNumber;
     }
 
     protected abstract int getNextNumber( int min, int upTo, Random random );
+
+    private String formatErrorMessage( String msg, int minNumberOfResults, int maxNumberOfResults, int min, int max )
+    {
+        return String.format( "%s [minNumberOfResults: %s, maxNumberOfResults: %s, min: %s, max: %s]",
+                msg, minNumberOfResults, maxNumberOfResults, min, max );
+    }
+
 }
