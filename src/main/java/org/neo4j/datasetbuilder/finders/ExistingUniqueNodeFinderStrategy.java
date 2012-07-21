@@ -27,15 +27,15 @@ public class ExistingUniqueNodeFinderStrategy implements NodeFinderStrategy
     private final DomainEntityInfo domainEntityInfo;
     private final RandomNumberGenerator randomNumberGenerator;
 
-    private ExistingUniqueNodeFinderStrategy( DomainEntityInfo domainEntityInfo, RandomNumberGenerator randomNumberGenerator )
+    private ExistingUniqueNodeFinderStrategy( DomainEntityInfo domainEntityInfo,
+                                              RandomNumberGenerator randomNumberGenerator )
     {
         this.domainEntityInfo = domainEntityInfo;
         this.randomNumberGenerator = randomNumberGenerator;
     }
 
     @Override
-    public Iterable<Node> getNodes( final GraphDatabaseService db, int numberOfNodes,
-                                    Random random )
+    public Iterable<Node> getNodes( final GraphDatabaseService db, Node currentNode, int numberOfNodes, Random random )
     {
         final List<Integer> indexes = randomNumberGenerator.generate( numberOfNodes, 0,
                 domainEntityInfo.nodeIds().size() - 1, random );

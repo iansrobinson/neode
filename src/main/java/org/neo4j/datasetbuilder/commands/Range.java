@@ -1,21 +1,21 @@
 package org.neo4j.datasetbuilder.commands;
 
-public class MinMax
+public class Range
 {
-    public static MinMax minMax(int min, int max)
+    public static Range minMax(int min, int max)
     {
-        return new MinMax( min, max );
+        return new Range( min, max );
     }
 
-    public static MinMax exactly(int count)
+    public static Range exactly(int count)
     {
-        return new MinMax( count, count );
+        return new Range( count, count );
     }
 
     private final int min;
     private final int max;
 
-    public MinMax( int min, int max )
+    public Range( int min, int max )
     {
         if (min < 0)
         {

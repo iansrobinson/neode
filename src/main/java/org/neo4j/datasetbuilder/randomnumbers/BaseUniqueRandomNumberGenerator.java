@@ -16,11 +16,11 @@ abstract class BaseUniqueRandomNumberGenerator implements RandomNumberGenerator
                     "maxNumberOfResults must be greater than or equal to minNumberOfResults)" );
         }
 
-        if ( max <= min )
-        {
-            throw new IllegalArgumentException(
-                    "max must be greater than min" );
-        }
+//        if ( max <= min )
+//        {
+//            throw new IllegalArgumentException(
+//                    "max must be greater than min" );
+//        }
 
         if ( minNumberOfResults < 0 )
         {

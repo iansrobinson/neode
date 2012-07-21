@@ -1,8 +1,8 @@
 package org.neo4j.datasetbuilder.commands.interfaces;
 
-import org.neo4j.datasetbuilder.commands.MinMax;
+import org.neo4j.datasetbuilder.commands.Range;
 
 public interface NumberOfRels
 {
-    Execute numberOfRels( MinMax value );
+    Execute numberOfRels( Range value );
 }

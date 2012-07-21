@@ -37,7 +37,7 @@ public class RelateNodesBatchCommandBuilderTest
             int index = 0;
 
             @Override
-            public Iterable<Node> getNodes( GraphDatabaseService db, int numberOfNodes, Random random )
+            public Iterable<Node> getNodes( GraphDatabaseService db, Node currentNode, int numberOfNodes, Random random )
             {
                 return asList( db.getNodeById( products.nodeIds().get( index++ ) ) );
             }
@@ -51,7 +51,7 @@ public class RelateNodesBatchCommandBuilderTest
 
         // when
         relateEntities( users ).to( finderStrategy ).relationship( withName("BOUGHT") )
-                .numberOfRels( MinMax.exactly( 1 ) ).execute( executor );
+                .numberOfRels( Range.exactly( 1 ) ).execute( executor );
 
         // then
         DynamicRelationshipType bought = withName( "BOUGHT" );

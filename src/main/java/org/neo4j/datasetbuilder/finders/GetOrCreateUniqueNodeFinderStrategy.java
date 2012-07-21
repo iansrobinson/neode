@@ -42,7 +42,7 @@ public class GetOrCreateUniqueNodeFinderStrategy implements NodeFinderStrategy
     }
 
     @Override
-    public Iterable<Node> getNodes( final GraphDatabaseService db, int numberOfNodes, Random random )
+    public Iterable<Node> getNodes( final GraphDatabaseService db, Node currentNode, int numberOfNodes, Random random )
     {
         final List<Integer> nodeIdIndexes = randomNumberGenerator.generate( numberOfNodes, 0,
                 maxNumberOfNodes - 1, random );

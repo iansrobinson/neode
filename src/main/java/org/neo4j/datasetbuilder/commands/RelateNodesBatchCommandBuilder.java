@@ -17,6 +17,7 @@ import org.neo4j.datasetbuilder.commands.interfaces.RelationshipName;
 import org.neo4j.datasetbuilder.commands.interfaces.To;
 import org.neo4j.datasetbuilder.finders.NodeFinderStrategy;
 import org.neo4j.datasetbuilder.randomnumbers.RandomNumberGenerator;
+import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.RelationshipType;
@@ -31,9 +32,10 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
     private static final int DEFAULT_BATCH_SIZE = 1000;
 
     private DomainEntityInfo domainEntityInfo;
-    private MinMax minMax;
+    private Range range;
     private NodeFinderStrategy nodeFinderStrategy;
     private RelationshipType relationshipType;
+    private Direction direction;
 
     private RelateNodesBatchCommandBuilder( DomainEntityInfo domainEntityInfo )
     {
@@ -48,9 +50,9 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
     }
 
     @Override
-    public Execute numberOfRels( MinMax value )
+    public Execute numberOfRels( Range value )
     {
-        minMax = value;
+        range = value;
         return this;
     }
 
@@ -58,6 +60,15 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
     public NumberOfRels relationship( RelationshipType value )
     {
         relationshipType = value;
+        direction = Direction.OUTGOING;
+        return this;
+    }
+
+    @Override
+    public NumberOfRels relationship( RelationshipType value, Direction direction )
+    {
+        relationshipType = value;
+        this.direction = direction;
         return this;
     }
 
@@ -65,7 +76,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
     public void execute( BatchCommandExecutor executor, int batchSize )
     {
         RelateNodesBatchCommand command = new RelateNodesBatchCommand( domainEntityInfo, batchSize,
-                relationshipType, minMax, nodeFinderStrategy );
+                relationshipType, direction, range, nodeFinderStrategy );
         executor.execute( command );
     }
 
@@ -79,23 +90,24 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
     private class RelateNodesBatchCommand implements BatchCommand
     {
         private final DomainEntityInfo startNodeDomainEntityInfo;
-
         private final int batchSize;
-        private final MinMax minMax;
+        private final Range range;
         private final NodeFinderStrategy nodeFinderStrategy;
         private final RelationshipType relationshipType;
+        private final Direction direction;
         private final RandomNumberGenerator numberOfRelsGenerator;
-
         private long totalRels = 0;
         private Set<Long> endNodeIds = new HashSet<Long>();
 
-        public RelateNodesBatchCommand( DomainEntityInfo startNodeDomainEntityInfo, int batchSize, RelationshipType relationshipType,
-                                        MinMax minMax, NodeFinderStrategy nodeFinderStrategy )
+        public RelateNodesBatchCommand( DomainEntityInfo startNodeDomainEntityInfo, int batchSize,
+                                        RelationshipType relationshipType,
+                                        Direction direction, Range range, NodeFinderStrategy nodeFinderStrategy )
         {
             this.startNodeDomainEntityInfo = startNodeDomainEntityInfo;
             this.batchSize = batchSize;
             this.relationshipType = relationshipType;
-            this.minMax = minMax;
+            this.direction = direction;
+            this.range = range;
             this.nodeFinderStrategy = nodeFinderStrategy;
 
             numberOfRelsGenerator = flatDistribution();
@@ -118,14 +130,21 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
         {
             Node startNode = db.getNodeById( startNodeDomainEntityInfo.nodeIds().get( index ) );
 
-            int numberOfRels = numberOfRelsGenerator.generateSingle( minMax.min(), minMax.max(), random );
+            int numberOfRels = numberOfRelsGenerator.generateSingle( range.min(), range.max(), random );
             totalRels += numberOfRels;
 
-            Iterable<Node> nodes = nodeFinderStrategy.getNodes( db, numberOfRels, random );
+            Iterable<Node> nodes = nodeFinderStrategy.getNodes( db, startNode, numberOfRels, random );
             for ( Node endNode : nodes )
             {
                 endNodeIds.add( endNode.getId() );
-                startNode.createRelationshipTo( endNode, relationshipType );
+                if ( direction.equals( Direction.OUTGOING ) )
+                {
+                    startNode.createRelationshipTo( endNode, relationshipType );
+                }
+                else
+                {
+                    endNode.createRelationshipTo( startNode, relationshipType );
+                }
             }
         }
 
@@ -139,7 +158,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
         @Override
         public void onBegin( Log log )
         {
-            log.write( String.format( "      [Min: %s, Max: %s]", minMax.min(), minMax.max() ) );
+            log.write( String.format( "      [Min: %s, Max: %s]", range.min(), range.max() ) );
         }
 
         @Override
