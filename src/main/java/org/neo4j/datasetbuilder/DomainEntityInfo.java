@@ -48,4 +48,13 @@ public class DomainEntityInfo
     {
         return nodeIds;
     }
+
+    @Override
+    public String toString()
+    {
+        return "DomainEntityInfo{" +
+                "name='" + name + '\'' +
+                ", nodeIds=" + nodeIds +
+                '}';
+    }
 }

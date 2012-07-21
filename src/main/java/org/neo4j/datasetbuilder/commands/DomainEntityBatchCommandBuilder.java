@@ -8,10 +8,11 @@ import org.neo4j.datasetbuilder.BatchCommand;
 import org.neo4j.datasetbuilder.BatchCommandExecutor;
 import org.neo4j.datasetbuilder.DomainEntity;
 import org.neo4j.datasetbuilder.DomainEntityInfo;
+import org.neo4j.datasetbuilder.commands.interfaces.Execute;
 import org.neo4j.datasetbuilder.logging.Log;
 import org.neo4j.graphdb.GraphDatabaseService;
 
-public class DomainEntityBatchCommandBuilder
+public class DomainEntityBatchCommandBuilder implements Execute
 {
     private static final int DEFAULT_BATCH_SIZE = 10000;
 

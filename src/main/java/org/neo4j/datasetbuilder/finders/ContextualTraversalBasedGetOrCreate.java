@@ -14,23 +14,21 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.graphdb.traversal.Traverser;
 
-public class ContextualGetOrCreate implements NodeFinderStrategy
+public class ContextualTraversalBasedGetOrCreate implements NodeFinderStrategy
 {
     public static NodeFinderStrategy traversalBasedGetOrCreate( DomainEntity domainEntity, TraversalDescription
             traversal )
     {
-        return new ContextualGetOrCreate( domainEntity, traversal );
+        return new ContextualTraversalBasedGetOrCreate( domainEntity, traversal );
     }
 
     private final DomainEntity domainEntity;
     private final TraversalDescription traversal;
-    private final List<Long> nodeIds;
 
-    private ContextualGetOrCreate( DomainEntity domainEntity, TraversalDescription traversal )
+    private ContextualTraversalBasedGetOrCreate( DomainEntity domainEntity, TraversalDescription traversal )
     {
         this.domainEntity = domainEntity;
         this.traversal = traversal;
-        nodeIds = new ArrayList<Long>();
     }
 
     @Override
@@ -44,7 +42,7 @@ public class ContextualGetOrCreate implements NodeFinderStrategy
 
         NumberGenerator numberGenerator = flatDistribution();
 
-        List<Integer> contextIndexes = numberGenerator.generate( numberOfNodes, 1, numberOfNodes, random );
+        List<Integer> contextIndexes = numberGenerator.generate( numberOfNodes, 0, numberOfNodes - 1, random );
         Traverser traverse = traversal.traverse( currentNode );
 
         Iterator<Integer> contextIndexesIterator = contextIndexes.iterator();
@@ -52,16 +50,16 @@ public class ContextualGetOrCreate implements NodeFinderStrategy
 
         while ( existingNodesIterator.hasNext() && contextIndexesIterator.hasNext() )
         {
-            returnNodes.set( contextIndexesIterator.next() - 1, existingNodesIterator.next() );
+            returnNodes.set( contextIndexesIterator.next(), existingNodesIterator.next() );
         }
 
-        List<Integer> currentNodeIndexes = numberGenerator.generate( numberOfNodes, 1, numberOfNodes, random );
+        List<Integer> currentNodeIndexes = numberGenerator.generate( numberOfNodes, 0, numberOfNodes - 1, random );
         for ( Integer currentNodeIndex : currentNodeIndexes )
         {
-            if ( returnNodes.get( currentNodeIndex - 1 ) == null )
+            if ( returnNodes.get( currentNodeIndex ) == null )
             {
                 Long nodeId = domainEntity.build( db, currentNodeIndex );
-                returnNodes.set( currentNodeIndex - 1, db.getNodeById( nodeId ) );
+                returnNodes.set( currentNodeIndex, db.getNodeById( nodeId ) );
             }
         }
 

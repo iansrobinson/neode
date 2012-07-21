@@ -52,7 +52,7 @@ public class RelateNodesBatchCommandBuilderTest
 
         // when
         relateEntities( users ).to( finderStrategy ).relationship( withName("BOUGHT") )
-                .numberOfRels( Range.exactly( 1 ) ).execute( executor );
+                .cardinality( Range.exactly( 1 ) ).execute( executor );
 
         // then
         DynamicRelationshipType bought = withName( "BOUGHT" );

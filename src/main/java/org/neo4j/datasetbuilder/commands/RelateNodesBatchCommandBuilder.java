@@ -1,5 +1,6 @@
 package org.neo4j.datasetbuilder.commands;
 
+import static org.neo4j.datasetbuilder.commands.AllowMultiple.allowMultiple;
 import static org.neo4j.datasetbuilder.numbergenerators.FlatDistributionUniqueRandomNumberGenerator.flatDistribution;
 
 import java.util.ArrayList;
@@ -10,9 +11,9 @@ import java.util.Set;
 import org.neo4j.datasetbuilder.BatchCommand;
 import org.neo4j.datasetbuilder.BatchCommandExecutor;
 import org.neo4j.datasetbuilder.DomainEntityInfo;
+import org.neo4j.datasetbuilder.commands.interfaces.Cardinality;
 import org.neo4j.datasetbuilder.logging.Log;
 import org.neo4j.datasetbuilder.commands.interfaces.Execute;
-import org.neo4j.datasetbuilder.commands.interfaces.NumberOfRels;
 import org.neo4j.datasetbuilder.commands.interfaces.RelationshipName;
 import org.neo4j.datasetbuilder.commands.interfaces.To;
 import org.neo4j.datasetbuilder.finders.NodeFinderStrategy;
@@ -22,8 +23,9 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.RelationshipType;
 
-public class RelateNodesBatchCommandBuilder implements To, RelationshipName, NumberOfRels, Execute
+public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Cardinality, Execute
 {
+
     public static To relateEntities( DomainEntityInfo domainEntityInfo )
     {
         return new RelateNodesBatchCommandBuilder( domainEntityInfo );
@@ -32,7 +34,8 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
     private static final int DEFAULT_BATCH_SIZE = 1000;
 
     private DomainEntityInfo domainEntityInfo;
-    private Range range;
+    private Range cardinality;
+    private UniquenessStrategy uniquenessStrategy;
     private NodeFinderStrategy nodeFinderStrategy;
     private RelationshipType relationshipType;
     private Direction direction;
@@ -50,14 +53,23 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
     }
 
     @Override
-    public Execute numberOfRels( Range value )
+    public Execute cardinality( Range value )
     {
-        range = value;
+        cardinality = value;
+        uniquenessStrategy = allowMultiple();
         return this;
     }
 
     @Override
-    public NumberOfRels relationship( RelationshipType value )
+        public Execute cardinality( Range value, UniquenessStrategy uniqueness )
+        {
+            cardinality = value;
+            uniquenessStrategy = uniqueness;
+            return this;
+        }
+
+    @Override
+    public Cardinality relationship( RelationshipType value )
     {
         relationshipType = value;
         direction = Direction.OUTGOING;
@@ -65,7 +77,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
     }
 
     @Override
-    public NumberOfRels relationship( RelationshipType value, Direction direction )
+    public Cardinality relationship( RelationshipType value, Direction direction )
     {
         relationshipType = value;
         this.direction = direction;
@@ -73,17 +85,17 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
     }
 
     @Override
-    public void execute( BatchCommandExecutor executor, int batchSize )
+    public DomainEntityInfo execute( BatchCommandExecutor executor, int batchSize )
     {
         RelateNodesBatchCommand command = new RelateNodesBatchCommand( domainEntityInfo, batchSize,
-                relationshipType, direction, range, nodeFinderStrategy );
-        executor.execute( command );
+                relationshipType, direction, cardinality, uniquenessStrategy, nodeFinderStrategy );
+        return executor.execute( command );
     }
 
     @Override
-    public void execute( BatchCommandExecutor executor )
+    public DomainEntityInfo execute( BatchCommandExecutor executor )
     {
-        execute( executor, DEFAULT_BATCH_SIZE );
+        return execute( executor, DEFAULT_BATCH_SIZE );
     }
 
 
@@ -91,7 +103,8 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
     {
         private final DomainEntityInfo startNodeDomainEntityInfo;
         private final int batchSize;
-        private final Range range;
+        private final Range cardinality;
+        private final UniquenessStrategy uniquenessStrategy;
         private final NodeFinderStrategy nodeFinderStrategy;
         private final RelationshipType relationshipType;
         private final Direction direction;
@@ -101,13 +114,14 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
 
         public RelateNodesBatchCommand( DomainEntityInfo startNodeDomainEntityInfo, int batchSize,
                                         RelationshipType relationshipType,
-                                        Direction direction, Range range, NodeFinderStrategy nodeFinderStrategy )
+                                        Direction direction, Range cardinality, UniquenessStrategy uniquenessStrategy, NodeFinderStrategy nodeFinderStrategy )
         {
             this.startNodeDomainEntityInfo = startNodeDomainEntityInfo;
             this.batchSize = batchSize;
             this.relationshipType = relationshipType;
             this.direction = direction;
-            this.range = range;
+            this.cardinality = cardinality;
+            this.uniquenessStrategy = uniquenessStrategy;
             this.nodeFinderStrategy = nodeFinderStrategy;
 
             numberOfRelsGenerator = flatDistribution();
@@ -128,37 +142,38 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Num
         @Override
         public void execute( GraphDatabaseService db, int index, Random random )
         {
-            Node startNode = db.getNodeById( startNodeDomainEntityInfo.nodeIds().get( index ) );
+            Node firstNode = db.getNodeById( startNodeDomainEntityInfo.nodeIds().get( index ) );
 
-            int numberOfRels = numberOfRelsGenerator.generateSingle( range.min(), range.max(), random );
+            int numberOfRels = numberOfRelsGenerator.generateSingle( cardinality.min(), cardinality.max(), random );
             totalRels += numberOfRels;
 
-            Iterable<Node> nodes = nodeFinderStrategy.getNodes( db, startNode, numberOfRels, random );
-            for ( Node endNode : nodes )
+            Iterable<Node> nodes = nodeFinderStrategy.getNodes( db, firstNode, numberOfRels, random );
+            for ( Node secondNode : nodes )
             {
-                endNodeIds.add( endNode.getId() );
-                if ( direction.equals( Direction.OUTGOING ) )
-                {
-                    startNode.createRelationshipTo( endNode, relationshipType );
-                }
-                else
-                {
-                    endNode.createRelationshipTo( startNode, relationshipType );
-                }
+                endNodeIds.add( secondNode.getId() );
+                uniquenessStrategy.apply( db, firstNode, secondNode, relationshipType, direction );
             }
         }
 
         @Override
         public String description()
         {
-            return String.format( "Creating '(%s)-[:%s]->(%s)' relationships.", startNodeDomainEntityInfo.entityName(),
-                    relationshipType.name(), nodeFinderStrategy.entityName() );
+            String relStart = "-";
+            String relEnd = "->";
+            if (direction.equals( Direction.INCOMING ))
+            {
+                relStart = "<-";
+                relEnd = "-";
+            }
+            return String.format( "Creating '(%s)%s[:%s]%s(%s)' relationships.", startNodeDomainEntityInfo.entityName(),
+                    relStart, relationshipType.name(), relEnd, nodeFinderStrategy.entityName() );
         }
 
         @Override
         public void onBegin( Log log )
         {
-            log.write( String.format( "      [Min: %s, Max: %s]", range.min(), range.max() ) );
+            log.write( String.format( "      [Min: %s, Max: %s, Uniqueness: %s]", cardinality.min(), cardinality.max(),
+                    uniquenessStrategy.description() ) );
         }
 
         @Override

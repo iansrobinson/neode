@@ -1,21 +1,25 @@
 package org.neo4j.datasetbuilder.test;
 
 import static org.neo4j.datasetbuilder.DomainEntity.domainEntity;
+import static org.neo4j.datasetbuilder.DomainEntityInfo.approxPercent;
 import static org.neo4j.datasetbuilder.commands.DomainEntityBatchCommandBuilder.createEntities;
 import static org.neo4j.datasetbuilder.commands.Range.exactly;
 import static org.neo4j.datasetbuilder.commands.Range.minMax;
 import static org.neo4j.datasetbuilder.commands.RelateNodesBatchCommandBuilder.relateEntities;
-import static org.neo4j.datasetbuilder.finders.ContextualGetOrCreate.traversalBasedGetOrCreate;
+import static org.neo4j.datasetbuilder.commands.Unique.unique;
+import static org.neo4j.datasetbuilder.finders.ContextualTraversalBasedGetOrCreate.traversalBasedGetOrCreate;
+import static org.neo4j.datasetbuilder.finders.ExistingUniqueNodeFinderStrategy.getExisting;
 import static org.neo4j.datasetbuilder.finders.GetOrCreateUniqueNodeFinderStrategy.getOrCreate;
 import static org.neo4j.datasetbuilder.numbergenerators.FlatDistributionUniqueRandomNumberGenerator.flatDistribution;
-import static org.neo4j.datasetbuilder.numbergenerators.NormalDistributionUniqueRandomNumberGenerator.normalDistribution;
+import static org.neo4j.datasetbuilder.numbergenerators.NormalDistributionUniqueRandomNumberGenerator
+        .normalDistribution;
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 
 import org.junit.Test;
 import org.neo4j.datasetbuilder.BatchCommandExecutor;
+import org.neo4j.datasetbuilder.DomainEntity;
 import org.neo4j.datasetbuilder.DomainEntityInfo;
 import org.neo4j.datasetbuilder.logging.SysOutLog;
-import org.neo4j.datasetbuilder.DomainEntity;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Path;
@@ -65,19 +69,25 @@ public class ExampleDataset
         relateEntities( users )
                 .to( getOrCreate( topic, 10, normalDistribution() ) )
                 .relationship( withName( "INTERESTED_IN" ) )
-                .numberOfRels( minMax( 1, 3 ) )
+                .cardinality( minMax( 1, 3 ) )
                 .execute( executor );
 
         relateEntities( users )
                 .to( getOrCreate( company, 2, flatDistribution() ) )
                 .relationship( withName( "WORKS_FOR" ) )
-                .numberOfRels( exactly( 1 ) )
+                .cardinality( exactly( 1 ) )
                 .execute( executor );
 
-        relateEntities( users )
+        DomainEntityInfo allProjects = relateEntities( users )
                 .to( traversalBasedGetOrCreate( project, findCompanyProjects ) )
                 .relationship( withName( "WORKED_ON" ) )
-                .numberOfRels( minMax( 1, 3 ) )
+                .cardinality( minMax( 1, 3 ) )
+                .execute( executor );
+
+        relateEntities( approxPercent( 30, users ) )
+                .to( getExisting( allProjects ) )
+                .relationship( withName( "WORKS_FOR" ) )
+                .cardinality( minMax( 1, 2 ), unique() )
                 .execute( executor );
 
         db.shutdown();
