@@ -10,7 +10,7 @@ import java.util.Set;
 import org.neo4j.datasetbuilder.BatchCommand;
 import org.neo4j.datasetbuilder.BatchCommandExecutor;
 import org.neo4j.datasetbuilder.DomainEntityInfo;
-import org.neo4j.datasetbuilder.Log;
+import org.neo4j.datasetbuilder.logging.Log;
 import org.neo4j.datasetbuilder.commands.interfaces.Execute;
 import org.neo4j.datasetbuilder.commands.interfaces.NumberOfRels;
 import org.neo4j.datasetbuilder.commands.interfaces.RelationshipName;

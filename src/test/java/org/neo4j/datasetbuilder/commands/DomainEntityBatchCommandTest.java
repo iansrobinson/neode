@@ -4,12 +4,13 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.neo4j.datasetbuilder.commands.DomainEntityBatchCommandBuilder.createEntities;
-import static org.neo4j.datasetbuilder.commands.DomainEntity.domainEntity;
+import static org.neo4j.datasetbuilder.DomainEntity.domainEntity;
 
 import org.junit.Test;
 import org.neo4j.datasetbuilder.BatchCommandExecutor;
+import org.neo4j.datasetbuilder.DomainEntity;
 import org.neo4j.datasetbuilder.DomainEntityInfo;
-import org.neo4j.datasetbuilder.SysOutLog;
+import org.neo4j.datasetbuilder.logging.SysOutLog;
 import org.neo4j.datasetbuilder.test.Db;
 import org.neo4j.graphdb.GraphDatabaseService;
 

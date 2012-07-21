@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.Random;
 
 import org.junit.Test;
+import org.neo4j.datasetbuilder.logging.Log;
+import org.neo4j.datasetbuilder.logging.SysOutLog;
 import org.neo4j.datasetbuilder.test.Db;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.event.TransactionData;

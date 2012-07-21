@@ -1,6 +1,6 @@
 package org.neo4j.datasetbuilder.test;
 
-import static org.neo4j.datasetbuilder.commands.DomainEntity.domainEntity;
+import static org.neo4j.datasetbuilder.DomainEntity.domainEntity;
 import static org.neo4j.datasetbuilder.commands.DomainEntityBatchCommandBuilder.createEntities;
 import static org.neo4j.datasetbuilder.commands.Range.exactly;
 import static org.neo4j.datasetbuilder.commands.Range.minMax;
@@ -14,8 +14,8 @@ import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 import org.junit.Test;
 import org.neo4j.datasetbuilder.BatchCommandExecutor;
 import org.neo4j.datasetbuilder.DomainEntityInfo;
-import org.neo4j.datasetbuilder.SysOutLog;
-import org.neo4j.datasetbuilder.commands.DomainEntity;
+import org.neo4j.datasetbuilder.logging.SysOutLog;
+import org.neo4j.datasetbuilder.DomainEntity;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Path;

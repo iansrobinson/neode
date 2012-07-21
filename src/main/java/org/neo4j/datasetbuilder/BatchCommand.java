@@ -6,6 +6,7 @@ package org.neo4j.datasetbuilder;
 
 import java.util.Random;
 
+import org.neo4j.datasetbuilder.logging.Log;
 import org.neo4j.graphdb.GraphDatabaseService;
 
 public interface BatchCommand

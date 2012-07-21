@@ -6,8 +6,9 @@ import java.util.Random;
 
 import org.neo4j.datasetbuilder.BatchCommand;
 import org.neo4j.datasetbuilder.BatchCommandExecutor;
+import org.neo4j.datasetbuilder.DomainEntity;
 import org.neo4j.datasetbuilder.DomainEntityInfo;
-import org.neo4j.datasetbuilder.Log;
+import org.neo4j.datasetbuilder.logging.Log;
 import org.neo4j.graphdb.GraphDatabaseService;
 
 public class DomainEntityBatchCommandBuilder

@@ -1,4 +1,4 @@
-package org.neo4j.datasetbuilder.commands;
+package org.neo4j.datasetbuilder;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;

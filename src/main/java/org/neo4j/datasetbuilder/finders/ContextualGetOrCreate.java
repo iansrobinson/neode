@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import org.neo4j.datasetbuilder.commands.DomainEntity;
+import org.neo4j.datasetbuilder.DomainEntity;
 import org.neo4j.datasetbuilder.numbergenerators.NumberGenerator;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;

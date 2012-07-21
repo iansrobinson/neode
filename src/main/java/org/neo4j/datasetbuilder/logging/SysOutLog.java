@@ -1,4 +1,4 @@
-package org.neo4j.datasetbuilder;
+package org.neo4j.datasetbuilder.logging;
 
 public final class SysOutLog implements Log
 {
