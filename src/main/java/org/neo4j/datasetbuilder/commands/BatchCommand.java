@@ -2,10 +2,11 @@
  * Copyright (C) 2012 Neo Technology
  * All rights reserved
  */
-package org.neo4j.datasetbuilder;
+package org.neo4j.datasetbuilder.commands;
 
 import java.util.Random;
 
+import org.neo4j.datasetbuilder.DomainEntityInfo;
 import org.neo4j.datasetbuilder.logging.Log;
 import org.neo4j.graphdb.GraphDatabaseService;
 

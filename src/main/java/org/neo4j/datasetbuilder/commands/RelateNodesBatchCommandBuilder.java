@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import org.neo4j.datasetbuilder.BatchCommand;
 import org.neo4j.datasetbuilder.DomainEntityInfo;
 import org.neo4j.datasetbuilder.Dataset;
 import org.neo4j.datasetbuilder.commands.interfaces.AddTo;

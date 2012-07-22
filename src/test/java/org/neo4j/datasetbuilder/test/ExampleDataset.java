@@ -2,6 +2,8 @@ package org.neo4j.datasetbuilder.test;
 
 import static org.neo4j.datasetbuilder.DomainEntity.domainEntity;
 import static org.neo4j.datasetbuilder.DomainEntityInfo.approxPercent;
+import static org.neo4j.datasetbuilder.Property.indexableProperty;
+import static org.neo4j.datasetbuilder.Property.property;
 import static org.neo4j.datasetbuilder.commands.DomainEntityBatchCommandBuilder.createEntities;
 import static org.neo4j.datasetbuilder.commands.Range.exactly;
 import static org.neo4j.datasetbuilder.commands.Range.minMax;
@@ -58,10 +60,10 @@ public class ExampleDataset
                     }
                 } );
 
-        DomainEntity user = domainEntity( "user", true );
-        DomainEntity topic = domainEntity( "topic", "label", true );
-        DomainEntity company = domainEntity( "company", true );
-        DomainEntity project = domainEntity( "project", "title" );
+        DomainEntity user = domainEntity( "user", indexableProperty( "name" ) );
+        DomainEntity topic = domainEntity( "topic", indexableProperty( "label" ) );
+        DomainEntity company = domainEntity( "company", indexableProperty( "name" ) );
+        DomainEntity project = domainEntity( "project", property("title") );
 
         Dataset dataset = datasetManager.newDataset( "Create social network example" );
 

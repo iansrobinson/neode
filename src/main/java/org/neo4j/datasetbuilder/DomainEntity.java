@@ -7,46 +7,28 @@ public class DomainEntity
 {
     public static DomainEntity domainEntity( String name )
     {
-        return new DomainEntity( name, "name", false );
+        return new DomainEntity( name, Property.property( "name" ) );
     }
 
-    public static DomainEntity domainEntity( String name, String propertyName )
+    public static DomainEntity domainEntity( String name, Property property )
     {
-        return new DomainEntity( name, propertyName, false );
+        return new DomainEntity( name, property );
     }
-
-    public static DomainEntity domainEntity( String name, boolean isIndexable )
-    {
-        return new DomainEntity( name, "name", isIndexable );
-    }
-
-    public static DomainEntity domainEntity( String name, String propertyName, boolean isIndexable )
-    {
-        return new DomainEntity( name, propertyName, isIndexable );
-    }
-
 
     private final String entityName;
-    private final String propertyName;
-    private boolean isIndexable;
+    private final Property property;
 
-    private DomainEntity( String entityName, String propertyName, boolean isIndexable )
+    private DomainEntity( String entityName, Property property )
     {
         this.entityName = entityName;
-        this.propertyName = propertyName;
-        this.isIndexable = isIndexable;
+        this.property = property;
     }
 
     public Long build( GraphDatabaseService db, int index )
     {
         Node node = db.createNode();
-        String value = String.format( "%s-%s", entityName, index + 1 );
         node.setProperty( "_label", entityName );
-        node.setProperty( propertyName, value );
-        if ( isIndexable )
-        {
-            db.index().forNodes( entityName ).add( node, propertyName, value );
-        }
+        property.setProperty( db, node, entityName, index );
         return node.getId();
     }
 
