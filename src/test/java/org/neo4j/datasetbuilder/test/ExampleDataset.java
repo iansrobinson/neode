@@ -16,10 +16,10 @@ import static org.neo4j.datasetbuilder.numbergenerators.NormalDistributionUnique
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 
 import org.junit.Test;
-import org.neo4j.datasetbuilder.BatchCommandExecutor;
+import org.neo4j.datasetbuilder.DatasetManager;
 import org.neo4j.datasetbuilder.DomainEntity;
 import org.neo4j.datasetbuilder.DomainEntityInfo;
-import org.neo4j.datasetbuilder.Run;
+import org.neo4j.datasetbuilder.Dataset;
 import org.neo4j.datasetbuilder.logging.SysOutLog;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -35,7 +35,7 @@ public class ExampleDataset
     public void buildSocialNetwork() throws Exception
     {
         GraphDatabaseService db = Db.tempDb();
-        BatchCommandExecutor executor = new BatchCommandExecutor( db, SysOutLog.INSTANCE );
+        DatasetManager datasetManager = new DatasetManager( db, SysOutLog.INSTANCE );
 
         TraversalDescription findCompanyProjects = Traversal.description()
                 .depthFirst()
@@ -63,37 +63,37 @@ public class ExampleDataset
         DomainEntity company = domainEntity( "company", true );
         DomainEntity project = domainEntity( "project", "title" );
 
-        Run run = executor.newRun( "Create social network example" );
+        Dataset dataset = datasetManager.newDataset( "Create social network example" );
 
         DomainEntityInfo users = createEntities( user )
                 .quantity( 10 )
-                .execute( run );
+                .addTo( dataset );
 
         relateEntities( users )
                 .to( getOrCreate( topic, 10, normalDistribution() ) )
                 .relationship( withName( "INTERESTED_IN" ) )
                 .cardinality( minMax( 1, 3 ) )
-                .execute( run );
+                .addTo( dataset );
 
         relateEntities( users )
                 .to( getOrCreate( company, 2, flatDistribution() ) )
                 .relationship( withName( "WORKS_FOR" ) )
                 .cardinality( exactly( 1 ) )
-                .execute( run );
+                .addTo( dataset );
 
         DomainEntityInfo allProjects = relateEntities( users )
                 .to( traversalBasedGetOrCreate( project, findCompanyProjects ) )
                 .relationship( withName( "WORKED_ON" ) )
                 .cardinality( minMax( 1, 3 ) )
-                .execute( run );
+                .addTo( dataset );
 
         relateEntities( approxPercent( 30, users ) )
                 .to( getExisting( allProjects ) )
                 .relationship( withName( "WORKS_FOR" ) )
                 .cardinality( minMax( 1, 2 ), unique() )
-                .execute( run );
+                .addTo( dataset );
 
-        run.end();
+        dataset.end();
 
         db.shutdown();
     }

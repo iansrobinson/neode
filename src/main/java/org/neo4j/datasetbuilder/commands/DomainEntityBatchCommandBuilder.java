@@ -7,12 +7,12 @@ import java.util.Random;
 import org.neo4j.datasetbuilder.BatchCommand;
 import org.neo4j.datasetbuilder.DomainEntity;
 import org.neo4j.datasetbuilder.DomainEntityInfo;
-import org.neo4j.datasetbuilder.Run;
-import org.neo4j.datasetbuilder.commands.interfaces.Execute;
+import org.neo4j.datasetbuilder.Dataset;
+import org.neo4j.datasetbuilder.commands.interfaces.AddTo;
 import org.neo4j.datasetbuilder.logging.Log;
 import org.neo4j.graphdb.GraphDatabaseService;
 
-public class DomainEntityBatchCommandBuilder implements Execute
+public class DomainEntityBatchCommandBuilder implements AddTo
 {
     private static final int DEFAULT_BATCH_SIZE = 10000;
 
@@ -35,16 +35,16 @@ public class DomainEntityBatchCommandBuilder implements Execute
         return this;
     }
 
-    public DomainEntityInfo execute( Run run, int batchSize )
+    public DomainEntityInfo addTo( Dataset dataset, int batchSize )
     {
         DomainEntityBatchCommand command =
                 new DomainEntityBatchCommand( domainEntity, numberOfIterations, batchSize );
-        return run.execute( command );
+        return dataset.execute( command );
     }
 
-    public DomainEntityInfo execute( Run run )
+    public DomainEntityInfo addTo( Dataset dataset )
     {
-        return execute( run, DEFAULT_BATCH_SIZE );
+        return addTo( dataset, DEFAULT_BATCH_SIZE );
     }
 
     private static class DomainEntityBatchCommand implements BatchCommand

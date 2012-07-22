@@ -11,10 +11,10 @@ import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 import java.util.Random;
 
 import org.junit.Test;
-import org.neo4j.datasetbuilder.BatchCommandExecutor;
+import org.neo4j.datasetbuilder.DatasetManager;
 import org.neo4j.datasetbuilder.DomainEntity;
 import org.neo4j.datasetbuilder.DomainEntityInfo;
-import org.neo4j.datasetbuilder.Run;
+import org.neo4j.datasetbuilder.Dataset;
 import org.neo4j.datasetbuilder.finders.NodeFinderStrategy;
 import org.neo4j.datasetbuilder.logging.SysOutLog;
 import org.neo4j.datasetbuilder.test.Db;
@@ -30,11 +30,11 @@ public class RelateNodesBatchCommandBuilderTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        BatchCommandExecutor executor = new BatchCommandExecutor( db, SysOutLog.INSTANCE );
-        Run run = executor.newRun( "Test" );
-        DomainEntityInfo users = createEntities( domainEntity( "user" ) ).quantity( 3 ).execute( run );
+        DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
+        Dataset dataset = executor.newDataset( "Test" );
+        DomainEntityInfo users = createEntities( domainEntity( "user" ) ).quantity( 3 ).addTo( dataset );
         DomainEntity product = domainEntity( "product" );
-        final DomainEntityInfo products = createEntities( product ).quantity( 3 ).execute( run );
+        final DomainEntityInfo products = createEntities( product ).quantity( 3 ).addTo( dataset );
         NodeFinderStrategy finderStrategy = new NodeFinderStrategy()
         {
             int index = 0;
@@ -54,7 +54,7 @@ public class RelateNodesBatchCommandBuilderTest
 
         // when
         relateEntities( users ).to( finderStrategy ).relationship( withName("BOUGHT") )
-                .cardinality( Range.exactly( 1 ) ).execute( run );
+                .cardinality( Range.exactly( 1 ) ).addTo( dataset );
 
         // then
         DynamicRelationshipType bought = withName( "BOUGHT" );

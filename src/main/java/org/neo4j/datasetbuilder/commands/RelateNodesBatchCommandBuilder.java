@@ -10,10 +10,10 @@ import java.util.Set;
 
 import org.neo4j.datasetbuilder.BatchCommand;
 import org.neo4j.datasetbuilder.DomainEntityInfo;
-import org.neo4j.datasetbuilder.Run;
+import org.neo4j.datasetbuilder.Dataset;
+import org.neo4j.datasetbuilder.commands.interfaces.AddTo;
 import org.neo4j.datasetbuilder.commands.interfaces.Cardinality;
 import org.neo4j.datasetbuilder.logging.Log;
-import org.neo4j.datasetbuilder.commands.interfaces.Execute;
 import org.neo4j.datasetbuilder.commands.interfaces.RelationshipName;
 import org.neo4j.datasetbuilder.commands.interfaces.To;
 import org.neo4j.datasetbuilder.finders.NodeFinderStrategy;
@@ -23,7 +23,7 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.RelationshipType;
 
-public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Cardinality, Execute
+public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Cardinality, AddTo
 {
 
     public static To relateEntities( DomainEntityInfo domainEntityInfo )
@@ -53,7 +53,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
     }
 
     @Override
-    public Execute cardinality( Range value )
+    public AddTo cardinality( Range value )
     {
         cardinality = value;
         uniquenessStrategy = allowMultiple();
@@ -61,7 +61,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
     }
 
     @Override
-        public Execute cardinality( Range value, UniquenessStrategy uniqueness )
+        public AddTo cardinality( Range value, UniquenessStrategy uniqueness )
         {
             cardinality = value;
             uniquenessStrategy = uniqueness;
@@ -85,17 +85,17 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
     }
 
     @Override
-    public DomainEntityInfo execute( Run run, int batchSize )
+    public DomainEntityInfo addTo( Dataset dataset, int batchSize )
     {
         RelateNodesBatchCommand command = new RelateNodesBatchCommand( domainEntityInfo, batchSize,
                 relationshipType, direction, cardinality, uniquenessStrategy, nodeFinderStrategy );
-        return run.execute( command );
+        return dataset.execute( command );
     }
 
     @Override
-    public DomainEntityInfo execute( Run run )
+    public DomainEntityInfo addTo( Dataset dataset )
     {
-        return execute( run, DEFAULT_BATCH_SIZE );
+        return addTo( dataset, DEFAULT_BATCH_SIZE );
     }
 
 

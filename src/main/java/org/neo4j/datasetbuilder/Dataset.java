@@ -6,7 +6,7 @@ import org.neo4j.datasetbuilder.logging.Log;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
 
-public class Run
+public class Dataset
 {
     private final String description;
     private final GraphDatabaseService db;
@@ -14,7 +14,7 @@ public class Run
     private final Random random;
     private final long runStartTime;
 
-    public Run( String description, GraphDatabaseService db, Log log, Random random )
+    public Dataset( String description, GraphDatabaseService db, Log log, Random random )
     {
         this.description = description;
         this.db = db;

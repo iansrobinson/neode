@@ -5,6 +5,6 @@ import org.neo4j.datasetbuilder.commands.UniquenessStrategy;
 
 public interface Cardinality
 {
-    Execute cardinality( Range value );
-    Execute cardinality( Range value, UniquenessStrategy uniqueness );
+    AddTo cardinality( Range value );
+    AddTo cardinality( Range value, UniquenessStrategy uniqueness );
 }

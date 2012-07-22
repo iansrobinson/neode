@@ -12,7 +12,7 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.event.TransactionData;
 import org.neo4j.graphdb.event.TransactionEventHandler;
 
-public class BatchCommandExecutorTest
+public class DatasetTest
 {
     @Test
     public void shouldExecuteBatchesInSeparateTransactions() throws Exception
@@ -23,12 +23,12 @@ public class BatchCommandExecutorTest
         GraphDatabaseService db = Db.impermanentDb();
         db.registerTransactionEventHandler( transactionCounter );
 
-        BatchCommandExecutor executor = new BatchCommandExecutor( db, SysOutLog.INSTANCE );
-        Run run = executor.newRun( "Test" );
+        DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
+        Dataset dataset = executor.newDataset( "Test" );
         DummyBatchCommand command = new DummyBatchCommand( 10, 2 );
 
         // when
-        run.execute( command );
+        dataset.execute( command );
 
         // then
         assertEquals( 5, transactionCounter.beforeCommitCount() );
@@ -45,12 +45,12 @@ public class BatchCommandExecutorTest
         GraphDatabaseService db = Db.impermanentDb();
         db.registerTransactionEventHandler( transactionCounter );
 
-        BatchCommandExecutor executor = new BatchCommandExecutor( db, SysOutLog.INSTANCE );
-        Run run = executor.newRun( "Test" );
+        DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
+        Dataset dataset = executor.newDataset( "Test" );
         DummyBatchCommand command = new DummyBatchCommand( 10, 3 );
 
         // when
-        run.execute( command );
+        dataset.execute( command );
 
         // then
         assertEquals( 4, transactionCounter.beforeCommitCount() );
@@ -67,12 +67,12 @@ public class BatchCommandExecutorTest
         GraphDatabaseService db = Db.impermanentDb();
         db.registerTransactionEventHandler( transactionCounter );
 
-        BatchCommandExecutor executor = new BatchCommandExecutor( db, SysOutLog.INSTANCE );
-        Run run = executor.newRun( "Test" );
+        DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
+        Dataset dataset = executor.newDataset( "Test" );
         DummyBatchCommand command = new DummyBatchCommand( 3, 5 );
 
         // when
-        run.execute( command );
+        dataset.execute( command );
 
         // then
         assertEquals( 1, transactionCounter.beforeCommitCount() );

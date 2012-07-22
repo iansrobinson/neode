@@ -5,21 +5,21 @@ import java.util.Random;
 import org.neo4j.datasetbuilder.logging.Log;
 import org.neo4j.graphdb.GraphDatabaseService;
 
-public class BatchCommandExecutor
+public class DatasetManager
 {
     private final GraphDatabaseService db;
     private final Log log;
     private final Random random;
 
-    public BatchCommandExecutor( GraphDatabaseService db, Log log )
+    public DatasetManager( GraphDatabaseService db, Log log )
     {
         this.db = db;
         this.log = log;
         random = new Random();
     }
 
-    public Run newRun( String description )
+    public Dataset newDataset( String description )
     {
-        return new Run( description, db, log, random );
+        return new Dataset( description, db, log, random );
     }
 }
