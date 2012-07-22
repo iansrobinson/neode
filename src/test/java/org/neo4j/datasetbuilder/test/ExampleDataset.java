@@ -19,6 +19,7 @@ import org.junit.Test;
 import org.neo4j.datasetbuilder.BatchCommandExecutor;
 import org.neo4j.datasetbuilder.DomainEntity;
 import org.neo4j.datasetbuilder.DomainEntityInfo;
+import org.neo4j.datasetbuilder.Run;
 import org.neo4j.datasetbuilder.logging.SysOutLog;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -62,33 +63,37 @@ public class ExampleDataset
         DomainEntity company = domainEntity( "company", true );
         DomainEntity project = domainEntity( "project", "title" );
 
+        Run run = executor.newRun( "Create social network example" );
+
         DomainEntityInfo users = createEntities( user )
                 .quantity( 10 )
-                .execute( executor );
+                .execute( run );
 
         relateEntities( users )
                 .to( getOrCreate( topic, 10, normalDistribution() ) )
                 .relationship( withName( "INTERESTED_IN" ) )
                 .cardinality( minMax( 1, 3 ) )
-                .execute( executor );
+                .execute( run );
 
         relateEntities( users )
                 .to( getOrCreate( company, 2, flatDistribution() ) )
                 .relationship( withName( "WORKS_FOR" ) )
                 .cardinality( exactly( 1 ) )
-                .execute( executor );
+                .execute( run );
 
         DomainEntityInfo allProjects = relateEntities( users )
                 .to( traversalBasedGetOrCreate( project, findCompanyProjects ) )
                 .relationship( withName( "WORKED_ON" ) )
                 .cardinality( minMax( 1, 3 ) )
-                .execute( executor );
+                .execute( run );
 
         relateEntities( approxPercent( 30, users ) )
                 .to( getExisting( allProjects ) )
                 .relationship( withName( "WORKS_FOR" ) )
                 .cardinality( minMax( 1, 2 ), unique() )
-                .execute( executor );
+                .execute( run );
+
+        run.end();
 
         db.shutdown();
     }

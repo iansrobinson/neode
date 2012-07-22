@@ -9,8 +9,8 @@ import java.util.Random;
 import java.util.Set;
 
 import org.neo4j.datasetbuilder.BatchCommand;
-import org.neo4j.datasetbuilder.BatchCommandExecutor;
 import org.neo4j.datasetbuilder.DomainEntityInfo;
+import org.neo4j.datasetbuilder.Run;
 import org.neo4j.datasetbuilder.commands.interfaces.Cardinality;
 import org.neo4j.datasetbuilder.logging.Log;
 import org.neo4j.datasetbuilder.commands.interfaces.Execute;
@@ -85,17 +85,17 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
     }
 
     @Override
-    public DomainEntityInfo execute( BatchCommandExecutor executor, int batchSize )
+    public DomainEntityInfo execute( Run run, int batchSize )
     {
         RelateNodesBatchCommand command = new RelateNodesBatchCommand( domainEntityInfo, batchSize,
                 relationshipType, direction, cardinality, uniquenessStrategy, nodeFinderStrategy );
-        return executor.execute( command );
+        return run.execute( command );
     }
 
     @Override
-    public DomainEntityInfo execute( BatchCommandExecutor executor )
+    public DomainEntityInfo execute( Run run )
     {
-        return execute( executor, DEFAULT_BATCH_SIZE );
+        return execute( run, DEFAULT_BATCH_SIZE );
     }
 
 
@@ -158,15 +158,21 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
         @Override
         public String description()
         {
+            return String.format( "Creating '%s' relationships.", shortDescription() );
+        }
+
+        @Override
+        public String shortDescription()
+        {
             String relStart = "-";
-            String relEnd = "->";
-            if (direction.equals( Direction.INCOMING ))
-            {
-                relStart = "<-";
-                relEnd = "-";
-            }
-            return String.format( "Creating '(%s)%s[:%s]%s(%s)' relationships.", startNodeDomainEntityInfo.entityName(),
-                    relStart, relationshipType.name(), relEnd, nodeFinderStrategy.entityName() );
+                        String relEnd = "->";
+                        if (direction.equals( Direction.INCOMING ))
+                        {
+                            relStart = "<-";
+                            relEnd = "-";
+                        }
+            return String.format( "(%s)%s[:%s]%s(%s)", startNodeDomainEntityInfo.entityName(),relStart,
+                    relationshipType.name(), relEnd, nodeFinderStrategy.entityName() );
         }
 
         @Override

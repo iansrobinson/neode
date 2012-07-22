@@ -15,6 +15,7 @@ public interface BatchCommand
     int batchSize();
     void execute( GraphDatabaseService db, int index, Random random );
     String description();
+    String shortDescription();
     void onBegin(Log log);
     void onEnd(Log log);
     DomainEntityInfo results();

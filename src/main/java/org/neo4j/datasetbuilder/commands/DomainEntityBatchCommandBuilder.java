@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Random;
 
 import org.neo4j.datasetbuilder.BatchCommand;
-import org.neo4j.datasetbuilder.BatchCommandExecutor;
 import org.neo4j.datasetbuilder.DomainEntity;
 import org.neo4j.datasetbuilder.DomainEntityInfo;
+import org.neo4j.datasetbuilder.Run;
 import org.neo4j.datasetbuilder.commands.interfaces.Execute;
 import org.neo4j.datasetbuilder.logging.Log;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -35,16 +35,16 @@ public class DomainEntityBatchCommandBuilder implements Execute
         return this;
     }
 
-    public DomainEntityInfo execute( BatchCommandExecutor executor, int batchSize )
+    public DomainEntityInfo execute( Run run, int batchSize )
     {
         DomainEntityBatchCommand command =
                 new DomainEntityBatchCommand( domainEntity, numberOfIterations, batchSize );
-        return executor.execute( command );
+        return run.execute( command );
     }
 
-    public DomainEntityInfo execute( BatchCommandExecutor executor )
+    public DomainEntityInfo execute( Run run )
     {
-        return execute( executor, DEFAULT_BATCH_SIZE );
+        return execute( run, DEFAULT_BATCH_SIZE );
     }
 
     private static class DomainEntityBatchCommand implements BatchCommand
@@ -84,7 +84,13 @@ public class DomainEntityBatchCommandBuilder implements Execute
         @Override
         public String description()
         {
-            return "Creating '" + domainEntity.entityName() + "' nodes.";
+            return "Creating '" + shortDescription() + "' nodes.";
+        }
+
+        @Override
+        public String shortDescription()
+        {
+            return domainEntity.entityName();
         }
 
         @Override

@@ -3,8 +3,8 @@ package org.neo4j.datasetbuilder.commands;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.neo4j.datasetbuilder.commands.DomainEntityBatchCommandBuilder.createEntities;
 import static org.neo4j.datasetbuilder.DomainEntity.domainEntity;
+import static org.neo4j.datasetbuilder.commands.DomainEntityBatchCommandBuilder.createEntities;
 import static org.neo4j.datasetbuilder.commands.RelateNodesBatchCommandBuilder.relateEntities;
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 
@@ -14,8 +14,9 @@ import org.junit.Test;
 import org.neo4j.datasetbuilder.BatchCommandExecutor;
 import org.neo4j.datasetbuilder.DomainEntity;
 import org.neo4j.datasetbuilder.DomainEntityInfo;
-import org.neo4j.datasetbuilder.logging.SysOutLog;
+import org.neo4j.datasetbuilder.Run;
 import org.neo4j.datasetbuilder.finders.NodeFinderStrategy;
+import org.neo4j.datasetbuilder.logging.SysOutLog;
 import org.neo4j.datasetbuilder.test.Db;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.DynamicRelationshipType;
@@ -30,9 +31,10 @@ public class RelateNodesBatchCommandBuilderTest
         // given
         GraphDatabaseService db = Db.impermanentDb();
         BatchCommandExecutor executor = new BatchCommandExecutor( db, SysOutLog.INSTANCE );
-        DomainEntityInfo users = createEntities( domainEntity( "user" ) ).quantity( 3 ).execute( executor );
+        Run run = executor.newRun( "Test" );
+        DomainEntityInfo users = createEntities( domainEntity( "user" ) ).quantity( 3 ).execute( run );
         DomainEntity product = domainEntity( "product" );
-        final DomainEntityInfo products = createEntities( product ).quantity( 3 ).execute( executor );
+        final DomainEntityInfo products = createEntities( product ).quantity( 3 ).execute( run );
         NodeFinderStrategy finderStrategy = new NodeFinderStrategy()
         {
             int index = 0;
@@ -52,7 +54,7 @@ public class RelateNodesBatchCommandBuilderTest
 
         // when
         relateEntities( users ).to( finderStrategy ).relationship( withName("BOUGHT") )
-                .cardinality( Range.exactly( 1 ) ).execute( executor );
+                .cardinality( Range.exactly( 1 ) ).execute( run );
 
         // then
         DynamicRelationshipType bought = withName( "BOUGHT" );

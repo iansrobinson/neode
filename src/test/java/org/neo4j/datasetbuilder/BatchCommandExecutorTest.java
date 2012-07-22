@@ -24,10 +24,11 @@ public class BatchCommandExecutorTest
         db.registerTransactionEventHandler( transactionCounter );
 
         BatchCommandExecutor executor = new BatchCommandExecutor( db, SysOutLog.INSTANCE );
+        Run run = executor.newRun( "Test" );
         DummyBatchCommand command = new DummyBatchCommand( 10, 2 );
 
         // when
-        executor.execute( command );
+        run.execute( command );
 
         // then
         assertEquals( 5, transactionCounter.beforeCommitCount() );
@@ -45,10 +46,11 @@ public class BatchCommandExecutorTest
         db.registerTransactionEventHandler( transactionCounter );
 
         BatchCommandExecutor executor = new BatchCommandExecutor( db, SysOutLog.INSTANCE );
+        Run run = executor.newRun( "Test" );
         DummyBatchCommand command = new DummyBatchCommand( 10, 3 );
 
         // when
-        executor.execute( command );
+        run.execute( command );
 
         // then
         assertEquals( 4, transactionCounter.beforeCommitCount() );
@@ -66,10 +68,11 @@ public class BatchCommandExecutorTest
         db.registerTransactionEventHandler( transactionCounter );
 
         BatchCommandExecutor executor = new BatchCommandExecutor( db, SysOutLog.INSTANCE );
+        Run run = executor.newRun( "Test" );
         DummyBatchCommand command = new DummyBatchCommand( 3, 5 );
 
         // when
-        executor.execute( command );
+        run.execute( command );
 
         // then
         assertEquals( 1, transactionCounter.beforeCommitCount() );
@@ -147,6 +150,12 @@ public class BatchCommandExecutorTest
         public String description()
         {
             return "Dummy batch command";
+        }
+
+        @Override
+        public String shortDescription()
+        {
+            return "";
         }
 
         @Override

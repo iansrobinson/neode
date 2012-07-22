@@ -1,11 +1,11 @@
 package org.neo4j.datasetbuilder.commands.interfaces;
 
-import org.neo4j.datasetbuilder.BatchCommandExecutor;
 import org.neo4j.datasetbuilder.DomainEntityInfo;
+import org.neo4j.datasetbuilder.Run;
 
 public interface Execute
 {
-    DomainEntityInfo execute( BatchCommandExecutor executor, int batchSize );
+    DomainEntityInfo execute( Run run, int batchSize );
 
-    DomainEntityInfo execute( BatchCommandExecutor executor );
+    DomainEntityInfo execute( Run run );
 }
