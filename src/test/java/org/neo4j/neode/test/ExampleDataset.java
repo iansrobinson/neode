@@ -99,7 +99,7 @@ public class ExampleDataset
 
         relateEntities( approxPercent( 30, users ) )
                 .to( getExisting( allProjects ) )
-                .relationship( withName( "WORKS_FOR" ) )
+                .relationship( withName( "WORKED_ON" ) )
                 .cardinality( minMax( 1, 2 ), unique() )
                 .addTo( dataset );
 
