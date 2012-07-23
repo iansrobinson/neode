@@ -1,5 +1,6 @@
 package org.neo4j.neode.test;
 
+import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 import static org.neo4j.neode.DomainEntityBuilder.domainEntity;
 import static org.neo4j.neode.DomainEntityInfo.approxPercent;
 import static org.neo4j.neode.commands.DomainEntityBatchCommandBuilder.createEntities;
@@ -15,14 +16,8 @@ import static org.neo4j.neode.numbergenerators.FlatDistributionUniqueRandomNumbe
 import static org.neo4j.neode.numbergenerators.NormalDistributionUniqueRandomNumberGenerator.normalDistribution;
 import static org.neo4j.neode.properties.Property.indexableProperty;
 import static org.neo4j.neode.properties.Property.property;
-import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 
 import org.junit.Test;
-import org.neo4j.neode.Dataset;
-import org.neo4j.neode.DatasetManager;
-import org.neo4j.neode.DomainEntity;
-import org.neo4j.neode.DomainEntityInfo;
-import org.neo4j.neode.logging.SysOutLog;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Path;
@@ -30,6 +25,11 @@ import org.neo4j.graphdb.traversal.Evaluation;
 import org.neo4j.graphdb.traversal.Evaluator;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.kernel.Traversal;
+import org.neo4j.neode.Dataset;
+import org.neo4j.neode.DatasetManager;
+import org.neo4j.neode.DomainEntity;
+import org.neo4j.neode.DomainEntityInfo;
+import org.neo4j.neode.logging.SysOutLog;
 
 public class ExampleDataset
 {
@@ -67,7 +67,7 @@ public class ExampleDataset
                 .withProperties( indexableProperty( "label" ) )
                 .build();
         DomainEntity company = domainEntity( "company" )
-                .withProperties( indexableProperty( "name" ) )
+                .withProperties( property( "name" ) )
                 .build();
         DomainEntity project = domainEntity( "project" )
                 .withProperties( property( "title" ) )
@@ -79,7 +79,7 @@ public class ExampleDataset
                 .quantity( 10 )
                 .addTo( dataset );
 
-        relateEntities( users )
+        DomainEntityInfo topics = relateEntities( users )
                 .to( getOrCreate( topic, 10, normalDistribution() ) )
                 .relationship( withName( "INTERESTED_IN" ) )
                 .cardinality( minMax( 1, 3 ) )
@@ -106,5 +106,7 @@ public class ExampleDataset
         dataset.end();
 
         db.shutdown();
+
+        System.out.println("Number of topics: " + topics.nodeIds().size());
     }
 }

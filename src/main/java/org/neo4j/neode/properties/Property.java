@@ -1,6 +1,6 @@
 package org.neo4j.neode.properties;
 
-import static org.neo4j.neode.properties.IndexBasedStringPropertySetter.indexBasedPropertyValue;
+import static org.neo4j.neode.properties.CounterBasedStringPropertySetter.counterBasedPropertyValue;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -10,12 +10,12 @@ public class Property
 {
     public static Property property( String name )
     {
-        return new Property( name, indexBasedPropertyValue(), false );
+        return new Property( name, counterBasedPropertyValue(), false );
     }
 
     public static Property indexableProperty( String name )
     {
-        return new Property( name, indexBasedPropertyValue(), true );
+        return new Property( name, counterBasedPropertyValue(), true );
     }
 
     public static Property property( String name, PropertySetterStrategy propertySetterStrategy )
