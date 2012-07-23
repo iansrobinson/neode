@@ -7,9 +7,10 @@ import static org.neo4j.datasetbuilder.commands.Range.exactly;
 import static org.neo4j.datasetbuilder.commands.Range.minMax;
 import static org.neo4j.datasetbuilder.commands.RelateNodesBatchCommandBuilder.relateEntities;
 import static org.neo4j.datasetbuilder.commands.Unique.unique;
-import static org.neo4j.datasetbuilder.finders.ContextualTraversalBasedGetOrCreate.traversalBasedGetOrCreate;
+import static org.neo4j.datasetbuilder.finders.ContextualGetOrCreate.contextualGetOrCreate;
 import static org.neo4j.datasetbuilder.finders.ExistingUniqueNodeFinderStrategy.getExisting;
 import static org.neo4j.datasetbuilder.finders.GetOrCreateUniqueNodeFinderStrategy.getOrCreate;
+import static org.neo4j.datasetbuilder.finders.TraversalBasedQuery.traversal;
 import static org.neo4j.datasetbuilder.numbergenerators.FlatDistributionUniqueRandomNumberGenerator.flatDistribution;
 import static org.neo4j.datasetbuilder.numbergenerators.NormalDistributionUniqueRandomNumberGenerator
         .normalDistribution;
@@ -92,7 +93,7 @@ public class ExampleDataset
                 .addTo( dataset );
 
         DomainEntityInfo allProjects = relateEntities( users )
-                .to( traversalBasedGetOrCreate( project, findCompanyProjects ) )
+                .to( contextualGetOrCreate( project, traversal( findCompanyProjects ) ) )
                 .relationship( withName( "WORKED_ON" ) )
                 .cardinality( minMax( 1, 3 ) )
                 .addTo( dataset );

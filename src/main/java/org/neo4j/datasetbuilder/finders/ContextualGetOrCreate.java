@@ -11,24 +11,22 @@ import org.neo4j.datasetbuilder.DomainEntity;
 import org.neo4j.datasetbuilder.numbergenerators.NumberGenerator;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.traversal.TraversalDescription;
-import org.neo4j.graphdb.traversal.Traverser;
 
-public class ContextualTraversalBasedGetOrCreate implements NodeFinderStrategy
+public class ContextualGetOrCreate implements NodeFinderStrategy
 {
-    public static NodeFinderStrategy traversalBasedGetOrCreate( DomainEntity domainEntity, TraversalDescription
-            traversal )
+    public static NodeFinderStrategy contextualGetOrCreate( DomainEntity domainEntity,
+                                                            Query query )
     {
-        return new ContextualTraversalBasedGetOrCreate( domainEntity, traversal );
+        return new ContextualGetOrCreate( domainEntity, query );
     }
 
     private final DomainEntity domainEntity;
-    private final TraversalDescription traversal;
+    private final Query query;
 
-    private ContextualTraversalBasedGetOrCreate( DomainEntity domainEntity, TraversalDescription traversal )
+    private ContextualGetOrCreate( DomainEntity domainEntity, Query query )
     {
         this.domainEntity = domainEntity;
-        this.traversal = traversal;
+        this.query = query;
     }
 
     @Override
@@ -43,10 +41,9 @@ public class ContextualTraversalBasedGetOrCreate implements NodeFinderStrategy
         NumberGenerator numberGenerator = flatDistribution();
 
         List<Integer> contextIndexes = numberGenerator.generate( numberOfNodes, 0, numberOfNodes - 1, random );
-        Traverser traverse = traversal.traverse( currentNode );
 
         Iterator<Integer> contextIndexesIterator = contextIndexes.iterator();
-        Iterator<Node> existingNodesIterator = traverse.nodes().iterator();
+        Iterator<Node> existingNodesIterator = query.execute( currentNode ).iterator();
 
         while ( existingNodesIterator.hasNext() && contextIndexesIterator.hasNext() )
         {
