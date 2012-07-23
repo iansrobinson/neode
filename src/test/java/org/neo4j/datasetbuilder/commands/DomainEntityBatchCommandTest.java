@@ -3,9 +3,9 @@ package org.neo4j.datasetbuilder.commands;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.neo4j.datasetbuilder.DomainEntity.domainEntity;
-import static org.neo4j.datasetbuilder.Property.indexableProperty;
+import static org.neo4j.datasetbuilder.DomainEntityBuilder.domainEntity;
 import static org.neo4j.datasetbuilder.commands.DomainEntityBatchCommandBuilder.createEntities;
+import static org.neo4j.datasetbuilder.properties.Property.indexableProperty;
 
 import org.junit.Test;
 import org.neo4j.datasetbuilder.Dataset;
@@ -25,7 +25,7 @@ public class DomainEntityBatchCommandTest
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = executor.newDataset( "Test" );
-        DomainEntity user = domainEntity( "user", indexableProperty( "name" ) );
+        DomainEntity user = domainEntity( "user" ).withProperties( indexableProperty( "name" ) ).build();
 
         // when
         createEntities( user ).quantity( 1 ).addTo( dataset );
@@ -41,7 +41,7 @@ public class DomainEntityBatchCommandTest
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = executor.newDataset( "Test" );
-        DomainEntity user = domainEntity( "user", indexableProperty("name") );
+        DomainEntity user = domainEntity( "user" ).withProperties( indexableProperty( "name" ) ).build();
 
         // when
         createEntities( user ).quantity( 1 ).addTo( dataset );
@@ -57,7 +57,7 @@ public class DomainEntityBatchCommandTest
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = executor.newDataset( "Test" );
-        DomainEntity user = domainEntity( "user", indexableProperty("key") );
+        DomainEntity user = domainEntity( "user" ).withProperties( indexableProperty( "key" ) ).build();
 
         // when
         DomainEntityInfo results = createEntities( user ).quantity( 5 ).addTo( dataset );

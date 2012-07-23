@@ -2,11 +2,11 @@
  * Copyright (C) 2012 Neo Technology
  * All rights reserved
  */
-package org.neo4j.datasetbuilder;
+package org.neo4j.datasetbuilder.properties;
 
 import org.neo4j.graphdb.Node;
 
 public interface PropertySetterStrategy
 {
-    void setProperty(Node node, String propertyName, String entityName, int index);
+    Object setProperty( Node node, String propertyName, String entityName, int index );
 }

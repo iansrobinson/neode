@@ -1,9 +1,10 @@
-package org.neo4j.datasetbuilder;
+package org.neo4j.datasetbuilder.properties;
 
-import static org.neo4j.datasetbuilder.IndexBasedStringPropertySetter.indexBasedPropertyValue;
+import static org.neo4j.datasetbuilder.properties.IndexBasedStringPropertySetter.indexBasedPropertyValue;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.index.Index;
 
 public class Property
 {
@@ -30,6 +31,7 @@ public class Property
     private final String propertyName;
     private final PropertySetterStrategy propertySetterStrategy;
     private final boolean isIndexable;
+    private Index<Node> nodeIndex;
 
     private Property( String propertyName, PropertySetterStrategy propertySetterStrategy, boolean isIndexable )
     {
@@ -40,10 +42,14 @@ public class Property
 
     public void setProperty( GraphDatabaseService db, Node node, String entityName, int index )
     {
-        propertySetterStrategy.setProperty( node, propertyName, entityName, index );
+        Object value = propertySetterStrategy.setProperty( node, propertyName, entityName, index );
         if ( isIndexable )
         {
-            db.index().forNodes( entityName ).add( node, propertyName, node.getProperty( propertyName ) );
+            if ( nodeIndex == null )
+            {
+                nodeIndex = db.index().forNodes( entityName );
+            }
+            nodeIndex.add( node, propertyName, value );
         }
     }
 }

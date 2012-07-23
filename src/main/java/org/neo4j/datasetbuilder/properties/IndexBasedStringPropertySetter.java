@@ -1,4 +1,4 @@
-package org.neo4j.datasetbuilder;
+package org.neo4j.datasetbuilder.properties;
 
 import org.neo4j.graphdb.Node;
 
@@ -14,9 +14,10 @@ public class IndexBasedStringPropertySetter implements PropertySetterStrategy
     }
 
     @Override
-    public void setProperty( Node node, String propertyName, String entityName, int index )
+    public Object setProperty( Node node, String propertyName, String entityName, int index )
     {
         String value = String.format( "%s-%s", entityName, index + 1 );
         node.setProperty( propertyName, value );
+        return value;
     }
 }

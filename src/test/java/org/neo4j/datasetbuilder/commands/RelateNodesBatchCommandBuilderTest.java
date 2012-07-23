@@ -3,7 +3,7 @@ package org.neo4j.datasetbuilder.commands;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.neo4j.datasetbuilder.DomainEntity.domainEntity;
+import static org.neo4j.datasetbuilder.DomainEntityBuilder.domainEntity;
 import static org.neo4j.datasetbuilder.commands.DomainEntityBatchCommandBuilder.createEntities;
 import static org.neo4j.datasetbuilder.commands.RelateNodesBatchCommandBuilder.relateEntities;
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
@@ -11,10 +11,10 @@ import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 import java.util.Random;
 
 import org.junit.Test;
+import org.neo4j.datasetbuilder.Dataset;
 import org.neo4j.datasetbuilder.DatasetManager;
 import org.neo4j.datasetbuilder.DomainEntity;
 import org.neo4j.datasetbuilder.DomainEntityInfo;
-import org.neo4j.datasetbuilder.Dataset;
 import org.neo4j.datasetbuilder.finders.NodeFinderStrategy;
 import org.neo4j.datasetbuilder.logging.SysOutLog;
 import org.neo4j.datasetbuilder.test.Db;
@@ -32,8 +32,8 @@ public class RelateNodesBatchCommandBuilderTest
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = executor.newDataset( "Test" );
-        DomainEntityInfo users = createEntities( domainEntity( "user" ) ).quantity( 3 ).addTo( dataset );
-        DomainEntity product = domainEntity( "product" );
+        DomainEntityInfo users = createEntities( domainEntity( "user" ).build() ).quantity( 3 ).addTo( dataset );
+        DomainEntity product = domainEntity( "product" ).build();
         final DomainEntityInfo products = createEntities( product ).quantity( 3 ).addTo( dataset );
         NodeFinderStrategy finderStrategy = new NodeFinderStrategy()
         {
