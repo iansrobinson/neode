@@ -12,8 +12,7 @@ import static org.neo4j.datasetbuilder.finders.ExistingUniqueNodeFinderStrategy.
 import static org.neo4j.datasetbuilder.finders.GetOrCreateUniqueNodeFinderStrategy.getOrCreate;
 import static org.neo4j.datasetbuilder.finders.TraversalBasedQuery.traversal;
 import static org.neo4j.datasetbuilder.numbergenerators.FlatDistributionUniqueRandomNumberGenerator.flatDistribution;
-import static org.neo4j.datasetbuilder.numbergenerators.NormalDistributionUniqueRandomNumberGenerator
-        .normalDistribution;
+import static org.neo4j.datasetbuilder.numbergenerators.NormalDistributionUniqueRandomNumberGenerator.normalDistribution;
 import static org.neo4j.datasetbuilder.properties.Property.indexableProperty;
 import static org.neo4j.datasetbuilder.properties.Property.property;
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
@@ -93,7 +92,7 @@ public class ExampleDataset
                 .addTo( dataset );
 
         DomainEntityInfo allProjects = relateEntities( users )
-                .to( contextualGetOrCreate( project, traversal( findCompanyProjects ) ) )
+                .to( contextualGetOrCreate( project, traversal( findCompanyProjects ), 1.2 ) )
                 .relationship( withName( "WORKED_ON" ) )
                 .cardinality( minMax( 1, 3 ) )
                 .addTo( dataset );
