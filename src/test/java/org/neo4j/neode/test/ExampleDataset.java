@@ -73,7 +73,7 @@ public class ExampleDataset
                 .withProperties( property( "title" ) )
                 .build();
 
-        Dataset dataset = datasetManager.newDataset( "Create social network example" );
+        Dataset dataset = datasetManager.newDataset( "Social network example" );
 
         DomainEntityInfo users = createEntities( user )
                 .quantity( 10 )

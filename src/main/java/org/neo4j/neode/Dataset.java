@@ -2,10 +2,11 @@ package org.neo4j.neode;
 
 import java.util.Random;
 
-import org.neo4j.neode.commands.BatchCommand;
-import org.neo4j.neode.logging.Log;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
+import org.neo4j.kernel.EmbeddedGraphDatabase;
+import org.neo4j.neode.commands.BatchCommand;
+import org.neo4j.neode.logging.Log;
 
 public class Dataset
 {
@@ -22,7 +23,7 @@ public class Dataset
         this.log = log;
         this.random = random;
         runStartTime = System.nanoTime();
-        log.write( String.format( "Start [%s]\n", description ) );
+        log.write( String.format( "Begin [%s]\n", description ) );
     }
 
     public DomainEntityInfo execute( BatchCommand command )
@@ -37,14 +38,15 @@ public class Dataset
             doExecute( index, command, startTime );
         }
         command.onEnd( log );
-        log.write( String.format( "End   [%s] %s\n", command.description(), elapsedTime( startTime )) );
+        log.write( String.format( "End   [%s] %s\n", command.description(), elapsedTime( startTime ) ) );
 
         return command.results();
     }
 
     public void end()
     {
-        log.write( String.format( "End   [%s] %s", description, elapsedTime( runStartTime ) ) );
+        log.write( String.format( "Store [%s]\n\nEnd   [%s] %s",
+                ((EmbeddedGraphDatabase) db).getStoreDir(), description, elapsedTime( runStartTime ) ) );
     }
 
     private void doExecute( int startIndex, BatchCommand command, long startTime )
