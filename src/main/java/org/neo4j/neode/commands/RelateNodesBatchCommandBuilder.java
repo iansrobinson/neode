@@ -30,7 +30,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
         return new RelateNodesBatchCommandBuilder( domainEntityInfo );
     }
 
-    private static final int DEFAULT_BATCH_SIZE = 1000;
+    private static final int DEFAULT_BATCH_SIZE = 50000;
 
     private DomainEntityInfo domainEntityInfo;
     private Range cardinality;

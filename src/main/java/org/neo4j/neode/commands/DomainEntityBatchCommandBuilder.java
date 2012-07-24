@@ -13,7 +13,7 @@ import org.neo4j.graphdb.GraphDatabaseService;
 
 public class DomainEntityBatchCommandBuilder implements AddTo
 {
-    private static final int DEFAULT_BATCH_SIZE = 10000;
+    private static final int DEFAULT_BATCH_SIZE = 50000;
 
     public static DomainEntityBatchCommandBuilder createEntities( DomainEntity domainEntity )
     {
