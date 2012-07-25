@@ -1,12 +1,12 @@
 package org.neo4j.neode.test;
 
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
-import static org.neo4j.neode.DomainEntityBuilder.domainEntity;
+import static org.neo4j.neode.DomainEntity.createEntities;
+import static org.neo4j.neode.DomainEntity.domainEntity;
+import static org.neo4j.neode.DomainEntity.relateEntities;
 import static org.neo4j.neode.DomainEntityInfo.approxPercent;
-import static org.neo4j.neode.commands.DomainEntityBatchCommandBuilder.createEntities;
 import static org.neo4j.neode.commands.Range.exactly;
 import static org.neo4j.neode.commands.Range.minMax;
-import static org.neo4j.neode.commands.RelateNodesBatchCommandBuilder.relateEntities;
 import static org.neo4j.neode.finders.GraphQuery.traversal;
 import static org.neo4j.neode.finders.NodeFinder.contextualGetOrCreate;
 import static org.neo4j.neode.finders.NodeFinder.getExisting;

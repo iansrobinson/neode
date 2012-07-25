@@ -2,17 +2,8 @@ package org.neo4j.neode.properties;
 
 import org.neo4j.graphdb.Node;
 
-public class IndexBasedStringPropertySetter implements PropertySetterStrategy
+class IndexBasedStringPropertyValueSetter extends PropertyValueSetter
 {
-    public static PropertySetterStrategy indexBasedPropertyValue()
-    {
-        return new IndexBasedStringPropertySetter();
-    }
-
-    private IndexBasedStringPropertySetter()
-    {
-    }
-
     @Override
     public Object setProperty( Node node, String propertyName, String entityName, int index )
     {

@@ -15,7 +15,7 @@ public class Range
     private final int min;
     private final int max;
 
-    public Range( int min, int max )
+    private Range( int min, int max )
     {
         if (min < 0)
         {

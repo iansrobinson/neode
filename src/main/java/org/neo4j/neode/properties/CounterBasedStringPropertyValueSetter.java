@@ -2,16 +2,11 @@ package org.neo4j.neode.properties;
 
 import org.neo4j.graphdb.Node;
 
-public class CounterBasedStringPropertySetter implements PropertySetterStrategy
+class CounterBasedStringPropertyValueSetter extends PropertyValueSetter
 {
-    public static PropertySetterStrategy counterBasedPropertyValue()
-    {
-        return new CounterBasedStringPropertySetter();
-    }
-
     private Long counter;
 
-    private CounterBasedStringPropertySetter()
+    CounterBasedStringPropertyValueSetter()
     {
         counter = 1l;
     }

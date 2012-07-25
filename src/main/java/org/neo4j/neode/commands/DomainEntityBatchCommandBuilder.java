@@ -15,15 +15,10 @@ public class DomainEntityBatchCommandBuilder implements Update
 {
     private static final int DEFAULT_BATCH_SIZE = 20000;
 
-    public static DomainEntityBatchCommandBuilder createEntities( DomainEntity domainEntity )
-    {
-        return new DomainEntityBatchCommandBuilder( domainEntity );
-    }
-
     private DomainEntity domainEntity;
     private int numberOfIterations = 0;
 
-    private DomainEntityBatchCommandBuilder( DomainEntity domainEntity )
+    public DomainEntityBatchCommandBuilder( DomainEntity domainEntity )
     {
         this.domainEntity = domainEntity;
     }

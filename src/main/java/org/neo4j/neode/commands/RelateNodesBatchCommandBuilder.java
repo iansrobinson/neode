@@ -21,12 +21,6 @@ import org.neo4j.neode.numbergenerators.Distribution;
 
 public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Cardinality, Update
 {
-
-    public static To relateEntities( DomainEntityInfo domainEntityInfo )
-    {
-        return new RelateNodesBatchCommandBuilder( domainEntityInfo );
-    }
-
     private static final int DEFAULT_BATCH_SIZE = 10000;
 
     private DomainEntityInfo domainEntityInfo;
@@ -36,7 +30,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
     private RelationshipType relationshipType;
     private Direction direction;
 
-    private RelateNodesBatchCommandBuilder( DomainEntityInfo domainEntityInfo )
+    public RelateNodesBatchCommandBuilder( DomainEntityInfo domainEntityInfo )
     {
         this.domainEntityInfo = domainEntityInfo;
     }

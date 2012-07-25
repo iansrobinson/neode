@@ -3,14 +3,15 @@ package org.neo4j.neode.commands;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.neo4j.neode.DomainEntityBuilder.domainEntity;
-import static org.neo4j.neode.commands.DomainEntityBatchCommandBuilder.createEntities;
-import static org.neo4j.neode.commands.RelateNodesBatchCommandBuilder.relateEntities;
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 
 import java.util.Random;
 
 import org.junit.Test;
+import org.neo4j.graphdb.Direction;
+import org.neo4j.graphdb.DynamicRelationshipType;
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Node;
 import org.neo4j.neode.Dataset;
 import org.neo4j.neode.DatasetManager;
 import org.neo4j.neode.DomainEntity;
@@ -18,10 +19,6 @@ import org.neo4j.neode.DomainEntityInfo;
 import org.neo4j.neode.finders.NodeFinder;
 import org.neo4j.neode.logging.SysOutLog;
 import org.neo4j.neode.test.Db;
-import org.neo4j.graphdb.Direction;
-import org.neo4j.graphdb.DynamicRelationshipType;
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
 
 public class RelateNodesBatchCommandBuilderTest
 {
@@ -32,15 +29,17 @@ public class RelateNodesBatchCommandBuilderTest
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = executor.newDataset( "Test" );
-        DomainEntityInfo users = createEntities( domainEntity( "user" ).build() ).quantity( 3 ).update( dataset );
-        DomainEntity product = domainEntity( "product" ).build();
-        final DomainEntityInfo products = createEntities( product ).quantity( 3 ).update( dataset );
+        DomainEntityInfo users = DomainEntity.createEntities( DomainEntity.domainEntity( "user" ).build() ).quantity( 3 )
+                .update( dataset );
+        DomainEntity product = DomainEntity.domainEntity( "product" ).build();
+        final DomainEntityInfo products = DomainEntity.createEntities( product ).quantity( 3 ).update( dataset );
         NodeFinder nodeFinder = new NodeFinder()
         {
             int index = 0;
 
             @Override
-            public Iterable<Node> getNodes( GraphDatabaseService db, Node currentNode, int numberOfNodes, Random random )
+            public Iterable<Node> getNodes( GraphDatabaseService db, Node currentNode, int numberOfNodes,
+                                            Random random )
             {
                 return asList( db.getNodeById( products.nodeIds().get( index++ ) ) );
             }
@@ -53,7 +52,7 @@ public class RelateNodesBatchCommandBuilderTest
         };
 
         // when
-        relateEntities( users ).to( nodeFinder ).relationship( withName("BOUGHT") )
+        DomainEntity.relateEntities( users ).to( nodeFinder ).relationship( withName( "BOUGHT" ) )
                 .cardinality( Range.exactly( 1 ) ).update( dataset );
 
         // then

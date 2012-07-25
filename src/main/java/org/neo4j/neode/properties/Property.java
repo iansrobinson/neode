@@ -1,7 +1,5 @@
 package org.neo4j.neode.properties;
 
-import static org.neo4j.neode.properties.CounterBasedStringPropertySetter.counterBasedPropertyValue;
-
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.index.Index;
@@ -10,39 +8,39 @@ public class Property
 {
     public static Property property( String name )
     {
-        return new Property( name, counterBasedPropertyValue(), false );
+        return new Property( name, new CounterBasedStringPropertyValueSetter(), false );
     }
 
     public static Property indexableProperty( String name )
     {
-        return new Property( name, counterBasedPropertyValue(), true );
+        return new Property( name, new CounterBasedStringPropertyValueSetter(), true );
     }
 
-    public static Property property( String name, PropertySetterStrategy propertySetterStrategy )
+    public static Property property( String name, PropertyValueSetter propertyValueSetter )
     {
-        return new Property( name, propertySetterStrategy, false );
+        return new Property( name, propertyValueSetter, false );
     }
 
-    public static Property indexableProperty( String name, PropertySetterStrategy propertySetterStrategy )
+    public static Property indexableProperty( String name, PropertyValueSetter propertyValueSetter )
     {
-        return new Property( name, propertySetterStrategy, true );
+        return new Property( name, propertyValueSetter, true );
     }
 
     private final String propertyName;
-    private final PropertySetterStrategy propertySetterStrategy;
+    private final PropertyValueSetter propertyValueSetter;
     private final boolean isIndexable;
     private Index<Node> nodeIndex;
 
-    private Property( String propertyName, PropertySetterStrategy propertySetterStrategy, boolean isIndexable )
+    private Property( String propertyName, PropertyValueSetter propertyValueSetter, boolean isIndexable )
     {
         this.propertyName = propertyName;
-        this.propertySetterStrategy = propertySetterStrategy;
+        this.propertyValueSetter = propertyValueSetter;
         this.isIndexable = isIndexable;
     }
 
     public void setProperty( GraphDatabaseService db, Node node, String entityName, int index )
     {
-        Object value = propertySetterStrategy.setProperty( node, propertyName, entityName, index );
+        Object value = propertyValueSetter.setProperty( node, propertyName, entityName, index );
         if ( isIndexable )
         {
             if ( nodeIndex == null )
