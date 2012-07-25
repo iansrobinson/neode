@@ -1,8 +1,8 @@
 package org.neo4j.neode.commands.interfaces;
 
-import org.neo4j.neode.finders.NodeFinderStrategy;
+import org.neo4j.neode.finders.NodeFinder;
 
 public interface To
 {
-    RelationshipName to( NodeFinderStrategy nodeFinderStrategyStrategy );
+    RelationshipName to( NodeFinder nodeFinder );
 }

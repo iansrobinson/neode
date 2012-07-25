@@ -1,34 +1,20 @@
 package org.neo4j.neode.finders;
 
-import static org.neo4j.neode.numbergenerators.NormalDistributionUniqueRandomNumberGenerator.normalDistribution;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import org.neo4j.neode.DomainEntityInfo;
-import org.neo4j.neode.numbergenerators.NumberGenerator;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
+import org.neo4j.neode.DomainEntityInfo;
+import org.neo4j.neode.numbergenerators.NumberGenerator;
 
-public class ExistingUniqueNodeFinderStrategy implements NodeFinderStrategy
+public class ExistingUniqueNodeFinder extends NodeFinder
 {
-    public static NodeFinderStrategy getExisting( DomainEntityInfo domainEntities,
-                                                  NumberGenerator numberGenerator )
-    {
-        return new ExistingUniqueNodeFinderStrategy( domainEntities, numberGenerator );
-    }
-
-    public static NodeFinderStrategy getExisting( DomainEntityInfo domainEntities )
-    {
-        return new ExistingUniqueNodeFinderStrategy( domainEntities, normalDistribution() );
-    }
-
     private final DomainEntityInfo domainEntityInfo;
     private final NumberGenerator numberGenerator;
 
-    private ExistingUniqueNodeFinderStrategy( DomainEntityInfo domainEntityInfo,
-                                              NumberGenerator numberGenerator )
+    ExistingUniqueNodeFinder( DomainEntityInfo domainEntityInfo, NumberGenerator numberGenerator )
     {
         this.domainEntityInfo = domainEntityInfo;
         this.numberGenerator = numberGenerator;

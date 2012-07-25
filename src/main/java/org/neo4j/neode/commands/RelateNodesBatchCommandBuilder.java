@@ -1,6 +1,5 @@
 package org.neo4j.neode.commands;
 
-import static org.neo4j.neode.commands.AllowMultiple.allowMultiple;
 import static org.neo4j.neode.numbergenerators.FlatDistributionUniqueRandomNumberGenerator.flatDistribution;
 
 import java.util.ArrayList;
@@ -14,11 +13,11 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.neode.Dataset;
 import org.neo4j.neode.DomainEntityInfo;
-import org.neo4j.neode.commands.interfaces.Update;
 import org.neo4j.neode.commands.interfaces.Cardinality;
 import org.neo4j.neode.commands.interfaces.RelationshipName;
 import org.neo4j.neode.commands.interfaces.To;
-import org.neo4j.neode.finders.NodeFinderStrategy;
+import org.neo4j.neode.commands.interfaces.Update;
+import org.neo4j.neode.finders.NodeFinder;
 import org.neo4j.neode.logging.Log;
 import org.neo4j.neode.numbergenerators.NumberGenerator;
 
@@ -34,8 +33,8 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
 
     private DomainEntityInfo domainEntityInfo;
     private Range cardinality;
-    private UniquenessStrategy uniquenessStrategy;
-    private NodeFinderStrategy nodeFinderStrategy;
+    private Uniqueness uniqueness;
+    private NodeFinder nodeFinder;
     private RelationshipType relationshipType;
     private Direction direction;
 
@@ -45,9 +44,9 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
     }
 
     @Override
-    public RelationshipName to( NodeFinderStrategy nodeFinderStrategy )
+    public RelationshipName to( NodeFinder nodeFinder )
     {
-        this.nodeFinderStrategy = nodeFinderStrategy;
+        this.nodeFinder = nodeFinder;
         return this;
     }
 
@@ -55,15 +54,15 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
     public Update cardinality( Range value )
     {
         cardinality = value;
-        uniquenessStrategy = allowMultiple();
+        uniqueness = Uniqueness.ALLOW_MULTIPLE;
         return this;
     }
 
     @Override
-    public Update cardinality( Range value, UniquenessStrategy uniqueness )
+    public Update cardinality( Range value, Uniqueness uniqueness )
     {
         cardinality = value;
-        uniquenessStrategy = uniqueness;
+        this.uniqueness = uniqueness;
         return this;
     }
 
@@ -87,7 +86,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
     public DomainEntityInfo update( Dataset dataset, int batchSize )
     {
         RelateNodesBatchCommand command = new RelateNodesBatchCommand( domainEntityInfo, batchSize,
-                relationshipType, direction, cardinality, uniquenessStrategy, nodeFinderStrategy, true );
+                relationshipType, direction, cardinality, uniqueness, nodeFinder, true );
         return dataset.execute( command );
     }
 
@@ -101,7 +100,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
         RelateNodesBatchCommand command = new RelateNodesBatchCommand( domainEntityInfo, batchSize,
-                relationshipType, direction, cardinality, uniquenessStrategy, nodeFinderStrategy, false );
+                relationshipType, direction, cardinality, uniqueness, nodeFinder, false );
         dataset.execute( command );
     }
 
@@ -117,8 +116,8 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
         private final DomainEntityInfo startNodeDomainEntityInfo;
         private final int batchSize;
         private final Range cardinality;
-        private final UniquenessStrategy uniquenessStrategy;
-        private final NodeFinderStrategy nodeFinderStrategy;
+        private final Uniqueness uniqueness;
+        private final NodeFinder nodeFinder;
         private final RelationshipType relationshipType;
         private final Direction direction;
         private final NumberGenerator numberOfRelsGenerator;
@@ -128,16 +127,17 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
 
         public RelateNodesBatchCommand( DomainEntityInfo startNodeDomainEntityInfo, int batchSize,
                                         RelationshipType relationshipType,
-                                        Direction direction, Range cardinality, UniquenessStrategy uniquenessStrategy,
-                                        NodeFinderStrategy nodeFinderStrategy, boolean captureEndNodeIds )
+                                        Direction direction, Range cardinality,
+                                        Uniqueness uniqueness,
+                                        NodeFinder nodeFinder, boolean captureEndNodeIds )
         {
             this.startNodeDomainEntityInfo = startNodeDomainEntityInfo;
             this.batchSize = batchSize;
             this.relationshipType = relationshipType;
             this.direction = direction;
             this.cardinality = cardinality;
-            this.uniquenessStrategy = uniquenessStrategy;
-            this.nodeFinderStrategy = nodeFinderStrategy;
+            this.uniqueness = uniqueness;
+            this.nodeFinder = nodeFinder;
             this.captureEndNodeIds = captureEndNodeIds;
 
             numberOfRelsGenerator = flatDistribution();
@@ -163,14 +163,14 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
             int numberOfRels = numberOfRelsGenerator.generateSingle( cardinality.min(), cardinality.max(), random );
             totalRels += numberOfRels;
 
-            Iterable<Node> nodes = nodeFinderStrategy.getNodes( db, firstNode, numberOfRels, random );
+            Iterable<Node> nodes = nodeFinder.getNodes( db, firstNode, numberOfRels, random );
             for ( Node secondNode : nodes )
             {
                 if ( captureEndNodeIds )
                 {
                     endNodeIds.add( secondNode.getId() );
                 }
-                uniquenessStrategy.apply( db, firstNode, secondNode, relationshipType, direction );
+                uniqueness.apply( db, firstNode, secondNode, relationshipType, direction );
             }
         }
 
@@ -191,14 +191,14 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
                 relEnd = "-";
             }
             return String.format( "(%s)%s[:%s]%s(%s)", startNodeDomainEntityInfo.entityName(), relStart,
-                    relationshipType.name(), relEnd, nodeFinderStrategy.entityName() );
+                    relationshipType.name(), relEnd, nodeFinder.entityName() );
         }
 
         @Override
         public void onBegin( Log log )
         {
             log.write( String.format( "      [Min: %s, Max: %s, Uniqueness: %s]", cardinality.min(), cardinality.max(),
-                    uniquenessStrategy.description() ) );
+                    uniqueness.name() ) );
         }
 
         @Override
@@ -211,7 +211,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
         @Override
         public DomainEntityInfo results()
         {
-            return new DomainEntityInfo( nodeFinderStrategy.entityName(), new ArrayList<Long>( endNodeIds ) );
+            return new DomainEntityInfo( nodeFinder.entityName(), new ArrayList<Long>( endNodeIds ) );
         }
     }
 }

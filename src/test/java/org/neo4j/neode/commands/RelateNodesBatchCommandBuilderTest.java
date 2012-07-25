@@ -15,7 +15,7 @@ import org.neo4j.neode.Dataset;
 import org.neo4j.neode.DatasetManager;
 import org.neo4j.neode.DomainEntity;
 import org.neo4j.neode.DomainEntityInfo;
-import org.neo4j.neode.finders.NodeFinderStrategy;
+import org.neo4j.neode.finders.NodeFinder;
 import org.neo4j.neode.logging.SysOutLog;
 import org.neo4j.neode.test.Db;
 import org.neo4j.graphdb.Direction;
@@ -35,7 +35,7 @@ public class RelateNodesBatchCommandBuilderTest
         DomainEntityInfo users = createEntities( domainEntity( "user" ).build() ).quantity( 3 ).update( dataset );
         DomainEntity product = domainEntity( "product" ).build();
         final DomainEntityInfo products = createEntities( product ).quantity( 3 ).update( dataset );
-        NodeFinderStrategy finderStrategy = new NodeFinderStrategy()
+        NodeFinder nodeFinder = new NodeFinder()
         {
             int index = 0;
 
@@ -53,7 +53,7 @@ public class RelateNodesBatchCommandBuilderTest
         };
 
         // when
-        relateEntities( users ).to( finderStrategy ).relationship( withName("BOUGHT") )
+        relateEntities( users ).to( nodeFinder ).relationship( withName("BOUGHT") )
                 .cardinality( Range.exactly( 1 ) ).update( dataset );
 
         // then

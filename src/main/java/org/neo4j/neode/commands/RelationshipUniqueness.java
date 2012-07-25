@@ -9,9 +9,8 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.RelationshipType;
 
-public interface UniquenessStrategy
+public interface RelationshipUniqueness
 {
     void apply( GraphDatabaseService db, Node firstNode, Node secondNode,
                 RelationshipType relationshipType, Direction direction );
-    String description();
 }

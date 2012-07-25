@@ -1,35 +1,24 @@
 package org.neo4j.neode.finders;
 
-import static org.neo4j.neode.numbergenerators.NormalDistributionUniqueRandomNumberGenerator.normalDistribution;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import org.neo4j.neode.DomainEntity;
-import org.neo4j.neode.numbergenerators.NumberGenerator;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
+import org.neo4j.neode.DomainEntity;
+import org.neo4j.neode.numbergenerators.NumberGenerator;
 
-public class GetOrCreateUniqueNodeFinderStrategy implements NodeFinderStrategy
+public class GetOrCreateUniqueNodeFinder extends NodeFinder
 {
-    public static NodeFinderStrategy getOrCreate( DomainEntity domainEntity, int maxNumberOfNodes, NumberGenerator numberGenerator )
-    {
-        return new GetOrCreateUniqueNodeFinderStrategy( domainEntity, maxNumberOfNodes, numberGenerator );
-    }
-
-    public static NodeFinderStrategy getOrCreate( DomainEntity domainEntity, int maxNumberOfNodes )
-    {
-        return new GetOrCreateUniqueNodeFinderStrategy( domainEntity, maxNumberOfNodes, normalDistribution() );
-    }
-
     private final DomainEntity domainEntity;
     private final int maxNumberOfNodes;
     private final NumberGenerator numberGenerator;
     private final List<Long> nodeIds;
 
-    private GetOrCreateUniqueNodeFinderStrategy( DomainEntity domainEntity, int maxNumberOfNodes, NumberGenerator numberGenerator )
+    GetOrCreateUniqueNodeFinder( DomainEntity domainEntity, int maxNumberOfNodes,
+                                 NumberGenerator numberGenerator )
     {
         this.domainEntity = domainEntity;
         this.maxNumberOfNodes = maxNumberOfNodes;

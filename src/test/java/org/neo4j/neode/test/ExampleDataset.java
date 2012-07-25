@@ -7,11 +7,10 @@ import static org.neo4j.neode.commands.DomainEntityBatchCommandBuilder.createEnt
 import static org.neo4j.neode.commands.Range.exactly;
 import static org.neo4j.neode.commands.Range.minMax;
 import static org.neo4j.neode.commands.RelateNodesBatchCommandBuilder.relateEntities;
-import static org.neo4j.neode.commands.Unique.unique;
 import static org.neo4j.neode.finders.ContextualGetOrCreate.contextualGetOrCreate;
-import static org.neo4j.neode.finders.ExistingUniqueNodeFinderStrategy.getExisting;
-import static org.neo4j.neode.finders.GetOrCreateUniqueNodeFinderStrategy.getOrCreate;
-import static org.neo4j.neode.finders.TraversalBasedQuery.traversal;
+import static org.neo4j.neode.finders.ExistingUniqueNodeFinder.getExisting;
+import static org.neo4j.neode.finders.GetOrCreateUniqueNodeFinder.getOrCreate;
+import static org.neo4j.neode.finders.TraversalBasedGraphQuery.traversal;
 import static org.neo4j.neode.numbergenerators.FlatDistributionUniqueRandomNumberGenerator.flatDistribution;
 import static org.neo4j.neode.numbergenerators.NormalDistributionUniqueRandomNumberGenerator.normalDistribution;
 import static org.neo4j.neode.properties.Property.indexableProperty;
@@ -29,6 +28,7 @@ import org.neo4j.neode.Dataset;
 import org.neo4j.neode.DatasetManager;
 import org.neo4j.neode.DomainEntity;
 import org.neo4j.neode.DomainEntityInfo;
+import org.neo4j.neode.commands.Uniqueness;
 import org.neo4j.neode.logging.SysOutLog;
 
 public class ExampleDataset
@@ -100,13 +100,13 @@ public class ExampleDataset
         relateEntities( approxPercent( 30, users ) )
                 .to( getExisting( allProjects ) )
                 .relationship( withName( "WORKED_ON" ) )
-                .cardinality( minMax( 1, 2 ), unique() )
+                .cardinality( minMax( 1, 2 ), Uniqueness.SINGLE_DIRECTION )
                 .update( dataset );
 
         dataset.end();
 
         db.shutdown();
 
-        System.out.println("Number of topics: " + topics.nodeIds().size());
+        System.out.println( "Number of topics: " + topics.nodeIds().size() );
     }
 }
