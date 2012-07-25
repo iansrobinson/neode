@@ -32,9 +32,9 @@ public class RelateNodesBatchCommandBuilderTest
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = executor.newDataset( "Test" );
-        DomainEntityInfo users = createEntities( domainEntity( "user" ).build() ).quantity( 3 ).addTo( dataset );
+        DomainEntityInfo users = createEntities( domainEntity( "user" ).build() ).quantity( 3 ).update( dataset );
         DomainEntity product = domainEntity( "product" ).build();
-        final DomainEntityInfo products = createEntities( product ).quantity( 3 ).addTo( dataset );
+        final DomainEntityInfo products = createEntities( product ).quantity( 3 ).update( dataset );
         NodeFinderStrategy finderStrategy = new NodeFinderStrategy()
         {
             int index = 0;
@@ -54,7 +54,7 @@ public class RelateNodesBatchCommandBuilderTest
 
         // when
         relateEntities( users ).to( finderStrategy ).relationship( withName("BOUGHT") )
-                .cardinality( Range.exactly( 1 ) ).addTo( dataset );
+                .cardinality( Range.exactly( 1 ) ).update( dataset );
 
         // then
         DynamicRelationshipType bought = withName( "BOUGHT" );

@@ -77,31 +77,31 @@ public class ExampleDataset
 
         DomainEntityInfo users = createEntities( user )
                 .quantity( 10 )
-                .addTo( dataset );
+                .update( dataset );
 
         DomainEntityInfo topics = relateEntities( users )
                 .to( getOrCreate( topic, 10, normalDistribution() ) )
                 .relationship( withName( "INTERESTED_IN" ) )
                 .cardinality( minMax( 1, 3 ) )
-                .addTo( dataset );
+                .update( dataset );
 
         relateEntities( users )
                 .to( getOrCreate( company, 2, flatDistribution() ) )
                 .relationship( withName( "WORKS_FOR" ) )
                 .cardinality( exactly( 1 ) )
-                .addTo( dataset );
+                .update( dataset );
 
         DomainEntityInfo allProjects = relateEntities( users )
                 .to( contextualGetOrCreate( project, traversal( findCompanyProjects ), 1.2 ) )
                 .relationship( withName( "WORKED_ON" ) )
                 .cardinality( minMax( 1, 3 ) )
-                .addTo( dataset );
+                .update( dataset );
 
         relateEntities( approxPercent( 30, users ) )
                 .to( getExisting( allProjects ) )
                 .relationship( withName( "WORKED_ON" ) )
                 .cardinality( minMax( 1, 2 ), unique() )
-                .addTo( dataset );
+                .update( dataset );
 
         dataset.end();
 

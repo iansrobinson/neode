@@ -5,6 +5,6 @@ import org.neo4j.neode.commands.UniquenessStrategy;
 
 public interface Cardinality
 {
-    AddTo cardinality( Range value );
-    AddTo cardinality( Range value, UniquenessStrategy uniqueness );
+    Update cardinality( Range value );
+    Update cardinality( Range value, UniquenessStrategy uniqueness );
 }

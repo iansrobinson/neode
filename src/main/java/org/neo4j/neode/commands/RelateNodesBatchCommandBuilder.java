@@ -8,21 +8,21 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import org.neo4j.neode.DomainEntityInfo;
-import org.neo4j.neode.Dataset;
-import org.neo4j.neode.commands.interfaces.AddTo;
-import org.neo4j.neode.commands.interfaces.Cardinality;
-import org.neo4j.neode.logging.Log;
-import org.neo4j.neode.commands.interfaces.RelationshipName;
-import org.neo4j.neode.commands.interfaces.To;
-import org.neo4j.neode.finders.NodeFinderStrategy;
-import org.neo4j.neode.numbergenerators.NumberGenerator;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.RelationshipType;
+import org.neo4j.neode.Dataset;
+import org.neo4j.neode.DomainEntityInfo;
+import org.neo4j.neode.commands.interfaces.Update;
+import org.neo4j.neode.commands.interfaces.Cardinality;
+import org.neo4j.neode.commands.interfaces.RelationshipName;
+import org.neo4j.neode.commands.interfaces.To;
+import org.neo4j.neode.finders.NodeFinderStrategy;
+import org.neo4j.neode.logging.Log;
+import org.neo4j.neode.numbergenerators.NumberGenerator;
 
-public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Cardinality, AddTo
+public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Cardinality, Update
 {
 
     public static To relateEntities( DomainEntityInfo domainEntityInfo )
@@ -30,7 +30,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
         return new RelateNodesBatchCommandBuilder( domainEntityInfo );
     }
 
-    private static final int DEFAULT_BATCH_SIZE = 50000;
+    private static final int DEFAULT_BATCH_SIZE = 10000;
 
     private DomainEntityInfo domainEntityInfo;
     private Range cardinality;
@@ -52,7 +52,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
     }
 
     @Override
-    public AddTo cardinality( Range value )
+    public Update cardinality( Range value )
     {
         cardinality = value;
         uniquenessStrategy = allowMultiple();
@@ -60,12 +60,12 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
     }
 
     @Override
-        public AddTo cardinality( Range value, UniquenessStrategy uniqueness )
-        {
-            cardinality = value;
-            uniquenessStrategy = uniqueness;
-            return this;
-        }
+    public Update cardinality( Range value, UniquenessStrategy uniqueness )
+    {
+        cardinality = value;
+        uniquenessStrategy = uniqueness;
+        return this;
+    }
 
     @Override
     public Cardinality relationship( RelationshipType value )
@@ -84,17 +84,31 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
     }
 
     @Override
-    public DomainEntityInfo addTo( Dataset dataset, int batchSize )
+    public DomainEntityInfo update( Dataset dataset, int batchSize )
     {
         RelateNodesBatchCommand command = new RelateNodesBatchCommand( domainEntityInfo, batchSize,
-                relationshipType, direction, cardinality, uniquenessStrategy, nodeFinderStrategy );
+                relationshipType, direction, cardinality, uniquenessStrategy, nodeFinderStrategy, true );
         return dataset.execute( command );
     }
 
     @Override
-    public DomainEntityInfo addTo( Dataset dataset )
+    public DomainEntityInfo update( Dataset dataset )
     {
-        return addTo( dataset, DEFAULT_BATCH_SIZE );
+        return update( dataset, DEFAULT_BATCH_SIZE );
+    }
+
+    @Override
+    public void updateNoReturn( Dataset dataset, int batchSize )
+    {
+        RelateNodesBatchCommand command = new RelateNodesBatchCommand( domainEntityInfo, batchSize,
+                relationshipType, direction, cardinality, uniquenessStrategy, nodeFinderStrategy, false );
+        dataset.execute( command );
+    }
+
+    @Override
+    public void updateNoReturn( Dataset dataset )
+    {
+        updateNoReturn( dataset, DEFAULT_BATCH_SIZE );
     }
 
 
@@ -108,12 +122,14 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
         private final RelationshipType relationshipType;
         private final Direction direction;
         private final NumberGenerator numberOfRelsGenerator;
+        private final boolean captureEndNodeIds;
         private long totalRels = 0;
         private Set<Long> endNodeIds = new HashSet<Long>();
 
         public RelateNodesBatchCommand( DomainEntityInfo startNodeDomainEntityInfo, int batchSize,
                                         RelationshipType relationshipType,
-                                        Direction direction, Range cardinality, UniquenessStrategy uniquenessStrategy, NodeFinderStrategy nodeFinderStrategy )
+                                        Direction direction, Range cardinality, UniquenessStrategy uniquenessStrategy,
+                                        NodeFinderStrategy nodeFinderStrategy, boolean captureEndNodeIds )
         {
             this.startNodeDomainEntityInfo = startNodeDomainEntityInfo;
             this.batchSize = batchSize;
@@ -122,6 +138,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
             this.cardinality = cardinality;
             this.uniquenessStrategy = uniquenessStrategy;
             this.nodeFinderStrategy = nodeFinderStrategy;
+            this.captureEndNodeIds = captureEndNodeIds;
 
             numberOfRelsGenerator = flatDistribution();
         }
@@ -149,7 +166,10 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
             Iterable<Node> nodes = nodeFinderStrategy.getNodes( db, firstNode, numberOfRels, random );
             for ( Node secondNode : nodes )
             {
-                endNodeIds.add( secondNode.getId() );
+                if ( captureEndNodeIds )
+                {
+                    endNodeIds.add( secondNode.getId() );
+                }
                 uniquenessStrategy.apply( db, firstNode, secondNode, relationshipType, direction );
             }
         }
@@ -164,13 +184,13 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
         public String shortDescription()
         {
             String relStart = "-";
-                        String relEnd = "->";
-                        if (direction.equals( Direction.INCOMING ))
-                        {
-                            relStart = "<-";
-                            relEnd = "-";
-                        }
-            return String.format( "(%s)%s[:%s]%s(%s)", startNodeDomainEntityInfo.entityName(),relStart,
+            String relEnd = "->";
+            if ( direction.equals( Direction.INCOMING ) )
+            {
+                relStart = "<-";
+                relEnd = "-";
+            }
+            return String.format( "(%s)%s[:%s]%s(%s)", startNodeDomainEntityInfo.entityName(), relStart,
                     relationshipType.name(), relEnd, nodeFinderStrategy.entityName() );
         }
 
