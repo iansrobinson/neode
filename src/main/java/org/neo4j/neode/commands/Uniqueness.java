@@ -58,6 +58,10 @@ public enum Uniqueness implements RelationshipUniqueness
                 }
             };
 
+    public abstract void apply( GraphDatabaseService db, Node firstNode,
+            Node secondNode, RelationshipType relationshipType,
+            Direction direction );
+
     private static void applyUniquenessConstraint( Node firstNode, Node secondNode,
                                                    RelationshipType relationshipType, Direction direction )
     {
