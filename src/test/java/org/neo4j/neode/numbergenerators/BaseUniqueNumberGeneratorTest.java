@@ -13,12 +13,12 @@ public class BaseUniqueNumberGeneratorTest
     public void shouldThrowExceptionIfMaxNumberOfResultsLessThanMinNumberOfResults() throws Exception
     {
         // given
-        NumberGenerator numberGenerator = new DummyNumberGenerator();
+        Distribution distribution = new DummyDistribution();
 
         try
         {
             // when
-            numberGenerator.generate( 1, 0, 1, 2, new Random() );
+            distribution.generate( 1, 0, 1, 2, new Random() );
         }
         catch ( IllegalArgumentException e )
         {
@@ -33,12 +33,12 @@ public class BaseUniqueNumberGeneratorTest
     public void shouldThrowExceptionIfMaxLessThanMin() throws Exception
     {
         // given
-        NumberGenerator numberGenerator = new DummyNumberGenerator();
+        Distribution distribution = new DummyDistribution();
 
         try
         {
             // when
-            numberGenerator.generate( 1, 2, 1, 0, new Random() );
+            distribution.generate( 1, 2, 1, 0, new Random() );
         }
         catch ( IllegalArgumentException e )
         {
@@ -53,12 +53,12 @@ public class BaseUniqueNumberGeneratorTest
     public void shouldThrowExceptionIfMinNumberOfResultsLessThanZero() throws Exception
     {
         // given
-        NumberGenerator numberGenerator = new DummyNumberGenerator();
+        Distribution distribution = new DummyDistribution();
 
         try
         {
             // when
-            numberGenerator.generate( -1, 1, 0, 1, new Random() );
+            distribution.generate( -1, 1, 0, 1, new Random() );
         }
         catch ( IllegalArgumentException e )
         {
@@ -73,12 +73,12 @@ public class BaseUniqueNumberGeneratorTest
     public void shouldThrowExceptionIfMinLessThanZero() throws Exception
     {
         // given
-        NumberGenerator numberGenerator = new DummyNumberGenerator();
+        Distribution distribution = new DummyDistribution();
 
         try
         {
             // when
-            numberGenerator.generate( 0, 1, -1, 1, new Random() );
+            distribution.generate( 0, 1, -1, 1, new Random() );
         }
         catch ( IllegalArgumentException e )
         {
@@ -93,12 +93,12 @@ public class BaseUniqueNumberGeneratorTest
     public void shouldThrowExceptionIfPossibleRangeSmallerThanMaxNumberOfResults() throws Exception
     {
         // given
-        NumberGenerator numberGenerator = new DummyNumberGenerator();
+        Distribution distribution = new DummyDistribution();
 
         try
         {
             // when
-            numberGenerator.generate( 0, 2, 1, 1, new Random() );
+            distribution.generate( 0, 2, 1, 1, new Random() );
         }
         catch ( IllegalArgumentException e )
         {
@@ -113,16 +113,16 @@ public class BaseUniqueNumberGeneratorTest
     public void shouldAllowForZeroNumbersToBeGenerated() throws Exception
     {
         // given
-        NumberGenerator numberGenerator = new DummyNumberGenerator();
+        Distribution distribution = new DummyDistribution();
 
         // when
-        List<Integer> results = numberGenerator.generate( 0, 0, 0, 1, new Random() );
+        List<Integer> results = distribution.generate( 0, 0, 0, 1, new Random() );
 
         // then
         assertEquals( 0, results.size() );
     }
 
-    private class DummyNumberGenerator extends BaseUniqueNumberGenerator
+    private class DummyDistribution extends BaseUniqueDistribution
     {
         @Override
         protected int getNextNumber( int min, int upTo, Random random )

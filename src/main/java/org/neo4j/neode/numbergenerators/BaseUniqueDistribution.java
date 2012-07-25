@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-abstract class BaseUniqueNumberGenerator implements NumberGenerator
+abstract class BaseUniqueDistribution extends Distribution
 {
     @Override
     public final List<Integer> generate( int minNumberOfResults, int maxNumberOfResults, int min, int max,

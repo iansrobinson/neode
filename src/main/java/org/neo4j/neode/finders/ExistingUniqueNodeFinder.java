@@ -7,23 +7,23 @@ import java.util.Random;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.DomainEntityInfo;
-import org.neo4j.neode.numbergenerators.NumberGenerator;
+import org.neo4j.neode.numbergenerators.Distribution;
 
-public class ExistingUniqueNodeFinder extends NodeFinder
+class ExistingUniqueNodeFinder extends NodeFinder
 {
     private final DomainEntityInfo domainEntityInfo;
-    private final NumberGenerator numberGenerator;
+    private final Distribution distribution;
 
-    ExistingUniqueNodeFinder( DomainEntityInfo domainEntityInfo, NumberGenerator numberGenerator )
+    ExistingUniqueNodeFinder( DomainEntityInfo domainEntityInfo, Distribution distribution )
     {
         this.domainEntityInfo = domainEntityInfo;
-        this.numberGenerator = numberGenerator;
+        this.distribution = distribution;
     }
 
     @Override
     public Iterable<Node> getNodes( final GraphDatabaseService db, Node currentNode, int numberOfNodes, Random random )
     {
-        final List<Integer> indexes = numberGenerator.generate( numberOfNodes, 0,
+        final List<Integer> indexes = distribution.generate( numberOfNodes, 0,
                 domainEntityInfo.nodeIds().size() - 1, random );
         return new Iterable<Node>()
         {

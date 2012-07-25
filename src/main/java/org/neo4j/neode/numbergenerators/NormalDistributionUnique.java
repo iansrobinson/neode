@@ -2,13 +2,8 @@ package org.neo4j.neode.numbergenerators;
 
 import java.util.Random;
 
-public class NormalDistributionUniqueRandomNumberGenerator extends BaseUniqueNumberGenerator
+class NormalDistributionUnique extends BaseUniqueDistribution
 {
-    public static NumberGenerator normalDistribution()
-    {
-        return new NormalDistributionUniqueRandomNumberGenerator( );
-    }
-
     protected int getNextNumber( int min, int upTo, Random random )
     {
         double gaussian = random.nextGaussian();

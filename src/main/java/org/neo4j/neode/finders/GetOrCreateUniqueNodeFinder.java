@@ -8,21 +8,21 @@ import java.util.Random;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.DomainEntity;
-import org.neo4j.neode.numbergenerators.NumberGenerator;
+import org.neo4j.neode.numbergenerators.Distribution;
 
-public class GetOrCreateUniqueNodeFinder extends NodeFinder
+class GetOrCreateUniqueNodeFinder extends NodeFinder
 {
     private final DomainEntity domainEntity;
     private final int maxNumberOfNodes;
-    private final NumberGenerator numberGenerator;
+    private final Distribution distribution;
     private final List<Long> nodeIds;
 
     GetOrCreateUniqueNodeFinder( DomainEntity domainEntity, int maxNumberOfNodes,
-                                 NumberGenerator numberGenerator )
+                                 Distribution distribution )
     {
         this.domainEntity = domainEntity;
         this.maxNumberOfNodes = maxNumberOfNodes;
-        this.numberGenerator = numberGenerator;
+        this.distribution = distribution;
         nodeIds = new ArrayList<Long>( maxNumberOfNodes );
         for ( int i = 0; i < maxNumberOfNodes; i++ )
         {
@@ -33,7 +33,7 @@ public class GetOrCreateUniqueNodeFinder extends NodeFinder
     @Override
     public Iterable<Node> getNodes( final GraphDatabaseService db, Node currentNode, int numberOfNodes, Random random )
     {
-        final List<Integer> nodeIdIndexes = numberGenerator.generate( numberOfNodes, 0,
+        final List<Integer> nodeIdIndexes = distribution.generate( numberOfNodes, 0,
                 maxNumberOfNodes - 1, random );
         for ( Integer nodeIdIndex : nodeIdIndexes )
         {

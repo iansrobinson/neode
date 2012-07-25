@@ -2,24 +2,23 @@ package org.neo4j.neode.numbergenerators;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.neo4j.neode.numbergenerators.NormalDistributionUniqueRandomNumberGenerator
-        .normalDistribution;
+import static org.neo4j.neode.numbergenerators.FlatDistributionUnique.flatDistribution;
 
 import java.util.List;
 import java.util.Random;
 
 import org.junit.Test;
 
-public class NormalDistributionUniqueRandomNumberGeneratorTest
+public class FlatDistributionUniqueTest
 {
     @Test
     public void shouldReturnListOfNumbers() throws Exception
     {
         // given
-        NumberGenerator generator = normalDistribution();
+        Distribution generator = flatDistribution() ;
 
         // when
-        List<Integer> results = generator.generate( 5, 1, 5, new Random() );
+        List<Integer> results = generator.generate( 5, 1, 5, new Random(  ) );
 
         // then
         assertTrue( results.contains( 1 ) );
@@ -33,10 +32,10 @@ public class NormalDistributionUniqueRandomNumberGeneratorTest
     public void shouldReturnSingleNumber() throws Exception
     {
         // given
-        NumberGenerator generator = normalDistribution();
+        Distribution generator = flatDistribution() ;
 
         // when
-        int result = generator.generateSingle( 1, 1, new Random() );
+        int result = generator.generateSingle( 1, 1, new Random(  ) );
 
         // then
         assertEquals( 1, result );

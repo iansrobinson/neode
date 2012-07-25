@@ -7,12 +7,12 @@ import static org.neo4j.neode.commands.DomainEntityBatchCommandBuilder.createEnt
 import static org.neo4j.neode.commands.Range.exactly;
 import static org.neo4j.neode.commands.Range.minMax;
 import static org.neo4j.neode.commands.RelateNodesBatchCommandBuilder.relateEntities;
-import static org.neo4j.neode.finders.ContextualGetOrCreate.contextualGetOrCreate;
-import static org.neo4j.neode.finders.ExistingUniqueNodeFinder.getExisting;
-import static org.neo4j.neode.finders.GetOrCreateUniqueNodeFinder.getOrCreate;
-import static org.neo4j.neode.finders.TraversalBasedGraphQuery.traversal;
-import static org.neo4j.neode.numbergenerators.FlatDistributionUniqueRandomNumberGenerator.flatDistribution;
-import static org.neo4j.neode.numbergenerators.NormalDistributionUniqueRandomNumberGenerator.normalDistribution;
+import static org.neo4j.neode.finders.GraphQuery.traversal;
+import static org.neo4j.neode.finders.NodeFinder.contextualGetOrCreate;
+import static org.neo4j.neode.finders.NodeFinder.getExisting;
+import static org.neo4j.neode.finders.NodeFinder.getOrCreate;
+import static org.neo4j.neode.numbergenerators.Distribution.flatDistribution;
+import static org.neo4j.neode.numbergenerators.Distribution.normalDistribution;
 import static org.neo4j.neode.properties.Property.indexableProperty;
 import static org.neo4j.neode.properties.Property.property;
 

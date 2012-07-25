@@ -1,7 +1,5 @@
 package org.neo4j.neode.commands;
 
-import static org.neo4j.neode.numbergenerators.FlatDistributionUniqueRandomNumberGenerator.flatDistribution;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
@@ -19,7 +17,7 @@ import org.neo4j.neode.commands.interfaces.To;
 import org.neo4j.neode.commands.interfaces.Update;
 import org.neo4j.neode.finders.NodeFinder;
 import org.neo4j.neode.logging.Log;
-import org.neo4j.neode.numbergenerators.NumberGenerator;
+import org.neo4j.neode.numbergenerators.Distribution;
 
 public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Cardinality, Update
 {
@@ -120,7 +118,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
         private final NodeFinder nodeFinder;
         private final RelationshipType relationshipType;
         private final Direction direction;
-        private final NumberGenerator numberOfRelsGenerator;
+        private final Distribution distribution;
         private final boolean captureEndNodeIds;
         private long totalRels = 0;
         private Set<Long> endNodeIds = new HashSet<Long>();
@@ -140,7 +138,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
             this.nodeFinder = nodeFinder;
             this.captureEndNodeIds = captureEndNodeIds;
 
-            numberOfRelsGenerator = flatDistribution();
+            distribution = Distribution.flatDistribution();
         }
 
         @Override
@@ -160,7 +158,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
         {
             Node firstNode = db.getNodeById( startNodeDomainEntityInfo.nodeIds().get( index ) );
 
-            int numberOfRels = numberOfRelsGenerator.generateSingle( cardinality.min(), cardinality.max(), random );
+            int numberOfRels = distribution.generateSingle( cardinality.min(), cardinality.max(), random );
             totalRels += numberOfRels;
 
             Iterable<Node> nodes = nodeFinder.getNodes( db, firstNode, numberOfRels, random );

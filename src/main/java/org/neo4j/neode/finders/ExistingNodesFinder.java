@@ -1,7 +1,6 @@
 package org.neo4j.neode.finders;
 
 import static java.lang.Math.round;
-import static org.neo4j.neode.numbergenerators.FlatDistributionUniqueRandomNumberGenerator.flatDistribution;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -9,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.neo4j.graphdb.Node;
+import org.neo4j.neode.numbergenerators.Distribution;
 
 class ExistingNodesFinder
 {
@@ -33,7 +33,7 @@ class ExistingNodesFinder
         }
 
         int candidatePoolSize = (int) round( quantity * proportionOfCandidateNodesToRequiredNodes );
-        List<Integer> candidatePoolIndexes = flatDistribution()
+        List<Integer> candidatePoolIndexes = Distribution.flatDistribution()
                 .generate( candidatePoolSize, 0, candidatePoolSize - 1, random );
 
         Iterator<Integer> candidatePoolIndexesIterator = candidatePoolIndexes.iterator();

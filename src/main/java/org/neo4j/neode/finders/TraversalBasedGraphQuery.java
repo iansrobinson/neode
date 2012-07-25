@@ -3,7 +3,7 @@ package org.neo4j.neode.finders;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 
-public class TraversalBasedGraphQuery extends GraphQuery
+class TraversalBasedGraphQuery extends GraphQuery
 {
     private final TraversalDescription traversal;
 
