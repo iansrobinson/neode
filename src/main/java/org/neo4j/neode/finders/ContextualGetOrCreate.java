@@ -29,7 +29,7 @@ class ContextualGetOrCreate extends NodeFinder
         {
             if ( returnNodes.get( currentNodeIndex ) == null )
             {
-                Long nodeId = domainEntity.build( db, currentNodeIndex );
+                Long nodeId = domainEntity.build( db, currentNodeIndex, random );
                 returnNodes.set( currentNodeIndex, db.getNodeById( nodeId ) );
             }
         }

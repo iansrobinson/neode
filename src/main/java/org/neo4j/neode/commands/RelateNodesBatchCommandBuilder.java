@@ -1,9 +1,6 @@
 package org.neo4j.neode.commands;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
 
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -78,7 +75,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
     public DomainEntityInfo update( Dataset dataset, int batchSize )
     {
         RelateNodesBatchCommand command = new RelateNodesBatchCommand( domainEntityInfo, batchSize,
-                relationshipType, direction, cardinality, uniqueness, nodeFinder, true );
+                relationshipType, direction, cardinality, uniqueness, nodeFinder, new EndNodeIdCollector() );
         return dataset.execute( command );
     }
 
@@ -92,7 +89,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
         RelateNodesBatchCommand command = new RelateNodesBatchCommand( domainEntityInfo, batchSize,
-                relationshipType, direction, cardinality, uniqueness, nodeFinder, false );
+                relationshipType, direction, cardinality, uniqueness, nodeFinder, NullEndNodeIdCollector.INSTANCE );
         dataset.execute( command );
     }
 
@@ -113,15 +110,14 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
         private final RelationshipType relationshipType;
         private final Direction direction;
         private final Distribution distribution;
-        private final boolean captureEndNodeIds;
+        private final NodeIdCollector endNodeIdCollector;
         private long totalRels = 0;
-        private Set<Long> endNodeIds = new HashSet<Long>();
 
         public RelateNodesBatchCommand( DomainEntityInfo startNodeDomainEntityInfo, int batchSize,
                                         RelationshipType relationshipType,
                                         Direction direction, Range cardinality,
                                         Uniqueness uniqueness,
-                                        NodeFinder nodeFinder, boolean captureEndNodeIds )
+                                        NodeFinder nodeFinder, NodeIdCollector endNodeIdCollector )
         {
             this.startNodeDomainEntityInfo = startNodeDomainEntityInfo;
             this.batchSize = batchSize;
@@ -130,7 +126,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
             this.cardinality = cardinality;
             this.uniqueness = uniqueness;
             this.nodeFinder = nodeFinder;
-            this.captureEndNodeIds = captureEndNodeIds;
+            this.endNodeIdCollector = endNodeIdCollector;
 
             distribution = Distribution.flatDistribution();
         }
@@ -158,10 +154,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
             Iterable<Node> nodes = nodeFinder.getNodes( db, firstNode, numberOfRels, random );
             for ( Node secondNode : nodes )
             {
-                if ( captureEndNodeIds )
-                {
-                    endNodeIds.add( secondNode.getId() );
-                }
+                endNodeIdCollector.add( secondNode.getId() );
                 uniqueness.apply( db, firstNode, secondNode, relationshipType, direction );
             }
         }
@@ -203,7 +196,7 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
         @Override
         public DomainEntityInfo results()
         {
-            return new DomainEntityInfo( nodeFinder.entityName(), new ArrayList<Long>( endNodeIds ) );
+            return new DomainEntityInfo( nodeFinder.entityName(), endNodeIdCollector.nodeIds() );
         }
     }
 }

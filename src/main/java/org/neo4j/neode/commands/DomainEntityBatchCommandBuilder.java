@@ -1,7 +1,5 @@
 package org.neo4j.neode.commands;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -33,7 +31,7 @@ public class DomainEntityBatchCommandBuilder implements Update
     public DomainEntityInfo update( Dataset dataset, int batchSize )
     {
         DomainEntityBatchCommand command =
-                new DomainEntityBatchCommand( domainEntity, numberOfIterations, batchSize, true );
+                new DomainEntityBatchCommand( domainEntity, numberOfIterations, batchSize, new EndNodeIdCollector() );
         return dataset.execute( command );
     }
 
@@ -47,7 +45,8 @@ public class DomainEntityBatchCommandBuilder implements Update
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
         DomainEntityBatchCommand command =
-                new DomainEntityBatchCommand( domainEntity, numberOfIterations, batchSize, false );
+                new DomainEntityBatchCommand( domainEntity, numberOfIterations, batchSize,
+                        NullEndNodeIdCollector.INSTANCE );
         dataset.execute( command );
     }
 
@@ -62,17 +61,15 @@ public class DomainEntityBatchCommandBuilder implements Update
         private final DomainEntity domainEntity;
         private final int numberOfIterations;
         private final int batchSize;
-        private final List<Long> nodeIds;
-        private final boolean captureNodeIds;
+        private final NodeIdCollector endNodeIdCollector;
 
         public DomainEntityBatchCommand( DomainEntity domainEntity, int numberOfIterations,
-                                         int batchSize, boolean captureNodeIds )
+                                         int batchSize, NodeIdCollector endNodeIdCollector )
         {
             this.domainEntity = domainEntity;
             this.numberOfIterations = numberOfIterations;
             this.batchSize = batchSize;
-            this.captureNodeIds = captureNodeIds;
-            nodeIds = new ArrayList<Long>();
+            this.endNodeIdCollector = endNodeIdCollector;
         }
 
         @Override
@@ -90,11 +87,8 @@ public class DomainEntityBatchCommandBuilder implements Update
         @Override
         public void execute( GraphDatabaseService db, int index, Random random )
         {
-            Long nodeId = domainEntity.build( db, index );
-            if ( captureNodeIds )
-            {
-                nodeIds.add( nodeId );
-            }
+            Long nodeId = domainEntity.build( db, index, random );
+            endNodeIdCollector.add( nodeId );
         }
 
         @Override
@@ -124,7 +118,7 @@ public class DomainEntityBatchCommandBuilder implements Update
         @Override
         public DomainEntityInfo results()
         {
-            return new DomainEntityInfo( domainEntity.entityName(), nodeIds );
+            return new DomainEntityInfo( domainEntity.entityName(), endNodeIdCollector.nodeIds() );
         }
     }
 }

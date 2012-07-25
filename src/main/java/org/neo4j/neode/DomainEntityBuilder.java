@@ -4,6 +4,7 @@ import static java.util.Arrays.asList;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -42,13 +43,13 @@ public class DomainEntityBuilder
         }
 
         @Override
-        public Long build( GraphDatabaseService db, int index )
+        public Long build( GraphDatabaseService db, int index, Random random )
         {
             Node node = db.createNode();
             node.setProperty( "_label", entityName );
             for ( Property property : properties )
             {
-                property.setProperty( db, node, entityName, index );
+                property.setProperty( db, node, entityName, index, random );
             }
             return node.getId();
         }

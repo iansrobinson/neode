@@ -39,7 +39,7 @@ class GetOrCreateUniqueNodeFinder extends NodeFinder
         {
             if ( nodeIds.get( nodeIdIndex ) == null )
             {
-                nodeIds.set( nodeIdIndex, domainEntity.build( db, nodeIdIndex ) );
+                nodeIds.set( nodeIdIndex, domainEntity.build( db, nodeIdIndex, random ) );
             }
 
         }

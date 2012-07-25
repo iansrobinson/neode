@@ -4,7 +4,11 @@
  */
 package org.neo4j.neode.properties;
 
+import java.util.Random;
+
 import org.neo4j.graphdb.Node;
+import org.neo4j.neode.commands.Range;
+import org.neo4j.neode.numbergenerators.Distribution;
 
 public abstract class PropertyValueSetter
 {
@@ -23,5 +27,15 @@ public abstract class PropertyValueSetter
         return new NodeIdBasedStringPropertyValueSetter();
     }
 
-    public abstract Object setProperty( Node node, String propertyName, String entityName, int index );
+    public static PropertyValueSetter integerRangeBased( Range range, Distribution distribution )
+    {
+        return new RangeBasedIntegerPropertyValueSetter( range, distribution );
+    }
+
+    public static PropertyValueSetter integerRange( Range range )
+    {
+        return new RangeBasedIntegerPropertyValueSetter( range, Distribution.flatDistribution() );
+    }
+
+    public abstract Object setProperty( Node node, String propertyName, String entityName, int index, Random random );
 }
