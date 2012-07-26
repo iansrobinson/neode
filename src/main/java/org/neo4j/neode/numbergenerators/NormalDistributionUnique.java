@@ -4,10 +4,10 @@ import java.util.Random;
 
 class NormalDistributionUnique extends BaseUniqueDistribution
 {
-    protected int getNextNumber( int min, int upTo, Random random )
+    protected int getNextNumber( Range minMax, Random random )
     {
         double gaussian = random.nextGaussian();
-        int standardDeviation = upTo / 2;
-        return (int) (min + standardDeviation + (gaussian * standardDeviation));
+        int standardDeviation = minMax.max() / 2;
+        return (int) (minMax.min() + standardDeviation + (gaussian * standardDeviation));
     }
 }

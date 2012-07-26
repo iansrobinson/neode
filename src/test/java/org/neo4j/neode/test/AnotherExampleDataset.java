@@ -1,7 +1,7 @@
 package org.neo4j.neode.test;
 
 import static org.neo4j.neode.DomainEntity.domainEntity;
-import static org.neo4j.neode.commands.Range.minMax;
+import static org.neo4j.neode.numbergenerators.Range.minMax;
 import static org.neo4j.neode.properties.Property.indexableProperty;
 import static org.neo4j.neode.properties.PropertyValueSetter.integerRange;
 

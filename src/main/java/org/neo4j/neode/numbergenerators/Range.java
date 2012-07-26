@@ -1,4 +1,4 @@
-package org.neo4j.neode.commands;
+package org.neo4j.neode.numbergenerators;
 
 public class Range
 {
@@ -39,5 +39,24 @@ public class Range
     public int max()
     {
         return max;
+    }
+
+    public int difference()
+    {
+        return max - min;
+    }
+
+    public boolean isInRange( int value )
+    {
+        return value >= min() && value <= max;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Range{" +
+                "min=" + min +
+                ", max=" + max +
+                '}';
     }
 }

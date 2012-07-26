@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.neo4j.graphdb.Node;
+import org.neo4j.neode.numbergenerators.Range;
 import org.neo4j.neode.numbergenerators.Distribution;
 
 class ExistingNodesFinder
@@ -34,7 +35,7 @@ class ExistingNodesFinder
 
         int candidatePoolSize = (int) round( quantity * proportionOfCandidateNodesToRequiredNodes );
         List<Integer> candidatePoolIndexes = Distribution.flatDistribution()
-                .generate( candidatePoolSize, 0, candidatePoolSize - 1, random );
+                .generate( candidatePoolSize, Range.minMax(0, candidatePoolSize - 1), random );
 
         Iterator<Integer> candidatePoolIndexesIterator = candidatePoolIndexes.iterator();
         Iterator<Node> existingNodesIterator = graphQuery.execute( currentNode ).iterator();

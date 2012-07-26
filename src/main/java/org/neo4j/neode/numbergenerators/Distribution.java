@@ -11,16 +11,17 @@ public abstract class Distribution
 {
     public static Distribution flatDistribution()
     {
-        return new FlatDistributionUnique( );
+        return new FlatDistributionUnique();
     }
 
     public static Distribution normalDistribution()
     {
-        return new NormalDistributionUnique( );
+        return new NormalDistributionUnique();
     }
 
-    public abstract List<Integer> generate( int minNumberOfResults, int maxNumberOfResults,
-                                            int min, int max, Random random );
-    public abstract List<Integer> generate( int numberOfResults, int min, int max, Random random );
-    public abstract int generateSingle( int min, int max, Random random );
+    public abstract List<Integer> generate( Range numberOfResultsRange, Range range, Random random );
+
+    public abstract List<Integer> generate( int numberOfResults, Range range, Random random );
+
+    public abstract int generateSingle( Range range, Random random );
 }

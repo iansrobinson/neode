@@ -18,6 +18,7 @@ import org.neo4j.neode.DomainEntity;
 import org.neo4j.neode.DomainEntityInfo;
 import org.neo4j.neode.finders.NodeFinder;
 import org.neo4j.neode.logging.SysOutLog;
+import org.neo4j.neode.numbergenerators.Range;
 import org.neo4j.neode.test.Db;
 
 public class RelateNodesBatchCommandBuilderTest

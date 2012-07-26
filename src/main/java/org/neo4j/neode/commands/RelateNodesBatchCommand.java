@@ -10,6 +10,7 @@ import org.neo4j.neode.DomainEntityInfo;
 import org.neo4j.neode.finders.NodeFinder;
 import org.neo4j.neode.logging.Log;
 import org.neo4j.neode.numbergenerators.Distribution;
+import org.neo4j.neode.numbergenerators.Range;
 
 class RelateNodesBatchCommand implements BatchCommand
 {
@@ -59,7 +60,7 @@ class RelateNodesBatchCommand implements BatchCommand
     {
         Node firstNode = db.getNodeById( startNodes.nodeIds().get( index ) );
 
-        int numberOfRels = distribution.generateSingle( cardinality.min(), cardinality.max(), random );
+        int numberOfRels = distribution.generateSingle( cardinality, random );
         totalRels += numberOfRels;
 
         Iterable<Node> nodes = nodeFinder.getNodes( db, firstNode, numberOfRels, random );

@@ -1,5 +1,7 @@
 package org.neo4j.neode.finders;
 
+import static org.neo4j.neode.numbergenerators.Range.minMax;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -33,8 +35,8 @@ class GetOrCreateUniqueNodeFinder extends NodeFinder
     @Override
     public Iterable<Node> getNodes( final GraphDatabaseService db, Node currentNode, int numberOfNodes, Random random )
     {
-        final List<Integer> nodeIdIndexes = distribution.generate( numberOfNodes, 0,
-                maxNumberOfNodes - 1, random );
+        final List<Integer> nodeIdIndexes = distribution.generate( numberOfNodes, minMax( 0, maxNumberOfNodes - 1 ),
+                random );
         for ( Integer nodeIdIndex : nodeIdIndexes )
         {
             if ( nodeIds.get( nodeIdIndex ) == null )

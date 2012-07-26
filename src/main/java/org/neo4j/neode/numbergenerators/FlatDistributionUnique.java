@@ -4,8 +4,8 @@ import java.util.Random;
 
 class FlatDistributionUnique extends BaseUniqueDistribution
 {
-    protected int getNextNumber( int min, int upTo, Random random )
+    protected int getNextNumber( Range minMax, Random random )
     {
-        return min + random.nextInt( upTo + 1 );
+        return minMax.min() + random.nextInt( minMax.max() + 1 );
     }
 }

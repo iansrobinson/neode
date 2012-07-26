@@ -9,6 +9,7 @@ import org.neo4j.neode.commands.interfaces.RelationshipName;
 import org.neo4j.neode.commands.interfaces.To;
 import org.neo4j.neode.commands.interfaces.Update;
 import org.neo4j.neode.finders.NodeFinder;
+import org.neo4j.neode.numbergenerators.Range;
 
 public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Cardinality, Update
 {

@@ -2,8 +2,9 @@ package org.neo4j.neode.numbergenerators;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.neo4j.neode.numbergenerators.NormalDistributionUnique
-        .normalDistribution;
+import static org.neo4j.neode.numbergenerators.Range.exactly;
+import static org.neo4j.neode.numbergenerators.Range.minMax;
+import static org.neo4j.neode.numbergenerators.NormalDistributionUnique.normalDistribution;
 
 import java.util.List;
 import java.util.Random;
@@ -19,7 +20,7 @@ public class NormalDistributionUniqueTest
         Distribution generator = normalDistribution();
 
         // when
-        List<Integer> results = generator.generate( 5, 1, 5, new Random() );
+        List<Integer> results = generator.generate( 5, minMax( 1, 5 ), new Random() );
 
         // then
         assertTrue( results.contains( 1 ) );
@@ -36,7 +37,7 @@ public class NormalDistributionUniqueTest
         Distribution generator = normalDistribution();
 
         // when
-        int result = generator.generateSingle( 1, 1, new Random() );
+        int result = generator.generateSingle( exactly( 1 ), new Random() );
 
         // then
         assertEquals( 1, result );

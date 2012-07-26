@@ -1,6 +1,7 @@
 package org.neo4j.neode.numbergenerators;
 
 import static org.junit.Assert.assertEquals;
+import static org.neo4j.neode.numbergenerators.Range.minMax;
 
 import java.util.List;
 import java.util.Random;
@@ -10,86 +11,6 @@ import org.junit.Test;
 public class BaseUniqueNumberGeneratorTest
 {
     @Test
-    public void shouldThrowExceptionIfMaxNumberOfResultsLessThanMinNumberOfResults() throws Exception
-    {
-        // given
-        Distribution distribution = new DummyDistribution();
-
-        try
-        {
-            // when
-            distribution.generate( 1, 0, 1, 2, new Random() );
-        }
-        catch ( IllegalArgumentException e )
-        {
-            // then
-            assertEquals( "maxNumberOfResults must be greater than or equal to minNumberOfResults " +
-                    "[minNumberOfResults: 1, maxNumberOfResults: 0, min: 1, max: 2]", e.getMessage() );
-        }
-
-    }
-
-    @Test
-    public void shouldThrowExceptionIfMaxLessThanMin() throws Exception
-    {
-        // given
-        Distribution distribution = new DummyDistribution();
-
-        try
-        {
-            // when
-            distribution.generate( 1, 2, 1, 0, new Random() );
-        }
-        catch ( IllegalArgumentException e )
-        {
-            // then
-            assertEquals( "max must be greater than or equal to min " +
-                    "[minNumberOfResults: 1, maxNumberOfResults: 2, min: 1, max: 0]", e.getMessage() );
-        }
-
-    }
-
-    @Test
-    public void shouldThrowExceptionIfMinNumberOfResultsLessThanZero() throws Exception
-    {
-        // given
-        Distribution distribution = new DummyDistribution();
-
-        try
-        {
-            // when
-            distribution.generate( -1, 1, 0, 1, new Random() );
-        }
-        catch ( IllegalArgumentException e )
-        {
-            // then
-            assertEquals( "minNumberOfResults must be greater than or equal to zero " +
-                    "[minNumberOfResults: -1, maxNumberOfResults: 1, min: 0, max: 1]", e.getMessage() );
-        }
-
-    }
-
-    @Test
-    public void shouldThrowExceptionIfMinLessThanZero() throws Exception
-    {
-        // given
-        Distribution distribution = new DummyDistribution();
-
-        try
-        {
-            // when
-            distribution.generate( 0, 1, -1, 1, new Random() );
-        }
-        catch ( IllegalArgumentException e )
-        {
-            // then
-            assertEquals( "min must be greater than or equal to zero " +
-                    "[minNumberOfResults: 0, maxNumberOfResults: 1, min: -1, max: 1]", e.getMessage() );
-        }
-
-    }
-
-    @Test
     public void shouldThrowExceptionIfPossibleRangeSmallerThanMaxNumberOfResults() throws Exception
     {
         // given
@@ -98,13 +19,13 @@ public class BaseUniqueNumberGeneratorTest
         try
         {
             // when
-            distribution.generate( 0, 2, 1, 1, new Random() );
+            distribution.generate( minMax( 0, 2 ), minMax( 1, 1 ), new Random() );
         }
         catch ( IllegalArgumentException e )
         {
             // then
-            assertEquals( "(max - min + 1) must be greater or equal to maxNumberOfResults " +
-                    "[minNumberOfResults: 0, maxNumberOfResults: 2, min: 1, max: 1]", e.getMessage() );
+            assertEquals( "(range.difference() + 1) must be greater or equal to numberOfResultsRange.max() " +
+                    "[numberOfResultsRange: Range{min=0, max=2}, range: Range{min=1, max=1}]", e.getMessage() );
         }
 
     }
@@ -116,7 +37,7 @@ public class BaseUniqueNumberGeneratorTest
         Distribution distribution = new DummyDistribution();
 
         // when
-        List<Integer> results = distribution.generate( 0, 0, 0, 1, new Random() );
+        List<Integer> results = distribution.generate( minMax( 0, 0 ), minMax( 0, 1 ), new Random() );
 
         // then
         assertEquals( 0, results.size() );
@@ -125,7 +46,7 @@ public class BaseUniqueNumberGeneratorTest
     private class DummyDistribution extends BaseUniqueDistribution
     {
         @Override
-        protected int getNextNumber( int min, int upTo, Random random )
+        protected int getNextNumber( Range minMax, Random random )
         {
             return 0;
         }
