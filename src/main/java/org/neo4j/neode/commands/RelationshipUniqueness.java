@@ -4,13 +4,12 @@
  */
 package org.neo4j.neode.commands;
 
-import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.RelationshipType;
+import org.neo4j.graphdb.Relationship;
 
-public interface RelationshipUniqueness
+interface RelationshipUniqueness
 {
-    void apply( GraphDatabaseService db, Node firstNode, Node secondNode,
-                RelationshipType relationshipType, Direction direction );
+    Relationship createRelationship( GraphDatabaseService db, Node firstNode, Node secondNode,
+                                     RelationshipInfo relationshipInfo );
 }

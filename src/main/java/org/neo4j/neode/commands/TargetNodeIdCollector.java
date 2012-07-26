@@ -5,11 +5,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class EndNodeIdCollector implements NodeIdCollector
+class TargetNodeIdCollector implements NodeIdCollector
 {
     private final Set<Long> ids;
 
-    public EndNodeIdCollector( )
+    public TargetNodeIdCollector()
     {
         ids = new HashSet<Long>(  );
     }

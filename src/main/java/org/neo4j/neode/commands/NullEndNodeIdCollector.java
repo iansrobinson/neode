@@ -3,7 +3,7 @@ package org.neo4j.neode.commands;
 import java.util.Collections;
 import java.util.List;
 
-public class NullEndNodeIdCollector implements NodeIdCollector
+class NullEndNodeIdCollector implements NodeIdCollector
 {
     public static NodeIdCollector INSTANCE = new NullEndNodeIdCollector();
 

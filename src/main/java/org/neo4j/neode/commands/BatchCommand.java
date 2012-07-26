@@ -6,18 +6,19 @@ package org.neo4j.neode.commands;
 
 import java.util.Random;
 
-import org.neo4j.neode.DomainEntityInfo;
-import org.neo4j.neode.logging.Log;
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Node;
+import org.neo4j.neode.logging.Log;
 
-public interface BatchCommand
+public interface BatchCommand<T>
 {
     int numberOfIterations();
     int batchSize();
     void execute( GraphDatabaseService db, int index, Random random );
+    void execute( GraphDatabaseService db, Node firstNode, int index, Random random );
     String description();
     String shortDescription();
     void onBegin(Log log);
     void onEnd(Log log);
-    DomainEntityInfo results();
+    T results();
 }

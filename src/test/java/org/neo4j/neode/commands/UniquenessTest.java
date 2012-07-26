@@ -31,7 +31,8 @@ public class UniquenessTest
         Uniqueness uniqueness = Uniqueness.SINGLE_DIRECTION;
 
         // when
-        uniqueness.apply( db, firstNode, secondNode, friend_of, Direction.OUTGOING );
+        uniqueness.createRelationship( db, firstNode, secondNode,
+                new RelationshipInfo( friend_of, Direction.OUTGOING ) );
         tx.success();
         tx.finish();
 
@@ -56,7 +57,8 @@ public class UniquenessTest
         Uniqueness uniqueness = Uniqueness.SINGLE_DIRECTION;
 
         // when
-        uniqueness.apply( db, firstNode, secondNode, friend_of, Direction.OUTGOING );
+        uniqueness.createRelationship( db, firstNode, secondNode,
+                new RelationshipInfo( friend_of, Direction.OUTGOING ) );
         tx.success();
         tx.finish();
 
@@ -81,7 +83,8 @@ public class UniquenessTest
         Uniqueness uniqueness = Uniqueness.BOTH_DIRECTIONS;
 
         // when
-        uniqueness.apply( db, firstNode, secondNode, friend_of, Direction.OUTGOING );
+        uniqueness.createRelationship( db, firstNode, secondNode,
+                new RelationshipInfo( friend_of, Direction.OUTGOING ) );
         tx.success();
         tx.finish();
 
@@ -106,7 +109,8 @@ public class UniquenessTest
         Uniqueness uniqueness = Uniqueness.BOTH_DIRECTIONS;
 
         // when
-        uniqueness.apply( db, firstNode, secondNode, friend_of, Direction.OUTGOING );
+        uniqueness.createRelationship( db, firstNode, secondNode,
+                new RelationshipInfo( friend_of, Direction.OUTGOING ) );
         tx.success();
         tx.finish();
 
@@ -130,7 +134,8 @@ public class UniquenessTest
         Uniqueness uniqueness = Uniqueness.ALLOW_MULTIPLE;
 
         // when
-        uniqueness.apply( db, firstNode, secondNode, friend_of, Direction.OUTGOING );
+        uniqueness.createRelationship( db, firstNode, secondNode,
+                new RelationshipInfo( friend_of, Direction.OUTGOING ) );
         tx.success();
         tx.finish();
 
@@ -156,7 +161,8 @@ public class UniquenessTest
         Uniqueness uniqueness = Uniqueness.ALLOW_MULTIPLE;
 
         // when
-        uniqueness.apply( db, firstNode, secondNode, friend_of, Direction.OUTGOING );
+        uniqueness.createRelationship( db, firstNode, secondNode,
+                new RelationshipInfo( friend_of, Direction.OUTGOING ) );
         tx.success();
         tx.finish();
 

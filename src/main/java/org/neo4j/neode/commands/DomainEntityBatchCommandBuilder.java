@@ -3,13 +3,13 @@ package org.neo4j.neode.commands;
 import org.neo4j.neode.Dataset;
 import org.neo4j.neode.DomainEntity;
 import org.neo4j.neode.DomainEntityInfo;
-import org.neo4j.neode.commands.interfaces.Update;
+import org.neo4j.neode.commands.interfaces.UpdateDataset;
 
-public class DomainEntityBatchCommandBuilder implements Update
+public class DomainEntityBatchCommandBuilder implements UpdateDataset
 {
     private static final int DEFAULT_BATCH_SIZE = 20000;
 
-    private DomainEntity domainEntity;
+    private final DomainEntity domainEntity;
     private int numberOfIterations = 0;
 
     public DomainEntityBatchCommandBuilder( DomainEntity domainEntity )
@@ -27,7 +27,7 @@ public class DomainEntityBatchCommandBuilder implements Update
     public DomainEntityInfo update( Dataset dataset, int batchSize )
     {
         DomainEntityBatchCommand command =
-                new DomainEntityBatchCommand( domainEntity, numberOfIterations, batchSize, new EndNodeIdCollector() );
+                new DomainEntityBatchCommand( domainEntity, numberOfIterations, batchSize, new TargetNodeIdCollector() );
         return dataset.execute( command );
     }
 

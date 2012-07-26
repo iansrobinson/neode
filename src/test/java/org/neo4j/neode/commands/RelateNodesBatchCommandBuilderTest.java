@@ -4,6 +4,9 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
+import static org.neo4j.neode.DomainEntity.createEntities;
+import static org.neo4j.neode.DomainEntity.domainEntity;
+import static org.neo4j.neode.commands.RelationshipDescription.entities;
 
 import java.util.Random;
 
@@ -30,10 +33,10 @@ public class RelateNodesBatchCommandBuilderTest
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = executor.newDataset( "Test" );
-        DomainEntityInfo users = DomainEntity.createEntities( DomainEntity.domainEntity( "user" ).build() ).quantity( 3 )
+        DomainEntityInfo users = createEntities( domainEntity( "user" ).build() ).quantity( 3 )
                 .update( dataset );
-        DomainEntity product = DomainEntity.domainEntity( "product" ).build();
-        final DomainEntityInfo products = DomainEntity.createEntities( product ).quantity( 3 ).update( dataset );
+        DomainEntity product = domainEntity( "product" ).build();
+        final DomainEntityInfo products = createEntities( product ).quantity( 3 ).update( dataset );
         NodeFinder nodeFinder = new NodeFinder()
         {
             int index = 0;
@@ -53,8 +56,11 @@ public class RelateNodesBatchCommandBuilderTest
         };
 
         // when
-        DomainEntity.relateEntities( users ).to( nodeFinder ).relationship( withName( "BOUGHT" ) )
-                .cardinality( Range.exactly( 1 ) ).update( dataset );
+        DomainEntity.relateEntities( users ).to(
+                entities( nodeFinder )
+                        .relationship( withName( "BOUGHT" ) )
+                        .relationshipConstraints( Range.exactly( 1 ) ) )
+                .update( dataset );
 
         // then
         DynamicRelationshipType bought = withName( "BOUGHT" );

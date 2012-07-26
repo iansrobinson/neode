@@ -1,26 +1,16 @@
 package org.neo4j.neode.commands;
 
-import org.neo4j.graphdb.Direction;
-import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.neode.Dataset;
 import org.neo4j.neode.DomainEntityInfo;
-import org.neo4j.neode.commands.interfaces.Cardinality;
-import org.neo4j.neode.commands.interfaces.RelationshipName;
-import org.neo4j.neode.commands.interfaces.To;
-import org.neo4j.neode.commands.interfaces.Update;
-import org.neo4j.neode.finders.NodeFinder;
-import org.neo4j.neode.numbergenerators.Range;
+import org.neo4j.neode.commands.interfaces.CreateRelationshipDescription;
+import org.neo4j.neode.commands.interfaces.UpdateDataset;
 
-public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Cardinality, Update
+public class RelateNodesBatchCommandBuilder implements CreateRelationshipDescription, UpdateDataset
 {
     private static final int DEFAULT_BATCH_SIZE = 10000;
 
-    private DomainEntityInfo domainEntityInfo;
-    private Range cardinality;
-    private Uniqueness uniqueness;
-    private NodeFinder nodeFinder;
-    private RelationshipType relationshipType;
-    private Direction direction;
+    private final DomainEntityInfo domainEntityInfo;
+    private RelationshipDescription entities;
 
     public RelateNodesBatchCommandBuilder( DomainEntityInfo domainEntityInfo )
     {
@@ -28,49 +18,17 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
     }
 
     @Override
-    public RelationshipName to( NodeFinder nodeFinder )
+    public UpdateDataset to( RelationshipDescription entities )
     {
-        this.nodeFinder = nodeFinder;
-        return this;
-    }
-
-    @Override
-    public Update cardinality( Range value )
-    {
-        cardinality = value;
-        uniqueness = Uniqueness.ALLOW_MULTIPLE;
-        return this;
-    }
-
-    @Override
-    public Update cardinality( Range value, Uniqueness uniqueness )
-    {
-        cardinality = value;
-        this.uniqueness = uniqueness;
-        return this;
-    }
-
-    @Override
-    public Cardinality relationship( RelationshipType value )
-    {
-        relationshipType = value;
-        direction = Direction.OUTGOING;
-        return this;
-    }
-
-    @Override
-    public Cardinality relationship( RelationshipType value, Direction direction )
-    {
-        relationshipType = value;
-        this.direction = direction;
+        this.entities = entities;
         return this;
     }
 
     @Override
     public DomainEntityInfo update( Dataset dataset, int batchSize )
     {
-        RelateNodesBatchCommand command = new RelateNodesBatchCommand( domainEntityInfo, batchSize,
-                relationshipType, direction, cardinality, uniqueness, nodeFinder, new EndNodeIdCollector() );
+        RelateNodesBatchCommand command = new RelateNodesBatchCommand( domainEntityInfo, entities,
+                new TargetNodeIdCollector(), batchSize );
         return dataset.execute( command );
     }
 
@@ -83,8 +41,8 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
     @Override
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
-        RelateNodesBatchCommand command = new RelateNodesBatchCommand( domainEntityInfo, batchSize,
-                relationshipType, direction, cardinality, uniqueness, nodeFinder, NullEndNodeIdCollector.INSTANCE );
+        RelateNodesBatchCommand command = new RelateNodesBatchCommand( domainEntityInfo, entities,
+                NullEndNodeIdCollector.INSTANCE, batchSize );
         dataset.execute( command );
     }
 
@@ -93,6 +51,4 @@ public class RelateNodesBatchCommandBuilder implements To, RelationshipName, Car
     {
         updateNoReturn( dataset, DEFAULT_BATCH_SIZE );
     }
-
-
 }

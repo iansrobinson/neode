@@ -5,14 +5,15 @@ import static org.neo4j.neode.DomainEntity.createEntities;
 import static org.neo4j.neode.DomainEntity.domainEntity;
 import static org.neo4j.neode.DomainEntity.relateEntities;
 import static org.neo4j.neode.DomainEntityInfo.approxPercent;
-import static org.neo4j.neode.numbergenerators.Range.exactly;
-import static org.neo4j.neode.numbergenerators.Range.minMax;
+import static org.neo4j.neode.commands.RelationshipDescription.entities;
 import static org.neo4j.neode.finders.GraphQuery.traversal;
 import static org.neo4j.neode.finders.NodeFinder.contextualGetOrCreate;
 import static org.neo4j.neode.finders.NodeFinder.getExisting;
 import static org.neo4j.neode.finders.NodeFinder.getOrCreate;
 import static org.neo4j.neode.numbergenerators.Distribution.flatDistribution;
 import static org.neo4j.neode.numbergenerators.Distribution.normalDistribution;
+import static org.neo4j.neode.numbergenerators.Range.exactly;
+import static org.neo4j.neode.numbergenerators.Range.minMax;
 import static org.neo4j.neode.properties.Property.indexableProperty;
 import static org.neo4j.neode.properties.Property.property;
 
@@ -79,28 +80,28 @@ public class ExampleDataset
                 .quantity( 10 )
                 .update( dataset );
 
-        DomainEntityInfo topics = relateEntities( users )
-                .to( getOrCreate( topic, 10, normalDistribution() ) )
-                .relationship( withName( "INTERESTED_IN" ) )
-                .cardinality( minMax( 1, 3 ) )
+        DomainEntityInfo topics = relateEntities( users ).to(
+                entities( getOrCreate( topic, 10, normalDistribution() ) )
+                        .relationship( withName( "INTERESTED_IN" ) )
+                        .relationshipConstraints( minMax( 1, 3 ) ) )
                 .update( dataset );
 
-        relateEntities( users )
-                .to( getOrCreate( company, 2, flatDistribution() ) )
-                .relationship( withName( "WORKS_FOR" ) )
-                .cardinality( exactly( 1 ) )
+        relateEntities( users ).to(
+                entities( getOrCreate( company, 2, flatDistribution() ) )
+                        .relationship( withName( "WORKS_FOR" ) )
+                        .relationshipConstraints( exactly( 1 ) ) )
                 .update( dataset );
 
-        DomainEntityInfo allProjects = relateEntities( users )
-                .to( contextualGetOrCreate( project, traversal( findCompanyProjects ), 1.2 ) )
-                .relationship( withName( "WORKED_ON" ) )
-                .cardinality( minMax( 1, 3 ) )
+        DomainEntityInfo allProjects = relateEntities( users ).to(
+                entities( contextualGetOrCreate( project, traversal( findCompanyProjects ), 1.2 ) )
+                        .relationship( withName( "WORKED_ON" ) )
+                        .relationshipConstraints( minMax( 1, 3 ) ) )
                 .update( dataset );
 
-        relateEntities( approxPercent( 30, users ) )
-                .to( getExisting( allProjects ) )
-                .relationship( withName( "WORKED_ON" ) )
-                .cardinality( minMax( 1, 2 ), Uniqueness.SINGLE_DIRECTION )
+        relateEntities( approxPercent( 30, users ) ).to(
+                entities( getExisting( allProjects ) )
+                        .relationship( withName( "WORKED_ON" ) )
+                        .relationshipConstraints( minMax( 1, 2 ), Uniqueness.SINGLE_DIRECTION ) )
                 .update( dataset );
 
         dataset.end();

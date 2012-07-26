@@ -3,11 +3,12 @@ package org.neo4j.neode.commands;
 import java.util.Random;
 
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Node;
 import org.neo4j.neode.DomainEntity;
 import org.neo4j.neode.DomainEntityInfo;
 import org.neo4j.neode.logging.Log;
 
-class DomainEntityBatchCommand implements BatchCommand
+class DomainEntityBatchCommand implements BatchCommand<DomainEntityInfo>
 {
     private final DomainEntity domainEntity;
     private final int numberOfIterations;
@@ -40,6 +41,12 @@ class DomainEntityBatchCommand implements BatchCommand
     {
         Long nodeId = domainEntity.build( db, index, random );
         endNodeIdCollector.add( nodeId );
+    }
+
+    @Override
+    public void execute( GraphDatabaseService db, Node firstNode, int index, Random random )
+    {
+        execute( db, index, random );
     }
 
     @Override

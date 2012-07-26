@@ -26,7 +26,7 @@ public class Dataset
         log.write( String.format( "Begin [%s]\n", description ) );
     }
 
-    public DomainEntityInfo execute( BatchCommand command )
+    public <T> T execute( BatchCommand<T> command )
     {
         long startTime = System.nanoTime();
 
