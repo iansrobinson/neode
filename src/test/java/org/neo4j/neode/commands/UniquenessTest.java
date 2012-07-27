@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 
 import java.util.Iterator;
+import java.util.Random;
 
 import org.junit.Test;
 import org.neo4j.graphdb.Direction;
@@ -32,7 +33,7 @@ public class UniquenessTest
 
         // when
         uniqueness.createRelationship( db, firstNode, secondNode,
-                new RelationshipInfo( friend_of, Direction.OUTGOING ) );
+                new RelationshipInfo( friend_of, Direction.OUTGOING ), new Random() );
         tx.success();
         tx.finish();
 
@@ -58,7 +59,7 @@ public class UniquenessTest
 
         // when
         uniqueness.createRelationship( db, firstNode, secondNode,
-                new RelationshipInfo( friend_of, Direction.OUTGOING ) );
+                new RelationshipInfo( friend_of, Direction.OUTGOING ), new Random() );
         tx.success();
         tx.finish();
 
@@ -84,7 +85,7 @@ public class UniquenessTest
 
         // when
         uniqueness.createRelationship( db, firstNode, secondNode,
-                new RelationshipInfo( friend_of, Direction.OUTGOING ) );
+                new RelationshipInfo( friend_of, Direction.OUTGOING ), new Random() );
         tx.success();
         tx.finish();
 
@@ -110,7 +111,7 @@ public class UniquenessTest
 
         // when
         uniqueness.createRelationship( db, firstNode, secondNode,
-                new RelationshipInfo( friend_of, Direction.OUTGOING ) );
+                new RelationshipInfo( friend_of, Direction.OUTGOING ), new Random() );
         tx.success();
         tx.finish();
 
@@ -135,7 +136,7 @@ public class UniquenessTest
 
         // when
         uniqueness.createRelationship( db, firstNode, secondNode,
-                new RelationshipInfo( friend_of, Direction.OUTGOING ) );
+                new RelationshipInfo( friend_of, Direction.OUTGOING ), new Random() );
         tx.success();
         tx.finish();
 
@@ -162,7 +163,7 @@ public class UniquenessTest
 
         // when
         uniqueness.createRelationship( db, firstNode, secondNode,
-                new RelationshipInfo( friend_of, Direction.OUTGOING ) );
+                new RelationshipInfo( friend_of, Direction.OUTGOING ), new Random() );
         tx.success();
         tx.finish();
 

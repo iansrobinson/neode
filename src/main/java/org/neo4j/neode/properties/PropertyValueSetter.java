@@ -6,7 +6,7 @@ package org.neo4j.neode.properties;
 
 import java.util.Random;
 
-import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.PropertyContainer;
 import org.neo4j.neode.numbergenerators.Range;
 import org.neo4j.neode.numbergenerators.Distribution;
 
@@ -24,18 +24,19 @@ public abstract class PropertyValueSetter
 
     public static PropertyValueSetter nodeIdBased()
     {
-        return new NodeIdBasedStringPropertyValueSetter();
+        return new IdBasedStringPropertyValueSetter();
     }
 
-    public static PropertyValueSetter integerRangeBased( Range range, Distribution distribution )
+    public static PropertyValueSetter integerRange( int min, int max, Distribution distribution )
     {
-        return new RangeBasedIntegerPropertyValueSetter( range, distribution );
+        return new RangeBasedIntegerPropertyValueSetter( Range.minMax( min, max ), distribution );
     }
 
-    public static PropertyValueSetter integerRange( Range range )
+    public static PropertyValueSetter integerRange( int min, int max )
     {
-        return new RangeBasedIntegerPropertyValueSetter( range, Distribution.flatDistribution() );
+        return new RangeBasedIntegerPropertyValueSetter( Range.minMax( min, max ), Distribution.flatDistribution() );
     }
 
-    public abstract Object setProperty( Node node, String propertyName, String entityName, int index, Random random );
+    public abstract Object setProperty( PropertyContainer propertyContainer, String propertyName, String entityName,
+                                        int index, Random random );
 }

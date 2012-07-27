@@ -1,22 +1,30 @@
 package org.neo4j.neode.commands;
 
+import static java.util.Arrays.asList;
 import static org.neo4j.kernel.Traversal.expanderForTypes;
+
+import java.util.List;
+import java.util.Random;
 
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Expander;
+import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
+import org.neo4j.neode.properties.Property;
 
 class RelationshipInfo
 {
     private final RelationshipType relationshipType;
     private final Direction direction;
+    private final List<Property> properties;
 
-    public RelationshipInfo( RelationshipType relationshipType, Direction direction )
+    public RelationshipInfo( RelationshipType relationshipType, Direction direction, Property... properties )
     {
         this.relationshipType = relationshipType;
         this.direction = direction;
+        this.properties = asList( properties );
     }
 
     public String description()
@@ -31,16 +39,22 @@ class RelationshipInfo
         return String.format( "%s[:%s]%s", relStart, relationshipType.name(), relEnd );
     }
 
-    public Relationship createRelationship( Node firstNode, Node secondNode )
+    public Relationship createRelationship( Node firstNode, Node secondNode, GraphDatabaseService db, Random random )
     {
+        Relationship rel;
         if ( direction.equals( Direction.OUTGOING ) )
         {
-            return firstNode.createRelationshipTo( secondNode, relationshipType );
+            rel = firstNode.createRelationshipTo( secondNode, relationshipType );
         }
         else
         {
-            return secondNode.createRelationshipTo( firstNode, relationshipType );
+            rel = secondNode.createRelationshipTo( firstNode, relationshipType );
         }
+        for ( Property property : properties )
+        {
+            property.setProperty( rel, db, relationshipType.name(), 0, random );
+        }
+        return rel;
     }
 
     public Expander expander()

@@ -22,16 +22,17 @@ class RelationshipConstraints
         this.distribution = Distribution.flatDistribution();
     }
 
-    public int calculateNumberOfRelsToCreate(Random random)
+    public int calculateNumberOfRelsToCreate( Random random )
     {
         return distribution.generateSingle( cardinality, random );
     }
 
-    public Relationship addRelationshipToCurrentNode( GraphDatabaseService db, Node firstNode, Node targetNode,
+    public Relationship addRelationshipToCurrentNode( Node currentNode, Node targetNode, GraphDatabaseService db,
                                                       NodeIdCollector targetNodeIdCollector,
-                                                      RelationshipInfo relationshipInfo )
+                                                      RelationshipInfo relationshipInfo, Random random )
     {
-        Relationship relationship = uniqueness.createRelationship( db, firstNode, targetNode, relationshipInfo );
+        Relationship relationship = uniqueness.createRelationship( db, currentNode, targetNode,
+                relationshipInfo, random );
         if ( relationship != null )
         {
             targetNodeIdCollector.add( targetNode.getId() );

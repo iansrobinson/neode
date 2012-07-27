@@ -35,8 +35,8 @@ public class RelationshipDescription
         for ( Node targetNode : targetNodes )
         {
             Relationship relationship = relationshipConstraints
-                    .addRelationshipToCurrentNode( db, currentNode, targetNode, targetNodeIdCollector,
-                            relationshipInfo );
+                    .addRelationshipToCurrentNode( currentNode, targetNode, db, targetNodeIdCollector,
+                            relationshipInfo, random );
             if ( relationship != null )
             {
                 count++;

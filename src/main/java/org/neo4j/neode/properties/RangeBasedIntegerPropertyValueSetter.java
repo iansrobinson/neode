@@ -2,7 +2,7 @@ package org.neo4j.neode.properties;
 
 import java.util.Random;
 
-import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.PropertyContainer;
 import org.neo4j.neode.numbergenerators.Range;
 import org.neo4j.neode.numbergenerators.Distribution;
 
@@ -18,10 +18,10 @@ class RangeBasedIntegerPropertyValueSetter extends PropertyValueSetter
     }
 
     @Override
-    public Object setProperty( Node node, String propertyName, String entityName, int index, Random random )
+    public Object setProperty( PropertyContainer propertyContainer, String propertyName, String entityName, int index, Random random )
     {
         int value = distribution.generateSingle( range, random );
-        node.setProperty( propertyName, value );
+        propertyContainer.setProperty( propertyName, value );
         return value;
     }
 }

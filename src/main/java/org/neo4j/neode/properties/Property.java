@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.PropertyContainer;
 import org.neo4j.graphdb.index.Index;
 
 public class Property
@@ -40,16 +41,17 @@ public class Property
         this.isIndexable = isIndexable;
     }
 
-    public void setProperty( GraphDatabaseService db, Node node, String entityName, int index, Random random )
+    public void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String entityName,
+                             int index, Random random )
     {
-        Object value = propertyValueSetter.setProperty( node, propertyName, entityName, index, random );
-        if ( isIndexable )
+        Object value = propertyValueSetter.setProperty( propertyContainer, propertyName, entityName, index, random );
+        if ( isIndexable && propertyContainer instanceof Node)
         {
             if ( nodeIndex == null )
             {
                 nodeIndex = db.index().forNodes( entityName );
             }
-            nodeIndex.add( node, propertyName, value );
+            nodeIndex.add( (Node) propertyContainer, propertyName, value );
         }
     }
 }

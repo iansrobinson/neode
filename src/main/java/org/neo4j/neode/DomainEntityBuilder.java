@@ -49,7 +49,7 @@ public class DomainEntityBuilder
             node.setProperty( "_label", entityName );
             for ( Property property : properties )
             {
-                property.setProperty( db, node, entityName, index, random );
+                property.setProperty( node, db, entityName, index, random );
             }
             return node;
         }

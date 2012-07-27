@@ -5,6 +5,7 @@ import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.neode.commands.interfaces.SetRelationshipConstraints;
 import org.neo4j.neode.commands.interfaces.SetRelationshipInfo;
 import org.neo4j.neode.numbergenerators.Range;
+import org.neo4j.neode.properties.Property;
 
 public class RelationshipDescriptionBuilder implements SetRelationshipInfo, SetRelationshipConstraints
 {
@@ -18,16 +19,17 @@ public class RelationshipDescriptionBuilder implements SetRelationshipInfo, SetR
     }
 
     @Override
-    public RelationshipDescriptionBuilder relationship( RelationshipType relationshipType, Direction direction )
+    public RelationshipDescriptionBuilder relationship( RelationshipType relationshipType, Direction direction,
+                                                        Property... properties )
     {
-        relationshipInfo = new RelationshipInfo( relationshipType, direction );
+        relationshipInfo = new RelationshipInfo( relationshipType, direction, properties );
         return this;
     }
 
     @Override
-    public RelationshipDescriptionBuilder relationship( RelationshipType relationshipType )
+    public RelationshipDescriptionBuilder relationship( RelationshipType relationshipType, Property... properties )
     {
-        relationshipInfo = new RelationshipInfo( relationshipType, Direction.OUTGOING );
+        relationshipInfo = new RelationshipInfo( relationshipType, Direction.OUTGOING, properties );
         return this;
     }
 
