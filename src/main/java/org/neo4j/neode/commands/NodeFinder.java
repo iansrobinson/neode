@@ -41,19 +41,19 @@ public abstract class NodeFinder
                         flatDistribution() ) );
     }
 
-    public static NodeFinder getOrCreate( DomainEntity domainEntity, int maxNumberOfNodes,
+    public static NodeFinder getOrCreate( DomainEntity domainEntity, int totalNumberOfEntities,
                                           Distribution distribution )
     {
-        return new GetOrCreateUniqueNodeFinder( domainEntity, maxNumberOfNodes, distribution );
+        return new GetOrCreateUniqueNodeFinder( domainEntity, totalNumberOfEntities, distribution );
     }
 
-    public static NodeFinder getOrCreate( DomainEntity domainEntity, int maxNumberOfNodes )
+    public static NodeFinder getOrCreate( DomainEntity domainEntity, int totalNumberOfEntities )
     {
-        return new GetOrCreateUniqueNodeFinder( domainEntity, maxNumberOfNodes, Distribution.flatDistribution() );
+        return new GetOrCreateUniqueNodeFinder( domainEntity, totalNumberOfEntities, Distribution.flatDistribution() );
     }
 
-    abstract Iterable<Node> getNodes( GraphDatabaseService db, Node currentNode,
-                                      int numberOfNodes, Random random );
+    abstract Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode,
+                                      Random random );
 
     abstract String entityName();
 }

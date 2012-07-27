@@ -64,7 +64,7 @@ public class RelationshipDescription
     private Iterable<Node> getRandomSelectionOfNodes( GraphDatabaseService db, Node firstNode, Random random )
     {
         int numberOfRelsToCreate = relationshipConstraints.calculateNumberOfRelsToCreate( random );
-        return nodeFinder.getNodes( db, firstNode, numberOfRelsToCreate, random );
+        return nodeFinder.getNodes( numberOfRelsToCreate, db, firstNode, random );
     }
 
 }

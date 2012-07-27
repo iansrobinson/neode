@@ -40,7 +40,7 @@ public class RelateNodesBatchCommandBuilderTest
             int index = 0;
 
             @Override
-            public Iterable<Node> getNodes( GraphDatabaseService db, Node currentNode, int numberOfNodes,
+            public Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode,
                                             Random random )
             {
                 return asList( db.getNodeById( products.nodeIds().get( index++ ) ) );

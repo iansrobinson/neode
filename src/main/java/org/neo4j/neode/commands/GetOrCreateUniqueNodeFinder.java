@@ -15,30 +15,29 @@ import org.neo4j.neode.numbergenerators.Distribution;
 class GetOrCreateUniqueNodeFinder extends NodeFinder
 {
     private final DomainEntity domainEntity;
-    private final int maxNumberOfNodes;
+    private final int totalNumberOfNodes;
     private final Distribution distribution;
     private final List<Long> nodeIds;
 
-    GetOrCreateUniqueNodeFinder( DomainEntity domainEntity, int maxNumberOfNodes,
-                                 Distribution distribution )
+    GetOrCreateUniqueNodeFinder( DomainEntity domainEntity, int totalNumberOfNodes, Distribution distribution )
     {
         this.domainEntity = domainEntity;
-        this.maxNumberOfNodes = maxNumberOfNodes;
+        this.totalNumberOfNodes = totalNumberOfNodes;
         this.distribution = distribution;
-        nodeIds = new ArrayList<Long>( maxNumberOfNodes );
-        for ( int i = 0; i < maxNumberOfNodes; i++ )
+        nodeIds = new ArrayList<Long>( totalNumberOfNodes );
+        for ( int i = 0; i < totalNumberOfNodes; i++ )
         {
             nodeIds.add( null );
         }
     }
 
     @Override
-    public Iterable<Node> getNodes( final GraphDatabaseService db, Node currentNode, int numberOfNodes, Random random )
+    public Iterable<Node> getNodes( int quantity, final GraphDatabaseService db, Node currentNode, Random random )
     {
         final List<Integer> nodeIdIndexes;
         try
         {
-            nodeIdIndexes = distribution.generateList( numberOfNodes, minMax( 0, maxNumberOfNodes - 1 ), random );
+            nodeIdIndexes = distribution.generateList( quantity, minMax( 0, totalNumberOfNodes - 1 ), random );
 
         }
         catch ( IllegalArgumentException e )
@@ -48,8 +47,9 @@ class GetOrCreateUniqueNodeFinder extends NodeFinder
                     "nodes specified in the relationship constraint. Maximum number of nodes in relationship " +
                     "constraint: %s. Maximum number of nodes to get or create: %s. Either reduce the range in the " +
                     "relationship constraint or increase the number of nodes to get or create.",
-                    domainEntity.entityName(), numberOfNodes, maxNumberOfNodes ) );
+                    domainEntity.entityName(), quantity, totalNumberOfNodes ) );
         }
+
         for ( Integer nodeIdIndex : nodeIdIndexes )
         {
             if ( nodeIds.get( nodeIdIndex ) == null )

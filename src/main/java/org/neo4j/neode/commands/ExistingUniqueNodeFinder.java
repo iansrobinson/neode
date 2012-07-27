@@ -23,13 +23,13 @@ class ExistingUniqueNodeFinder extends NodeFinder
     }
 
     @Override
-    public Iterable<Node> getNodes( final GraphDatabaseService db, Node currentNode, int numberOfNodes, Random random )
+    public Iterable<Node> getNodes( int quantity, final GraphDatabaseService db, Node currentNode, Random random )
     {
         final List<Integer> indexes;
         try
         {
             indexes = distribution.generateList(
-                    numberOfNodes,
+                    quantity,
                     minMax( 0, domainEntityInfo.nodeIds().size() - 1 ),
                     random );
         }
@@ -40,7 +40,7 @@ class ExistingUniqueNodeFinder extends NodeFinder
                     "nodes specified when applying the relationship constraint. Number of nodes specified by "  +
                     "relationship constraint: %s. Maximum number of nodes available: %s. Either adjust the " +
                     "relationship constraint or increase the number of nodes available.",
-                    domainEntityInfo.entityName(), numberOfNodes, domainEntityInfo.nodeIds().size() ) );
+                    domainEntityInfo.entityName(), quantity, domainEntityInfo.nodeIds().size() ) );
         }
         return new Iterable<Node>()
         {
