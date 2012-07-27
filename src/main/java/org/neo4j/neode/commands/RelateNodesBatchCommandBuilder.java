@@ -1,6 +1,5 @@
 package org.neo4j.neode.commands;
 
-import org.neo4j.neode.Dataset;
 import org.neo4j.neode.DomainEntityInfo;
 import org.neo4j.neode.commands.interfaces.SetRelationshipDescription;
 import org.neo4j.neode.commands.interfaces.UpdateDataset;

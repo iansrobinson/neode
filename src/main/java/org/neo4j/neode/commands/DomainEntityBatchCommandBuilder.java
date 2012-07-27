@@ -1,6 +1,5 @@
 package org.neo4j.neode.commands;
 
-import org.neo4j.neode.Dataset;
 import org.neo4j.neode.DomainEntity;
 import org.neo4j.neode.DomainEntityInfo;
 import org.neo4j.neode.commands.interfaces.SetQuantity;
@@ -29,7 +28,8 @@ public class DomainEntityBatchCommandBuilder implements UpdateDataset, SetQuanti
     public DomainEntityInfo update( Dataset dataset, int batchSize )
     {
         DomainEntityBatchCommand command =
-                new DomainEntityBatchCommand( domainEntity, numberOfIterations, batchSize, new TargetNodeIdCollector() );
+                new DomainEntityBatchCommand( domainEntity, numberOfIterations, batchSize,
+                        new TargetNodeIdCollector() );
         return dataset.execute( command );
     }
 

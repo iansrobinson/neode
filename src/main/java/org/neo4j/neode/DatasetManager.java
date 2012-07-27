@@ -2,6 +2,7 @@ package org.neo4j.neode;
 
 import java.util.Random;
 
+import org.neo4j.neode.commands.Dataset;
 import org.neo4j.neode.logging.Log;
 import org.neo4j.graphdb.GraphDatabaseService;
 

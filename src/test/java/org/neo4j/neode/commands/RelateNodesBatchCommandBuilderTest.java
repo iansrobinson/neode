@@ -15,7 +15,6 @@ import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.DynamicRelationshipType;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
-import org.neo4j.neode.Dataset;
 import org.neo4j.neode.DatasetManager;
 import org.neo4j.neode.DomainEntity;
 import org.neo4j.neode.DomainEntityInfo;

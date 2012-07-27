@@ -35,8 +35,21 @@ class GetOrCreateUniqueNodeFinder extends NodeFinder
     @Override
     public Iterable<Node> getNodes( final GraphDatabaseService db, Node currentNode, int numberOfNodes, Random random )
     {
-        final List<Integer> nodeIdIndexes = distribution.generate( numberOfNodes, minMax( 0, maxNumberOfNodes - 1 ),
-                random );
+        final List<Integer> nodeIdIndexes;
+        try
+        {
+            nodeIdIndexes = distribution.generate( numberOfNodes, minMax( 0, maxNumberOfNodes - 1 ), random );
+
+        }
+        catch ( IllegalArgumentException e )
+        {
+            throw new IllegalStateException( String.format( "Get or create '%s' nodes command cannot complete " +
+                    "because the maximum number of nodes to get or create is smaller than the maximum number of " +
+                    "nodes specified in the relationship constraint. Maximum number of nodes in relationship " +
+                    "constraint: %s. Maximum number of nodes to get or create: %s. Either reduce the range in the " +
+                    "relationship constraint or increase the number of nodes to get or create.",
+                    domainEntity.entityName(), numberOfNodes, maxNumberOfNodes ) );
+        }
         for ( Integer nodeIdIndex : nodeIdIndexes )
         {
             if ( nodeIds.get( nodeIdIndex ) == null )

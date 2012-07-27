@@ -51,23 +51,25 @@ public class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<Doma
     @Override
     public String description()
     {
-        return "TODO DESCRIPTION";
+        return "Creating choice of relationships.";
     }
 
     @Override
     public String shortDescription()
     {
-        return "TODO SHORT DESCRIPTION";
+        return "Create choice of relationships";
     }
 
     @Override
     public void onBegin( Log log )
     {
+        commandSelector.onBegin(log);
     }
 
     @Override
     public void onEnd( Log log )
     {
+        commandSelector.onEnd(log);
     }
 
     @Override

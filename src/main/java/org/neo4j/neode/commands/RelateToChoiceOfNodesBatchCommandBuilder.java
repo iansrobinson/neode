@@ -2,7 +2,6 @@ package org.neo4j.neode.commands;
 
 import java.util.List;
 
-import org.neo4j.neode.Dataset;
 import org.neo4j.neode.DomainEntityInfo;
 
 public class RelateToChoiceOfNodesBatchCommandBuilder

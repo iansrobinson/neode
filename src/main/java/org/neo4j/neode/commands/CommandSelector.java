@@ -6,6 +6,7 @@ import java.util.Random;
 
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.DomainEntityInfo;
+import org.neo4j.neode.logging.Log;
 
 public class CommandSelector
 {
@@ -32,5 +33,24 @@ public class CommandSelector
             results.add( command.results() );
         }
         return results;
+    }
+
+    public void onBegin( Log log )
+    {
+        for ( BatchCommand<DomainEntityInfo> command : commands )
+        {
+            log.write( String.format( "      [%s]", command.shortDescription() ) );
+            command.onBegin( log );
+        }
+    }
+
+    public void onEnd( Log log )
+    {
+        for ( BatchCommand<DomainEntityInfo> command : commands )
+        {
+            log.write( String.format( "      [%s]", command.shortDescription() ) );
+            command.onEnd( log );
+        }
+
     }
 }

@@ -1,11 +1,10 @@
-package org.neo4j.neode;
+package org.neo4j.neode.commands;
 
 import java.util.Random;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
-import org.neo4j.neode.commands.BatchCommand;
 import org.neo4j.neode.logging.Log;
 
 public class Dataset
@@ -26,7 +25,7 @@ public class Dataset
         log.write( String.format( "Begin [%s]\n", description ) );
     }
 
-    public <T> T execute( BatchCommand<T> command )
+    <T> T execute( BatchCommand<T> command )
     {
         long startTime = System.nanoTime();
 

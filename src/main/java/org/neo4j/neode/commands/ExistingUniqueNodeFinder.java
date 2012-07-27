@@ -25,10 +25,23 @@ class ExistingUniqueNodeFinder extends NodeFinder
     @Override
     public Iterable<Node> getNodes( final GraphDatabaseService db, Node currentNode, int numberOfNodes, Random random )
     {
-        final List<Integer> indexes = distribution.generate(
-                numberOfNodes,
-                minMax( 0, domainEntityInfo.nodeIds().size() - 1 ),
-                random );
+        final List<Integer> indexes;
+        try
+        {
+            indexes = distribution.generate(
+                    numberOfNodes,
+                    minMax( 0, domainEntityInfo.nodeIds().size() - 1 ),
+                    random );
+        }
+        catch ( IllegalArgumentException e )
+        {
+            throw new IllegalStateException( String.format( "Get existing '%s' nodes command cannot complete " +
+                    "because the maximum number of nodes available is smaller than the number of " +
+                    "nodes specified when applying the relationship constraint. Number of nodes specified by "  +
+                    "relationship constraint: %s. Maximum number of nodes available: %s. Either adjust the " +
+                    "relationship constraint or increase the number of nodes available.",
+                    domainEntityInfo.entityName(), numberOfNodes, domainEntityInfo.nodeIds().size() ) );
+        }
         return new Iterable<Node>()
         {
             @Override
