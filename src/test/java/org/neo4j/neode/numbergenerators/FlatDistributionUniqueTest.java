@@ -2,9 +2,9 @@ package org.neo4j.neode.numbergenerators;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.neo4j.neode.numbergenerators.FlatDistributionUnique.flatDistribution;
 import static org.neo4j.neode.numbergenerators.Range.exactly;
 import static org.neo4j.neode.numbergenerators.Range.minMax;
-import static org.neo4j.neode.numbergenerators.FlatDistributionUnique.flatDistribution;
 
 import java.util.List;
 import java.util.Random;
@@ -41,5 +41,19 @@ public class FlatDistributionUniqueTest
 
         // then
         assertEquals( 1, result );
+    }
+
+    @Test
+    public void shouldReturnTwoResults() throws Exception
+    {
+        // given
+        Distribution generator = flatDistribution();
+
+        // when
+        List<Integer> results = generator.generate( 2, minMax( 0, 1 ), new Random() );
+
+        // then
+        assertTrue( results.contains( 0 ) );
+        assertTrue( results.contains( 1 ) );
     }
 }

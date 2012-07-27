@@ -1,4 +1,4 @@
-package org.neo4j.neode.finders;
+package org.neo4j.neode.commands;
 
 import static java.lang.Math.round;
 

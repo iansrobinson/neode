@@ -2,12 +2,11 @@ package org.neo4j.neode.commands;
 
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.RelationshipType;
-import org.neo4j.neode.commands.interfaces.CreateRelationshipConstraints;
-import org.neo4j.neode.commands.interfaces.CreateRelationshipInfo;
-import org.neo4j.neode.finders.NodeFinder;
+import org.neo4j.neode.commands.interfaces.SetRelationshipConstraints;
+import org.neo4j.neode.commands.interfaces.SetRelationshipInfo;
 import org.neo4j.neode.numbergenerators.Range;
 
-public class RelationshipDescriptionBuilder implements CreateRelationshipInfo, CreateRelationshipConstraints
+public class RelationshipDescriptionBuilder implements SetRelationshipInfo, SetRelationshipConstraints
 {
     private final NodeFinder nodes;
     private RelationshipInfo relationshipInfo;

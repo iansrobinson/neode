@@ -3,9 +3,10 @@ package org.neo4j.neode.commands;
 import org.neo4j.neode.Dataset;
 import org.neo4j.neode.DomainEntity;
 import org.neo4j.neode.DomainEntityInfo;
+import org.neo4j.neode.commands.interfaces.SetQuantity;
 import org.neo4j.neode.commands.interfaces.UpdateDataset;
 
-public class DomainEntityBatchCommandBuilder implements UpdateDataset
+public class DomainEntityBatchCommandBuilder implements UpdateDataset, SetQuantity
 {
     private static final int DEFAULT_BATCH_SIZE = 20000;
 
@@ -17,7 +18,8 @@ public class DomainEntityBatchCommandBuilder implements UpdateDataset
         this.domainEntity = domainEntity;
     }
 
-    public DomainEntityBatchCommandBuilder quantity( int value )
+    @Override
+    public UpdateDataset quantity( int value )
     {
         numberOfIterations = value;
         return this;

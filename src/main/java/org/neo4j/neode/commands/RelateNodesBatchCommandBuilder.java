@@ -2,10 +2,10 @@ package org.neo4j.neode.commands;
 
 import org.neo4j.neode.Dataset;
 import org.neo4j.neode.DomainEntityInfo;
-import org.neo4j.neode.commands.interfaces.CreateRelationshipDescription;
+import org.neo4j.neode.commands.interfaces.SetRelationshipDescription;
 import org.neo4j.neode.commands.interfaces.UpdateDataset;
 
-public class RelateNodesBatchCommandBuilder implements CreateRelationshipDescription, UpdateDataset
+public class RelateNodesBatchCommandBuilder implements SetRelationshipDescription, UpdateDataset
 {
     private static final int DEFAULT_BATCH_SIZE = 10000;
 
@@ -22,6 +22,12 @@ public class RelateNodesBatchCommandBuilder implements CreateRelationshipDescrip
     {
         this.entities = entities;
         return this;
+    }
+
+    @Override
+    public RelateToChoiceOfNodesBatchCommandBuilder to( EntityChoices entityChoices )
+    {
+        return new RelateToChoiceOfNodesBatchCommandBuilder( domainEntityInfo, entityChoices  );
     }
 
     @Override

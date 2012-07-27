@@ -9,7 +9,8 @@ import java.util.Random;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.neode.commands.DomainEntityBatchCommandBuilder;
 import org.neo4j.neode.commands.RelateNodesBatchCommandBuilder;
-import org.neo4j.neode.commands.interfaces.CreateRelationshipDescription;
+import org.neo4j.neode.commands.interfaces.SetQuantity;
+import org.neo4j.neode.commands.interfaces.SetRelationshipDescription;
 
 public abstract class DomainEntity
 {
@@ -18,15 +19,17 @@ public abstract class DomainEntity
         return new DomainEntityBuilder( name );
     }
 
-    public static DomainEntityBatchCommandBuilder createEntities( DomainEntity domainEntity )
+    public static SetQuantity createEntities( DomainEntity domainEntity )
     {
         return new DomainEntityBatchCommandBuilder( domainEntity );
     }
 
-    public static CreateRelationshipDescription relateEntities( DomainEntityInfo domainEntityInfo )
+    public static SetRelationshipDescription relateEntities( DomainEntityInfo domainEntityInfo )
     {
         return new RelateNodesBatchCommandBuilder( domainEntityInfo );
     }
+
+
 
     public abstract Long build( GraphDatabaseService db, int index, Random random );
 

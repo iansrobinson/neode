@@ -78,6 +78,6 @@ public class Dataset
     private static String elapsedTime( long startTime )
     {
         String ms = String.valueOf( (System.nanoTime() - startTime) / 1000000 );
-        return String.format( "(elapsed: %s)", ms );
+        return String.format( "(elapsed: %s ms)", ms );
     }
 }

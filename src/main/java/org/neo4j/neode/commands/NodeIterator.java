@@ -1,4 +1,4 @@
-package org.neo4j.neode.finders;
+package org.neo4j.neode.commands;
 
 import java.util.Iterator;
 import java.util.List;

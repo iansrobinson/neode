@@ -2,7 +2,7 @@
  * Copyright (C) 2012 Neo Technology
  * All rights reserved
  */
-package org.neo4j.neode.finders;
+package org.neo4j.neode.commands;
 
 
 import java.util.Random;
@@ -45,11 +45,11 @@ public abstract class NodeFinder
 
     public static NodeFinder getOrCreate( DomainEntity domainEntity, int maxNumberOfNodes )
     {
-        return new GetOrCreateUniqueNodeFinder( domainEntity, maxNumberOfNodes, Distribution.normalDistribution() );
+        return new GetOrCreateUniqueNodeFinder( domainEntity, maxNumberOfNodes, Distribution.flatDistribution() );
     }
 
-    public abstract Iterable<Node> getNodes( GraphDatabaseService db, Node currentNode,
+    abstract Iterable<Node> getNodes( GraphDatabaseService db, Node currentNode,
                                              int numberOfNodes, Random random );
 
-    public abstract String entityName();
+    abstract String entityName();
 }

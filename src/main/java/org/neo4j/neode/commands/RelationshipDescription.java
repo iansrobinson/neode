@@ -7,7 +7,6 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.neode.DomainEntityInfo;
-import org.neo4j.neode.finders.NodeFinder;
 
 public class RelationshipDescription
 {
@@ -28,7 +27,7 @@ public class RelationshipDescription
         this.relationshipConstraints = relationshipConstraints;
     }
 
-    public int addRelationshipsToCurrentNode( GraphDatabaseService db, Node currentNode,
+    int addRelationshipsToCurrentNode( GraphDatabaseService db, Node currentNode,
                                               NodeIdCollector targetNodeIdCollector, Random random )
     {
         int count = 0;
@@ -46,18 +45,18 @@ public class RelationshipDescription
         return count;
     }
 
-    public DomainEntityInfo newDomainEntityInfo( List<Long> nodeIds )
+    DomainEntityInfo newDomainEntityInfo( List<Long> nodeIds )
     {
         return new DomainEntityInfo( nodeFinder.entityName(), nodeIds );
     }
 
-    public String createRelationshipDescription( String startNodeLabel )
+    String createRelationshipDescription( String startNodeLabel )
     {
         return String.format( "(%s)%s(%s)",
                 startNodeLabel, relationshipInfo.description(), nodeFinder.entityName() );
     }
 
-    public String createRelationshipConstraintsDescription()
+    String createRelationshipConstraintsDescription()
     {
         return relationshipConstraints.description();
     }

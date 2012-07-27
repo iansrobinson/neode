@@ -1,4 +1,4 @@
-package org.neo4j.neode.finders;
+package org.neo4j.neode.commands;
 
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.traversal.TraversalDescription;
@@ -13,7 +13,7 @@ class TraversalBasedGraphQuery extends GraphQuery
     }
 
     @Override
-    public Iterable<Node> execute( Node startNode )
+    Iterable<Node> execute( Node startNode )
     {
         return traversal.traverse( startNode ).nodes();
     }

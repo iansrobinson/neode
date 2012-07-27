@@ -149,7 +149,7 @@ public class DatasetTest
         }
 
         @Override
-        public void execute( GraphDatabaseService db, Node firstNode, int index, Random random )
+        public void execute( Node firstNode, GraphDatabaseService db, int index, Random random )
         {
             execute( db, index, random );
         }

@@ -8,7 +8,7 @@ import org.neo4j.neode.commands.RelationshipDescription;
 import org.neo4j.neode.commands.Uniqueness;
 import org.neo4j.neode.numbergenerators.Range;
 
-public interface CreateRelationshipConstraints
+public interface SetRelationshipConstraints
 {
     RelationshipDescription relationshipConstraints( Range cardinality, Uniqueness uniqueness );
 
