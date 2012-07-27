@@ -11,14 +11,14 @@ import org.neo4j.neode.logging.Log;
 public class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<DomainEntityInfo>>
 {
     private final DomainEntityInfo startNodes;
-    private final CommandSelector commandSelector;
+    private final Commands commands;
     private final int batchSize;
 
-    public RelateToChoiceOfNodesBatchCommand( DomainEntityInfo startNodes, CommandSelector commandSelector,
+    public RelateToChoiceOfNodesBatchCommand( DomainEntityInfo startNodes, Commands commands,
                                               int batchSize )
     {
         this.startNodes = startNodes;
-        this.commandSelector = commandSelector;
+        this.commands = commands;
         this.batchSize = batchSize;
     }
 
@@ -44,7 +44,7 @@ public class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<Doma
     @Override
     public void execute( Node currentNode, GraphDatabaseService db, int index, Random random )
     {
-        BatchCommand<DomainEntityInfo> nextCommand = commandSelector.nextCommand( currentNode, random );
+        BatchCommand<DomainEntityInfo> nextCommand = commands.nextCommand( currentNode, random );
         nextCommand.execute( currentNode, db, index, random );
     }
 
@@ -63,18 +63,18 @@ public class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<Doma
     @Override
     public void onBegin( Log log )
     {
-        commandSelector.onBegin(log);
+        commands.onBegin(log);
     }
 
     @Override
     public void onEnd( Log log )
     {
-        commandSelector.onEnd(log);
+        commands.onEnd(log);
     }
 
     @Override
     public List<DomainEntityInfo> results()
     {
-        return commandSelector.results();
+        return commands.results();
     }
 }

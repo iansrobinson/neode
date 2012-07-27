@@ -20,7 +20,7 @@ public class FlatDistributionUniqueTest
         Distribution generator = flatDistribution();
 
         // when
-        List<Integer> results = generator.generate( 5, minMax( 1, 5 ), new Random() );
+        List<Integer> results = generator.generateList( 5, minMax( 1, 5 ), new Random() );
 
         // then
         assertTrue( results.contains( 1 ) );
@@ -50,7 +50,7 @@ public class FlatDistributionUniqueTest
         Distribution generator = flatDistribution();
 
         // when
-        List<Integer> results = generator.generate( 2, minMax( 0, 1 ), new Random() );
+        List<Integer> results = generator.generateList( 2, minMax( 0, 1 ), new Random() );
 
         // then
         assertTrue( results.contains( 0 ) );

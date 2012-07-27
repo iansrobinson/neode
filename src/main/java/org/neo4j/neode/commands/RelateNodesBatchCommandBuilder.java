@@ -33,7 +33,7 @@ public class RelateNodesBatchCommandBuilder implements SetRelationshipDescriptio
     public DomainEntityInfo update( Dataset dataset, int batchSize )
     {
         RelateNodesBatchCommand command = new RelateNodesBatchCommand( domainEntityInfo, entities,
-                new TargetNodeIdCollector(), batchSize );
+                new UniqueNodeIdCollector(), batchSize );
         return dataset.execute( command );
     }
 

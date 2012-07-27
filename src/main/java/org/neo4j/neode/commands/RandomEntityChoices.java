@@ -16,16 +16,16 @@ class RandomEntityChoices extends EntityChoices
     }
 
     @Override
-    CommandSelector createCommandSelector( DomainEntityInfo startNodes, int batchSize )
+    Commands createCommandSelector( DomainEntityInfo startNodes, int batchSize )
     {
         List<BatchCommand<DomainEntityInfo>> commands = new ArrayList<BatchCommand<DomainEntityInfo>>();
         for ( RelationshipDescription relationshipDescription : entitiesList )
         {
             RelateNodesBatchCommand command = new RelateNodesBatchCommand( startNodes,
-                    relationshipDescription, new TargetNodeIdCollector(), batchSize );
+                    relationshipDescription, new UniqueNodeIdCollector(), batchSize );
             commands.add( command );
         }
-        return new CommandSelector( commands, new RandomCommandSelectionStrategy( Distribution.flatDistribution() ) );
+        return new Commands( commands, new RandomCommandSelectionStrategy( Distribution.flatDistribution() ) );
     }
 
 

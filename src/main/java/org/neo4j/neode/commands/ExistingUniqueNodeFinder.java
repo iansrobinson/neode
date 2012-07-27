@@ -28,7 +28,7 @@ class ExistingUniqueNodeFinder extends NodeFinder
         final List<Integer> indexes;
         try
         {
-            indexes = distribution.generate(
+            indexes = distribution.generateList(
                     numberOfNodes,
                     minMax( 0, domainEntityInfo.nodeIds().size() - 1 ),
                     random );

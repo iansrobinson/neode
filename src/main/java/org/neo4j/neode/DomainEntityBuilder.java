@@ -43,7 +43,7 @@ public class DomainEntityBuilder
         }
 
         @Override
-        public Long build( GraphDatabaseService db, int index, Random random )
+        public Node build( GraphDatabaseService db, int index, Random random )
         {
             Node node = db.createNode();
             node.setProperty( "_label", entityName );
@@ -51,7 +51,7 @@ public class DomainEntityBuilder
             {
                 property.setProperty( db, node, entityName, index, random );
             }
-            return node.getId();
+            return node;
         }
 
         @Override

@@ -38,7 +38,7 @@ class GetOrCreateUniqueNodeFinder extends NodeFinder
         final List<Integer> nodeIdIndexes;
         try
         {
-            nodeIdIndexes = distribution.generate( numberOfNodes, minMax( 0, maxNumberOfNodes - 1 ), random );
+            nodeIdIndexes = distribution.generateList( numberOfNodes, minMax( 0, maxNumberOfNodes - 1 ), random );
 
         }
         catch ( IllegalArgumentException e )
@@ -54,7 +54,7 @@ class GetOrCreateUniqueNodeFinder extends NodeFinder
         {
             if ( nodeIds.get( nodeIdIndex ) == null )
             {
-                nodeIds.set( nodeIdIndex, domainEntity.build( db, nodeIdIndex, random ) );
+                nodeIds.set( nodeIdIndex, domainEntity.build( db, nodeIdIndex, random ).getId() );
             }
 
         }

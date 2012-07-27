@@ -12,6 +12,6 @@ import org.neo4j.neode.DomainEntityInfo;
 
 public interface CommandSelectionStrategy
 {
-    BatchCommand<DomainEntityInfo> nextCommand( Node currentNode, List<BatchCommand<DomainEntityInfo>> commands,
+    BatchCommand<DomainEntityInfo> nextCommand( List<BatchCommand<DomainEntityInfo>> commands, Node currentNode,
                                                 Random random );
 }

@@ -8,13 +8,13 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.neode.DomainEntityInfo;
 import org.neo4j.neode.logging.Log;
 
-public class CommandSelector
+public class Commands
 {
     private final List<BatchCommand<DomainEntityInfo>> commands;
     private final CommandSelectionStrategy commandSelectionStrategy;
 
-    public CommandSelector( List<BatchCommand<DomainEntityInfo>> commands,
-                            CommandSelectionStrategy commandSelectionStrategy )
+    public Commands( List<BatchCommand<DomainEntityInfo>> commands,
+                     CommandSelectionStrategy commandSelectionStrategy )
     {
         this.commands = commands;
         this.commandSelectionStrategy = commandSelectionStrategy;
@@ -22,7 +22,7 @@ public class CommandSelector
 
     public BatchCommand<DomainEntityInfo> nextCommand( Node currentNode, Random random )
     {
-        return commandSelectionStrategy.nextCommand( currentNode, commands, random );
+        return commandSelectionStrategy.nextCommand( commands, currentNode, random );
     }
 
     public List<DomainEntityInfo> results()

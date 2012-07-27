@@ -11,5 +11,5 @@ public abstract class EntityChoices
         return new RandomEntityChoices( asList( entitiesList ) );
     }
 
-    abstract CommandSelector createCommandSelector( DomainEntityInfo startNodes, int batchSize );
+    abstract Commands createCommandSelector( DomainEntityInfo startNodes, int batchSize );
 }

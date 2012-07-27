@@ -39,7 +39,7 @@ class DomainEntityBatchCommand implements BatchCommand<DomainEntityInfo>
     @Override
     public void execute( GraphDatabaseService db, int index, Random random )
     {
-        Long nodeId = domainEntity.build( db, index, random );
+        Long nodeId = domainEntity.build( db, index, random ).getId();
         endNodeIdCollector.add( nodeId );
     }
 

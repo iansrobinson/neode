@@ -19,7 +19,7 @@ public class BaseUniqueNumberGeneratorTest
         try
         {
             // when
-            distribution.generate( minMax( 0, 2 ), minMax( 1, 1 ), new Random() );
+            distribution.generateList( minMax( 0, 2 ), minMax( 1, 1 ), new Random() );
         }
         catch ( IllegalArgumentException e )
         {
@@ -37,7 +37,7 @@ public class BaseUniqueNumberGeneratorTest
         Distribution distribution = new DummyDistribution();
 
         // when
-        List<Integer> results = distribution.generate( minMax( 0, 0 ), minMax( 0, 1 ), new Random() );
+        List<Integer> results = distribution.generateList( minMax( 0, 0 ), minMax( 0, 1 ), new Random() );
 
         // then
         assertEquals( 0, results.size() );

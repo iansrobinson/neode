@@ -20,7 +20,7 @@ public class NormalDistributionUniqueTest
         Distribution generator = normalDistribution();
 
         // when
-        List<Integer> results = generator.generate( 5, minMax( 1, 5 ), new Random() );
+        List<Integer> results = generator.generateList( 5, minMax( 1, 5 ), new Random() );
 
         // then
         assertTrue( results.contains( 1 ) );

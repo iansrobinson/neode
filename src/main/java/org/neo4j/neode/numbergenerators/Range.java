@@ -59,4 +59,29 @@ public class Range
                 ", max=" + max +
                 '}';
     }
+
+    @Override
+    public boolean equals( Object o )
+    {
+        if ( this == o )
+        {
+            return true;
+        }
+        if ( o == null || getClass() != o.getClass() )
+        {
+            return false;
+        }
+
+        Range range = (Range) o;
+
+        return max == range.max && min == range.min;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int result = min;
+        result = 31 * result + max;
+        return result;
+    }
 }

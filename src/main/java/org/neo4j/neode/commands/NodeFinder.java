@@ -5,6 +5,8 @@
 package org.neo4j.neode.commands;
 
 
+import static org.neo4j.neode.numbergenerators.Distribution.flatDistribution;
+
 import java.util.Random;
 
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -25,16 +27,18 @@ public abstract class NodeFinder
         return new ExistingUniqueNodeFinder( domainEntities, Distribution.normalDistribution() );
     }
 
-    public static NodeFinder contextualGetOrCreate( DomainEntity domainEntity, GraphQuery graphQuery )
+    public static NodeFinder queryBasedGetOrCreate( DomainEntity domainEntity, GraphQuery graphQuery )
     {
-        return new ContextualGetOrCreate( domainEntity, graphQuery, new ExistingNodesFinder( 1.0 ) );
+        return new QueryBasedGetOrCreate( domainEntity,
+                new SparseNodeListGenerator( graphQuery, 1.0, flatDistribution() ) );
     }
 
-    public static NodeFinder contextualGetOrCreate( DomainEntity domainEntity, GraphQuery graphQuery,
+    public static NodeFinder queryBasedGetOrCreate( DomainEntity domainEntity, GraphQuery graphQuery,
                                                     double proportionOfCandidateNodesToRequiredNodes )
     {
-        return new ContextualGetOrCreate( domainEntity, graphQuery,
-                new ExistingNodesFinder( proportionOfCandidateNodesToRequiredNodes ) );
+        return new QueryBasedGetOrCreate( domainEntity,
+                new SparseNodeListGenerator( graphQuery, proportionOfCandidateNodesToRequiredNodes,
+                        flatDistribution() ) );
     }
 
     public static NodeFinder getOrCreate( DomainEntity domainEntity, int maxNumberOfNodes,
@@ -49,7 +53,7 @@ public abstract class NodeFinder
     }
 
     abstract Iterable<Node> getNodes( GraphDatabaseService db, Node currentNode,
-                                             int numberOfNodes, Random random );
+                                      int numberOfNodes, Random random );
 
     abstract String entityName();
 }

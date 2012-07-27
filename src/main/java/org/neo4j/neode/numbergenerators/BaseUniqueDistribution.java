@@ -9,19 +9,19 @@ import java.util.Random;
 abstract class BaseUniqueDistribution extends Distribution
 {
     @Override
-    public final List<Integer> generate( Range numberOfResultsRange, Range range,
-                                         Random random )
+    public final List<Integer> generateList( Range sizeRange, Range range,
+                                             Random random )
     {
-        if ( (range.difference() + 1) < numberOfResultsRange.max() )
+        if ( (range.difference() + 1) < sizeRange.max() )
         {
             throw new IllegalArgumentException(
                     String.format("(range.difference() + 1) must be greater or equal to numberOfResultsRange.max() " +
-                            "[numberOfResultsRange: %s, range: %s]", numberOfResultsRange, range) );
+                            "[numberOfResultsRange: %s, range: %s]", sizeRange, range) );
         }
 
-        int numberOfResults = (numberOfResultsRange.difference() == 0) ?
-                numberOfResultsRange.max() :
-                numberOfResultsRange.min() + random.nextInt( numberOfResultsRange.difference() );
+        int numberOfResults = (sizeRange.difference() == 0) ?
+                sizeRange.max() :
+                sizeRange.min() + random.nextInt( sizeRange.difference() );
 
         List<Integer> generatedNumbers = new ArrayList<Integer>( numberOfResults );
 
@@ -37,9 +37,9 @@ abstract class BaseUniqueDistribution extends Distribution
     }
 
     @Override
-    public final List<Integer> generate( int numberOfResults, Range range, Random random )
+    public final List<Integer> generateList( int size, Range range, Random random )
     {
-        return generate( exactly( numberOfResults ), range, random );
+        return generateList( exactly( size ), range, random );
     }
 
     @Override

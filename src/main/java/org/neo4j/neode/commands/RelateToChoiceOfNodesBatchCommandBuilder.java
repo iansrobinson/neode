@@ -19,18 +19,18 @@ public class RelateToChoiceOfNodesBatchCommandBuilder
 
     public List<DomainEntityInfo> update( Dataset dataset, int batchSize )
     {
-        CommandSelector commandSelector = entityChoices.createCommandSelector( domainEntityInfo, batchSize );
+        Commands commands = entityChoices.createCommandSelector( domainEntityInfo, batchSize );
         RelateToChoiceOfNodesBatchCommand command = new RelateToChoiceOfNodesBatchCommand( domainEntityInfo,
-                commandSelector, batchSize );
+                commands, batchSize );
         dataset.execute( command );
         return command.results();
     }
 
     public List<DomainEntityInfo> update( Dataset dataset )
     {
-        CommandSelector commandSelector = entityChoices.createCommandSelector( domainEntityInfo,DEFAULT_BATCH_SIZE );
+        Commands commands = entityChoices.createCommandSelector( domainEntityInfo,DEFAULT_BATCH_SIZE );
         RelateToChoiceOfNodesBatchCommand command = new RelateToChoiceOfNodesBatchCommand( domainEntityInfo,
-                commandSelector, DEFAULT_BATCH_SIZE );
+                commands, DEFAULT_BATCH_SIZE );
         dataset.execute( command );
         return command.results();
     }

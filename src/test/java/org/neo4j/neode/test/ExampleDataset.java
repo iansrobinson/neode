@@ -6,7 +6,7 @@ import static org.neo4j.neode.DomainEntity.domainEntity;
 import static org.neo4j.neode.DomainEntity.relateEntities;
 import static org.neo4j.neode.DomainEntityInfo.approxPercent;
 import static org.neo4j.neode.commands.GraphQuery.traversal;
-import static org.neo4j.neode.commands.NodeFinder.contextualGetOrCreate;
+import static org.neo4j.neode.commands.NodeFinder.queryBasedGetOrCreate;
 import static org.neo4j.neode.commands.NodeFinder.getExisting;
 import static org.neo4j.neode.commands.NodeFinder.getOrCreate;
 import static org.neo4j.neode.commands.RelationshipDescription.entities;
@@ -93,7 +93,7 @@ public class ExampleDataset
                 .update( dataset );
 
         DomainEntityInfo allProjects = relateEntities( users ).to(
-                entities( contextualGetOrCreate( project, traversal( findCompanyProjects ), 1.2 ) )
+                entities( queryBasedGetOrCreate( project, traversal( findCompanyProjects ), 1.2 ) )
                         .relationship( withName( "WORKED_ON" ) )
                         .relationshipConstraints( minMax( 1, 3 ) ) )
                 .update( dataset );

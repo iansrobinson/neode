@@ -29,7 +29,7 @@ public class DomainEntityBatchCommandBuilder implements UpdateDataset, SetQuanti
     {
         DomainEntityBatchCommand command =
                 new DomainEntityBatchCommand( domainEntity, numberOfIterations, batchSize,
-                        new TargetNodeIdCollector() );
+                        new UniqueNodeIdCollector() );
         return dataset.execute( command );
     }
 

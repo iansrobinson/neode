@@ -19,9 +19,9 @@ public abstract class Distribution
         return new NormalDistributionUnique();
     }
 
-    public abstract List<Integer> generate( Range numberOfResultsRange, Range range, Random random );
+    public abstract List<Integer> generateList( Range sizeRange, Range range, Random random );
 
-    public abstract List<Integer> generate( int numberOfResults, Range range, Random random );
+    public abstract List<Integer> generateList( int size, Range range, Random random );
 
     public abstract int generateSingle( Range range, Random random );
 }

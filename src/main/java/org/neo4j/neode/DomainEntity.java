@@ -7,6 +7,7 @@ package org.neo4j.neode;
 import java.util.Random;
 
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Node;
 import org.neo4j.neode.commands.DomainEntityBatchCommandBuilder;
 import org.neo4j.neode.commands.RelateNodesBatchCommandBuilder;
 import org.neo4j.neode.commands.interfaces.SetQuantity;
@@ -31,7 +32,7 @@ public abstract class DomainEntity
 
 
 
-    public abstract Long build( GraphDatabaseService db, int index, Random random );
+    public abstract Node build( GraphDatabaseService db, int index, Random random );
 
     public abstract String entityName();
 }
