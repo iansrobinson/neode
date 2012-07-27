@@ -5,26 +5,26 @@ import java.util.Random;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
-import org.neo4j.neode.numbergenerators.Distribution;
+import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
 import org.neo4j.neode.numbergenerators.Range;
 
 class RelationshipConstraints
 {
     private final Range cardinality;
     private final Uniqueness uniqueness;
-    private final Distribution distribution;
+    private final ProbabilityDistribution probabilityDistribution;
 
     public RelationshipConstraints( Range cardinality,
                                     Uniqueness uniqueness )
     {
         this.cardinality = cardinality;
         this.uniqueness = uniqueness;
-        this.distribution = Distribution.flatDistribution();
+        this.probabilityDistribution = ProbabilityDistribution.flatDistribution();
     }
 
     public int calculateNumberOfRelsToCreate( Random random )
     {
-        return distribution.generateSingle( cardinality, random );
+        return probabilityDistribution.generateSingle( cardinality, random );
     }
 
     public Relationship addRelationshipToCurrentNode( Node currentNode, Node targetNode, GraphDatabaseService db,

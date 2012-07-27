@@ -9,17 +9,17 @@ import java.util.Random;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.DomainEntityInfo;
-import org.neo4j.neode.numbergenerators.Distribution;
+import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
 
 class ExistingUniqueNodeFinder extends NodeFinder
 {
     private final DomainEntityInfo domainEntityInfo;
-    private final Distribution distribution;
+    private final ProbabilityDistribution probabilityDistribution;
 
-    ExistingUniqueNodeFinder( DomainEntityInfo domainEntityInfo, Distribution distribution )
+    ExistingUniqueNodeFinder( DomainEntityInfo domainEntityInfo, ProbabilityDistribution probabilityDistribution )
     {
         this.domainEntityInfo = domainEntityInfo;
-        this.distribution = distribution;
+        this.probabilityDistribution = probabilityDistribution;
     }
 
     @Override
@@ -28,7 +28,7 @@ class ExistingUniqueNodeFinder extends NodeFinder
         final List<Integer> indexes;
         try
         {
-            indexes = distribution.generateList(
+            indexes = probabilityDistribution.generateList(
                     quantity,
                     minMax( 0, domainEntityInfo.nodeIds().size() - 1 ),
                     random );

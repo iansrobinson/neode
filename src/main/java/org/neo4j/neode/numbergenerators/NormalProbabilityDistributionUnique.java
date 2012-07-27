@@ -2,7 +2,7 @@ package org.neo4j.neode.numbergenerators;
 
 import java.util.Random;
 
-class NormalDistributionUnique extends BaseUniqueDistribution
+class NormalProbabilityDistributionUnique extends BaseUniqueProbabilityDistribution
 {
     protected int getNextNumber( Range minMax, Random random )
     {

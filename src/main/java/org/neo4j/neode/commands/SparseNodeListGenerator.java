@@ -8,16 +8,17 @@ import java.util.List;
 import java.util.Random;
 
 import org.neo4j.graphdb.Node;
+import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
 import org.neo4j.neode.numbergenerators.Range;
-import org.neo4j.neode.numbergenerators.Distribution;
 
 class SparseNodeListGenerator
 {
     private final GraphQuery query;
-    private final Distribution distribution;
+    private final ProbabilityDistribution probabilityDistribution;
     private final double proportionOfNodesToListSize;
 
-    SparseNodeListGenerator( GraphQuery query, double proportionOfNodesToListSize, Distribution distribution )
+    SparseNodeListGenerator( GraphQuery query, double proportionOfNodesToListSize, ProbabilityDistribution
+            probabilityDistribution )
     {
         if ( proportionOfNodesToListSize < 1.0 )
         {
@@ -26,7 +27,7 @@ class SparseNodeListGenerator
         }
 
         this.query = query;
-        this.distribution = distribution;
+        this.probabilityDistribution = probabilityDistribution;
         this.proportionOfNodesToListSize = proportionOfNodesToListSize;
     }
 
@@ -39,7 +40,7 @@ class SparseNodeListGenerator
         }
 
         int candidatePoolSize = (int) round( size * proportionOfNodesToListSize );
-        List<Integer> candidatePoolIndexes = distribution
+        List<Integer> candidatePoolIndexes = probabilityDistribution
                 .generateList( candidatePoolSize, Range.minMax( 0, candidatePoolSize - 1 ), random );
 
         Iterator<Integer> candidatePoolIndexesIterator = candidatePoolIndexes.iterator();

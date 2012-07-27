@@ -10,20 +10,21 @@ import java.util.Random;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.DomainEntity;
-import org.neo4j.neode.numbergenerators.Distribution;
+import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
 
 class GetOrCreateUniqueNodeFinder extends NodeFinder
 {
     private final DomainEntity domainEntity;
     private final int totalNumberOfNodes;
-    private final Distribution distribution;
+    private final ProbabilityDistribution probabilityDistribution;
     private final List<Long> nodeIds;
 
-    GetOrCreateUniqueNodeFinder( DomainEntity domainEntity, int totalNumberOfNodes, Distribution distribution )
+    GetOrCreateUniqueNodeFinder( DomainEntity domainEntity, int totalNumberOfNodes, ProbabilityDistribution
+            probabilityDistribution )
     {
         this.domainEntity = domainEntity;
         this.totalNumberOfNodes = totalNumberOfNodes;
-        this.distribution = distribution;
+        this.probabilityDistribution = probabilityDistribution;
         nodeIds = new ArrayList<Long>( totalNumberOfNodes );
         for ( int i = 0; i < totalNumberOfNodes; i++ )
         {
@@ -37,7 +38,7 @@ class GetOrCreateUniqueNodeFinder extends NodeFinder
         final List<Integer> nodeIdIndexes;
         try
         {
-            nodeIdIndexes = distribution.generateList( quantity, minMax( 0, totalNumberOfNodes - 1 ), random );
+            nodeIdIndexes = probabilityDistribution.generateList( quantity, minMax( 0, totalNumberOfNodes - 1 ), random );
 
         }
         catch ( IllegalArgumentException e )

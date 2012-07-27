@@ -7,16 +7,16 @@ package org.neo4j.neode.numbergenerators;
 import java.util.List;
 import java.util.Random;
 
-public abstract class Distribution
+public abstract class ProbabilityDistribution
 {
-    public static Distribution flatDistribution()
+    public static ProbabilityDistribution flatDistribution()
     {
-        return new FlatDistributionUnique();
+        return new FlatProbabilityDistributionUnique();
     }
 
-    public static Distribution normalDistribution()
+    public static ProbabilityDistribution normalDistribution()
     {
-        return new NormalDistributionUnique();
+        return new NormalProbabilityDistributionUnique();
     }
 
     public abstract List<Integer> generateList( Range sizeRange, Range range, Random random );

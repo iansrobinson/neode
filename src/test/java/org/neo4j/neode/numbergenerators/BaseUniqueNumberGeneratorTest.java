@@ -14,12 +14,12 @@ public class BaseUniqueNumberGeneratorTest
     public void shouldThrowExceptionIfPossibleRangeSmallerThanMaxNumberOfResults() throws Exception
     {
         // given
-        Distribution distribution = new DummyDistribution();
+        ProbabilityDistribution probabilityDistribution = new DummyProbabilityDistribution();
 
         try
         {
             // when
-            distribution.generateList( minMax( 0, 2 ), minMax( 1, 1 ), new Random() );
+            probabilityDistribution.generateList( minMax( 0, 2 ), minMax( 1, 1 ), new Random() );
         }
         catch ( IllegalArgumentException e )
         {
@@ -34,16 +34,16 @@ public class BaseUniqueNumberGeneratorTest
     public void shouldAllowForZeroNumbersToBeGenerated() throws Exception
     {
         // given
-        Distribution distribution = new DummyDistribution();
+        ProbabilityDistribution probabilityDistribution = new DummyProbabilityDistribution();
 
         // when
-        List<Integer> results = distribution.generateList( minMax( 0, 0 ), minMax( 0, 1 ), new Random() );
+        List<Integer> results = probabilityDistribution.generateList( minMax( 0, 0 ), minMax( 0, 1 ), new Random() );
 
         // then
         assertEquals( 0, results.size() );
     }
 
-    private class DummyDistribution extends BaseUniqueDistribution
+    private class DummyProbabilityDistribution extends BaseUniqueProbabilityDistribution
     {
         @Override
         protected int getNextNumber( Range minMax, Random random )

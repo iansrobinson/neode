@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-abstract class BaseUniqueDistribution extends Distribution
+abstract class BaseUniqueProbabilityDistribution extends ProbabilityDistribution
 {
     @Override
     public final List<Integer> generateList( Range sizeRange, Range range,

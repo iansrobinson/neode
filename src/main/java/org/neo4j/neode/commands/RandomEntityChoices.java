@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.neo4j.neode.DomainEntityInfo;
-import org.neo4j.neode.numbergenerators.Distribution;
+import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
 
 class RandomEntityChoices extends EntityChoices
 {
@@ -25,7 +25,7 @@ class RandomEntityChoices extends EntityChoices
                     relationshipDescription, new UniqueNodeIdCollector(), batchSize );
             commands.add( command );
         }
-        return new Commands( commands, new RandomCommandSelectionStrategy( Distribution.flatDistribution() ) );
+        return new Commands( commands, new RandomCommandSelectionStrategy( ProbabilityDistribution.flatDistribution() ) );
     }
 
 

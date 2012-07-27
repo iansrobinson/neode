@@ -13,7 +13,7 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.neode.DomainEntity;
-import org.neo4j.neode.numbergenerators.Distribution;
+import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
 import org.neo4j.neode.numbergenerators.Range;
 import org.neo4j.neode.test.Db;
 
@@ -30,13 +30,13 @@ public class GetOrCreateUniqueNodeFinderTest
         Node currentNode = db.createNode();
         Node newNode = db.createNode();
 
-        Distribution distribution = mock( Distribution.class );
-        when( distribution.generateList( 1, Range.minMax( 0, 4 ), random ) ).thenReturn( asList( 0 ) );
+        ProbabilityDistribution probabilityDistribution = mock( ProbabilityDistribution.class );
+        when( probabilityDistribution.generateList( 1, Range.minMax( 0, 4 ), random ) ).thenReturn( asList( 0 ) );
 
         DomainEntity user = mock( DomainEntity.class );
         when( user.build( db, 0, random ) ).thenReturn( newNode );
 
-        GetOrCreateUniqueNodeFinder nodeFinder = new GetOrCreateUniqueNodeFinder( user, 5, distribution );
+        GetOrCreateUniqueNodeFinder nodeFinder = new GetOrCreateUniqueNodeFinder( user, 5, probabilityDistribution );
 
         // when
         nodeFinder.getNodes( 1, db, currentNode, random );
@@ -58,13 +58,13 @@ public class GetOrCreateUniqueNodeFinderTest
         Node currentNode = db.createNode();
         Node newNode = db.createNode();
 
-        Distribution distribution = mock( Distribution.class );
-        when( distribution.generateList( 1, Range.minMax( 0, 4 ), random ) ).thenReturn( asList( 0 ) );
+        ProbabilityDistribution probabilityDistribution = mock( ProbabilityDistribution.class );
+        when( probabilityDistribution.generateList( 1, Range.minMax( 0, 4 ), random ) ).thenReturn( asList( 0 ) );
 
         DomainEntity user = mock( DomainEntity.class );
         when( user.build( db, 0, random ) ).thenReturn( newNode );
 
-        GetOrCreateUniqueNodeFinder nodeFinder = new GetOrCreateUniqueNodeFinder( user, 5, distribution );
+        GetOrCreateUniqueNodeFinder nodeFinder = new GetOrCreateUniqueNodeFinder( user, 5, probabilityDistribution );
 
         // when
         nodeFinder.getNodes( 1, db, currentNode, random );

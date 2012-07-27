@@ -2,7 +2,7 @@ package org.neo4j.neode.numbergenerators;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.neo4j.neode.numbergenerators.FlatDistributionUnique.flatDistribution;
+import static org.neo4j.neode.numbergenerators.FlatProbabilityDistributionUnique.flatDistribution;
 import static org.neo4j.neode.numbergenerators.Range.exactly;
 import static org.neo4j.neode.numbergenerators.Range.minMax;
 
@@ -17,7 +17,7 @@ public class FlatDistributionUniqueTest
     public void shouldReturnListOfNumbers() throws Exception
     {
         // given
-        Distribution generator = flatDistribution();
+        ProbabilityDistribution generator = flatDistribution();
 
         // when
         List<Integer> results = generator.generateList( 5, minMax( 1, 5 ), new Random() );
@@ -34,7 +34,7 @@ public class FlatDistributionUniqueTest
     public void shouldReturnSingleNumber() throws Exception
     {
         // given
-        Distribution generator = flatDistribution();
+        ProbabilityDistribution generator = flatDistribution();
 
         // when
         int result = generator.generateSingle( exactly( 1 ), new Random() );
@@ -47,7 +47,7 @@ public class FlatDistributionUniqueTest
     public void shouldReturnTwoResults() throws Exception
     {
         // given
-        Distribution generator = flatDistribution();
+        ProbabilityDistribution generator = flatDistribution();
 
         // when
         List<Integer> results = generator.generateList( 2, minMax( 0, 1 ), new Random() );
