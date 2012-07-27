@@ -16,7 +16,7 @@ import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.neode.test.Db;
 
-public class UniquenessTest
+public class RelationshipUniquenessTest
 {
     @Test
     public void uniqueSingleDirectionShouldNotCreateNewRelationshipIfRelationshipAlreadyExists() throws Exception
@@ -29,10 +29,10 @@ public class UniquenessTest
         DynamicRelationshipType friend_of = withName( "FRIEND_OF" );
         firstNode.createRelationshipTo( secondNode, friend_of );
 
-        Uniqueness uniqueness = Uniqueness.SINGLE_DIRECTION;
+        RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.SINGLE_DIRECTION;
 
         // when
-        uniqueness.createRelationship( db, firstNode, secondNode,
+        relationshipUniqueness.createRelationship( db, firstNode, secondNode,
                 new RelationshipInfo( friend_of, Direction.OUTGOING ), new Random() );
         tx.success();
         tx.finish();
@@ -55,10 +55,10 @@ public class UniquenessTest
         DynamicRelationshipType friend_of = withName( "FRIEND_OF" );
         secondNode.createRelationshipTo( firstNode, friend_of );
 
-        Uniqueness uniqueness = Uniqueness.SINGLE_DIRECTION;
+        RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.SINGLE_DIRECTION;
 
         // when
-        uniqueness.createRelationship( db, firstNode, secondNode,
+        relationshipUniqueness.createRelationship( db, firstNode, secondNode,
                 new RelationshipInfo( friend_of, Direction.OUTGOING ), new Random() );
         tx.success();
         tx.finish();
@@ -81,10 +81,10 @@ public class UniquenessTest
         DynamicRelationshipType friend_of = withName( "FRIEND_OF" );
         firstNode.createRelationshipTo( secondNode, friend_of );
 
-        Uniqueness uniqueness = Uniqueness.BOTH_DIRECTIONS;
+        RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.BOTH_DIRECTIONS;
 
         // when
-        uniqueness.createRelationship( db, firstNode, secondNode,
+        relationshipUniqueness.createRelationship( db, firstNode, secondNode,
                 new RelationshipInfo( friend_of, Direction.OUTGOING ), new Random() );
         tx.success();
         tx.finish();
@@ -107,10 +107,10 @@ public class UniquenessTest
         DynamicRelationshipType friend_of = withName( "FRIEND_OF" );
         secondNode.createRelationshipTo( firstNode, friend_of );
 
-        Uniqueness uniqueness = Uniqueness.BOTH_DIRECTIONS;
+        RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.BOTH_DIRECTIONS;
 
         // when
-        uniqueness.createRelationship( db, firstNode, secondNode,
+        relationshipUniqueness.createRelationship( db, firstNode, secondNode,
                 new RelationshipInfo( friend_of, Direction.OUTGOING ), new Random() );
         tx.success();
         tx.finish();
@@ -132,10 +132,10 @@ public class UniquenessTest
         DynamicRelationshipType friend_of = withName( "FRIEND_OF" );
         firstNode.createRelationshipTo( secondNode, friend_of );
 
-        Uniqueness uniqueness = Uniqueness.ALLOW_MULTIPLE;
+        RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.ALLOW_MULTIPLE;
 
         // when
-        uniqueness.createRelationship( db, firstNode, secondNode,
+        relationshipUniqueness.createRelationship( db, firstNode, secondNode,
                 new RelationshipInfo( friend_of, Direction.OUTGOING ), new Random() );
         tx.success();
         tx.finish();
@@ -159,10 +159,10 @@ public class UniquenessTest
         DynamicRelationshipType friend_of = withName( "FRIEND_OF" );
         secondNode.createRelationshipTo( firstNode, friend_of );
 
-        Uniqueness uniqueness = Uniqueness.ALLOW_MULTIPLE;
+        RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.ALLOW_MULTIPLE;
 
         // when
-        uniqueness.createRelationship( db, firstNode, secondNode,
+        relationshipUniqueness.createRelationship( db, firstNode, secondNode,
                 new RelationshipInfo( friend_of, Direction.OUTGOING ), new Random() );
         tx.success();
         tx.finish();

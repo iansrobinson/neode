@@ -11,14 +11,14 @@ import org.neo4j.neode.numbergenerators.Range;
 class RelationshipConstraints
 {
     private final Range cardinality;
-    private final Uniqueness uniqueness;
+    private final RelationshipUniqueness relationshipUniqueness;
     private final ProbabilityDistribution probabilityDistribution;
 
     public RelationshipConstraints( Range cardinality,
-                                    Uniqueness uniqueness )
+                                    RelationshipUniqueness relationshipUniqueness )
     {
         this.cardinality = cardinality;
-        this.uniqueness = uniqueness;
+        this.relationshipUniqueness = relationshipUniqueness;
         this.probabilityDistribution = ProbabilityDistribution.flatDistribution();
     }
 
@@ -31,7 +31,7 @@ class RelationshipConstraints
                                                       NodeIdCollector targetNodeIdCollector,
                                                       RelationshipInfo relationshipInfo, Random random )
     {
-        Relationship relationship = uniqueness.createRelationship( db, currentNode, targetNode,
+        Relationship relationship = relationshipUniqueness.createRelationship( db, currentNode, targetNode,
                 relationshipInfo, random );
         if ( relationship != null )
         {
@@ -43,7 +43,7 @@ class RelationshipConstraints
     public String description()
     {
         return String.format( "[Min: %s, Max: %s, Uniqueness: %s]", cardinality.min(), cardinality.max(),
-                uniqueness.name() );
+                relationshipUniqueness.name() );
     }
 
 

@@ -34,16 +34,16 @@ public class RelationshipDescriptionBuilder implements SetRelationshipInfo, SetR
     }
 
     @Override
-    public RelationshipDescription relationshipConstraints( Range cardinality, Uniqueness uniqueness )
+    public RelationshipDescription relationshipConstraints( Range cardinality, RelationshipUniqueness relationshipUniqueness )
     {
-        relationshipConstraints = new RelationshipConstraints( cardinality, uniqueness );
+        relationshipConstraints = new RelationshipConstraints( cardinality, relationshipUniqueness );
         return new RelationshipDescription( nodes, relationshipInfo, relationshipConstraints );
     }
 
     @Override
     public RelationshipDescription relationshipConstraints( Range cardinality )
     {
-        relationshipConstraints = new RelationshipConstraints( cardinality, Uniqueness.ALLOW_MULTIPLE );
+        relationshipConstraints = new RelationshipConstraints( cardinality, RelationshipUniqueness.ALLOW_MULTIPLE );
         return new RelationshipDescription( nodes, relationshipInfo, relationshipConstraints );
     }
 }

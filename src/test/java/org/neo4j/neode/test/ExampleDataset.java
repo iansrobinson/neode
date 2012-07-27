@@ -29,7 +29,7 @@ import org.neo4j.neode.DatasetManager;
 import org.neo4j.neode.DomainEntity;
 import org.neo4j.neode.DomainEntityInfo;
 import org.neo4j.neode.commands.Dataset;
-import org.neo4j.neode.commands.Uniqueness;
+import org.neo4j.neode.commands.RelationshipUniqueness;
 import org.neo4j.neode.logging.SysOutLog;
 
 public class ExampleDataset
@@ -101,7 +101,7 @@ public class ExampleDataset
         relateEntities( approxPercent( 30, users ) ).to(
                 entities( getExisting( allProjects ) )
                         .relationship( withName( "WORKED_ON" ) )
-                        .relationshipConstraints( minMax( 1, 2 ), Uniqueness.SINGLE_DIRECTION ) )
+                        .relationshipConstraints( minMax( 1, 2 ), RelationshipUniqueness.SINGLE_DIRECTION ) )
                 .update( dataset );
 
         dataset.end();
