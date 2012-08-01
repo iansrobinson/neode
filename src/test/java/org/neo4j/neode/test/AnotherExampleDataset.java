@@ -4,8 +4,7 @@ import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 import static org.neo4j.neode.DomainEntity.domainEntity;
 import static org.neo4j.neode.DomainEntity.relateEntities;
 import static org.neo4j.neode.commands.EntityChoices.randomChoice;
-import static org.neo4j.neode.commands.NodeFinder.getOrCreate;
-import static org.neo4j.neode.commands.RelationshipDescription.entities;
+import static org.neo4j.neode.commands.RelationshipDescription.getOrCreate;
 import static org.neo4j.neode.numbergenerators.Range.minMax;
 import static org.neo4j.neode.properties.Property.indexableProperty;
 import static org.neo4j.neode.properties.Property.property;
@@ -46,11 +45,11 @@ public class AnotherExampleDataset
 
         List<DomainEntityInfo> subnodes = relateEntities( roots ).to(
                 randomChoice(
-                        entities( getOrCreate( intermediate, 20 ) )
+                        getOrCreate( intermediate, 20 )
                                 .relationship( withName( "CONNECTED_TO" ),
                                         property( "quantity", integerRange( 1, 5 ) ) )
                                 .relationshipConstraints( minMax( 1, 3 ) ),
-                        entities( getOrCreate( leaf, 100 ) )
+                        getOrCreate( leaf, 100 )
                                 .relationship( withName( "CONNECTED_TO" ),
                                         property( "quantity", integerRange( 1, 5 ) ) )
                                 .relationshipConstraints( minMax( 1, 3 ) ) )
@@ -61,7 +60,7 @@ public class AnotherExampleDataset
             if ( subnode.entityName().equals( "intermediate" ) )
             {
                 relateEntities( subnode )
-                        .to( entities( getOrCreate( leaf, 100 ) )
+                        .to( getOrCreate( leaf, 100 )
                                 .relationship( withName( "CONNECTED_TO" ),
                                         property( "quantity", integerRange( 1, 5 ) ) )
                                 .relationshipConstraints( minMax( 1, 3 ) ) )
