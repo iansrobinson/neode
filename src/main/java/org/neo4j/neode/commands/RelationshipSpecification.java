@@ -13,7 +13,7 @@ import org.neo4j.neode.NodeSpecification;
 import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
 
-public class RelationshipDescription
+public class RelationshipSpecification
 {
     public static NodeFinder getExisting( NodeCollection domainEntities, ProbabilityDistribution
             probabilityDistribution )
@@ -55,8 +55,8 @@ public class RelationshipDescription
     private final RelationshipInfo relationshipInfo;
     private final RelationshipConstraints relationshipConstraints;
 
-    RelationshipDescription( NodeFinder nodeFinder, RelationshipInfo relationshipInfo,
-                             RelationshipConstraints relationshipConstraints )
+    RelationshipSpecification( NodeFinder nodeFinder, RelationshipInfo relationshipInfo,
+                               RelationshipConstraints relationshipConstraints )
     {
         this.nodeFinder = nodeFinder;
         this.relationshipInfo = relationshipInfo;

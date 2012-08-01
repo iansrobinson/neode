@@ -8,15 +8,15 @@ import org.neo4j.neode.NodeSpecification;
 import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.logging.Log;
 
-class DomainEntityBatchCommand implements BatchCommand<NodeCollection>
+class NodeBatchCommand implements BatchCommand<NodeCollection>
 {
     private final NodeSpecification nodeSpecification;
     private final int numberOfIterations;
     private final int batchSize;
     private final NodeIdCollector endNodeIdCollector;
 
-    public DomainEntityBatchCommand( NodeSpecification nodeSpecification, int numberOfIterations,
-                                     int batchSize, NodeIdCollector endNodeIdCollector )
+    public NodeBatchCommand( NodeSpecification nodeSpecification, int numberOfIterations,
+                             int batchSize, NodeIdCollector endNodeIdCollector )
     {
         this.nodeSpecification = nodeSpecification;
         this.numberOfIterations = numberOfIterations;
@@ -58,7 +58,7 @@ class DomainEntityBatchCommand implements BatchCommand<NodeCollection>
     @Override
     public String shortDescription()
     {
-        return nodeSpecification.entityName();
+        return nodeSpecification.label();
     }
 
     @Override
@@ -76,6 +76,6 @@ class DomainEntityBatchCommand implements BatchCommand<NodeCollection>
     @Override
     public NodeCollection results()
     {
-        return new NodeCollection( nodeSpecification.entityName(), endNodeIdCollector.nodeIds() );
+        return new NodeCollection( nodeSpecification.label(), endNodeIdCollector.nodeIds() );
     }
 }

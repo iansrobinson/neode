@@ -5,14 +5,14 @@ import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.commands.interfaces.SetQuantity;
 import org.neo4j.neode.commands.interfaces.UpdateDataset;
 
-public class DomainEntityBatchCommandBuilder implements UpdateDataset, SetQuantity
+public class NodeBatchCommandBuilder implements UpdateDataset, SetQuantity
 {
     private static final int DEFAULT_BATCH_SIZE = 20000;
 
     private final NodeSpecification nodeSpecification;
     private int numberOfIterations = 0;
 
-    public DomainEntityBatchCommandBuilder( NodeSpecification nodeSpecification )
+    public NodeBatchCommandBuilder( NodeSpecification nodeSpecification )
     {
         this.nodeSpecification = nodeSpecification;
     }
@@ -27,8 +27,8 @@ public class DomainEntityBatchCommandBuilder implements UpdateDataset, SetQuanti
     @Override
     public NodeCollection update( Dataset dataset, int batchSize )
     {
-        DomainEntityBatchCommand command =
-                new DomainEntityBatchCommand( nodeSpecification, numberOfIterations, batchSize,
+        NodeBatchCommand command =
+                new NodeBatchCommand( nodeSpecification, numberOfIterations, batchSize,
                         new UniqueNodeIdCollector() );
         return dataset.execute( command );
     }
@@ -42,8 +42,8 @@ public class DomainEntityBatchCommandBuilder implements UpdateDataset, SetQuanti
     @Override
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
-        DomainEntityBatchCommand command =
-                new DomainEntityBatchCommand( nodeSpecification, numberOfIterations, batchSize,
+        NodeBatchCommand command =
+                new NodeBatchCommand( nodeSpecification, numberOfIterations, batchSize,
                         NullEndNodeIdCollector.INSTANCE );
         dataset.execute( command );
     }

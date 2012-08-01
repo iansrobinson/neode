@@ -1,14 +1,14 @@
 package org.neo4j.neode.test;
 
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
-import static org.neo4j.neode.NodeSpecification.createEntities;
+import static org.neo4j.neode.NodeSpecification.createNodes;
 import static org.neo4j.neode.NodeSpecification.nodeSpec;
-import static org.neo4j.neode.NodeSpecification.relateEntities;
+import static org.neo4j.neode.NodeSpecification.relateNodes;
 import static org.neo4j.neode.NodeCollection.approxPercent;
 import static org.neo4j.neode.commands.GraphQuery.traversal;
-import static org.neo4j.neode.commands.RelationshipDescription.getExisting;
-import static org.neo4j.neode.commands.RelationshipDescription.getOrCreate;
-import static org.neo4j.neode.commands.RelationshipDescription.queryBasedGetOrCreate;
+import static org.neo4j.neode.commands.RelationshipSpecification.getExisting;
+import static org.neo4j.neode.commands.RelationshipSpecification.getOrCreate;
+import static org.neo4j.neode.commands.RelationshipSpecification.queryBasedGetOrCreate;
 import static org.neo4j.neode.numbergenerators.ProbabilityDistribution.flatDistribution;
 import static org.neo4j.neode.numbergenerators.ProbabilityDistribution.normalDistribution;
 import static org.neo4j.neode.numbergenerators.Range.exactly;
@@ -75,29 +75,29 @@ public class ExampleDataset
 
         Dataset dataset = datasetManager.newDataset( "Social network example" );
 
-        NodeCollection users = createEntities( user )
+        NodeCollection users = createNodes( user )
                 .quantity( 10 )
                 .update( dataset );
 
-        NodeCollection topics = relateEntities( users ).to(
+        NodeCollection topics = relateNodes( users ).to(
                 getOrCreate( topic, 10, normalDistribution() )
                         .relationship( withName( "INTERESTED_IN" ) )
                         .relationshipConstraints( minMax( 1, 3 ) ) )
                 .update( dataset );
 
-        relateEntities( users ).to(
+        relateNodes( users ).to(
                 getOrCreate( company, 2, flatDistribution() )
                         .relationship( withName( "WORKS_FOR" ) )
                         .relationshipConstraints( exactly( 1 ) ) )
                 .update( dataset );
 
-        NodeCollection allProjects = relateEntities( users ).to(
+        NodeCollection allProjects = relateNodes( users ).to(
                 queryBasedGetOrCreate( project, traversal( findCompanyProjects ), 1.2 )
                         .relationship( withName( "WORKED_ON" ) )
                         .relationshipConstraints( minMax( 1, 3 ) ) )
                 .update( dataset );
 
-        relateEntities( approxPercent( 30, users ) ).to(
+        relateNodes( approxPercent( 30, users ) ).to(
                 getExisting( allProjects )
                         .relationship( withName( "WORKED_ON" ) )
                         .relationshipConstraints( minMax( 1, 2 ), RelationshipUniqueness.SINGLE_DIRECTION ) )

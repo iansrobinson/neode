@@ -13,7 +13,7 @@ import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.logging.SysOutLog;
 import org.neo4j.neode.test.Db;
 
-public class DomainEntityBatchCommandTest
+public class NodeBatchCommandTest
 {
     @Test
     public void shouldCreateEntityPrefixedWithEntityName() throws Exception
@@ -25,7 +25,7 @@ public class DomainEntityBatchCommandTest
         NodeSpecification user = NodeSpecification.nodeSpec( "user" ).withProperties( indexableProperty( "name" ) ).build();
 
         // when
-        NodeSpecification.createEntities( user ).quantity( 1 ).update( dataset );
+        NodeSpecification.createNodes( user ).quantity( 1 ).update( dataset );
 
         // then
         assertEquals( "user-1", db.getNodeById( 1 ).getProperty( "name" ) );
@@ -41,7 +41,7 @@ public class DomainEntityBatchCommandTest
         NodeSpecification user = NodeSpecification.nodeSpec( "user" ).withProperties( indexableProperty( "name" ) ).build();
 
         // when
-        NodeSpecification.createEntities( user ).quantity( 1 ).update( dataset );
+        NodeSpecification.createNodes( user ).quantity( 1 ).update( dataset );
 
         // then
         assertNotNull( db.index().forNodes( "user" ).get( "name", "user-1" ).getSingle() );
@@ -57,7 +57,7 @@ public class DomainEntityBatchCommandTest
         NodeSpecification user = NodeSpecification.nodeSpec( "user" ).withProperties( indexableProperty( "key" ) ).build();
 
         // when
-        NodeCollection results = NodeSpecification.createEntities( user ).quantity( 5 ).update( dataset );
+        NodeCollection results = NodeSpecification.createNodes( user ).quantity( 5 ).update( dataset );
 
         // then
         assertEquals( asList( 1l, 2l, 3l, 4l, 5l ), results.nodeIds() );

@@ -9,7 +9,7 @@ public class RelateNodesBatchCommandBuilder implements SetRelationshipDescriptio
     private static final int DEFAULT_BATCH_SIZE = 10000;
 
     private final NodeCollection nodeCollection;
-    private RelationshipDescription entities;
+    private RelationshipSpecification entities;
 
     public RelateNodesBatchCommandBuilder( NodeCollection nodeCollection )
     {
@@ -17,7 +17,7 @@ public class RelateNodesBatchCommandBuilder implements SetRelationshipDescriptio
     }
 
     @Override
-    public UpdateDataset to( RelationshipDescription entities )
+    public UpdateDataset to( RelationshipSpecification entities )
     {
         this.entities = entities;
         return this;

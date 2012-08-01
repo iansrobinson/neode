@@ -10,17 +10,17 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.properties.Property;
 
-public class DomainEntityBuilder
+public class NodeBuilder
 {
-    private String entityName;
+    private String label;
     private List<Property> properties = Collections.emptyList();
 
-    DomainEntityBuilder( String entityName )
+    NodeBuilder( String label )
     {
-        this.entityName = entityName;
+        this.label = label;
     }
 
-    public DomainEntityBuilder withProperties( Property... values )
+    public NodeBuilder withProperties( Property... values )
     {
         properties = asList( values );
         return this;
@@ -28,17 +28,17 @@ public class DomainEntityBuilder
 
     public NodeSpecification build()
     {
-        return new LabelledNodeSpecification( entityName, properties );
+        return new LabelledNodeSpecification( label, properties );
     }
 
     private class LabelledNodeSpecification extends NodeSpecification
     {
-        private final String entityName;
+        private final String label;
         private final List<Property> properties;
 
-        private LabelledNodeSpecification( String entityName, List<Property> properties )
+        private LabelledNodeSpecification( String label, List<Property> properties )
         {
-            this.entityName = entityName;
+            this.label = label;
             this.properties = properties;
         }
 
@@ -46,18 +46,18 @@ public class DomainEntityBuilder
         public Node build( GraphDatabaseService db, int index, Random random )
         {
             Node node = db.createNode();
-            node.setProperty( "_label", entityName );
+            node.setProperty( "_label", label );
             for ( Property property : properties )
             {
-                property.setProperty( node, db, entityName, index, random );
+                property.setProperty( node, db, label, index, random );
             }
             return node;
         }
 
         @Override
-        public String entityName()
+        public String label()
         {
-            return entityName;
+            return label;
         }
     }
 

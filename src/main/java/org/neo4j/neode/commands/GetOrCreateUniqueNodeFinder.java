@@ -48,7 +48,7 @@ class GetOrCreateUniqueNodeFinder extends NodeFinder
                     "nodes specified in the relationship constraint. Maximum number of nodes in relationship " +
                     "constraint: %s. Maximum number of nodes to get or create: %s. Either reduce the range in the " +
                     "relationship constraint or increase the number of nodes to get or create.",
-                    nodeSpecification.entityName(), quantity, totalNumberOfNodes ) );
+                    nodeSpecification.label(), quantity, totalNumberOfNodes ) );
         }
 
         for ( Integer nodeIdIndex : nodeIdIndexes )
@@ -72,6 +72,6 @@ class GetOrCreateUniqueNodeFinder extends NodeFinder
     @Override
     public String entityName()
     {
-        return nodeSpecification.entityName();
+        return nodeSpecification.label();
     }
 }

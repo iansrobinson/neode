@@ -4,13 +4,13 @@
  */
 package org.neo4j.neode.commands.interfaces;
 
-import org.neo4j.neode.commands.RelationshipDescription;
+import org.neo4j.neode.commands.RelationshipSpecification;
 import org.neo4j.neode.commands.RelationshipUniqueness;
 import org.neo4j.neode.numbergenerators.Range;
 
 public interface SetRelationshipConstraints
 {
-    RelationshipDescription relationshipConstraints( Range cardinality, RelationshipUniqueness relationshipUniqueness );
+    RelationshipSpecification relationshipConstraints( Range cardinality, RelationshipUniqueness relationshipUniqueness );
 
-    RelationshipDescription relationshipConstraints( Range cardinality );
+    RelationshipSpecification relationshipConstraints( Range cardinality );
 }

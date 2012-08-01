@@ -5,16 +5,16 @@ import java.util.Random;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
-import org.neo4j.neode.DomainEntity;
+import org.neo4j.neode.NodeSpecification;
 
 class QueryBasedGetOrCreate extends NodeFinder
 {
-    private final DomainEntity domainEntity;
+    private final NodeSpecification nodeSpecification;
     private final SparseNodeListGenerator sparseNodeListGenerator;
 
-    QueryBasedGetOrCreate( DomainEntity domainEntity, SparseNodeListGenerator sparseNodeListGenerator )
+    QueryBasedGetOrCreate( NodeSpecification nodeSpecification, SparseNodeListGenerator sparseNodeListGenerator )
     {
-        this.domainEntity = domainEntity;
+        this.nodeSpecification = nodeSpecification;
         this.sparseNodeListGenerator = sparseNodeListGenerator;
     }
 
@@ -33,7 +33,7 @@ class QueryBasedGetOrCreate extends NodeFinder
         {
             if ( returnNodes.get( currentNodeIndex ) == null )
             {
-                Node newNode = domainEntity.build( db, currentNodeIndex, random );
+                Node newNode = nodeSpecification.build( db, currentNodeIndex, random );
                 returnNodes.set( currentNodeIndex, newNode );
             }
         }
@@ -42,6 +42,6 @@ class QueryBasedGetOrCreate extends NodeFinder
     @Override
     public String entityName()
     {
-        return domainEntity.entityName();
+        return nodeSpecification.label();
     }
 }

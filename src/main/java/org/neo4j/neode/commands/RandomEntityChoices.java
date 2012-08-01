@@ -8,9 +8,9 @@ import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
 
 class RandomEntityChoices extends EntityChoices
 {
-    private final List<RelationshipDescription> entitiesList;
+    private final List<RelationshipSpecification> entitiesList;
 
-    public RandomEntityChoices( List<RelationshipDescription> entitiesList )
+    public RandomEntityChoices( List<RelationshipSpecification> entitiesList )
     {
         this.entitiesList = entitiesList;
     }
@@ -19,10 +19,10 @@ class RandomEntityChoices extends EntityChoices
     Commands createCommandSelector( NodeCollection startNodes, int batchSize )
     {
         List<BatchCommand<NodeCollection>> commands = new ArrayList<BatchCommand<NodeCollection>>();
-        for ( RelationshipDescription relationshipDescription : entitiesList )
+        for ( RelationshipSpecification relationshipSpecification : entitiesList )
         {
             RelateNodesBatchCommand command = new RelateNodesBatchCommand( startNodes,
-                    relationshipDescription, new UniqueNodeIdCollector(), batchSize );
+                    relationshipSpecification, new UniqueNodeIdCollector(), batchSize );
             commands.add( command );
         }
         return new Commands( commands, new RandomCommandSelectionStrategy( ProbabilityDistribution.flatDistribution() ) );

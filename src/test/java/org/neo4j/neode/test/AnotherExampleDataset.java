@@ -2,9 +2,9 @@ package org.neo4j.neode.test;
 
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 import static org.neo4j.neode.NodeSpecification.nodeSpec;
-import static org.neo4j.neode.NodeSpecification.relateEntities;
+import static org.neo4j.neode.NodeSpecification.relateNodes;
 import static org.neo4j.neode.commands.EntityChoices.randomChoice;
-import static org.neo4j.neode.commands.RelationshipDescription.getOrCreate;
+import static org.neo4j.neode.commands.RelationshipSpecification.getOrCreate;
 import static org.neo4j.neode.numbergenerators.Range.minMax;
 import static org.neo4j.neode.properties.Property.indexableProperty;
 import static org.neo4j.neode.properties.Property.property;
@@ -39,11 +39,11 @@ public class AnotherExampleDataset
                 .build();
 
 
-        NodeCollection roots = NodeSpecification.createEntities( root )
+        NodeCollection roots = NodeSpecification.createNodes( root )
                 .quantity( 10 )
                 .update( dataset );
 
-        List<NodeCollection> subnodes = relateEntities( roots ).to(
+        List<NodeCollection> subnodes = relateNodes( roots ).to(
                 randomChoice(
                         getOrCreate( intermediate, 20 )
                                 .relationship( withName( "CONNECTED_TO" ),
@@ -59,7 +59,7 @@ public class AnotherExampleDataset
         {
             if ( subnode.entityName().equals( "intermediate" ) )
             {
-                relateEntities( subnode )
+                relateNodes( subnode )
                         .to( getOrCreate( leaf, 100 )
                                 .relationship( withName( "CONNECTED_TO" ),
                                         property( "quantity", integerRange( 1, 5 ) ) )

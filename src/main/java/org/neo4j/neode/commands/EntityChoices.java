@@ -6,7 +6,7 @@ import org.neo4j.neode.NodeCollection;
 
 public abstract class EntityChoices
 {
-    public static EntityChoices randomChoice( RelationshipDescription... entitiesList )
+    public static EntityChoices randomChoice( RelationshipSpecification... entitiesList )
     {
         return new RandomEntityChoices( asList( entitiesList ) );
     }

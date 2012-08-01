@@ -4,7 +4,7 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
-import static org.neo4j.neode.NodeSpecification.createEntities;
+import static org.neo4j.neode.NodeSpecification.createNodes;
 import static org.neo4j.neode.NodeSpecification.nodeSpec;
 
 import java.util.Random;
@@ -30,10 +30,10 @@ public class RelateNodesBatchCommandBuilderTest
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = executor.newDataset( "Test" );
-        NodeCollection users = createEntities( nodeSpec( "user" ).build() ).quantity( 3 )
+        NodeCollection users = createNodes( nodeSpec( "user" ).build() ).quantity( 3 )
                 .update( dataset );
         NodeSpecification product = nodeSpec( "product" ).build();
-        final NodeCollection products = createEntities( product ).quantity( 3 ).update( dataset );
+        final NodeCollection products = createNodes( product ).quantity( 3 ).update( dataset );
         NodeFinder nodeFinder = new NodeFinder()
         {
             int index = 0;
@@ -53,7 +53,7 @@ public class RelateNodesBatchCommandBuilderTest
         };
 
         // when
-        NodeSpecification.relateEntities( users ).to(
+        NodeSpecification.relateNodes( users ).to(
                 nodeFinder
                         .relationship( withName( "BOUGHT" ) )
                         .relationshipConstraints( Range.exactly( 1 ) ) )

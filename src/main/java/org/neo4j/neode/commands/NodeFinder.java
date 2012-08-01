@@ -41,17 +41,17 @@ public abstract class NodeFinder implements SetRelationshipInfo, SetRelationship
     }
 
     @Override
-    public RelationshipDescription relationshipConstraints( Range cardinality,
+    public RelationshipSpecification relationshipConstraints( Range cardinality,
                                                             RelationshipUniqueness relationshipUniqueness )
     {
         relationshipConstraints = new RelationshipConstraints( cardinality, relationshipUniqueness );
-        return new RelationshipDescription( this, relationshipInfo, relationshipConstraints );
+        return new RelationshipSpecification( this, relationshipInfo, relationshipConstraints );
     }
 
     @Override
-    public RelationshipDescription relationshipConstraints( Range cardinality )
+    public RelationshipSpecification relationshipConstraints( Range cardinality )
     {
         relationshipConstraints = new RelationshipConstraints( cardinality, RelationshipUniqueness.ALLOW_MULTIPLE );
-        return new RelationshipDescription( this, relationshipInfo, relationshipConstraints );
+        return new RelationshipSpecification( this, relationshipInfo, relationshipConstraints );
     }
 }
