@@ -5,16 +5,16 @@ import java.util.Random;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
-import org.neo4j.neode.DomainEntityInfo;
+import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.logging.Log;
 
-public class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<DomainEntityInfo>>
+public class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<NodeCollection>>
 {
-    private final DomainEntityInfo startNodes;
+    private final NodeCollection startNodes;
     private final Commands commands;
     private final int batchSize;
 
-    public RelateToChoiceOfNodesBatchCommand( DomainEntityInfo startNodes, Commands commands,
+    public RelateToChoiceOfNodesBatchCommand( NodeCollection startNodes, Commands commands,
                                               int batchSize )
     {
         this.startNodes = startNodes;
@@ -44,7 +44,7 @@ public class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<Doma
     @Override
     public void execute( Node currentNode, GraphDatabaseService db, int index, Random random )
     {
-        BatchCommand<DomainEntityInfo> nextCommand = commands.nextCommand( currentNode, random );
+        BatchCommand<NodeCollection> nextCommand = commands.nextCommand( currentNode, random );
         nextCommand.execute( currentNode, db, index, random );
     }
 
@@ -73,7 +73,7 @@ public class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<Doma
     }
 
     @Override
-    public List<DomainEntityInfo> results()
+    public List<NodeCollection> results()
     {
         return commands.results();
     }

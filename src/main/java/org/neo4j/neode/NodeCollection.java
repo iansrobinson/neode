@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class DomainEntityInfo
+public class NodeCollection
 {
-    public static DomainEntityInfo approxPercent(int percent, DomainEntityInfo domainEntities)
+    public static NodeCollection approxPercent(int percent, NodeCollection domainEntities)
     {
         if (percent < 1 || percent > 100)
         {
@@ -27,13 +27,13 @@ public class DomainEntityInfo
                 newNodeIds.add( nodeId );
             }
         }
-        return new DomainEntityInfo( domainEntities.entityName(), newNodeIds );
+        return new NodeCollection( domainEntities.entityName(), newNodeIds );
     }
 
     private final String name;
     private final List<Long> nodeIds;
 
-    public DomainEntityInfo( String name, List<Long> nodeIds )
+    public NodeCollection( String name, List<Long> nodeIds )
     {
         this.name = name;
         this.nodeIds = nodeIds;

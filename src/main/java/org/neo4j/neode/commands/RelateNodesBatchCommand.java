@@ -4,18 +4,18 @@ import java.util.Random;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
-import org.neo4j.neode.DomainEntityInfo;
+import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.logging.Log;
 
-class RelateNodesBatchCommand implements BatchCommand<DomainEntityInfo>
+class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
 {
-    private final DomainEntityInfo startNodes;
+    private final NodeCollection startNodes;
     private final RelationshipDescription relationshipDescription;
     private final NodeIdCollector targetNodeIdCollector;
     private final int batchSize;
     private long totalRels = 0;
 
-    public RelateNodesBatchCommand( DomainEntityInfo startNodes, RelationshipDescription relationshipDescription,
+    public RelateNodesBatchCommand( NodeCollection startNodes, RelationshipDescription relationshipDescription,
                                     NodeIdCollector targetNodeIdCollector, int batchSize )
     {
         this.startNodes = startNodes;
@@ -76,7 +76,7 @@ class RelateNodesBatchCommand implements BatchCommand<DomainEntityInfo>
     }
 
     @Override
-    public DomainEntityInfo results()
+    public NodeCollection results()
     {
         return relationshipDescription.newDomainEntityInfo( targetNodeIdCollector.nodeIds() );
     }

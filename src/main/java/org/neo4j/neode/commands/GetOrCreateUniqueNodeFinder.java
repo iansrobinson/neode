@@ -9,20 +9,20 @@ import java.util.Random;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
-import org.neo4j.neode.DomainEntity;
+import org.neo4j.neode.NodeSpecification;
 import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
 
 class GetOrCreateUniqueNodeFinder extends NodeFinder
 {
-    private final DomainEntity domainEntity;
+    private final NodeSpecification nodeSpecification;
     private final int totalNumberOfNodes;
     private final ProbabilityDistribution probabilityDistribution;
     private final List<Long> nodeIds;
 
-    GetOrCreateUniqueNodeFinder( DomainEntity domainEntity, int totalNumberOfNodes, ProbabilityDistribution
+    GetOrCreateUniqueNodeFinder( NodeSpecification nodeSpecification, int totalNumberOfNodes, ProbabilityDistribution
             probabilityDistribution )
     {
-        this.domainEntity = domainEntity;
+        this.nodeSpecification = nodeSpecification;
         this.totalNumberOfNodes = totalNumberOfNodes;
         this.probabilityDistribution = probabilityDistribution;
         nodeIds = new ArrayList<Long>( totalNumberOfNodes );
@@ -48,14 +48,14 @@ class GetOrCreateUniqueNodeFinder extends NodeFinder
                     "nodes specified in the relationship constraint. Maximum number of nodes in relationship " +
                     "constraint: %s. Maximum number of nodes to get or create: %s. Either reduce the range in the " +
                     "relationship constraint or increase the number of nodes to get or create.",
-                    domainEntity.entityName(), quantity, totalNumberOfNodes ) );
+                    nodeSpecification.entityName(), quantity, totalNumberOfNodes ) );
         }
 
         for ( Integer nodeIdIndex : nodeIdIndexes )
         {
             if ( nodeIds.get( nodeIdIndex ) == null )
             {
-                nodeIds.set( nodeIdIndex, domainEntity.build( db, nodeIdIndex, random ).getId() );
+                nodeIds.set( nodeIdIndex, nodeSpecification.build( db, nodeIdIndex, random ).getId() );
             }
 
         }
@@ -72,6 +72,6 @@ class GetOrCreateUniqueNodeFinder extends NodeFinder
     @Override
     public String entityName()
     {
-        return domainEntity.entityName();
+        return nodeSpecification.entityName();
     }
 }

@@ -9,46 +9,46 @@ import java.util.Random;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
-import org.neo4j.neode.DomainEntity;
-import org.neo4j.neode.DomainEntityInfo;
+import org.neo4j.neode.NodeSpecification;
+import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
 
 public class RelationshipDescription
 {
-    public static NodeFinder getExisting( DomainEntityInfo domainEntities, ProbabilityDistribution
+    public static NodeFinder getExisting( NodeCollection domainEntities, ProbabilityDistribution
             probabilityDistribution )
     {
         return new ExistingUniqueNodeFinder( domainEntities, probabilityDistribution );
     }
 
-    public static NodeFinder getExisting( DomainEntityInfo domainEntities )
+    public static NodeFinder getExisting( NodeCollection domainEntities )
     {
         return new ExistingUniqueNodeFinder( domainEntities, normalDistribution() );
     }
 
-    public static NodeFinder queryBasedGetOrCreate( DomainEntity domainEntity, GraphQuery graphQuery )
+    public static NodeFinder queryBasedGetOrCreate( NodeSpecification nodeSpecification, GraphQuery graphQuery )
     {
-        return new QueryBasedGetOrCreate( domainEntity,
+        return new QueryBasedGetOrCreate( nodeSpecification,
                 new SparseNodeListGenerator( graphQuery, 1.0, flatDistribution() ) );
     }
 
-    public static NodeFinder queryBasedGetOrCreate( DomainEntity domainEntity, GraphQuery graphQuery,
+    public static NodeFinder queryBasedGetOrCreate( NodeSpecification nodeSpecification, GraphQuery graphQuery,
                                                     double proportionOfCandidateNodesToRequiredNodes )
     {
-        return new QueryBasedGetOrCreate( domainEntity,
+        return new QueryBasedGetOrCreate( nodeSpecification,
                 new SparseNodeListGenerator( graphQuery, proportionOfCandidateNodesToRequiredNodes,
                         flatDistribution() ) );
     }
 
-    public static NodeFinder getOrCreate( DomainEntity domainEntity, int maxNumberOfEntities,
+    public static NodeFinder getOrCreate( NodeSpecification nodeSpecification, int maxNumberOfEntities,
                                           ProbabilityDistribution probabilityDistribution )
     {
-        return new GetOrCreateUniqueNodeFinder( domainEntity, maxNumberOfEntities, probabilityDistribution );
+        return new GetOrCreateUniqueNodeFinder( nodeSpecification, maxNumberOfEntities, probabilityDistribution );
     }
 
-    public static NodeFinder getOrCreate( DomainEntity domainEntity, int maxNumberOfEntities )
+    public static NodeFinder getOrCreate( NodeSpecification nodeSpecification, int maxNumberOfEntities )
     {
-        return new GetOrCreateUniqueNodeFinder( domainEntity, maxNumberOfEntities, flatDistribution() );
+        return new GetOrCreateUniqueNodeFinder( nodeSpecification, maxNumberOfEntities, flatDistribution() );
     }
 
     private final NodeFinder nodeFinder;
@@ -81,9 +81,9 @@ public class RelationshipDescription
         return count;
     }
 
-    DomainEntityInfo newDomainEntityInfo( List<Long> nodeIds )
+    NodeCollection newDomainEntityInfo( List<Long> nodeIds )
     {
-        return new DomainEntityInfo( nodeFinder.entityName(), nodeIds );
+        return new NodeCollection( nodeFinder.entityName(), nodeIds );
     }
 
     String createRelationshipDescription( String startNodeLabel )

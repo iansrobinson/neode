@@ -8,17 +8,17 @@ import java.util.Random;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
-import org.neo4j.neode.DomainEntityInfo;
+import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
 
 class ExistingUniqueNodeFinder extends NodeFinder
 {
-    private final DomainEntityInfo domainEntityInfo;
+    private final NodeCollection nodeCollection;
     private final ProbabilityDistribution probabilityDistribution;
 
-    ExistingUniqueNodeFinder( DomainEntityInfo domainEntityInfo, ProbabilityDistribution probabilityDistribution )
+    ExistingUniqueNodeFinder( NodeCollection nodeCollection, ProbabilityDistribution probabilityDistribution )
     {
-        this.domainEntityInfo = domainEntityInfo;
+        this.nodeCollection = nodeCollection;
         this.probabilityDistribution = probabilityDistribution;
     }
 
@@ -30,7 +30,7 @@ class ExistingUniqueNodeFinder extends NodeFinder
         {
             indexes = probabilityDistribution.generateList(
                     quantity,
-                    minMax( 0, domainEntityInfo.nodeIds().size() - 1 ),
+                    minMax( 0, nodeCollection.nodeIds().size() - 1 ),
                     random );
         }
         catch ( IllegalArgumentException e )
@@ -40,14 +40,14 @@ class ExistingUniqueNodeFinder extends NodeFinder
                     "nodes specified when applying the relationship constraint. Number of nodes specified by "  +
                     "relationship constraint: %s. Maximum number of nodes available: %s. Either adjust the " +
                     "relationship constraint or increase the number of nodes available.",
-                    domainEntityInfo.entityName(), quantity, domainEntityInfo.nodeIds().size() ) );
+                    nodeCollection.entityName(), quantity, nodeCollection.nodeIds().size() ) );
         }
         return new Iterable<Node>()
         {
             @Override
             public Iterator<Node> iterator()
             {
-                return new NodeIterator( domainEntityInfo.nodeIds(), indexes, db );
+                return new NodeIterator( nodeCollection.nodeIds(), indexes, db );
             }
         };
     }
@@ -55,7 +55,7 @@ class ExistingUniqueNodeFinder extends NodeFinder
     @Override
     public String entityName()
     {
-        return domainEntityInfo.entityName();
+        return nodeCollection.entityName();
     }
 
 }

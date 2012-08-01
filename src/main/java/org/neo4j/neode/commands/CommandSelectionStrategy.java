@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Random;
 
 import org.neo4j.graphdb.Node;
-import org.neo4j.neode.DomainEntityInfo;
+import org.neo4j.neode.NodeCollection;
 
 public interface CommandSelectionStrategy
 {
-    BatchCommand<DomainEntityInfo> nextCommand( List<BatchCommand<DomainEntityInfo>> commands, Node currentNode,
+    BatchCommand<NodeCollection> nextCommand( List<BatchCommand<NodeCollection>> commands, Node currentNode,
                                                 Random random );
 }

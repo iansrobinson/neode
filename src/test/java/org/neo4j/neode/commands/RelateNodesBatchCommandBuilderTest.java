@@ -4,9 +4,8 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
-import static org.neo4j.neode.DomainEntity.createEntities;
-import static org.neo4j.neode.DomainEntity.domainEntity;
-import static org.neo4j.neode.commands.RelationshipDescription.entities;
+import static org.neo4j.neode.NodeSpecification.createEntities;
+import static org.neo4j.neode.NodeSpecification.nodeSpec;
 
 import java.util.Random;
 
@@ -16,8 +15,8 @@ import org.neo4j.graphdb.DynamicRelationshipType;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.DatasetManager;
-import org.neo4j.neode.DomainEntity;
-import org.neo4j.neode.DomainEntityInfo;
+import org.neo4j.neode.NodeCollection;
+import org.neo4j.neode.NodeSpecification;
 import org.neo4j.neode.logging.SysOutLog;
 import org.neo4j.neode.numbergenerators.Range;
 import org.neo4j.neode.test.Db;
@@ -31,10 +30,10 @@ public class RelateNodesBatchCommandBuilderTest
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = executor.newDataset( "Test" );
-        DomainEntityInfo users = createEntities( domainEntity( "user" ).build() ).quantity( 3 )
+        NodeCollection users = createEntities( nodeSpec( "user" ).build() ).quantity( 3 )
                 .update( dataset );
-        DomainEntity product = domainEntity( "product" ).build();
-        final DomainEntityInfo products = createEntities( product ).quantity( 3 ).update( dataset );
+        NodeSpecification product = nodeSpec( "product" ).build();
+        final NodeCollection products = createEntities( product ).quantity( 3 ).update( dataset );
         NodeFinder nodeFinder = new NodeFinder()
         {
             int index = 0;
@@ -54,8 +53,8 @@ public class RelateNodesBatchCommandBuilderTest
         };
 
         // when
-        DomainEntity.relateEntities( users ).to(
-                entities( nodeFinder )
+        NodeSpecification.relateEntities( users ).to(
+                nodeFinder
                         .relationship( withName( "BOUGHT" ) )
                         .relationshipConstraints( Range.exactly( 1 ) ) )
                 .update( dataset );

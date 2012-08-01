@@ -1,6 +1,6 @@
 package org.neo4j.neode.commands;
 
-import org.neo4j.neode.DomainEntityInfo;
+import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.commands.interfaces.SetRelationshipDescription;
 import org.neo4j.neode.commands.interfaces.UpdateDataset;
 
@@ -8,12 +8,12 @@ public class RelateNodesBatchCommandBuilder implements SetRelationshipDescriptio
 {
     private static final int DEFAULT_BATCH_SIZE = 10000;
 
-    private final DomainEntityInfo domainEntityInfo;
+    private final NodeCollection nodeCollection;
     private RelationshipDescription entities;
 
-    public RelateNodesBatchCommandBuilder( DomainEntityInfo domainEntityInfo )
+    public RelateNodesBatchCommandBuilder( NodeCollection nodeCollection )
     {
-        this.domainEntityInfo = domainEntityInfo;
+        this.nodeCollection = nodeCollection;
     }
 
     @Override
@@ -26,19 +26,19 @@ public class RelateNodesBatchCommandBuilder implements SetRelationshipDescriptio
     @Override
     public RelateToChoiceOfNodesBatchCommandBuilder to( EntityChoices entityChoices )
     {
-        return new RelateToChoiceOfNodesBatchCommandBuilder( domainEntityInfo, entityChoices  );
+        return new RelateToChoiceOfNodesBatchCommandBuilder( nodeCollection, entityChoices  );
     }
 
     @Override
-    public DomainEntityInfo update( Dataset dataset, int batchSize )
+    public NodeCollection update( Dataset dataset, int batchSize )
     {
-        RelateNodesBatchCommand command = new RelateNodesBatchCommand( domainEntityInfo, entities,
+        RelateNodesBatchCommand command = new RelateNodesBatchCommand( nodeCollection, entities,
                 new UniqueNodeIdCollector(), batchSize );
         return dataset.execute( command );
     }
 
     @Override
-    public DomainEntityInfo update( Dataset dataset )
+    public NodeCollection update( Dataset dataset )
     {
         return update( dataset, DEFAULT_BATCH_SIZE );
     }
@@ -46,7 +46,7 @@ public class RelateNodesBatchCommandBuilder implements SetRelationshipDescriptio
     @Override
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
-        RelateNodesBatchCommand command = new RelateNodesBatchCommand( domainEntityInfo, entities,
+        RelateNodesBatchCommand command = new RelateNodesBatchCommand( nodeCollection, entities,
                 NullEndNodeIdCollector.INSTANCE, batchSize );
         dataset.execute( command );
     }

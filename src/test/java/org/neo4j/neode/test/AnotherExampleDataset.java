@@ -1,8 +1,8 @@
 package org.neo4j.neode.test;
 
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
-import static org.neo4j.neode.DomainEntity.domainEntity;
-import static org.neo4j.neode.DomainEntity.relateEntities;
+import static org.neo4j.neode.NodeSpecification.nodeSpec;
+import static org.neo4j.neode.NodeSpecification.relateEntities;
 import static org.neo4j.neode.commands.EntityChoices.randomChoice;
 import static org.neo4j.neode.commands.RelationshipDescription.getOrCreate;
 import static org.neo4j.neode.numbergenerators.Range.minMax;
@@ -15,8 +15,8 @@ import java.util.List;
 import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.neode.DatasetManager;
-import org.neo4j.neode.DomainEntity;
-import org.neo4j.neode.DomainEntityInfo;
+import org.neo4j.neode.NodeSpecification;
+import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.commands.Dataset;
 import org.neo4j.neode.logging.SysOutLog;
 
@@ -29,21 +29,21 @@ public class AnotherExampleDataset
         DatasetManager datasetManager = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = datasetManager.newDataset( "Pricing tree" );
 
-        DomainEntity root = domainEntity( "root" )
+        NodeSpecification root = nodeSpec( "root" )
                 .withProperties( indexableProperty( "name" ) )
                 .build();
-        DomainEntity intermediate = domainEntity( "intermediate" )
+        NodeSpecification intermediate = nodeSpec( "intermediate" )
                 .build();
-        DomainEntity leaf = domainEntity( "leaf" )
+        NodeSpecification leaf = nodeSpec( "leaf" )
                 .withProperties( property( "price", integerRange( 1, 10 ) ) )
                 .build();
 
 
-        DomainEntityInfo roots = DomainEntity.createEntities( root )
+        NodeCollection roots = NodeSpecification.createEntities( root )
                 .quantity( 10 )
                 .update( dataset );
 
-        List<DomainEntityInfo> subnodes = relateEntities( roots ).to(
+        List<NodeCollection> subnodes = relateEntities( roots ).to(
                 randomChoice(
                         getOrCreate( intermediate, 20 )
                                 .relationship( withName( "CONNECTED_TO" ),
@@ -55,7 +55,7 @@ public class AnotherExampleDataset
                                 .relationshipConstraints( minMax( 1, 3 ) ) )
         ).update( dataset );
 
-        for ( DomainEntityInfo subnode : subnodes )
+        for ( NodeCollection subnode : subnodes )
         {
             if ( subnode.entityName().equals( "intermediate" ) )
             {

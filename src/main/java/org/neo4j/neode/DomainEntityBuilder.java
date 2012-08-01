@@ -26,17 +26,17 @@ public class DomainEntityBuilder
         return this;
     }
 
-    public DomainEntity build()
+    public NodeSpecification build()
     {
-        return new LabelledDomainEntity( entityName, properties );
+        return new LabelledNodeSpecification( entityName, properties );
     }
 
-    private class LabelledDomainEntity extends DomainEntity
+    private class LabelledNodeSpecification extends NodeSpecification
     {
         private final String entityName;
         private final List<Property> properties;
 
-        private LabelledDomainEntity( String entityName, List<Property> properties )
+        private LabelledNodeSpecification( String entityName, List<Property> properties )
         {
             this.entityName = entityName;
             this.properties = properties;

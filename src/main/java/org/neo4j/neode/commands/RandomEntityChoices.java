@@ -3,7 +3,7 @@ package org.neo4j.neode.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.neo4j.neode.DomainEntityInfo;
+import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
 
 class RandomEntityChoices extends EntityChoices
@@ -16,9 +16,9 @@ class RandomEntityChoices extends EntityChoices
     }
 
     @Override
-    Commands createCommandSelector( DomainEntityInfo startNodes, int batchSize )
+    Commands createCommandSelector( NodeCollection startNodes, int batchSize )
     {
-        List<BatchCommand<DomainEntityInfo>> commands = new ArrayList<BatchCommand<DomainEntityInfo>>();
+        List<BatchCommand<NodeCollection>> commands = new ArrayList<BatchCommand<NodeCollection>>();
         for ( RelationshipDescription relationshipDescription : entitiesList )
         {
             RelateNodesBatchCommand command = new RelateNodesBatchCommand( startNodes,

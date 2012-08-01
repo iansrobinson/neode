@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.neo4j.graphdb.Node;
-import org.neo4j.neode.DomainEntityInfo;
+import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
 import org.neo4j.neode.numbergenerators.Range;
 
@@ -18,7 +18,7 @@ public class RandomCommandSelectionStrategy implements CommandSelectionStrategy
     }
 
     @Override
-    public BatchCommand<DomainEntityInfo> nextCommand( List<BatchCommand<DomainEntityInfo>> commands, Node currentNode,
+    public BatchCommand<NodeCollection> nextCommand( List<BatchCommand<NodeCollection>> commands, Node currentNode,
                                                        Random random )
     {
         int index = probabilityDistribution.generateSingle( Range.minMax(0, commands.size() - 1), random );

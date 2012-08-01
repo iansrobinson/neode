@@ -4,21 +4,21 @@ import java.util.Random;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
-import org.neo4j.neode.DomainEntity;
-import org.neo4j.neode.DomainEntityInfo;
+import org.neo4j.neode.NodeSpecification;
+import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.logging.Log;
 
-class DomainEntityBatchCommand implements BatchCommand<DomainEntityInfo>
+class DomainEntityBatchCommand implements BatchCommand<NodeCollection>
 {
-    private final DomainEntity domainEntity;
+    private final NodeSpecification nodeSpecification;
     private final int numberOfIterations;
     private final int batchSize;
     private final NodeIdCollector endNodeIdCollector;
 
-    public DomainEntityBatchCommand( DomainEntity domainEntity, int numberOfIterations,
+    public DomainEntityBatchCommand( NodeSpecification nodeSpecification, int numberOfIterations,
                                      int batchSize, NodeIdCollector endNodeIdCollector )
     {
-        this.domainEntity = domainEntity;
+        this.nodeSpecification = nodeSpecification;
         this.numberOfIterations = numberOfIterations;
         this.batchSize = batchSize;
         this.endNodeIdCollector = endNodeIdCollector;
@@ -39,7 +39,7 @@ class DomainEntityBatchCommand implements BatchCommand<DomainEntityInfo>
     @Override
     public void execute( GraphDatabaseService db, int index, Random random )
     {
-        Long nodeId = domainEntity.build( db, index, random ).getId();
+        Long nodeId = nodeSpecification.build( db, index, random ).getId();
         endNodeIdCollector.add( nodeId );
     }
 
@@ -58,7 +58,7 @@ class DomainEntityBatchCommand implements BatchCommand<DomainEntityInfo>
     @Override
     public String shortDescription()
     {
-        return domainEntity.entityName();
+        return nodeSpecification.entityName();
     }
 
     @Override
@@ -74,8 +74,8 @@ class DomainEntityBatchCommand implements BatchCommand<DomainEntityInfo>
     }
 
     @Override
-    public DomainEntityInfo results()
+    public NodeCollection results()
     {
-        return new DomainEntityInfo( domainEntity.entityName(), endNodeIdCollector.nodeIds() );
+        return new NodeCollection( nodeSpecification.entityName(), endNodeIdCollector.nodeIds() );
     }
 }

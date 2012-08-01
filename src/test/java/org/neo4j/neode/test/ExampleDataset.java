@@ -1,10 +1,10 @@
 package org.neo4j.neode.test;
 
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
-import static org.neo4j.neode.DomainEntity.createEntities;
-import static org.neo4j.neode.DomainEntity.domainEntity;
-import static org.neo4j.neode.DomainEntity.relateEntities;
-import static org.neo4j.neode.DomainEntityInfo.approxPercent;
+import static org.neo4j.neode.NodeSpecification.createEntities;
+import static org.neo4j.neode.NodeSpecification.nodeSpec;
+import static org.neo4j.neode.NodeSpecification.relateEntities;
+import static org.neo4j.neode.NodeCollection.approxPercent;
 import static org.neo4j.neode.commands.GraphQuery.traversal;
 import static org.neo4j.neode.commands.RelationshipDescription.getExisting;
 import static org.neo4j.neode.commands.RelationshipDescription.getOrCreate;
@@ -25,8 +25,8 @@ import org.neo4j.graphdb.traversal.Evaluator;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.kernel.Traversal;
 import org.neo4j.neode.DatasetManager;
-import org.neo4j.neode.DomainEntity;
-import org.neo4j.neode.DomainEntityInfo;
+import org.neo4j.neode.NodeSpecification;
+import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.commands.Dataset;
 import org.neo4j.neode.commands.RelationshipUniqueness;
 import org.neo4j.neode.logging.SysOutLog;
@@ -60,26 +60,26 @@ public class ExampleDataset
                     }
                 } );
 
-        DomainEntity user = domainEntity( "user" )
+        NodeSpecification user = nodeSpec( "user" )
                 .withProperties( indexableProperty( "name" ) )
                 .build();
-        DomainEntity topic = domainEntity( "topic" )
+        NodeSpecification topic = nodeSpec( "topic" )
                 .withProperties( indexableProperty( "label" ) )
                 .build();
-        DomainEntity company = domainEntity( "company" )
+        NodeSpecification company = nodeSpec( "company" )
                 .withProperties( property( "name" ) )
                 .build();
-        DomainEntity project = domainEntity( "project" )
+        NodeSpecification project = nodeSpec( "project" )
                 .withProperties( property( "title" ) )
                 .build();
 
         Dataset dataset = datasetManager.newDataset( "Social network example" );
 
-        DomainEntityInfo users = createEntities( user )
+        NodeCollection users = createEntities( user )
                 .quantity( 10 )
                 .update( dataset );
 
-        DomainEntityInfo topics = relateEntities( users ).to(
+        NodeCollection topics = relateEntities( users ).to(
                 getOrCreate( topic, 10, normalDistribution() )
                         .relationship( withName( "INTERESTED_IN" ) )
                         .relationshipConstraints( minMax( 1, 3 ) ) )
@@ -91,7 +91,7 @@ public class ExampleDataset
                         .relationshipConstraints( exactly( 1 ) ) )
                 .update( dataset );
 
-        DomainEntityInfo allProjects = relateEntities( users ).to(
+        NodeCollection allProjects = relateEntities( users ).to(
                 queryBasedGetOrCreate( project, traversal( findCompanyProjects ), 1.2 )
                         .relationship( withName( "WORKED_ON" ) )
                         .relationshipConstraints( minMax( 1, 3 ) ) )

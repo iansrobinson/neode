@@ -2,7 +2,7 @@ package org.neo4j.neode.commands;
 
 import static java.util.Arrays.asList;
 
-import org.neo4j.neode.DomainEntityInfo;
+import org.neo4j.neode.NodeCollection;
 
 public abstract class EntityChoices
 {
@@ -11,5 +11,5 @@ public abstract class EntityChoices
         return new RandomEntityChoices( asList( entitiesList ) );
     }
 
-    abstract Commands createCommandSelector( DomainEntityInfo startNodes, int batchSize );
+    abstract Commands createCommandSelector( NodeCollection startNodes, int batchSize );
 }

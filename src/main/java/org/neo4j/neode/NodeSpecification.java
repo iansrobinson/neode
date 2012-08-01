@@ -13,21 +13,21 @@ import org.neo4j.neode.commands.RelateNodesBatchCommandBuilder;
 import org.neo4j.neode.commands.interfaces.SetQuantity;
 import org.neo4j.neode.commands.interfaces.SetRelationshipDescription;
 
-public abstract class DomainEntity
+public abstract class NodeSpecification
 {
-    public static DomainEntityBuilder domainEntity( String name )
+    public static DomainEntityBuilder nodeSpec( String name )
     {
         return new DomainEntityBuilder( name );
     }
 
-    public static SetQuantity createEntities( DomainEntity domainEntity )
+    public static SetQuantity createEntities( NodeSpecification nodeSpecification )
     {
-        return new DomainEntityBatchCommandBuilder( domainEntity );
+        return new DomainEntityBatchCommandBuilder( nodeSpecification );
     }
 
-    public static SetRelationshipDescription relateEntities( DomainEntityInfo domainEntityInfo )
+    public static SetRelationshipDescription relateEntities( NodeCollection nodeCollection )
     {
-        return new RelateNodesBatchCommandBuilder( domainEntityInfo );
+        return new RelateNodesBatchCommandBuilder( nodeCollection );
     }
 
 

@@ -1,7 +1,7 @@
 package org.neo4j.neode.commands;
 
-import org.neo4j.neode.DomainEntity;
-import org.neo4j.neode.DomainEntityInfo;
+import org.neo4j.neode.NodeSpecification;
+import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.commands.interfaces.SetQuantity;
 import org.neo4j.neode.commands.interfaces.UpdateDataset;
 
@@ -9,12 +9,12 @@ public class DomainEntityBatchCommandBuilder implements UpdateDataset, SetQuanti
 {
     private static final int DEFAULT_BATCH_SIZE = 20000;
 
-    private final DomainEntity domainEntity;
+    private final NodeSpecification nodeSpecification;
     private int numberOfIterations = 0;
 
-    public DomainEntityBatchCommandBuilder( DomainEntity domainEntity )
+    public DomainEntityBatchCommandBuilder( NodeSpecification nodeSpecification )
     {
-        this.domainEntity = domainEntity;
+        this.nodeSpecification = nodeSpecification;
     }
 
     @Override
@@ -25,16 +25,16 @@ public class DomainEntityBatchCommandBuilder implements UpdateDataset, SetQuanti
     }
 
     @Override
-    public DomainEntityInfo update( Dataset dataset, int batchSize )
+    public NodeCollection update( Dataset dataset, int batchSize )
     {
         DomainEntityBatchCommand command =
-                new DomainEntityBatchCommand( domainEntity, numberOfIterations, batchSize,
+                new DomainEntityBatchCommand( nodeSpecification, numberOfIterations, batchSize,
                         new UniqueNodeIdCollector() );
         return dataset.execute( command );
     }
 
     @Override
-    public DomainEntityInfo update( Dataset dataset )
+    public NodeCollection update( Dataset dataset )
     {
         return update( dataset, DEFAULT_BATCH_SIZE );
     }
@@ -43,7 +43,7 @@ public class DomainEntityBatchCommandBuilder implements UpdateDataset, SetQuanti
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
         DomainEntityBatchCommand command =
-                new DomainEntityBatchCommand( domainEntity, numberOfIterations, batchSize,
+                new DomainEntityBatchCommand( nodeSpecification, numberOfIterations, batchSize,
                         NullEndNodeIdCollector.INSTANCE );
         dataset.execute( command );
     }

@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
-import org.neo4j.neode.DomainEntity;
+import org.neo4j.neode.NodeSpecification;
 import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
 import org.neo4j.neode.numbergenerators.Range;
 import org.neo4j.neode.test.Db;
@@ -33,7 +33,7 @@ public class GetOrCreateUniqueNodeFinderTest
         ProbabilityDistribution probabilityDistribution = mock( ProbabilityDistribution.class );
         when( probabilityDistribution.generateList( 1, Range.minMax( 0, 4 ), random ) ).thenReturn( asList( 0 ) );
 
-        DomainEntity user = mock( DomainEntity.class );
+        NodeSpecification user = mock( NodeSpecification.class );
         when( user.build( db, 0, random ) ).thenReturn( newNode );
 
         GetOrCreateUniqueNodeFinder nodeFinder = new GetOrCreateUniqueNodeFinder( user, 5, probabilityDistribution );
@@ -61,7 +61,7 @@ public class GetOrCreateUniqueNodeFinderTest
         ProbabilityDistribution probabilityDistribution = mock( ProbabilityDistribution.class );
         when( probabilityDistribution.generateList( 1, Range.minMax( 0, 4 ), random ) ).thenReturn( asList( 0 ) );
 
-        DomainEntity user = mock( DomainEntity.class );
+        NodeSpecification user = mock( NodeSpecification.class );
         when( user.build( db, 0, random ) ).thenReturn( newNode );
 
         GetOrCreateUniqueNodeFinder nodeFinder = new GetOrCreateUniqueNodeFinder( user, 5, probabilityDistribution );
