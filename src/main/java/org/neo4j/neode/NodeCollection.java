@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class NodeCollection
 {
-    public static NodeCollection approxPercent(int percent, NodeCollection domainEntities)
+    public static NodeCollection approxPercent(int percent, NodeCollection nodeCollection)
     {
         if (percent < 1 || percent > 100)
         {
@@ -19,7 +19,7 @@ public class NodeCollection
 
         Random random = new Random();
         List<Long> newNodeIds = new ArrayList<Long>(  );
-        for ( Long nodeId : domainEntities.nodeIds() )
+        for ( Long nodeId : nodeCollection.nodeIds() )
         {
             int score = random.nextInt( 100 ) + 1;
             if (score <= percent)
@@ -27,7 +27,7 @@ public class NodeCollection
                 newNodeIds.add( nodeId );
             }
         }
-        return new NodeCollection( domainEntities.entityName(), newNodeIds );
+        return new NodeCollection( nodeCollection.label(), newNodeIds );
     }
 
     private final String name;
@@ -39,7 +39,7 @@ public class NodeCollection
         this.nodeIds = nodeIds;
     }
 
-    public String entityName()
+    public String label()
     {
         return name;
     }
@@ -52,7 +52,7 @@ public class NodeCollection
     @Override
     public String toString()
     {
-        return "DomainEntityInfo{" +
+        return "NodeCollection{" +
                 "name='" + name + '\'' +
                 ", nodeIds=" + nodeIds +
                 '}';

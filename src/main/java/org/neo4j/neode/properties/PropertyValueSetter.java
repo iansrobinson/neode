@@ -37,6 +37,6 @@ public abstract class PropertyValueSetter
         return new RangeBasedIntegerPropertyValueSetter( Range.minMax( min, max ), ProbabilityDistribution.flatDistribution() );
     }
 
-    public abstract Object setProperty( PropertyContainer propertyContainer, String propertyName, String entityName,
+    public abstract Object setProperty( PropertyContainer propertyContainer, String propertyName, String nodeLabel,
                                         int index, Random random );
 }

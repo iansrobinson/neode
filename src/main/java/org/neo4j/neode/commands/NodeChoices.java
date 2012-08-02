@@ -4,11 +4,11 @@ import static java.util.Arrays.asList;
 
 import org.neo4j.neode.NodeCollection;
 
-public abstract class EntityChoices
+public abstract class NodeChoices
 {
-    public static EntityChoices randomChoice( RelationshipSpecification... entitiesList )
+    public static NodeChoices randomChoice( RelationshipSpecification... relationshipSpecifications )
     {
-        return new RandomEntityChoices( asList( entitiesList ) );
+        return new RandomNodeChoices( asList( relationshipSpecifications ) );
     }
 
     abstract Commands createCommandSelector( NodeCollection startNodes, int batchSize );

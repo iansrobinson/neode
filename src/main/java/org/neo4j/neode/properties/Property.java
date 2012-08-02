@@ -41,15 +41,15 @@ public class Property
         this.isIndexable = isIndexable;
     }
 
-    public void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String entityName,
+    public void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String nodeLabel,
                              int index, Random random )
     {
-        Object value = propertyValueSetter.setProperty( propertyContainer, propertyName, entityName, index, random );
+        Object value = propertyValueSetter.setProperty( propertyContainer, propertyName, nodeLabel, index, random );
         if ( isIndexable && propertyContainer instanceof Node)
         {
             if ( nodeIndex == null )
             {
-                nodeIndex = db.index().forNodes( entityName );
+                nodeIndex = db.index().forNodes( nodeLabel );
             }
             nodeIndex.add( (Node) propertyContainer, propertyName, value );
         }

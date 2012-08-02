@@ -40,7 +40,7 @@ class ExistingUniqueNodeFinder extends NodeFinder
                     "nodes specified when applying the relationship constraint. Number of nodes specified by "  +
                     "relationship constraint: %s. Maximum number of nodes available: %s. Either adjust the " +
                     "relationship constraint or increase the number of nodes available.",
-                    nodeCollection.entityName(), quantity, nodeCollection.nodeIds().size() ) );
+                    nodeCollection.label(), quantity, nodeCollection.nodeIds().size() ) );
         }
         return new Iterable<Node>()
         {
@@ -53,9 +53,9 @@ class ExistingUniqueNodeFinder extends NodeFinder
     }
 
     @Override
-    public String entityName()
+    public String label()
     {
-        return nodeCollection.entityName();
+        return nodeCollection.label();
     }
 
 }

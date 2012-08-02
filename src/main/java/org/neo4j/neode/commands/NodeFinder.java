@@ -23,7 +23,7 @@ public abstract class NodeFinder implements SetRelationshipInfo, SetRelationship
 
     abstract Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode, Random random );
 
-    abstract String entityName();
+    abstract String label();
 
     @Override
     public SetRelationshipConstraints relationship( RelationshipType relationshipType, Direction direction,

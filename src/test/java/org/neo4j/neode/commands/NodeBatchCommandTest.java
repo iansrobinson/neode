@@ -16,13 +16,14 @@ import org.neo4j.neode.test.Db;
 public class NodeBatchCommandTest
 {
     @Test
-    public void shouldCreateEntityPrefixedWithEntityName() throws Exception
+    public void shouldCreateNodeWithNamePropertyValuePrefixedWithNodeLabel() throws Exception
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = executor.newDataset( "Test" );
-        NodeSpecification user = NodeSpecification.nodeSpec( "user" ).withProperties( indexableProperty( "name" ) ).build();
+        NodeSpecification user = NodeSpecification.nodeSpec( "user" )
+                .withProperties( indexableProperty( "name" ) ).build();
 
         // when
         NodeSpecification.createNodes( user ).quantity( 1 ).update( dataset );
@@ -32,13 +33,14 @@ public class NodeBatchCommandTest
     }
 
     @Test
-    public void shouldIndexIndexableEntity() throws Exception
+    public void shouldIndexIndexableNode() throws Exception
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = executor.newDataset( "Test" );
-        NodeSpecification user = NodeSpecification.nodeSpec( "user" ).withProperties( indexableProperty( "name" ) ).build();
+        NodeSpecification user = NodeSpecification.nodeSpec( "user" )
+                .withProperties( indexableProperty( "name" ) ).build();
 
         // when
         NodeSpecification.createNodes( user ).quantity( 1 ).update( dataset );

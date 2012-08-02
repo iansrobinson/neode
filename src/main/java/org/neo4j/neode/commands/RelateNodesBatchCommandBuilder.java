@@ -24,9 +24,9 @@ public class RelateNodesBatchCommandBuilder implements SetRelationshipDescriptio
     }
 
     @Override
-    public RelateToChoiceOfNodesBatchCommandBuilder to( EntityChoices entityChoices )
+    public RelateToChoiceOfNodesBatchCommandBuilder to( NodeChoices nodeChoices )
     {
-        return new RelateToChoiceOfNodesBatchCommandBuilder( nodeCollection, entityChoices  );
+        return new RelateToChoiceOfNodesBatchCommandBuilder( nodeCollection, nodeChoices );
     }
 
     @Override

@@ -3,7 +3,7 @@ package org.neo4j.neode.test;
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 import static org.neo4j.neode.NodeSpecification.nodeSpec;
 import static org.neo4j.neode.NodeSpecification.relateNodes;
-import static org.neo4j.neode.commands.EntityChoices.randomChoice;
+import static org.neo4j.neode.commands.NodeChoices.randomChoice;
 import static org.neo4j.neode.commands.RelationshipSpecification.getOrCreate;
 import static org.neo4j.neode.numbergenerators.Range.minMax;
 import static org.neo4j.neode.properties.Property.indexableProperty;
@@ -57,7 +57,7 @@ public class AnotherExampleDataset
 
         for ( NodeCollection subnode : subnodes )
         {
-            if ( subnode.entityName().equals( "intermediate" ) )
+            if ( subnode.label().equals( "intermediate" ) )
             {
                 relateNodes( subnode )
                         .to( getOrCreate( leaf, 100 )

@@ -14,9 +14,10 @@ class CounterBasedStringPropertyValueSetter extends PropertyValueSetter
     }
 
     @Override
-    public Object setProperty( PropertyContainer propertyContainer, String propertyName, String entityName, int index, Random random )
+    public Object setProperty( PropertyContainer propertyContainer, String propertyName, String nodeLabel, int index,
+                               Random random )
     {
-        String value = String.format( "%s-%s", entityName, counter++ );
+        String value = String.format( "%s-%s", nodeLabel, counter++ );
         propertyContainer.setProperty( propertyName, value );
         return value;
     }

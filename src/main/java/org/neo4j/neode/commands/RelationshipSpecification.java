@@ -15,15 +15,15 @@ import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
 
 public class RelationshipSpecification
 {
-    public static NodeFinder getExisting( NodeCollection domainEntities, ProbabilityDistribution
+    public static NodeFinder getExisting( NodeCollection nodeCollection, ProbabilityDistribution
             probabilityDistribution )
     {
-        return new ExistingUniqueNodeFinder( domainEntities, probabilityDistribution );
+        return new ExistingUniqueNodeFinder( nodeCollection, probabilityDistribution );
     }
 
-    public static NodeFinder getExisting( NodeCollection domainEntities )
+    public static NodeFinder getExisting( NodeCollection nodeCollection )
     {
-        return new ExistingUniqueNodeFinder( domainEntities, normalDistribution() );
+        return new ExistingUniqueNodeFinder( nodeCollection, normalDistribution() );
     }
 
     public static NodeFinder queryBasedGetOrCreate( NodeSpecification nodeSpecification, GraphQuery graphQuery )
@@ -81,15 +81,15 @@ public class RelationshipSpecification
         return count;
     }
 
-    NodeCollection newDomainEntityInfo( List<Long> nodeIds )
+    NodeCollection newNodeCollection( List<Long> nodeIds )
     {
-        return new NodeCollection( nodeFinder.entityName(), nodeIds );
+        return new NodeCollection( nodeFinder.label(), nodeIds );
     }
 
     String createRelationshipDescription( String startNodeLabel )
     {
         return String.format( "(%s)%s(%s)",
-                startNodeLabel, relationshipInfo.description(), nodeFinder.entityName() );
+                startNodeLabel, relationshipInfo.description(), nodeFinder.label() );
     }
 
     String createRelationshipConstraintsDescription()

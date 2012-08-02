@@ -59,7 +59,7 @@ class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
     @Override
     public String shortDescription()
     {
-        return relationshipSpecification.createRelationshipDescription( startNodes.entityName() );
+        return relationshipSpecification.createRelationshipDescription( startNodes.label() );
     }
 
     @Override
@@ -72,12 +72,12 @@ class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
     public void onEnd( Log log )
     {
         log.write( String.format( "      [Avg: %s relationship(s) per %s]",
-                totalRels / startNodes.nodeIds().size(), startNodes.entityName() ) );
+                totalRels / startNodes.nodeIds().size(), startNodes.label() ) );
     }
 
     @Override
     public NodeCollection results()
     {
-        return relationshipSpecification.newDomainEntityInfo( targetNodeIdCollector.nodeIds() );
+        return relationshipSpecification.newNodeCollection( targetNodeIdCollector.nodeIds() );
     }
 }

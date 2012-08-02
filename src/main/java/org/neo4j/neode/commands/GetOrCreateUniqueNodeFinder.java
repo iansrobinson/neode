@@ -70,7 +70,7 @@ class GetOrCreateUniqueNodeFinder extends NodeFinder
     }
 
     @Override
-    public String entityName()
+    public String label()
     {
         return nodeSpecification.label();
     }

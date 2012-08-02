@@ -46,7 +46,7 @@ public class RelateNodesBatchCommandBuilderTest
             }
 
             @Override
-            public String entityName()
+            public String label()
             {
                 return null;
             }

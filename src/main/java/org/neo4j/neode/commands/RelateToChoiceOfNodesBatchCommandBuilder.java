@@ -9,17 +9,17 @@ public class RelateToChoiceOfNodesBatchCommandBuilder
     private static final int DEFAULT_BATCH_SIZE = 10000;
 
     private final NodeCollection nodeCollection;
-    private final EntityChoices entityChoices;
+    private final NodeChoices nodeChoices;
 
-    public RelateToChoiceOfNodesBatchCommandBuilder( NodeCollection nodeCollection, EntityChoices entityChoices )
+    public RelateToChoiceOfNodesBatchCommandBuilder( NodeCollection nodeCollection, NodeChoices nodeChoices )
     {
         this.nodeCollection = nodeCollection;
-        this.entityChoices = entityChoices;
+        this.nodeChoices = nodeChoices;
     }
 
     public List<NodeCollection> update( Dataset dataset, int batchSize )
     {
-        Commands commands = entityChoices.createCommandSelector( nodeCollection, batchSize );
+        Commands commands = nodeChoices.createCommandSelector( nodeCollection, batchSize );
         RelateToChoiceOfNodesBatchCommand command = new RelateToChoiceOfNodesBatchCommand( nodeCollection,
                 commands, batchSize );
         dataset.execute( command );
@@ -28,7 +28,7 @@ public class RelateToChoiceOfNodesBatchCommandBuilder
 
     public List<NodeCollection> update( Dataset dataset )
     {
-        Commands commands = entityChoices.createCommandSelector( nodeCollection,DEFAULT_BATCH_SIZE );
+        Commands commands = nodeChoices.createCommandSelector( nodeCollection,DEFAULT_BATCH_SIZE );
         RelateToChoiceOfNodesBatchCommand command = new RelateToChoiceOfNodesBatchCommand( nodeCollection,
                 commands, DEFAULT_BATCH_SIZE );
         dataset.execute( command );

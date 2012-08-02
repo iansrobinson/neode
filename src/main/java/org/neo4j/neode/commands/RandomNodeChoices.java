@@ -6,11 +6,11 @@ import java.util.List;
 import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
 
-class RandomEntityChoices extends EntityChoices
+class RandomNodeChoices extends NodeChoices
 {
     private final List<RelationshipSpecification> entitiesList;
 
-    public RandomEntityChoices( List<RelationshipSpecification> entitiesList )
+    public RandomNodeChoices( List<RelationshipSpecification> entitiesList )
     {
         this.entitiesList = entitiesList;
     }
