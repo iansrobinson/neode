@@ -5,6 +5,8 @@
 package org.neo4j.neode.commands;
 
 
+import static org.neo4j.graphdb.DynamicRelationshipType.withName;
+
 import java.util.Random;
 
 import org.neo4j.graphdb.Direction;
@@ -41,8 +43,21 @@ public abstract class NodeFinder implements SetRelationshipInfo, SetRelationship
     }
 
     @Override
+    public SetRelationshipConstraints relationship( String relationshipLabel, Direction direction,
+                                                    Property... properties )
+    {
+        return relationship( withName( relationshipLabel ), direction, properties );
+    }
+
+    @Override
+    public SetRelationshipConstraints relationship( String relationshipLabel, Property... properties )
+    {
+        return relationship( withName( relationshipLabel ), properties );
+    }
+
+    @Override
     public RelationshipSpecification relationshipConstraints( Range cardinality,
-                                                            RelationshipUniqueness relationshipUniqueness )
+                                                              RelationshipUniqueness relationshipUniqueness )
     {
         relationshipConstraints = new RelationshipConstraints( cardinality, relationshipUniqueness );
         return new RelationshipSpecification( this, relationshipInfo, relationshipConstraints );

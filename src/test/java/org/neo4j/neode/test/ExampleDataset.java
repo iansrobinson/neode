@@ -1,10 +1,10 @@
 package org.neo4j.neode.test;
 
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
+import static org.neo4j.neode.NodeCollection.approxPercent;
 import static org.neo4j.neode.NodeSpecification.createNodes;
 import static org.neo4j.neode.NodeSpecification.nodeSpec;
 import static org.neo4j.neode.NodeSpecification.relateNodes;
-import static org.neo4j.neode.NodeCollection.approxPercent;
 import static org.neo4j.neode.commands.GraphQuery.traversal;
 import static org.neo4j.neode.commands.RelationshipSpecification.getExisting;
 import static org.neo4j.neode.commands.RelationshipSpecification.getOrCreate;
@@ -25,8 +25,8 @@ import org.neo4j.graphdb.traversal.Evaluator;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.kernel.Traversal;
 import org.neo4j.neode.DatasetManager;
-import org.neo4j.neode.NodeSpecification;
 import org.neo4j.neode.NodeCollection;
+import org.neo4j.neode.NodeSpecification;
 import org.neo4j.neode.commands.Dataset;
 import org.neo4j.neode.commands.RelationshipUniqueness;
 import org.neo4j.neode.logging.SysOutLog;
@@ -81,25 +81,25 @@ public class ExampleDataset
 
         NodeCollection topics = relateNodes( users ).to(
                 getOrCreate( topic, 10, normalDistribution() )
-                        .relationship( withName( "INTERESTED_IN" ) )
+                        .relationship( "INTERESTED_IN" )
                         .relationshipConstraints( minMax( 1, 3 ) ) )
                 .update( dataset );
 
         relateNodes( users ).to(
                 getOrCreate( company, 2, flatDistribution() )
-                        .relationship( withName( "WORKS_FOR" ) )
+                        .relationship( "WORKS_FOR" )
                         .relationshipConstraints( exactly( 1 ) ) )
                 .update( dataset );
 
         NodeCollection allProjects = relateNodes( users ).to(
                 queryBasedGetOrCreate( project, traversal( findCompanyProjects ), 1.2 )
-                        .relationship( withName( "WORKED_ON" ) )
+                        .relationship( "WORKED_ON" )
                         .relationshipConstraints( minMax( 1, 3 ) ) )
                 .update( dataset );
 
         relateNodes( approxPercent( 30, users ) ).to(
                 getExisting( allProjects )
-                        .relationship( withName( "WORKED_ON" ) )
+                        .relationship( "WORKED_ON" )
                         .relationshipConstraints( minMax( 1, 2 ), RelationshipUniqueness.SINGLE_DIRECTION ) )
                 .update( dataset );
 

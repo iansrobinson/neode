@@ -14,4 +14,8 @@ public interface SetRelationshipInfo
                                              Property... properties );
 
     SetRelationshipConstraints relationship( RelationshipType relationshipType, Property... properties );
+
+    SetRelationshipConstraints relationship( String relationshipLabel, Direction direction, Property... properties );
+
+    SetRelationshipConstraints relationship( String relationshipLabel, Property... properties );
 }
