@@ -1,7 +1,6 @@
 package org.neo4j.neode.test;
 
-import static org.neo4j.neode.NodeSpecification.nodeSpec;
-import static org.neo4j.neode.NodeSpecification.relateNodes;
+import static org.neo4j.neode.NodeSpecificationX.relateNodes;
 import static org.neo4j.neode.commands.NodeChoices.randomChoice;
 import static org.neo4j.neode.commands.RelationshipSpecification.getOrCreate;
 import static org.neo4j.neode.numbergenerators.Range.minMax;
@@ -15,8 +14,8 @@ import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.neode.DatasetManager;
 import org.neo4j.neode.NodeCollection;
-import org.neo4j.neode.NodeSpecification;
 import org.neo4j.neode.commands.Dataset;
+import org.neo4j.neode.commands.NodeSpecification;
 import org.neo4j.neode.logging.SysOutLog;
 
 public class AnotherExampleDataset
@@ -28,19 +27,11 @@ public class AnotherExampleDataset
         DatasetManager datasetManager = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = datasetManager.newDataset( "Pricing tree" );
 
-        NodeSpecification root = nodeSpec( "root" )
-                .withProperties( indexableProperty( "name" ) )
-                .build();
-        NodeSpecification intermediate = nodeSpec( "intermediate" )
-                .build();
-        NodeSpecification leaf = nodeSpec( "leaf" )
-                .withProperties( property( "price", integerRange( 1, 10 ) ) )
-                .build();
+        NodeSpecification root = new NodeSpecification( "root", indexableProperty( "name" ) );
+        NodeSpecification intermediate = new NodeSpecification( "intermediate" );
+        NodeSpecification leaf = new NodeSpecification( "leaf", property( "price", integerRange( 1, 10 ) ) );
 
-
-        NodeCollection roots = NodeSpecification.createNodes( root )
-                .quantity( 10 )
-                .update( dataset );
+        NodeCollection roots = root.create( 10, dataset );
 
         List<NodeCollection> subnodes = relateNodes( roots ).to(
                 randomChoice(

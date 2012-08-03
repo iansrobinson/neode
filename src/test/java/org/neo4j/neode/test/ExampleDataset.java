@@ -2,9 +2,7 @@ package org.neo4j.neode.test;
 
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 import static org.neo4j.neode.NodeCollection.approxPercent;
-import static org.neo4j.neode.NodeSpecification.createNodes;
-import static org.neo4j.neode.NodeSpecification.nodeSpec;
-import static org.neo4j.neode.NodeSpecification.relateNodes;
+import static org.neo4j.neode.NodeSpecificationX.relateNodes;
 import static org.neo4j.neode.commands.GraphQuery.traversal;
 import static org.neo4j.neode.commands.RelationshipSpecification.getExisting;
 import static org.neo4j.neode.commands.RelationshipSpecification.getOrCreate;
@@ -26,8 +24,8 @@ import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.kernel.Traversal;
 import org.neo4j.neode.DatasetManager;
 import org.neo4j.neode.NodeCollection;
-import org.neo4j.neode.NodeSpecification;
 import org.neo4j.neode.commands.Dataset;
+import org.neo4j.neode.commands.NodeSpecification;
 import org.neo4j.neode.commands.RelationshipUniqueness;
 import org.neo4j.neode.logging.SysOutLog;
 
@@ -60,24 +58,14 @@ public class ExampleDataset
                     }
                 } );
 
-        NodeSpecification user = nodeSpec( "user" )
-                .withProperties( indexableProperty( "name" ) )
-                .build();
-        NodeSpecification topic = nodeSpec( "topic" )
-                .withProperties( indexableProperty( "label" ) )
-                .build();
-        NodeSpecification company = nodeSpec( "company" )
-                .withProperties( property( "name" ) )
-                .build();
-        NodeSpecification project = nodeSpec( "project" )
-                .withProperties( property( "title" ) )
-                .build();
+        NodeSpecification user = new NodeSpecification( "user", indexableProperty( "name" ) );
+        NodeSpecification topic = new NodeSpecification( "topic", indexableProperty( "label" ) );
+        NodeSpecification company = new NodeSpecification( "company", property( "name" ) );
+        NodeSpecification project = new NodeSpecification( "project", property( "title" ) );
 
         Dataset dataset = datasetManager.newDataset( "Social network example" );
 
-        NodeCollection users = createNodes( user )
-                .quantity( 10 )
-                .update( dataset );
+        NodeCollection users = user.create( 10, dataset );
 
         NodeCollection topics = relateNodes( users ).to(
                 getOrCreate( topic, 10, normalDistribution() )

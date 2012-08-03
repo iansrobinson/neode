@@ -4,8 +4,6 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
-import static org.neo4j.neode.NodeSpecification.createNodes;
-import static org.neo4j.neode.NodeSpecification.nodeSpec;
 
 import java.util.Random;
 
@@ -16,7 +14,7 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.DatasetManager;
 import org.neo4j.neode.NodeCollection;
-import org.neo4j.neode.NodeSpecification;
+import org.neo4j.neode.NodeSpecificationX;
 import org.neo4j.neode.logging.SysOutLog;
 import org.neo4j.neode.numbergenerators.Range;
 import org.neo4j.neode.test.Db;
@@ -30,10 +28,9 @@ public class RelateNodesBatchCommandBuilderTest
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = executor.newDataset( "Test" );
-        NodeCollection users = createNodes( nodeSpec( "user" ).build() ).quantity( 3 )
-                .update( dataset );
-        NodeSpecification product = nodeSpec( "product" ).build();
-        final NodeCollection products = createNodes( product ).quantity( 3 ).update( dataset );
+        NodeCollection users = new NodeSpecification( "user" ).create( 3, dataset );
+        NodeSpecification product = new NodeSpecification( "product" );
+        final NodeCollection products = product.create( 3, dataset );
         NodeFinder nodeFinder = new NodeFinder()
         {
             int index = 0;
@@ -53,7 +50,7 @@ public class RelateNodesBatchCommandBuilderTest
         };
 
         // when
-        NodeSpecification.relateNodes( users ).to(
+        NodeSpecificationX.relateNodes( users ).to(
                 nodeFinder
                         .relationship( withName( "BOUGHT" ) )
                         .relationshipConstraints( Range.exactly( 1 ) ) )

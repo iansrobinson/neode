@@ -14,7 +14,6 @@ import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
-import org.neo4j.neode.NodeSpecification;
 import org.neo4j.neode.test.Db;
 
 
@@ -32,7 +31,7 @@ public class QueryBasedGetOrCreateTest
         Node node4 = db.createNode();
 
         Random random = new Random();
-        NodeSpecification user = NodeSpecification.nodeSpec( "user" ).build();
+        NodeSpecification user =new NodeSpecification( "user" );
         SparseNodeListGenerator finder = mock( SparseNodeListGenerator.class );
 
         List<Node> sparseList = asList( node0, null, null, null, node4 );

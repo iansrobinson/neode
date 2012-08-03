@@ -5,7 +5,6 @@ import java.util.Random;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
-import org.neo4j.neode.NodeSpecification;
 
 class QueryBasedGetOrCreate extends NodeFinder
 {
