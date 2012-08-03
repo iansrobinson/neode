@@ -1,6 +1,5 @@
 package org.neo4j.neode.test;
 
-import static org.neo4j.neode.NodeSpecificationX.relateNodes;
 import static org.neo4j.neode.commands.NodeChoices.randomChoice;
 import static org.neo4j.neode.commands.RelationshipSpecification.getOrCreate;
 import static org.neo4j.neode.numbergenerators.Range.minMax;
@@ -33,7 +32,7 @@ public class AnotherExampleDataset
 
         NodeCollection roots = root.create( 10, dataset );
 
-        List<NodeCollection> subnodes = relateNodes( roots ).to(
+        List<NodeCollection> subnodes = roots.createRelationshipsTo(
                 randomChoice(
                         getOrCreate( intermediate, 20 )
                                 .relationship( "CONNECTED_TO",
@@ -42,19 +41,20 @@ public class AnotherExampleDataset
                         getOrCreate( leaf, 100 )
                                 .relationship( "CONNECTED_TO",
                                         property( "quantity", integerRange( 1, 5 ) ) )
-                                .relationshipConstraints( minMax( 1, 3 ) ) )
-        ).update( dataset );
+                                .relationshipConstraints( minMax( 1, 3 ) ) ) )
+                .update( dataset );
 
         for ( NodeCollection subnode : subnodes )
         {
             if ( subnode.label().equals( "intermediate" ) )
             {
-                relateNodes( subnode )
-                        .to( getOrCreate( leaf, 100 )
+                subnode.createRelationshipsTo(
+                        getOrCreate( leaf, 100 )
                                 .relationship( "CONNECTED_TO",
                                         property( "quantity", integerRange( 1, 5 ) ) )
                                 .relationshipConstraints( minMax( 1, 3 ) ) )
                         .update( dataset );
+
             }
         }
 

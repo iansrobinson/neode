@@ -2,7 +2,6 @@ package org.neo4j.neode.test;
 
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 import static org.neo4j.neode.NodeCollection.approxPercent;
-import static org.neo4j.neode.NodeSpecificationX.relateNodes;
 import static org.neo4j.neode.commands.GraphQuery.traversal;
 import static org.neo4j.neode.commands.RelationshipSpecification.getExisting;
 import static org.neo4j.neode.commands.RelationshipSpecification.getOrCreate;
@@ -67,25 +66,25 @@ public class ExampleDataset
 
         NodeCollection users = user.create( 10, dataset );
 
-        NodeCollection topics = relateNodes( users ).to(
+        NodeCollection topics = users.createRelationshipsTo(
                 getOrCreate( topic, 10, normalDistribution() )
                         .relationship( "INTERESTED_IN" )
                         .relationshipConstraints( minMax( 1, 3 ) ) )
                 .update( dataset );
 
-        relateNodes( users ).to(
+        users.createRelationshipsTo(
                 getOrCreate( company, 2, flatDistribution() )
                         .relationship( "WORKS_FOR" )
                         .relationshipConstraints( exactly( 1 ) ) )
                 .update( dataset );
 
-        NodeCollection allProjects = relateNodes( users ).to(
+        NodeCollection allProjects = users.createRelationshipsTo(
                 queryBasedGetOrCreate( project, traversal( findCompanyProjects ), 1.2 )
                         .relationship( "WORKED_ON" )
                         .relationshipConstraints( minMax( 1, 3 ) ) )
                 .update( dataset );
 
-        relateNodes( approxPercent( 30, users ) ).to(
+        approxPercent( 30, users ).createRelationshipsTo(
                 getExisting( allProjects )
                         .relationship( "WORKED_ON" )
                         .relationshipConstraints( minMax( 1, 2 ), RelationshipUniqueness.SINGLE_DIRECTION ) )

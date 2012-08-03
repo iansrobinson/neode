@@ -8,21 +8,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.neo4j.neode.commands.NodeChoices;
+import org.neo4j.neode.commands.RelateNodesBatchCommandBuilder;
+import org.neo4j.neode.commands.RelateToChoiceOfNodesBatchCommandBuilder;
+import org.neo4j.neode.commands.RelationshipSpecification;
+import org.neo4j.neode.commands.interfaces.UpdateDataset;
+
 public class NodeCollection
 {
-    public static NodeCollection approxPercent(int percent, NodeCollection nodeCollection)
+    public static NodeCollection approxPercent( int percent, NodeCollection nodeCollection )
     {
-        if (percent < 1 || percent > 100)
+        if ( percent < 1 || percent > 100 )
         {
             throw new IllegalArgumentException( "Percent must be between 1 and 100" );
         }
 
         Random random = new Random();
-        List<Long> newNodeIds = new ArrayList<Long>(  );
+        List<Long> newNodeIds = new ArrayList<Long>();
         for ( Long nodeId : nodeCollection.nodeIds() )
         {
             int score = random.nextInt( 100 ) + 1;
-            if (score <= percent)
+            if ( score <= percent )
             {
                 newNodeIds.add( nodeId );
             }
@@ -47,6 +53,17 @@ public class NodeCollection
     public List<Long> nodeIds()
     {
         return nodeIds;
+    }
+
+    public UpdateDataset createRelationshipsTo( RelationshipSpecification relationshipSpecification )
+    {
+        RelateNodesBatchCommandBuilder builder = new RelateNodesBatchCommandBuilder( this );
+        return builder.to( relationshipSpecification );
+    }
+
+    public RelateToChoiceOfNodesBatchCommandBuilder createRelationshipsTo( NodeChoices nodeChoices )
+    {
+        return new RelateToChoiceOfNodesBatchCommandBuilder( this, nodeChoices );
     }
 
     @Override
