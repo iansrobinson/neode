@@ -57,8 +57,7 @@ public class NodeCollection
 
     public UpdateDataset<NodeCollection> createRelationshipsTo( RelationshipSpecification relationshipSpecification )
     {
-        RelateNodesBatchCommandBuilder builder = new RelateNodesBatchCommandBuilder( this );
-        return builder.to( relationshipSpecification );
+        return new RelateNodesBatchCommandBuilder( this, relationshipSpecification );
     }
 
     public UpdateDataset<List<NodeCollection>> createRelationshipsTo( NodeChoices nodeChoices )

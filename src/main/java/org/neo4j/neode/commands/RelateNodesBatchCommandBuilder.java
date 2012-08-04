@@ -1,34 +1,19 @@
 package org.neo4j.neode.commands;
 
-import java.util.List;
-
 import org.neo4j.neode.NodeCollection;
-import org.neo4j.neode.commands.interfaces.SetRelationshipDescription;
 import org.neo4j.neode.commands.interfaces.UpdateDataset;
 
-public class RelateNodesBatchCommandBuilder implements SetRelationshipDescription, UpdateDataset<NodeCollection>
+public class RelateNodesBatchCommandBuilder implements UpdateDataset<NodeCollection>
 {
     private static final int DEFAULT_BATCH_SIZE = 10000;
 
     private final NodeCollection nodeCollection;
-    private RelationshipSpecification entities;
+    private final RelationshipSpecification entities;
 
-    public RelateNodesBatchCommandBuilder( NodeCollection nodeCollection )
+    public RelateNodesBatchCommandBuilder( NodeCollection nodeCollection, RelationshipSpecification entities )
     {
         this.nodeCollection = nodeCollection;
-    }
-
-    @Override
-    public UpdateDataset<NodeCollection> to( RelationshipSpecification entities )
-    {
         this.entities = entities;
-        return this;
-    }
-
-    @Override
-    public UpdateDataset<List<NodeCollection>> to( NodeChoices nodeChoices )
-    {
-        return new RelateToChoiceOfNodesBatchCommandBuilder( nodeCollection, nodeChoices );
     }
 
     @Override
