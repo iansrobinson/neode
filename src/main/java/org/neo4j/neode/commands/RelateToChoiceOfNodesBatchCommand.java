@@ -14,8 +14,7 @@ public class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<Node
     private final Commands commands;
     private final int batchSize;
 
-    public RelateToChoiceOfNodesBatchCommand( NodeCollection startNodes, Commands commands,
-                                              int batchSize )
+    public RelateToChoiceOfNodesBatchCommand( NodeCollection startNodes, Commands commands, int batchSize )
     {
         this.startNodes = startNodes;
         this.commands = commands;
