@@ -55,13 +55,13 @@ public class NodeCollection
         return nodeIds;
     }
 
-    public UpdateDataset createRelationshipsTo( RelationshipSpecification relationshipSpecification )
+    public UpdateDataset<NodeCollection> createRelationshipsTo( RelationshipSpecification relationshipSpecification )
     {
         RelateNodesBatchCommandBuilder builder = new RelateNodesBatchCommandBuilder( this );
         return builder.to( relationshipSpecification );
     }
 
-    public RelateToChoiceOfNodesBatchCommandBuilder createRelationshipsTo( NodeChoices nodeChoices )
+    public UpdateDataset<List<NodeCollection>> createRelationshipsTo( NodeChoices nodeChoices )
     {
         return new RelateToChoiceOfNodesBatchCommandBuilder( this, nodeChoices );
     }
