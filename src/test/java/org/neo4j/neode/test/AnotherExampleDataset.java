@@ -30,7 +30,7 @@ public class AnotherExampleDataset
         NodeSpecification intermediate = new NodeSpecification( "intermediate" );
         NodeSpecification leaf = new NodeSpecification( "leaf", property( "price", integerRange( 1, 10 ) ) );
 
-        NodeCollection roots = root.create( 10, dataset );
+        NodeCollection roots = root.create( 10 ).update( dataset );
 
         List<NodeCollection> subnodes = roots.createRelationshipsTo(
                 randomChoice(

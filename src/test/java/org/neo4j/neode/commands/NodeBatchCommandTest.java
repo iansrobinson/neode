@@ -24,7 +24,7 @@ public class NodeBatchCommandTest
         NodeSpecification user = new NodeSpecification( "user", indexableProperty( "name" ) );
 
         // when
-        user.create( 1, dataset );
+        user.create( 1 ).update( dataset );
 
         // then
         assertEquals( "user-1", db.getNodeById( 1 ).getProperty( "name" ) );
@@ -40,7 +40,7 @@ public class NodeBatchCommandTest
         NodeSpecification user = new NodeSpecification( "user", indexableProperty( "name" ) );
 
         // when
-        user.create( 1, dataset );
+        user.create( 1 ).update( dataset );
 
         // then
         assertNotNull( db.index().forNodes( "user" ).get( "name", "user-1" ).getSingle() );
@@ -56,7 +56,7 @@ public class NodeBatchCommandTest
         NodeSpecification user = new NodeSpecification( "user", indexableProperty( "key" ) );
 
         // when
-        NodeCollection results = user.create( 5, dataset );
+        NodeCollection results = user.create( 5 ).update( dataset );
 
         // then
         assertEquals( asList( 1l, 2l, 3l, 4l, 5l ), results.nodeIds() );

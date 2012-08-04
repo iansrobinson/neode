@@ -8,12 +8,11 @@ import java.util.Random;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.NodeCollection;
+import org.neo4j.neode.commands.interfaces.UpdateDataset;
 import org.neo4j.neode.properties.Property;
 
 public class NodeSpecification
 {
-    private static final int DEFAULT_BATCH_SIZE = 20000;
-
     private final String label;
     private final List<Property> properties;
 
@@ -39,14 +38,8 @@ public class NodeSpecification
         return label;
     }
 
-    public NodeCollection create( int quantity, Dataset dataset )
+    public UpdateDataset<NodeCollection> create( int quantity )
     {
-        return create( quantity, dataset, DEFAULT_BATCH_SIZE );
-    }
-
-    public NodeCollection create( int quantity, Dataset dataset, int batchSize )
-    {
-        NodeBatchCommand command = new NodeBatchCommand( this, quantity, batchSize, new UniqueNodeIdCollector() );
-        return dataset.execute( command );
+        return new NodeBatchCommandBuilder( this, quantity );
     }
 }

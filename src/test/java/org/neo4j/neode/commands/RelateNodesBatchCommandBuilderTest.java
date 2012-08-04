@@ -27,9 +27,9 @@ public class RelateNodesBatchCommandBuilderTest
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = executor.newDataset( "Test" );
-        NodeCollection users = new NodeSpecification( "user" ).create( 3, dataset );
+        NodeCollection users = new NodeSpecification( "user" ).create( 3 ).update( dataset );
         NodeSpecification product = new NodeSpecification( "product" );
-        final NodeCollection products = product.create( 3, dataset );
+        final NodeCollection products = product.create( 3 ).update( dataset );
         NodeFinder nodeFinder = new NodeFinder()
         {
             int index = 0;

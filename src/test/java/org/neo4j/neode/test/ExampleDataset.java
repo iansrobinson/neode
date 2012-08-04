@@ -64,7 +64,7 @@ public class ExampleDataset
 
         Dataset dataset = datasetManager.newDataset( "Social network example" );
 
-        NodeCollection users = user.create( 10, dataset );
+        NodeCollection users = user.create( 10 ).update( dataset );
 
         NodeCollection topics = users.createRelationshipsTo(
                 getOrCreate( topic, 10, normalDistribution() )
