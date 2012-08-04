@@ -8,7 +8,7 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.logging.Log;
 
-public class Commands
+class Commands
 {
     private final List<BatchCommand<NodeCollection>> commands;
     private final CommandSelectionStrategy commandSelectionStrategy;

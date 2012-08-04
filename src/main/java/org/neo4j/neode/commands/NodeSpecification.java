@@ -22,6 +22,11 @@ public class NodeSpecification
         this.properties = asList( properties );
     }
 
+    public UpdateDataset<NodeCollection> create( int quantity )
+    {
+        return new NodeBatchCommandBuilder( this, quantity );
+    }
+
     Node build( GraphDatabaseService db, int index, Random random )
     {
         Node node = db.createNode();
@@ -33,13 +38,9 @@ public class NodeSpecification
         return node;
     }
 
-    public String label()
+    String label()
     {
         return label;
     }
 
-    public UpdateDataset<NodeCollection> create( int quantity )
-    {
-        return new NodeBatchCommandBuilder( this, quantity );
-    }
 }

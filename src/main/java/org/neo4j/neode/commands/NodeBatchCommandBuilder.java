@@ -3,7 +3,7 @@ package org.neo4j.neode.commands;
 import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.commands.interfaces.UpdateDataset;
 
-public class NodeBatchCommandBuilder implements UpdateDataset<NodeCollection>
+class NodeBatchCommandBuilder implements UpdateDataset<NodeCollection>
 {
     private static final int DEFAULT_BATCH_SIZE = 20000;
 
