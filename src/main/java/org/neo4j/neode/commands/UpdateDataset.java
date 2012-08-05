@@ -1,4 +1,4 @@
-package org.neo4j.neode.commands.interfaces;
+package org.neo4j.neode.commands;
 
 import org.neo4j.neode.commands.Dataset;
 
