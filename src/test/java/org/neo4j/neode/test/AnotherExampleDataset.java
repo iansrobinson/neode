@@ -1,7 +1,7 @@
 package org.neo4j.neode.test;
 
-import static org.neo4j.neode.commands.TargetNodesSpecificationsChoices.randomChoice;
-import static org.neo4j.neode.commands.TargetNodesSpecification.getOrCreate;
+import static org.neo4j.neode.TargetNodesSpecificationsChoices.randomChoice;
+import static org.neo4j.neode.TargetNodesSpecification.getOrCreate;
 import static org.neo4j.neode.numbergenerators.Range.minMax;
 import static org.neo4j.neode.properties.Property.indexableProperty;
 import static org.neo4j.neode.properties.Property.property;
@@ -12,9 +12,9 @@ import java.util.List;
 import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.neode.DatasetManager;
-import org.neo4j.neode.commands.NodeCollection;
-import org.neo4j.neode.commands.Dataset;
-import org.neo4j.neode.commands.NodeSpecification;
+import org.neo4j.neode.NodeCollection;
+import org.neo4j.neode.Dataset;
+import org.neo4j.neode.NodeSpecification;
 import org.neo4j.neode.logging.SysOutLog;
 
 public class AnotherExampleDataset

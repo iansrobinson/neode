@@ -1,11 +1,11 @@
 package org.neo4j.neode.test;
 
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
-import static org.neo4j.neode.commands.NodeCollection.approxPercent;
-import static org.neo4j.neode.commands.GraphQuery.traversal;
-import static org.neo4j.neode.commands.TargetNodesSpecification.getExisting;
-import static org.neo4j.neode.commands.TargetNodesSpecification.getOrCreate;
-import static org.neo4j.neode.commands.TargetNodesSpecification.queryBasedGetOrCreate;
+import static org.neo4j.neode.NodeCollection.approxPercent;
+import static org.neo4j.neode.GraphQuery.traversal;
+import static org.neo4j.neode.TargetNodesSpecification.getExisting;
+import static org.neo4j.neode.TargetNodesSpecification.getOrCreate;
+import static org.neo4j.neode.TargetNodesSpecification.queryBasedGetOrCreate;
 import static org.neo4j.neode.numbergenerators.ProbabilityDistribution.flatDistribution;
 import static org.neo4j.neode.numbergenerators.ProbabilityDistribution.normalDistribution;
 import static org.neo4j.neode.numbergenerators.Range.exactly;
@@ -22,10 +22,10 @@ import org.neo4j.graphdb.traversal.Evaluator;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.kernel.Traversal;
 import org.neo4j.neode.DatasetManager;
-import org.neo4j.neode.commands.NodeCollection;
-import org.neo4j.neode.commands.Dataset;
-import org.neo4j.neode.commands.NodeSpecification;
-import org.neo4j.neode.commands.RelationshipUniqueness;
+import org.neo4j.neode.NodeCollection;
+import org.neo4j.neode.Dataset;
+import org.neo4j.neode.NodeSpecification;
+import org.neo4j.neode.RelationshipUniqueness;
 import org.neo4j.neode.logging.SysOutLog;
 
 public class ExampleDataset
