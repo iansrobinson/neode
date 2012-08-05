@@ -10,16 +10,16 @@ import org.neo4j.neode.logging.Log;
 class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
 {
     private final NodeCollection startNodes;
-    private final RelationshipSpecification relationshipSpecification;
+    private final TargetNodesSpecification targetNodesSpecification;
     private final NodeIdCollector targetNodeIdCollector;
     private final int batchSize;
     private long totalRels = 0;
 
-    public RelateNodesBatchCommand( NodeCollection startNodes, RelationshipSpecification relationshipSpecification,
+    public RelateNodesBatchCommand( NodeCollection startNodes, TargetNodesSpecification targetNodesSpecification,
                                     NodeIdCollector targetNodeIdCollector, int batchSize )
     {
         this.startNodes = startNodes;
-        this.relationshipSpecification = relationshipSpecification;
+        this.targetNodesSpecification = targetNodesSpecification;
         this.targetNodeIdCollector = targetNodeIdCollector;
         this.batchSize = batchSize;
     }
@@ -46,7 +46,7 @@ class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
     @Override
     public void execute( Node currentNode, GraphDatabaseService db, int index, Random random )
     {
-        totalRels += relationshipSpecification
+        totalRels += targetNodesSpecification
                 .addRelationshipsToCurrentNode( db, currentNode, targetNodeIdCollector, random );
     }
 
@@ -59,13 +59,13 @@ class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
     @Override
     public String shortDescription()
     {
-        return relationshipSpecification.createRelationshipDescription( startNodes.label() );
+        return targetNodesSpecification.createRelationshipDescription( startNodes.label() );
     }
 
     @Override
     public void onBegin( Log log )
     {
-        log.write( String.format( "      %s", relationshipSpecification.createRelationshipConstraintsDescription() ) );
+        log.write( String.format( "      %s", targetNodesSpecification.createRelationshipConstraintsDescription() ) );
     }
 
     @Override
@@ -78,6 +78,6 @@ class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
     @Override
     public NodeCollection results()
     {
-        return relationshipSpecification.newNodeCollection( targetNodeIdCollector.nodeIds() );
+        return targetNodesSpecification.newNodeCollection( targetNodeIdCollector.nodeIds() );
     }
 }

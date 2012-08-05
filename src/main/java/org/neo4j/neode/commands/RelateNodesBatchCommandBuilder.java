@@ -8,9 +8,9 @@ public class RelateNodesBatchCommandBuilder implements UpdateDataset<NodeCollect
     private static final int DEFAULT_BATCH_SIZE = 10000;
 
     private final NodeCollection nodeCollection;
-    private final RelationshipSpecification entities;
+    private final TargetNodesSpecification entities;
 
-    public RelateNodesBatchCommandBuilder( NodeCollection nodeCollection, RelationshipSpecification entities )
+    public RelateNodesBatchCommandBuilder( NodeCollection nodeCollection, TargetNodesSpecification entities )
     {
         this.nodeCollection = nodeCollection;
         this.entities = entities;

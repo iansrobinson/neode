@@ -6,11 +6,11 @@ import java.util.List;
 import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
 
-class RandomNodeChoices extends NodeChoices
+class RandomTargetNodesSpecificationsChoices extends TargetNodesSpecificationsChoices
 {
-    private final List<RelationshipSpecification> entitiesList;
+    private final List<TargetNodesSpecification> entitiesList;
 
-    public RandomNodeChoices( List<RelationshipSpecification> entitiesList )
+    public RandomTargetNodesSpecificationsChoices( List<TargetNodesSpecification> entitiesList )
     {
         this.entitiesList = entitiesList;
     }
@@ -19,10 +19,10 @@ class RandomNodeChoices extends NodeChoices
     Commands createCommandSelector( NodeCollection startNodes, int batchSize )
     {
         List<BatchCommand<NodeCollection>> commands = new ArrayList<BatchCommand<NodeCollection>>();
-        for ( RelationshipSpecification relationshipSpecification : entitiesList )
+        for ( TargetNodesSpecification targetNodesSpecification : entitiesList )
         {
             RelateNodesBatchCommand command = new RelateNodesBatchCommand( startNodes,
-                    relationshipSpecification, new UniqueNodeIdCollector(), batchSize );
+                    targetNodesSpecification, new UniqueNodeIdCollector(), batchSize );
             commands.add( command );
         }
         return new Commands( commands, new RandomCommandSelectionStrategy( ProbabilityDistribution.flatDistribution() ) );

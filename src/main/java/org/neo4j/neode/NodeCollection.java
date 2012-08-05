@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.neo4j.neode.commands.NodeChoices;
+import org.neo4j.neode.commands.TargetNodesSpecificationsChoices;
 import org.neo4j.neode.commands.RelateNodesBatchCommandBuilder;
 import org.neo4j.neode.commands.RelateToChoiceOfNodesBatchCommandBuilder;
-import org.neo4j.neode.commands.RelationshipSpecification;
+import org.neo4j.neode.commands.TargetNodesSpecification;
 import org.neo4j.neode.commands.interfaces.UpdateDataset;
 
 public class NodeCollection
@@ -55,14 +55,14 @@ public class NodeCollection
         return nodeIds;
     }
 
-    public UpdateDataset<NodeCollection> createRelationshipsTo( RelationshipSpecification relationshipSpecification )
+    public UpdateDataset<NodeCollection> createRelationshipsTo( TargetNodesSpecification targetNodesSpecification )
     {
-        return new RelateNodesBatchCommandBuilder( this, relationshipSpecification );
+        return new RelateNodesBatchCommandBuilder( this, targetNodesSpecification );
     }
 
-    public UpdateDataset<List<NodeCollection>> createRelationshipsTo( NodeChoices nodeChoices )
+    public UpdateDataset<List<NodeCollection>> createRelationshipsTo( TargetNodesSpecificationsChoices targetNodesSpecificationsChoices )
     {
-        return new RelateToChoiceOfNodesBatchCommandBuilder( this, nodeChoices );
+        return new RelateToChoiceOfNodesBatchCommandBuilder( this, targetNodesSpecificationsChoices );
     }
 
     @Override

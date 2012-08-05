@@ -3,9 +3,9 @@ package org.neo4j.neode.test;
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 import static org.neo4j.neode.NodeCollection.approxPercent;
 import static org.neo4j.neode.commands.GraphQuery.traversal;
-import static org.neo4j.neode.commands.RelationshipSpecification.getExisting;
-import static org.neo4j.neode.commands.RelationshipSpecification.getOrCreate;
-import static org.neo4j.neode.commands.RelationshipSpecification.queryBasedGetOrCreate;
+import static org.neo4j.neode.commands.TargetNodesSpecification.getExisting;
+import static org.neo4j.neode.commands.TargetNodesSpecification.getOrCreate;
+import static org.neo4j.neode.commands.TargetNodesSpecification.queryBasedGetOrCreate;
 import static org.neo4j.neode.numbergenerators.ProbabilityDistribution.flatDistribution;
 import static org.neo4j.neode.numbergenerators.ProbabilityDistribution.normalDistribution;
 import static org.neo4j.neode.numbergenerators.Range.exactly;
@@ -57,29 +57,29 @@ public class ExampleDataset
                     }
                 } );
 
-        NodeSpecification user = new NodeSpecification( "user", indexableProperty( "name" ) );
-        NodeSpecification topic = new NodeSpecification( "topic", indexableProperty( "label" ) );
-        NodeSpecification company = new NodeSpecification( "company", property( "name" ) );
-        NodeSpecification project = new NodeSpecification( "project", property( "title" ) );
+        NodeSpecification userSpec = new NodeSpecification( "user", indexableProperty( "name" ) );
+        NodeSpecification topicSpec = new NodeSpecification( "topic", indexableProperty( "label" ) );
+        NodeSpecification companySpec = new NodeSpecification( "company", property( "name" ) );
+        NodeSpecification projectSpec = new NodeSpecification( "project", property( "title" ) );
 
         Dataset dataset = datasetManager.newDataset( "Social network example" );
 
-        NodeCollection users = user.create( 10 ).update( dataset );
+        NodeCollection users = userSpec.create( 10 ).update( dataset );
 
         NodeCollection topics = users.createRelationshipsTo(
-                getOrCreate( topic, 10, normalDistribution() )
+                getOrCreate( topicSpec, 10, normalDistribution() )
                         .relationship( "INTERESTED_IN" )
                         .relationshipConstraints( minMax( 1, 3 ) ) )
                 .update( dataset );
 
         users.createRelationshipsTo(
-                getOrCreate( company, 2, flatDistribution() )
+                getOrCreate( companySpec, 2, flatDistribution() )
                         .relationship( "WORKS_FOR" )
                         .relationshipConstraints( exactly( 1 ) ) )
                 .update( dataset );
 
         NodeCollection allProjects = users.createRelationshipsTo(
-                queryBasedGetOrCreate( project, traversal( findCompanyProjects ), 1.2 )
+                queryBasedGetOrCreate( projectSpec, traversal( findCompanyProjects ), 1.2 )
                         .relationship( "WORKED_ON" )
                         .relationshipConstraints( minMax( 1, 3 ) ) )
                 .update( dataset );

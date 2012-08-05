@@ -28,7 +28,7 @@ public abstract class NodeFinder implements SetRelationshipInfo, SetRelationship
     abstract String label();
 
     @Override
-    public SetRelationshipConstraints relationship( RelationshipType relationshipType, Direction direction,
+    public final SetRelationshipConstraints relationship( RelationshipType relationshipType, Direction direction,
                                                     Property... properties )
     {
         relationshipInfo = new RelationshipInfo( relationshipType, direction, properties );
@@ -36,37 +36,37 @@ public abstract class NodeFinder implements SetRelationshipInfo, SetRelationship
     }
 
     @Override
-    public SetRelationshipConstraints relationship( RelationshipType relationshipType, Property... properties )
+    public final SetRelationshipConstraints relationship( RelationshipType relationshipType, Property... properties )
     {
         relationshipInfo = new RelationshipInfo( relationshipType, Direction.OUTGOING, properties );
         return this;
     }
 
     @Override
-    public SetRelationshipConstraints relationship( String relationshipLabel, Direction direction,
+    public final SetRelationshipConstraints relationship( String relationshipLabel, Direction direction,
                                                     Property... properties )
     {
         return relationship( withName( relationshipLabel ), direction, properties );
     }
 
     @Override
-    public SetRelationshipConstraints relationship( String relationshipLabel, Property... properties )
+    public final SetRelationshipConstraints relationship( String relationshipLabel, Property... properties )
     {
         return relationship( withName( relationshipLabel ), properties );
     }
 
     @Override
-    public RelationshipSpecification relationshipConstraints( Range cardinality,
+    public final TargetNodesSpecification relationshipConstraints( Range cardinality,
                                                               RelationshipUniqueness relationshipUniqueness )
     {
         relationshipConstraints = new RelationshipConstraints( cardinality, relationshipUniqueness );
-        return new RelationshipSpecification( this, relationshipInfo, relationshipConstraints );
+        return new TargetNodesSpecification( this, relationshipInfo, relationshipConstraints );
     }
 
     @Override
-    public RelationshipSpecification relationshipConstraints( Range cardinality )
+    public final TargetNodesSpecification relationshipConstraints( Range cardinality )
     {
         relationshipConstraints = new RelationshipConstraints( cardinality, RelationshipUniqueness.ALLOW_MULTIPLE );
-        return new RelationshipSpecification( this, relationshipInfo, relationshipConstraints );
+        return new TargetNodesSpecification( this, relationshipInfo, relationshipConstraints );
     }
 }

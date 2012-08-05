@@ -10,18 +10,18 @@ public class RelateToChoiceOfNodesBatchCommandBuilder implements UpdateDataset<L
     private static final int DEFAULT_BATCH_SIZE = 10000;
 
     private final NodeCollection nodeCollection;
-    private final NodeChoices nodeChoices;
+    private final TargetNodesSpecificationsChoices targetNodesSpecificationsChoices;
 
-    public RelateToChoiceOfNodesBatchCommandBuilder( NodeCollection nodeCollection, NodeChoices nodeChoices )
+    public RelateToChoiceOfNodesBatchCommandBuilder( NodeCollection nodeCollection, TargetNodesSpecificationsChoices targetNodesSpecificationsChoices )
     {
         this.nodeCollection = nodeCollection;
-        this.nodeChoices = nodeChoices;
+        this.targetNodesSpecificationsChoices = targetNodesSpecificationsChoices;
     }
 
     @Override
     public List<NodeCollection> update( Dataset dataset, int batchSize )
     {
-        Commands commands = nodeChoices.createCommandSelector( nodeCollection, batchSize );
+        Commands commands = targetNodesSpecificationsChoices.createCommandSelector( nodeCollection, batchSize );
         RelateToChoiceOfNodesBatchCommand command = new RelateToChoiceOfNodesBatchCommand( nodeCollection,
                 commands, batchSize );
         dataset.execute( command );
@@ -31,7 +31,7 @@ public class RelateToChoiceOfNodesBatchCommandBuilder implements UpdateDataset<L
     @Override
     public List<NodeCollection> update( Dataset dataset )
     {
-        Commands commands = nodeChoices.createCommandSelector( nodeCollection, DEFAULT_BATCH_SIZE );
+        Commands commands = targetNodesSpecificationsChoices.createCommandSelector( nodeCollection, DEFAULT_BATCH_SIZE );
         RelateToChoiceOfNodesBatchCommand command = new RelateToChoiceOfNodesBatchCommand( nodeCollection,
                 commands, DEFAULT_BATCH_SIZE );
         dataset.execute( command );
@@ -41,7 +41,7 @@ public class RelateToChoiceOfNodesBatchCommandBuilder implements UpdateDataset<L
     @Override
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
-        Commands commands = nodeChoices.createCommandSelector( nodeCollection, DEFAULT_BATCH_SIZE );
+        Commands commands = targetNodesSpecificationsChoices.createCommandSelector( nodeCollection, DEFAULT_BATCH_SIZE );
         RelateToChoiceOfNodesBatchCommand command = new RelateToChoiceOfNodesBatchCommand( nodeCollection,
                 commands, batchSize );
         dataset.execute( command );

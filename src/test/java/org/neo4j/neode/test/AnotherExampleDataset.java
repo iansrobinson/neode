@@ -1,7 +1,7 @@
 package org.neo4j.neode.test;
 
-import static org.neo4j.neode.commands.NodeChoices.randomChoice;
-import static org.neo4j.neode.commands.RelationshipSpecification.getOrCreate;
+import static org.neo4j.neode.commands.TargetNodesSpecificationsChoices.randomChoice;
+import static org.neo4j.neode.commands.TargetNodesSpecification.getOrCreate;
 import static org.neo4j.neode.numbergenerators.Range.minMax;
 import static org.neo4j.neode.properties.Property.indexableProperty;
 import static org.neo4j.neode.properties.Property.property;
