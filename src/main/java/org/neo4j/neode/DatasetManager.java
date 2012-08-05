@@ -3,8 +3,10 @@ package org.neo4j.neode;
 import java.util.Random;
 
 import org.neo4j.neode.commands.Dataset;
+import org.neo4j.neode.commands.NodeSpecification;
 import org.neo4j.neode.logging.Log;
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.neode.properties.Property;
 
 public class DatasetManager
 {
@@ -17,6 +19,11 @@ public class DatasetManager
         this.db = db;
         this.log = log;
         random = new Random();
+    }
+
+    public NodeSpecification newNodeSpecification(String label, Property... properties)
+    {
+        return new NodeSpecification( db, label, properties );
     }
 
     public Dataset newDataset( String description )

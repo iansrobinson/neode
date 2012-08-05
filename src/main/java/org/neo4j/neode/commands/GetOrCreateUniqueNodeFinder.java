@@ -54,7 +54,7 @@ class GetOrCreateUniqueNodeFinder extends NodeFinder
         {
             if ( nodeIds.get( nodeIdIndex ) == null )
             {
-                nodeIds.set( nodeIdIndex, nodeSpecification.build( db, nodeIdIndex, random ).getId() );
+                nodeIds.set( nodeIdIndex, nodeSpecification.build( nodeIdIndex, random ).getId() );
             }
 
         }

@@ -13,11 +13,13 @@ import org.neo4j.neode.properties.Property;
 
 public class NodeSpecification
 {
+    private final GraphDatabaseService db;
     private final String label;
     private final List<Property> properties;
 
-    public NodeSpecification( String label, Property... properties )
+    public NodeSpecification( GraphDatabaseService db, String label, Property... properties )
     {
+        this.db = db;
         this.label = label;
         this.properties = asList( properties );
     }
@@ -27,7 +29,7 @@ public class NodeSpecification
         return new NodeBatchCommandBuilder( this, quantity );
     }
 
-    Node build( GraphDatabaseService db, int iteration, Random random )
+    Node build( int iteration, Random random )
     {
         Node node = db.createNode();
         node.setProperty( "_label", label );
@@ -42,5 +44,4 @@ public class NodeSpecification
     {
         return label;
     }
-
 }

@@ -31,7 +31,7 @@ public class QueryBasedGetOrCreateTest
         Node node4 = db.createNode();
 
         Random random = new Random();
-        NodeSpecification user =new NodeSpecification( "user" );
+        NodeSpecification user =new NodeSpecification( db, "user" );
         SparseNodeListGenerator finder = mock( SparseNodeListGenerator.class );
 
         List<Node> sparseList = asList( node0, null, null, null, node4 );

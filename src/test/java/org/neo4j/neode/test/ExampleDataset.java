@@ -57,10 +57,10 @@ public class ExampleDataset
                     }
                 } );
 
-        NodeSpecification userSpec = new NodeSpecification( "user", indexableProperty( "name" ) );
-        NodeSpecification topicSpec = new NodeSpecification( "topic", indexableProperty( "label" ) );
-        NodeSpecification companySpec = new NodeSpecification( "company", property( "name" ) );
-        NodeSpecification projectSpec = new NodeSpecification( "project", property( "title" ) );
+        NodeSpecification userSpec = datasetManager.newNodeSpecification( "user", indexableProperty( "name" ) );
+        NodeSpecification topicSpec = datasetManager.newNodeSpecification( "topic", indexableProperty( "label" ) );
+        NodeSpecification companySpec = datasetManager.newNodeSpecification( "company", property( "name" ) );
+        NodeSpecification projectSpec = datasetManager.newNodeSpecification( "project", property( "title" ) );
 
         Dataset dataset = datasetManager.newDataset( "Social network example" );
 

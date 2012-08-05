@@ -21,7 +21,7 @@ public class NodeBatchCommandTest
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = executor.newDataset( "Test" );
-        NodeSpecification user = new NodeSpecification( "user", indexableProperty( "name" ) );
+        NodeSpecification user = new NodeSpecification( db, "user", indexableProperty( "name" ) );
 
         // when
         user.create( 1 ).update( dataset );
@@ -37,7 +37,7 @@ public class NodeBatchCommandTest
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = executor.newDataset( "Test" );
-        NodeSpecification user = new NodeSpecification( "user", indexableProperty( "name" ) );
+        NodeSpecification user = new NodeSpecification( db, "user", indexableProperty( "name" ) );
 
         // when
         user.create( 1 ).update( dataset );
@@ -53,7 +53,7 @@ public class NodeBatchCommandTest
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = executor.newDataset( "Test" );
-        NodeSpecification user = new NodeSpecification( "user", indexableProperty( "key" ) );
+        NodeSpecification user = new NodeSpecification( db, "user", indexableProperty( "key" ) );
 
         // when
         NodeCollection results = user.create( 5 ).update( dataset );

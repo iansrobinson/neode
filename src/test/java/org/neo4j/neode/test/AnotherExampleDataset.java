@@ -26,9 +26,9 @@ public class AnotherExampleDataset
         DatasetManager datasetManager = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = datasetManager.newDataset( "Pricing tree" );
 
-        NodeSpecification root = new NodeSpecification( "root", indexableProperty( "name" ) );
-        NodeSpecification intermediate = new NodeSpecification( "intermediate" );
-        NodeSpecification leaf = new NodeSpecification( "leaf", property( "price", integerRange( 1, 10 ) ) );
+        NodeSpecification root = datasetManager.newNodeSpecification( "root", indexableProperty( "name" ) );
+        NodeSpecification intermediate = datasetManager.newNodeSpecification( "intermediate" );
+        NodeSpecification leaf = datasetManager.newNodeSpecification( "leaf", property( "price", integerRange( 1, 10 ) ) );
 
         NodeCollection roots = root.create( 10 ).update( dataset );
 

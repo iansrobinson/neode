@@ -38,7 +38,7 @@ class NodeBatchCommand implements BatchCommand<NodeCollection>
     @Override
     public void execute( GraphDatabaseService db, int iteration, Random random )
     {
-        Long nodeId = nodeSpecification.build( db, iteration, random ).getId();
+        Long nodeId = nodeSpecification.build( iteration, random ).getId();
         endNodeIdCollector.add( nodeId );
     }
 

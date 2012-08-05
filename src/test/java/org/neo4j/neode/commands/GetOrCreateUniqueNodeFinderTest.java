@@ -33,7 +33,7 @@ public class GetOrCreateUniqueNodeFinderTest
         when( probabilityDistribution.generateList( 1, Range.minMax( 0, 4 ), random ) ).thenReturn( asList( 0 ) );
 
         NodeSpecification user = mock( NodeSpecification.class );
-        when( user.build( db, 0, random ) ).thenReturn( newNode );
+        when( user.build( 0, random ) ).thenReturn( newNode );
 
         GetOrCreateUniqueNodeFinder nodeFinder = new GetOrCreateUniqueNodeFinder( user, 5, probabilityDistribution );
 
@@ -43,7 +43,7 @@ public class GetOrCreateUniqueNodeFinderTest
         tx.finish();
 
         // then
-        verify( user ).build( db, 0, random );
+        verify( user ).build( 0, random );
     }
 
     @Test
@@ -61,7 +61,7 @@ public class GetOrCreateUniqueNodeFinderTest
         when( probabilityDistribution.generateList( 1, Range.minMax( 0, 4 ), random ) ).thenReturn( asList( 0 ) );
 
         NodeSpecification user = mock( NodeSpecification.class );
-        when( user.build( db, 0, random ) ).thenReturn( newNode );
+        when( user.build( 0, random ) ).thenReturn( newNode );
 
         GetOrCreateUniqueNodeFinder nodeFinder = new GetOrCreateUniqueNodeFinder( user, 5, probabilityDistribution );
 
@@ -72,6 +72,6 @@ public class GetOrCreateUniqueNodeFinderTest
         tx.finish();
 
         // then
-        verify( user, times( 1 ) ).build( db, 0, random );
+        verify( user, times( 1 ) ).build( 0, random );
     }
 }
