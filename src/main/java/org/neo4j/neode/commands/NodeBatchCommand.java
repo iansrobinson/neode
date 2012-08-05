@@ -36,16 +36,16 @@ class NodeBatchCommand implements BatchCommand<NodeCollection>
     }
 
     @Override
-    public void execute( GraphDatabaseService db, int index, Random random )
+    public void execute( GraphDatabaseService db, int iteration, Random random )
     {
-        Long nodeId = nodeSpecification.build( db, index, random ).getId();
+        Long nodeId = nodeSpecification.build( db, iteration, random ).getId();
         endNodeIdCollector.add( nodeId );
     }
 
     @Override
-    public void execute( Node firstNode, GraphDatabaseService db, int index, Random random )
+    public void execute( Node firstNode, GraphDatabaseService db, int iteration, Random random )
     {
-        execute( db, index, random );
+        execute( db, iteration, random );
     }
 
     @Override

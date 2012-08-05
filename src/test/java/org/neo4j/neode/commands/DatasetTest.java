@@ -143,16 +143,16 @@ public class DatasetTest
         }
 
         @Override
-        public void execute( GraphDatabaseService db, int index, Random random )
+        public void execute( GraphDatabaseService db, int iteration, Random random )
         {
             db.createNode();
             callCount++;
         }
 
         @Override
-        public void execute( Node firstNode, GraphDatabaseService db, int index, Random random )
+        public void execute( Node firstNode, GraphDatabaseService db, int iteration, Random random )
         {
-            execute( db, index, random );
+            execute( db, iteration, random );
         }
 
         @Override

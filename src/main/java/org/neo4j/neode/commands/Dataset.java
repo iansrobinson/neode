@@ -32,9 +32,9 @@ public class Dataset
         log.write( String.format( "Begin [%s Iterations: %s, BatchSize: %s]",
                 command.description(), command.numberOfIterations(), command.batchSize() ) );
         command.onBegin( log );
-        for ( int index = 0; index < command.numberOfIterations(); index += command.batchSize() )
+        for ( int iteration = 0; iteration < command.numberOfIterations(); iteration += command.batchSize() )
         {
-            doExecute( index, command, startTime );
+            doExecute( iteration, command, startTime );
         }
         command.onEnd( log );
         log.write( String.format( "End   [%s] %s\n", command.description(), elapsedTime( startTime ) ) );
@@ -48,17 +48,17 @@ public class Dataset
                 ((EmbeddedGraphDatabase) db).getStoreDir(), description, elapsedTime( runStartTime ) ) );
     }
 
-    private void doExecute( int startIndex, BatchCommand command, long startTime )
+    private void doExecute( int startIteration, BatchCommand command, long startTime )
     {
-        log.write( String.format( "      [Beginning " + startIndex + " of " + command.numberOfIterations() +
+        log.write( String.format( "      [Beginning " + startIteration + " of " + command.numberOfIterations() +
                 ", '%s'] %s", command.shortDescription(), elapsedTime( startTime ) ) );
 
         Transaction tx = db.beginTx();
         try
         {
-            for ( int index = startIndex; indexIsInRange( startIndex, command, index ); index++ )
+            for ( int iteration = startIteration; iterationIsInRange( startIteration, command, iteration ); iteration++ )
             {
-                command.execute( db, index, random );
+                command.execute( db, iteration, random );
                 tx.success();
             }
         }
@@ -69,9 +69,9 @@ public class Dataset
 
     }
 
-    private static boolean indexIsInRange( int startIndex, BatchCommand command, int index )
+    private static boolean iterationIsInRange( int startIteration, BatchCommand command, int iteration )
     {
-        return index < (startIndex + command.batchSize()) && index < command.numberOfIterations();
+        return iteration < (startIteration + command.batchSize()) && iteration < command.numberOfIterations();
     }
 
     private static String elapsedTime( long startTime )

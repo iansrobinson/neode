@@ -34,17 +34,17 @@ class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<NodeCollect
     }
 
     @Override
-    public void execute( GraphDatabaseService db, int index, Random random )
+    public void execute( GraphDatabaseService db, int iteration, Random random )
     {
-        Node currentNode = db.getNodeById( startNodes.nodeIds().get( index ) );
-        execute( currentNode, db, index, random );
+        Node currentNode = db.getNodeById( startNodes.nodeIds().get( iteration ) );
+        execute( currentNode, db, iteration, random );
     }
 
     @Override
-    public void execute( Node currentNode, GraphDatabaseService db, int index, Random random )
+    public void execute( Node currentNode, GraphDatabaseService db, int iteration, Random random )
     {
         BatchCommand<NodeCollection> nextCommand = commands.nextCommand( currentNode, random );
-        nextCommand.execute( currentNode, db, index, random );
+        nextCommand.execute( currentNode, db, iteration, random );
     }
 
     @Override

@@ -42,9 +42,9 @@ public class Property
     }
 
     public void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String nodeLabel,
-                             int index, Random random )
+                             int iteration, Random random )
     {
-        Object value = propertyValueSetter.setProperty( propertyContainer, propertyName, nodeLabel, index, random );
+        Object value = propertyValueSetter.setProperty( propertyContainer, propertyName, nodeLabel, iteration, random );
         if ( isIndexable && propertyContainer instanceof Node)
         {
             if ( nodeIndex == null )

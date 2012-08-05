@@ -17,9 +17,9 @@ public abstract class PropertyValueSetter
         return new CounterBasedStringPropertyValueSetter();
     }
 
-    public static PropertyValueSetter indexBased()
+    public static PropertyValueSetter iterationBased()
     {
-        return new IndexBasedStringPropertyValueSetter();
+        return new IterationBasedStringPropertyValueSetter();
     }
 
     public static PropertyValueSetter nodeIdBased()
@@ -38,5 +38,5 @@ public abstract class PropertyValueSetter
     }
 
     public abstract Object setProperty( PropertyContainer propertyContainer, String propertyName, String nodeLabel,
-                                        int index, Random random );
+                                        int iteration, Random random );
 }

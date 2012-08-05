@@ -37,14 +37,14 @@ class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
     }
 
     @Override
-    public void execute( GraphDatabaseService db, int index, Random random )
+    public void execute( GraphDatabaseService db, int iteration, Random random )
     {
-        Node firstNode = db.getNodeById( startNodes.nodeIds().get( index ) );
-        execute( firstNode, db, index, random );
+        Node firstNode = db.getNodeById( startNodes.nodeIds().get( iteration ) );
+        execute( firstNode, db, iteration, random );
     }
 
     @Override
-    public void execute( Node currentNode, GraphDatabaseService db, int index, Random random )
+    public void execute( Node currentNode, GraphDatabaseService db, int iteration, Random random )
     {
         totalRels += targetNodesSpecification
                 .addRelationshipsToCurrentNode( db, currentNode, targetNodeIdCollector, random );

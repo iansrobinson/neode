@@ -10,7 +10,7 @@ class IdBasedStringPropertyValueSetter extends PropertyValueSetter
 {
     @Override
     public Object setProperty( PropertyContainer propertyContainer, String propertyName, String nodeLabel,
-                               int index, Random random )
+                               int iteration, Random random )
     {
         long id = propertyContainer instanceof Node ?
                 ((Node) propertyContainer).getId() :

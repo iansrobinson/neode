@@ -27,13 +27,13 @@ public class NodeSpecification
         return new NodeBatchCommandBuilder( this, quantity );
     }
 
-    Node build( GraphDatabaseService db, int index, Random random )
+    Node build( GraphDatabaseService db, int iteration, Random random )
     {
         Node node = db.createNode();
         node.setProperty( "_label", label );
         for ( Property property : properties )
         {
-            property.setProperty( node, db, label, index, random );
+            property.setProperty( node, db, label, iteration, random );
         }
         return node;
     }
