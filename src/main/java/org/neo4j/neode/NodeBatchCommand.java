@@ -13,8 +13,8 @@ class NodeBatchCommand implements BatchCommand<NodeCollection>
     private final int batchSize;
     private final NodeIdCollector endNodeIdCollector;
 
-    public NodeBatchCommand( NodeSpecification nodeSpecification, int numberOfIterations,
-                             int batchSize, NodeIdCollector endNodeIdCollector )
+    NodeBatchCommand( NodeSpecification nodeSpecification, int numberOfIterations, int batchSize,
+                      NodeIdCollector endNodeIdCollector )
     {
         this.nodeSpecification = nodeSpecification;
         this.numberOfIterations = numberOfIterations;

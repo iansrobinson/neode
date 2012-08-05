@@ -1,13 +1,13 @@
 package org.neo4j.neode;
 
-public class RelateNodesBatchCommandBuilder implements UpdateDataset<NodeCollection>
+class RelateNodesBatchCommandBuilder implements UpdateDataset<NodeCollection>
 {
     private static final int DEFAULT_BATCH_SIZE = 10000;
 
     private final NodeCollection nodeCollection;
     private final TargetNodesSpecification entities;
 
-    public RelateNodesBatchCommandBuilder( NodeCollection nodeCollection, TargetNodesSpecification entities )
+    RelateNodesBatchCommandBuilder( NodeCollection nodeCollection, TargetNodesSpecification entities )
     {
         this.nodeCollection = nodeCollection;
         this.entities = entities;

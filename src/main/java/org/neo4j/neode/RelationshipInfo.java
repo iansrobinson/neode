@@ -20,7 +20,7 @@ class RelationshipInfo
     private final Direction direction;
     private final List<Property> properties;
 
-    public RelationshipInfo( RelationshipType relationshipType, Direction direction, Property... properties )
+    RelationshipInfo( RelationshipType relationshipType, Direction direction, Property... properties )
     {
         this.relationshipType = relationshipType;
         this.direction = direction;

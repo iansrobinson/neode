@@ -14,7 +14,7 @@ class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
     private final int batchSize;
     private long totalRels = 0;
 
-    public RelateNodesBatchCommand( NodeCollection startNodes, TargetNodesSpecification targetNodesSpecification,
+    RelateNodesBatchCommand( NodeCollection startNodes, TargetNodesSpecification targetNodesSpecification,
                                     NodeIdCollector targetNodeIdCollector, int batchSize )
     {
         this.startNodes = startNodes;

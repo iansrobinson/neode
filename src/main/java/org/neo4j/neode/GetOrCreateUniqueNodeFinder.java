@@ -18,8 +18,8 @@ class GetOrCreateUniqueNodeFinder extends NodeFinder
     private final ProbabilityDistribution probabilityDistribution;
     private final List<Long> nodeIds;
 
-    GetOrCreateUniqueNodeFinder( NodeSpecification nodeSpecification, int totalNumberOfNodes, ProbabilityDistribution
-            probabilityDistribution )
+    GetOrCreateUniqueNodeFinder( NodeSpecification nodeSpecification, int totalNumberOfNodes,
+                                 ProbabilityDistribution probabilityDistribution )
     {
         this.nodeSpecification = nodeSpecification;
         this.totalNumberOfNodes = totalNumberOfNodes;

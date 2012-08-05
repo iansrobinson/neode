@@ -15,7 +15,7 @@ public class Dataset
     private final Random random;
     private final long runStartTime;
 
-    public Dataset( String description, GraphDatabaseService db, Log log, Random random )
+    Dataset( String description, GraphDatabaseService db, Log log, Random random )
     {
         this.description = description;
         this.db = db;

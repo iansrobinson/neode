@@ -14,8 +14,7 @@ class RelationshipConstraints
     private final RelationshipUniqueness relationshipUniqueness;
     private final ProbabilityDistribution probabilityDistribution;
 
-    public RelationshipConstraints( Range cardinality,
-                                    RelationshipUniqueness relationshipUniqueness )
+    RelationshipConstraints( Range cardinality, RelationshipUniqueness relationshipUniqueness )
     {
         this.cardinality = cardinality;
         this.relationshipUniqueness = relationshipUniqueness;

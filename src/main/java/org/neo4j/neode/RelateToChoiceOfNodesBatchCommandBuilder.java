@@ -2,14 +2,14 @@ package org.neo4j.neode;
 
 import java.util.List;
 
-public class RelateToChoiceOfNodesBatchCommandBuilder implements UpdateDataset<List<NodeCollection>>
+class RelateToChoiceOfNodesBatchCommandBuilder implements UpdateDataset<List<NodeCollection>>
 {
     private static final int DEFAULT_BATCH_SIZE = 10000;
 
     private final NodeCollection nodeCollection;
     private final TargetNodesSpecificationsChoices targetNodesSpecificationsChoices;
 
-    public RelateToChoiceOfNodesBatchCommandBuilder( NodeCollection nodeCollection, TargetNodesSpecificationsChoices targetNodesSpecificationsChoices )
+    RelateToChoiceOfNodesBatchCommandBuilder( NodeCollection nodeCollection, TargetNodesSpecificationsChoices targetNodesSpecificationsChoices )
     {
         this.nodeCollection = nodeCollection;
         this.targetNodesSpecificationsChoices = targetNodesSpecificationsChoices;

@@ -13,8 +13,8 @@ import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
 
 public class TargetNodesSpecification
 {
-    public static NodeFinder getExisting( NodeCollection nodeCollection, ProbabilityDistribution
-            probabilityDistribution )
+    public static NodeFinder getExisting( NodeCollection nodeCollection,
+                                          ProbabilityDistribution probabilityDistribution )
     {
         return new ExistingUniqueNodeFinder( nodeCollection, probabilityDistribution );
     }

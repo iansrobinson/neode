@@ -15,7 +15,7 @@ public class NodeSpecification
     private final String label;
     private final List<Property> properties;
 
-    public NodeSpecification( GraphDatabaseService db, String label, Property... properties )
+    NodeSpecification( GraphDatabaseService db, String label, Property... properties )
     {
         this.db = db;
         this.label = label;

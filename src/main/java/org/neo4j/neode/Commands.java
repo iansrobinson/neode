@@ -12,8 +12,7 @@ class Commands
     private final List<BatchCommand<NodeCollection>> commands;
     private final CommandSelectionStrategy commandSelectionStrategy;
 
-    public Commands( List<BatchCommand<NodeCollection>> commands,
-                     CommandSelectionStrategy commandSelectionStrategy )
+    Commands( List<BatchCommand<NodeCollection>> commands, CommandSelectionStrategy commandSelectionStrategy )
     {
         this.commands = commands;
         this.commandSelectionStrategy = commandSelectionStrategy;

@@ -33,7 +33,7 @@ public class NodeCollection
     private final String name;
     private final List<Long> nodeIds;
 
-    public NodeCollection( String name, List<Long> nodeIds )
+    NodeCollection( String name, List<Long> nodeIds )
     {
         this.name = name;
         this.nodeIds = nodeIds;

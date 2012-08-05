@@ -9,7 +9,7 @@ class UniqueNodeIdCollector implements NodeIdCollector
 {
     private final Set<Long> ids;
 
-    public UniqueNodeIdCollector()
+    UniqueNodeIdCollector()
     {
         ids = new HashSet<Long>(  );
     }

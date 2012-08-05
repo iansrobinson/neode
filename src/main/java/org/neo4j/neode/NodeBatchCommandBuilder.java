@@ -7,7 +7,7 @@ class NodeBatchCommandBuilder implements UpdateDataset<NodeCollection>
     private final NodeSpecification nodeSpecification;
     private final int quantity;
 
-    public NodeBatchCommandBuilder( NodeSpecification nodeSpecification, int quantity )
+    NodeBatchCommandBuilder( NodeSpecification nodeSpecification, int quantity )
     {
         this.nodeSpecification = nodeSpecification;
         this.quantity = quantity;

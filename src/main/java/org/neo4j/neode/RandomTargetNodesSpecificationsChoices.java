@@ -9,7 +9,7 @@ class RandomTargetNodesSpecificationsChoices extends TargetNodesSpecificationsCh
 {
     private final List<TargetNodesSpecification> entitiesList;
 
-    public RandomTargetNodesSpecificationsChoices( List<TargetNodesSpecification> entitiesList )
+    RandomTargetNodesSpecificationsChoices( List<TargetNodesSpecification> entitiesList )
     {
         this.entitiesList = entitiesList;
     }

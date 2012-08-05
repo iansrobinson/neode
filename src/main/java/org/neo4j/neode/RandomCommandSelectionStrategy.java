@@ -11,7 +11,7 @@ class RandomCommandSelectionStrategy implements CommandSelectionStrategy
 {
     private final ProbabilityDistribution probabilityDistribution;
 
-    public RandomCommandSelectionStrategy( ProbabilityDistribution probabilityDistribution )
+    RandomCommandSelectionStrategy( ProbabilityDistribution probabilityDistribution )
     {
         this.probabilityDistribution = probabilityDistribution;
     }

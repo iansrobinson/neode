@@ -17,8 +17,8 @@ class SparseNodeListGenerator
     private final ProbabilityDistribution probabilityDistribution;
     private final double proportionOfNodesToListSize;
 
-    SparseNodeListGenerator( GraphQuery query, double proportionOfNodesToListSize, ProbabilityDistribution
-            probabilityDistribution )
+    SparseNodeListGenerator( GraphQuery query, double proportionOfNodesToListSize,
+                             ProbabilityDistribution probabilityDistribution )
     {
         if ( proportionOfNodesToListSize < 1.0 )
         {
