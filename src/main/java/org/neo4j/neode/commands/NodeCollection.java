@@ -2,16 +2,12 @@
  * Copyright (C) 2012 Neo Technology
  * All rights reserved
  */
-package org.neo4j.neode;
+package org.neo4j.neode.commands;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.neo4j.neode.commands.TargetNodesSpecificationsChoices;
-import org.neo4j.neode.commands.RelateNodesBatchCommandBuilder;
-import org.neo4j.neode.commands.RelateToChoiceOfNodesBatchCommandBuilder;
-import org.neo4j.neode.commands.TargetNodesSpecification;
 import org.neo4j.neode.commands.interfaces.UpdateDataset;
 
 public class NodeCollection

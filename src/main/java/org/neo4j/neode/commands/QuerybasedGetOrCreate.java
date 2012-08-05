@@ -21,18 +21,18 @@ class QueryBasedGetOrCreate extends NodeFinder
     public Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode, Random random )
     {
         List<Node> nodes = sparseNodeListGenerator.getSparseListOfExistingNodes( quantity, currentNode, random );
-        fillGapsInListWithNewNodes( nodes, db, random );
+        fillGapsInListWithNewNodes( nodes, random );
 
         return nodes;
     }
 
-    private void fillGapsInListWithNewNodes( List<Node> returnNodes, GraphDatabaseService db, Random random )
+    private void fillGapsInListWithNewNodes( List<Node> returnNodes, Random random )
     {
         for ( int currentNodeIndex = 0; currentNodeIndex < returnNodes.size(); currentNodeIndex++ )
         {
             if ( returnNodes.get( currentNodeIndex ) == null )
             {
-                Node newNode = nodeSpecification.build( db, currentNodeIndex, random );
+                Node newNode = nodeSpecification.build( currentNodeIndex, random );
                 returnNodes.set( currentNodeIndex, newNode );
             }
         }

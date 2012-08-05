@@ -8,7 +8,6 @@ import static org.neo4j.neode.properties.Property.indexableProperty;
 import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.neode.DatasetManager;
-import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.logging.SysOutLog;
 import org.neo4j.neode.test.Db;
 

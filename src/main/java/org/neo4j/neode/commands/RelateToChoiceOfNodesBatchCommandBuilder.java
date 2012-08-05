@@ -2,7 +2,6 @@ package org.neo4j.neode.commands;
 
 import java.util.List;
 
-import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.commands.interfaces.UpdateDataset;
 
 public class RelateToChoiceOfNodesBatchCommandBuilder implements UpdateDataset<List<NodeCollection>>

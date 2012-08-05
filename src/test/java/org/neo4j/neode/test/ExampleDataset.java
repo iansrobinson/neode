@@ -1,7 +1,7 @@
 package org.neo4j.neode.test;
 
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
-import static org.neo4j.neode.NodeCollection.approxPercent;
+import static org.neo4j.neode.commands.NodeCollection.approxPercent;
 import static org.neo4j.neode.commands.GraphQuery.traversal;
 import static org.neo4j.neode.commands.TargetNodesSpecification.getExisting;
 import static org.neo4j.neode.commands.TargetNodesSpecification.getOrCreate;
@@ -22,7 +22,7 @@ import org.neo4j.graphdb.traversal.Evaluator;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.kernel.Traversal;
 import org.neo4j.neode.DatasetManager;
-import org.neo4j.neode.NodeCollection;
+import org.neo4j.neode.commands.NodeCollection;
 import org.neo4j.neode.commands.Dataset;
 import org.neo4j.neode.commands.NodeSpecification;
 import org.neo4j.neode.commands.RelationshipUniqueness;

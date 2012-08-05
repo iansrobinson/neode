@@ -7,7 +7,6 @@ import java.util.Random;
 import org.junit.Test;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.DatasetManager;
-import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.logging.Log;
 import org.neo4j.neode.logging.SysOutLog;
 import org.neo4j.neode.test.Db;

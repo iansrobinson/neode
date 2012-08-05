@@ -5,7 +5,6 @@ import java.util.Random;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
-import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.logging.Log;
 
 class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<NodeCollection>>

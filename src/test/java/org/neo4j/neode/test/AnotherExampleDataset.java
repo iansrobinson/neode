@@ -12,7 +12,7 @@ import java.util.List;
 import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.neode.DatasetManager;
-import org.neo4j.neode.NodeCollection;
+import org.neo4j.neode.commands.NodeCollection;
 import org.neo4j.neode.commands.Dataset;
 import org.neo4j.neode.commands.NodeSpecification;
 import org.neo4j.neode.logging.SysOutLog;
