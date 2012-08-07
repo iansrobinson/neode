@@ -6,15 +6,15 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.logging.Log;
 
-class NodeBatchCommand implements BatchCommand<NodeCollection>
+class CreateNodesBatchCommand implements BatchCommand<NodeCollection>
 {
     private final NodeSpecification nodeSpecification;
     private final int numberOfIterations;
     private final int batchSize;
     private final NodeIdCollector endNodeIdCollector;
 
-    NodeBatchCommand( NodeSpecification nodeSpecification, int numberOfIterations, int batchSize,
-                      NodeIdCollector endNodeIdCollector )
+    CreateNodesBatchCommand( NodeSpecification nodeSpecification, int numberOfIterations, int batchSize,
+                             NodeIdCollector endNodeIdCollector )
     {
         this.nodeSpecification = nodeSpecification;
         this.numberOfIterations = numberOfIterations;

@@ -25,7 +25,7 @@ public class NodeSpecification
 
     public UpdateDataset<NodeCollection> create( int quantity )
     {
-        return new NodeBatchCommandBuilder( this, quantity );
+        return new CreateNodesBatchCommandBuilder( this, quantity );
     }
 
     Node build( int iteration, Random random )

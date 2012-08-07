@@ -10,7 +10,7 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.neode.logging.SysOutLog;
 import org.neo4j.neode.test.Db;
 
-public class NodeBatchCommandTest
+public class CreateNodesBatchCommandTest
 {
     @Test
     public void shouldCreateNodeWithNamePropertyValuePrefixedWithNodeLabel() throws Exception

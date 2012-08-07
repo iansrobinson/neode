@@ -2,14 +2,14 @@ package org.neo4j.neode;
 
 import org.neo4j.neode.interfaces.UpdateDataset;
 
-class NodeBatchCommandBuilder implements UpdateDataset<NodeCollection>
+class CreateNodesBatchCommandBuilder implements UpdateDataset<NodeCollection>
 {
     private static final int DEFAULT_BATCH_SIZE = 20000;
 
     private final NodeSpecification nodeSpecification;
     private final int quantity;
 
-    NodeBatchCommandBuilder( NodeSpecification nodeSpecification, int quantity )
+    CreateNodesBatchCommandBuilder( NodeSpecification nodeSpecification, int quantity )
     {
         this.nodeSpecification = nodeSpecification;
         this.quantity = quantity;
@@ -18,7 +18,7 @@ class NodeBatchCommandBuilder implements UpdateDataset<NodeCollection>
     @Override
     public NodeCollection update( Dataset dataset, int batchSize )
     {
-        NodeBatchCommand command = new NodeBatchCommand( nodeSpecification, quantity, batchSize,
+        CreateNodesBatchCommand command = new CreateNodesBatchCommand( nodeSpecification, quantity, batchSize,
                 new UniqueNodeIdCollector() );
         return dataset.execute( command );
     }
@@ -32,7 +32,7 @@ class NodeBatchCommandBuilder implements UpdateDataset<NodeCollection>
     @Override
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
-        NodeBatchCommand command = new NodeBatchCommand( nodeSpecification, quantity, batchSize,
+        CreateNodesBatchCommand command = new CreateNodesBatchCommand( nodeSpecification, quantity, batchSize,
                 NullNodeIdCollector.INSTANCE );
         dataset.execute( command );
     }
