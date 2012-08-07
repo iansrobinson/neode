@@ -13,7 +13,6 @@ import org.neo4j.graphdb.DynamicRelationshipType;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.logging.SysOutLog;
-import org.neo4j.neode.numbergenerators.Range;
 import org.neo4j.neode.test.Db;
 
 public class RelateNodesBatchCommandBuilderTest

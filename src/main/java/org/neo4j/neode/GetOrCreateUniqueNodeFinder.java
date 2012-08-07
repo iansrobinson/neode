@@ -1,6 +1,6 @@
 package org.neo4j.neode;
 
-import static org.neo4j.neode.numbergenerators.Range.minMax;
+import static org.neo4j.neode.Range.minMax;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -9,7 +9,7 @@ import java.util.Random;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
-import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
+import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
 class GetOrCreateUniqueNodeFinder extends NodeFinder
 {

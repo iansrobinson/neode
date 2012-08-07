@@ -1,10 +1,10 @@
-package org.neo4j.neode.numbergenerators;
+package org.neo4j.neode;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.neo4j.neode.numbergenerators.Range.minMax;
+import static org.neo4j.neode.Range.minMax;
 
 import org.junit.Test;
 

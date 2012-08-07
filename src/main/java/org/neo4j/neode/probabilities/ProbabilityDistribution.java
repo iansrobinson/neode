@@ -2,10 +2,12 @@
  * Copyright (C) 2012 Neo Technology
  * All rights reserved
  */
-package org.neo4j.neode.numbergenerators;
+package org.neo4j.neode.probabilities;
 
 import java.util.List;
 import java.util.Random;
+
+import org.neo4j.neode.Range;
 
 public abstract class ProbabilityDistribution
 {

@@ -1,10 +1,12 @@
-package org.neo4j.neode.numbergenerators;
+package org.neo4j.neode.probabilities;
 
-import static org.neo4j.neode.numbergenerators.Range.exactly;
+import static org.neo4j.neode.Range.exactly;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import org.neo4j.neode.Range;
 
 abstract class BaseUniqueProbabilityDistribution extends ProbabilityDistribution
 {

@@ -6,10 +6,10 @@ import static org.neo4j.neode.GraphQuery.traversal;
 import static org.neo4j.neode.TargetNodesSpecification.getExisting;
 import static org.neo4j.neode.TargetNodesSpecification.getOrCreate;
 import static org.neo4j.neode.TargetNodesSpecification.queryBasedGetOrCreate;
-import static org.neo4j.neode.numbergenerators.ProbabilityDistribution.flatDistribution;
-import static org.neo4j.neode.numbergenerators.ProbabilityDistribution.normalDistribution;
-import static org.neo4j.neode.numbergenerators.Range.exactly;
-import static org.neo4j.neode.numbergenerators.Range.minMax;
+import static org.neo4j.neode.probabilities.ProbabilityDistribution.flatDistribution;
+import static org.neo4j.neode.probabilities.ProbabilityDistribution.normalDistribution;
+import static org.neo4j.neode.Range.exactly;
+import static org.neo4j.neode.Range.minMax;
 import static org.neo4j.neode.properties.Property.indexableProperty;
 import static org.neo4j.neode.properties.Property.property;
 
@@ -28,7 +28,7 @@ import org.neo4j.neode.NodeSpecification;
 import org.neo4j.neode.RelationshipUniqueness;
 import org.neo4j.neode.logging.SysOutLog;
 
-public class ExampleDataset
+public class SocialNetworkExample
 {
     @Test
     public void buildSocialNetwork() throws Exception

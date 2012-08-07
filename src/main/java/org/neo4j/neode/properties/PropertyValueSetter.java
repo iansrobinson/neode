@@ -7,8 +7,8 @@ package org.neo4j.neode.properties;
 import java.util.Random;
 
 import org.neo4j.graphdb.PropertyContainer;
-import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
-import org.neo4j.neode.numbergenerators.Range;
+import org.neo4j.neode.probabilities.ProbabilityDistribution;
+import org.neo4j.neode.Range;
 
 public abstract class PropertyValueSetter
 {
@@ -34,7 +34,7 @@ public abstract class PropertyValueSetter
 
     public static PropertyValueSetter integerRange( int min, int max )
     {
-        return new RangeBasedIntegerPropertyValueSetter( Range.minMax( min, max ), ProbabilityDistribution.flatDistribution() );
+        return integerRange( min, max, ProbabilityDistribution.flatDistribution() );
     }
 
     public abstract Object setProperty( PropertyContainer propertyContainer, String propertyName, String nodeLabel,

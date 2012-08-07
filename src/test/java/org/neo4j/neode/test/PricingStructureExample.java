@@ -2,7 +2,7 @@ package org.neo4j.neode.test;
 
 import static org.neo4j.neode.TargetNodesSpecificationsChoices.randomChoice;
 import static org.neo4j.neode.TargetNodesSpecification.getOrCreate;
-import static org.neo4j.neode.numbergenerators.Range.minMax;
+import static org.neo4j.neode.Range.minMax;
 import static org.neo4j.neode.properties.Property.indexableProperty;
 import static org.neo4j.neode.properties.Property.property;
 import static org.neo4j.neode.properties.PropertyValueSetter.integerRange;
@@ -17,7 +17,7 @@ import org.neo4j.neode.Dataset;
 import org.neo4j.neode.NodeSpecification;
 import org.neo4j.neode.logging.SysOutLog;
 
-public class AnotherExampleDataset
+public class PricingStructureExample
 {
     @Test
     public void buildPricingStructure()

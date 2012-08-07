@@ -1,7 +1,7 @@
 package org.neo4j.neode;
 
-import static org.neo4j.neode.numbergenerators.ProbabilityDistribution.flatDistribution;
-import static org.neo4j.neode.numbergenerators.ProbabilityDistribution.normalDistribution;
+import static org.neo4j.neode.probabilities.ProbabilityDistribution.flatDistribution;
+import static org.neo4j.neode.probabilities.ProbabilityDistribution.normalDistribution;
 
 import java.util.List;
 import java.util.Random;
@@ -9,7 +9,7 @@ import java.util.Random;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
-import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
+import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
 public class TargetNodesSpecification
 {

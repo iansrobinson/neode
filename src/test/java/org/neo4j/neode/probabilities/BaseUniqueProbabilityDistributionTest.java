@@ -1,14 +1,15 @@
-package org.neo4j.neode.numbergenerators;
+package org.neo4j.neode.probabilities;
 
 import static org.junit.Assert.assertEquals;
-import static org.neo4j.neode.numbergenerators.Range.minMax;
+import static org.neo4j.neode.Range.minMax;
 
 import java.util.List;
 import java.util.Random;
 
 import org.junit.Test;
+import org.neo4j.neode.Range;
 
-public class BaseUniqueNumberGeneratorTest
+public class BaseUniqueProbabilityDistributionTest
 {
     @Test
     public void shouldThrowExceptionIfPossibleRangeSmallerThanMaxNumberOfResults() throws Exception

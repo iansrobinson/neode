@@ -3,7 +3,7 @@ package org.neo4j.neode;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
+import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
 class RandomTargetNodesSpecificationsChoices extends TargetNodesSpecificationsChoices
 {

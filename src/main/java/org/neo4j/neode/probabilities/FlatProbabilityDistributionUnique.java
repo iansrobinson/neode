@@ -1,6 +1,8 @@
-package org.neo4j.neode.numbergenerators;
+package org.neo4j.neode.probabilities;
 
 import java.util.Random;
+
+import org.neo4j.neode.Range;
 
 class FlatProbabilityDistributionUnique extends BaseUniqueProbabilityDistribution
 {

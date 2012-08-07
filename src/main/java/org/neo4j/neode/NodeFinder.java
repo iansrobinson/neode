@@ -13,7 +13,6 @@ import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.RelationshipType;
-import org.neo4j.neode.numbergenerators.Range;
 import org.neo4j.neode.properties.Property;
 
 public abstract class NodeFinder implements SetRelationshipInfo, SetRelationshipConstraints

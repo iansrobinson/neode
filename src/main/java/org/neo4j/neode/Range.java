@@ -1,4 +1,4 @@
-package org.neo4j.neode.numbergenerators;
+package org.neo4j.neode;
 
 public class Range
 {

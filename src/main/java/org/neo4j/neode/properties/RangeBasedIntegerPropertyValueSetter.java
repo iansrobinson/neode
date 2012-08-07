@@ -3,8 +3,8 @@ package org.neo4j.neode.properties;
 import java.util.Random;
 
 import org.neo4j.graphdb.PropertyContainer;
-import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
-import org.neo4j.neode.numbergenerators.Range;
+import org.neo4j.neode.probabilities.ProbabilityDistribution;
+import org.neo4j.neode.Range;
 
 class RangeBasedIntegerPropertyValueSetter extends PropertyValueSetter
 {

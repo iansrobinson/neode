@@ -13,8 +13,7 @@ import java.util.Random;
 
 import org.junit.Test;
 import org.neo4j.graphdb.Node;
-import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
-import org.neo4j.neode.numbergenerators.Range;
+import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
 public class SparseNodeListGeneratorTest
 {

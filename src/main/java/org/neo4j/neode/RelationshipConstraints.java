@@ -5,8 +5,7 @@ import java.util.Random;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
-import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
-import org.neo4j.neode.numbergenerators.Range;
+import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
 class RelationshipConstraints
 {
