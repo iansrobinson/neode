@@ -2,6 +2,8 @@ package org.neo4j.neode;
 
 import java.util.List;
 
+import org.neo4j.neode.interfaces.UpdateDataset;
+
 class RelateToChoiceOfNodesBatchCommandBuilder implements UpdateDataset<List<NodeCollection>>
 {
     private static final int DEFAULT_BATCH_SIZE = 10000;

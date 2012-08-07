@@ -1,5 +1,7 @@
 package org.neo4j.neode;
 
+import org.neo4j.neode.interfaces.UpdateDataset;
+
 class RelateNodesBatchCommandBuilder implements UpdateDataset<NodeCollection>
 {
     private static final int DEFAULT_BATCH_SIZE = 10000;

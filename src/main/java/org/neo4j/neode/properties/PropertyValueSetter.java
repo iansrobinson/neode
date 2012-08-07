@@ -22,7 +22,7 @@ public abstract class PropertyValueSetter
         return new IterationBasedStringPropertyValueSetter();
     }
 
-    public static PropertyValueSetter nodeIdBased()
+    public static PropertyValueSetter idBased()
     {
         return new IdBasedStringPropertyValueSetter();
     }

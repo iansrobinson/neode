@@ -1,4 +1,6 @@
-package org.neo4j.neode;
+package org.neo4j.neode.interfaces;
+
+import org.neo4j.neode.Dataset;
 
 public interface UpdateDataset<T>
 {

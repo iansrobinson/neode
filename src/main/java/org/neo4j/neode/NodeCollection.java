@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.neo4j.neode.interfaces.UpdateDataset;
+
 public class NodeCollection
 {
     public static NodeCollection approxPercent( int percent, NodeCollection nodeCollection )
