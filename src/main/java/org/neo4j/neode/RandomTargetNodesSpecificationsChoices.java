@@ -7,24 +7,26 @@ import org.neo4j.neode.numbergenerators.ProbabilityDistribution;
 
 class RandomTargetNodesSpecificationsChoices extends TargetNodesSpecificationsChoices
 {
-    private final List<TargetNodesSpecification> entitiesList;
+    private final List<TargetNodesSpecification> targetNodesSpecifications;
 
-    RandomTargetNodesSpecificationsChoices( List<TargetNodesSpecification> entitiesList )
+    RandomTargetNodesSpecificationsChoices( List<TargetNodesSpecification> targetNodesSpecifications )
     {
-        this.entitiesList = entitiesList;
+        this.targetNodesSpecifications = targetNodesSpecifications;
     }
 
     @Override
-    Commands createCommandSelector( NodeCollection startNodes, int batchSize )
+    Commands createCommandSelector( NodeCollection startNodes, int batchSize,
+                                    NodeIdCollectorFactory nodeIdCollectorFactory )
     {
         List<BatchCommand<NodeCollection>> commands = new ArrayList<BatchCommand<NodeCollection>>();
-        for ( TargetNodesSpecification targetNodesSpecification : entitiesList )
+        for ( TargetNodesSpecification targetNodesSpecification : targetNodesSpecifications )
         {
-            RelateNodesBatchCommand command = new RelateNodesBatchCommand( startNodes,
-                    targetNodesSpecification, new UniqueNodeIdCollector(), batchSize );
+            RelateNodesBatchCommand command = new RelateNodesBatchCommand(
+                    startNodes, targetNodesSpecification, nodeIdCollectorFactory.createNodeIdCollector(), batchSize );
             commands.add( command );
         }
-        return new Commands( commands, new RandomCommandSelectionStrategy( ProbabilityDistribution.flatDistribution() ) );
+        return new Commands( commands,
+                new RandomCommandSelectionStrategy( ProbabilityDistribution.flatDistribution() ) );
     }
 
 

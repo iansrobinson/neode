@@ -9,5 +9,6 @@ public abstract class TargetNodesSpecificationsChoices
         return new RandomTargetNodesSpecificationsChoices( asList( targetNodesSpecifications ) );
     }
 
-    abstract Commands createCommandSelector( NodeCollection startNodes, int batchSize );
+    abstract Commands createCommandSelector( NodeCollection startNodes, int batchSize, NodeIdCollectorFactory
+            nodeIdCollectorFactory );
 }

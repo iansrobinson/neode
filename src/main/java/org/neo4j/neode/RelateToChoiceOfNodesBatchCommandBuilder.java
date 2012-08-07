@@ -18,9 +18,10 @@ class RelateToChoiceOfNodesBatchCommandBuilder implements UpdateDataset<List<Nod
     @Override
     public List<NodeCollection> update( Dataset dataset, int batchSize )
     {
-        Commands commands = targetNodesSpecificationsChoices.createCommandSelector( nodeCollection, batchSize );
-        RelateToChoiceOfNodesBatchCommand command = new RelateToChoiceOfNodesBatchCommand( nodeCollection,
-                commands, batchSize );
+        Commands commands = targetNodesSpecificationsChoices.createCommandSelector( nodeCollection, batchSize,
+                new UniqueNodeIdCollectorFactory() );
+        RelateToChoiceOfNodesBatchCommand command =
+                new RelateToChoiceOfNodesBatchCommand( nodeCollection, commands, batchSize );
         dataset.execute( command );
         return command.results();
     }
@@ -28,19 +29,16 @@ class RelateToChoiceOfNodesBatchCommandBuilder implements UpdateDataset<List<Nod
     @Override
     public List<NodeCollection> update( Dataset dataset )
     {
-        Commands commands = targetNodesSpecificationsChoices.createCommandSelector( nodeCollection, DEFAULT_BATCH_SIZE );
-        RelateToChoiceOfNodesBatchCommand command = new RelateToChoiceOfNodesBatchCommand( nodeCollection,
-                commands, DEFAULT_BATCH_SIZE );
-        dataset.execute( command );
-        return command.results();
+        return update( dataset, DEFAULT_BATCH_SIZE );
     }
 
     @Override
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
-        Commands commands = targetNodesSpecificationsChoices.createCommandSelector( nodeCollection, DEFAULT_BATCH_SIZE );
-        RelateToChoiceOfNodesBatchCommand command = new RelateToChoiceOfNodesBatchCommand( nodeCollection,
-                commands, batchSize );
+        Commands commands = targetNodesSpecificationsChoices.createCommandSelector( nodeCollection, DEFAULT_BATCH_SIZE,
+                new NullNodeIdCollectorFactory() );
+        RelateToChoiceOfNodesBatchCommand command =
+                new RelateToChoiceOfNodesBatchCommand( nodeCollection, commands, batchSize );
         dataset.execute( command );
     }
 

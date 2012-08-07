@@ -3,11 +3,11 @@ package org.neo4j.neode;
 import java.util.Collections;
 import java.util.List;
 
-class NullEndNodeIdCollector implements NodeIdCollector
+class NullNodeIdCollector implements NodeIdCollector
 {
-    public static NodeIdCollector INSTANCE = new NullEndNodeIdCollector();
+    public static NodeIdCollector INSTANCE = new NullNodeIdCollector();
 
-    private NullEndNodeIdCollector(){}
+    private NullNodeIdCollector(){}
 
     @Override
     public void add( Long nodeId )

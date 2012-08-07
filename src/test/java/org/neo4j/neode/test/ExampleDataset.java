@@ -76,7 +76,7 @@ public class ExampleDataset
                 getOrCreate( companySpec, 2, flatDistribution() )
                         .relationship( "WORKS_FOR" )
                         .relationshipConstraints( exactly( 1 ) ) )
-                .update( dataset );
+                .updateNoReturn( dataset );
 
         NodeCollection allProjects = users.createRelationshipsTo(
                 queryBasedGetOrCreate( projectSpec, traversal( findCompanyProjects ), 1.2 )
@@ -88,7 +88,7 @@ public class ExampleDataset
                 getExisting( allProjects )
                         .relationship( "WORKED_ON" )
                         .relationshipConstraints( minMax( 1, 2 ), RelationshipUniqueness.SINGLE_DIRECTION ) )
-                .update( dataset );
+                .updateNoReturn( dataset );
 
         dataset.end();
 

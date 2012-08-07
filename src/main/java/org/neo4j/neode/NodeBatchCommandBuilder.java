@@ -31,7 +31,7 @@ class NodeBatchCommandBuilder implements UpdateDataset<NodeCollection>
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
         NodeBatchCommand command = new NodeBatchCommand( nodeSpecification, quantity, batchSize,
-                NullEndNodeIdCollector.INSTANCE );
+                NullNodeIdCollector.INSTANCE );
         dataset.execute( command );
     }
 

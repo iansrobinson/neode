@@ -53,7 +53,7 @@ public class AnotherExampleDataset
                                 .relationship( "CONNECTED_TO",
                                         property( "quantity", integerRange( 1, 5 ) ) )
                                 .relationshipConstraints( minMax( 1, 3 ) ) )
-                        .update( dataset );
+                        .updateNoReturn( dataset );
 
             }
         }
