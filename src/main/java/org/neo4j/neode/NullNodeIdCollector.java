@@ -5,7 +5,7 @@ import java.util.List;
 
 class NullNodeIdCollector implements NodeIdCollector
 {
-    public static NodeIdCollector INSTANCE = new NullNodeIdCollector();
+    public static final NodeIdCollector INSTANCE = new NullNodeIdCollector();
 
     private NullNodeIdCollector(){}
 

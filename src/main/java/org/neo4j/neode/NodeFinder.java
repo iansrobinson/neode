@@ -28,7 +28,7 @@ public abstract class NodeFinder implements SetRelationshipInfo, SetRelationship
 
     @Override
     public final SetRelationshipConstraints relationship( RelationshipType relationshipType, Direction direction,
-                                                    Property... properties )
+                                                          Property... properties )
     {
         relationshipInfo = new RelationshipInfo( relationshipType, direction, properties );
         return this;
@@ -43,7 +43,7 @@ public abstract class NodeFinder implements SetRelationshipInfo, SetRelationship
 
     @Override
     public final SetRelationshipConstraints relationship( String relationshipLabel, Direction direction,
-                                                    Property... properties )
+                                                          Property... properties )
     {
         return relationship( withName( relationshipLabel ), direction, properties );
     }
@@ -56,7 +56,7 @@ public abstract class NodeFinder implements SetRelationshipInfo, SetRelationship
 
     @Override
     public final TargetNodesSpecification relationshipConstraints( Range cardinality,
-                                                              RelationshipUniqueness relationshipUniqueness )
+                                                                   RelationshipUniqueness relationshipUniqueness )
     {
         relationshipConstraints = new RelationshipConstraints( cardinality, relationshipUniqueness );
         return new TargetNodesSpecification( this, relationshipInfo, relationshipConstraints );

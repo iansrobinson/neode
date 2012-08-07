@@ -7,18 +7,18 @@ class RelateNodesBatchCommandBuilder implements UpdateDataset<NodeCollection>
     private static final int DEFAULT_BATCH_SIZE = 10000;
 
     private final NodeCollection nodeCollection;
-    private final TargetNodesSpecification entities;
+    private final TargetNodesSpecification targetNodesSpecification;
 
-    RelateNodesBatchCommandBuilder( NodeCollection nodeCollection, TargetNodesSpecification entities )
+    RelateNodesBatchCommandBuilder( NodeCollection nodeCollection, TargetNodesSpecification targetNodesSpecification )
     {
         this.nodeCollection = nodeCollection;
-        this.entities = entities;
+        this.targetNodesSpecification = targetNodesSpecification;
     }
 
     @Override
     public NodeCollection update( Dataset dataset, int batchSize )
     {
-        RelateNodesBatchCommand command = new RelateNodesBatchCommand( nodeCollection, entities,
+        RelateNodesBatchCommand command = new RelateNodesBatchCommand( nodeCollection, targetNodesSpecification,
                 new UniqueNodeIdCollector(), batchSize );
         return dataset.execute( command );
     }
@@ -32,7 +32,7 @@ class RelateNodesBatchCommandBuilder implements UpdateDataset<NodeCollection>
     @Override
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
-        RelateNodesBatchCommand command = new RelateNodesBatchCommand( nodeCollection, entities,
+        RelateNodesBatchCommand command = new RelateNodesBatchCommand( nodeCollection, targetNodesSpecification,
                 NullNodeIdCollector.INSTANCE, batchSize );
         dataset.execute( command );
     }
