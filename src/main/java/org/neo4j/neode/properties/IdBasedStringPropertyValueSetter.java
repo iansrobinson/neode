@@ -9,15 +9,12 @@ import org.neo4j.graphdb.Relationship;
 class IdBasedStringPropertyValueSetter extends PropertyValueSetter
 {
     @Override
-    public Object setProperty( PropertyContainer propertyContainer, String propertyName, String nodeLabel,
-                               int iteration, Random random )
+    public Object generateValue( PropertyContainer propertyContainer, String nodeLabel, int iteration, Random random )
     {
         long id = propertyContainer instanceof Node ?
                 ((Node) propertyContainer).getId() :
                 ((Relationship) propertyContainer).getId();
 
-        String value = String.format( "%s-%s", nodeLabel, id );
-        propertyContainer.setProperty( propertyName, value );
-        return value;
+        return String.format( "%s-%s", nodeLabel, id );
     }
 }

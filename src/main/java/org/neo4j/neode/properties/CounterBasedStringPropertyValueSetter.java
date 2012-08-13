@@ -14,11 +14,8 @@ class CounterBasedStringPropertyValueSetter extends PropertyValueSetter
     }
 
     @Override
-    public Object setProperty( PropertyContainer propertyContainer, String propertyName, String nodeLabel,
-                               int iteration, Random random )
+    public Object generateValue( PropertyContainer propertyContainer, String nodeLabel, int iteration, Random random )
     {
-        String value = String.format( "%s-%s", nodeLabel, counter++ );
-        propertyContainer.setProperty( propertyName, value );
-        return value;
+        return String.format( "%s-%s", nodeLabel, counter++ );
     }
 }

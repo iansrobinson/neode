@@ -27,11 +27,6 @@ public abstract class PropertyValueSetter
         return new IdBasedStringPropertyValueSetter();
     }
 
-    public static <T> PropertyValueSetter functionBased( PropertyValueGenerator<T> function )
-    {
-        return new FunctionBasedPropertyValueSetter<T>( function );
-    }
-
     public static PropertyValueSetter integerRange( int min, int max, ProbabilityDistribution probabilityDistribution )
     {
         return new RangeBasedIntegerPropertyValueSetter( Range.minMax( min, max ), probabilityDistribution );
@@ -42,6 +37,6 @@ public abstract class PropertyValueSetter
         return integerRange( min, max, ProbabilityDistribution.flatDistribution() );
     }
 
-    public abstract Object setProperty( PropertyContainer propertyContainer, String propertyName, String nodeLabel,
-                                 int iteration, Random random );
+    public abstract Object generateValue( PropertyContainer propertyContainer, String nodeLabel, int iteration,
+                                          Random random );
 }

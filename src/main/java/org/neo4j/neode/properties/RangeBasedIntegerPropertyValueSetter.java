@@ -18,11 +18,8 @@ class RangeBasedIntegerPropertyValueSetter extends PropertyValueSetter
     }
 
     @Override
-    public Object setProperty( PropertyContainer propertyContainer, String propertyName, String nodeLabel,
-                               int iteration, Random random )
+    public Object generateValue( PropertyContainer propertyContainer, String nodeLabel, int iteration, Random random )
     {
-        int value = probabilityDistribution.generateSingle( range, random );
-        propertyContainer.setProperty( propertyName, value );
-        return value;
+        return probabilityDistribution.generateSingle( range, random );
     }
 }

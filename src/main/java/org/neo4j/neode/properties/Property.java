@@ -3,55 +3,30 @@ package org.neo4j.neode.properties;
 import java.util.Random;
 
 import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.PropertyContainer;
-import org.neo4j.graphdb.index.Index;
 
-public class Property
+public abstract class Property
 {
     public static Property property( String name )
     {
-        return new Property( name, new CounterBasedStringPropertyValueSetter(), false );
+        return new SimpleProperty( name, new CounterBasedStringPropertyValueSetter(), false );
     }
 
     public static Property indexableProperty( String name )
     {
-        return new Property( name, new CounterBasedStringPropertyValueSetter(), true );
+        return new SimpleProperty( name, new CounterBasedStringPropertyValueSetter(), true );
     }
 
     public static Property property( String name, PropertyValueSetter propertyValueSetter )
     {
-        return new Property( name, propertyValueSetter, false );
+        return new SimpleProperty( name, propertyValueSetter, false );
     }
 
     public static Property indexableProperty( String name, PropertyValueSetter propertyValueSetter )
     {
-        return new Property( name, propertyValueSetter, true );
+        return new SimpleProperty( name, propertyValueSetter, true );
     }
 
-    private final String propertyName;
-    private final PropertyValueSetter propertyValueSetter;
-    private final boolean isIndexable;
-    private Index<Node> nodeIndex;
-
-    private Property( String propertyName, PropertyValueSetter propertyValueSetter, boolean isIndexable )
-    {
-        this.propertyName = propertyName;
-        this.propertyValueSetter = propertyValueSetter;
-        this.isIndexable = isIndexable;
-    }
-
-    public void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String nodeLabel,
-                             int iteration, Random random )
-    {
-        Object value = propertyValueSetter.setProperty( propertyContainer, propertyName, nodeLabel, iteration, random );
-        if ( isIndexable && propertyContainer instanceof Node)
-        {
-            if ( nodeIndex == null )
-            {
-                nodeIndex = db.index().forNodes( nodeLabel );
-            }
-            nodeIndex.add( (Node) propertyContainer, propertyName, value );
-        }
-    }
+    public abstract void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String nodeLabel,
+                             int iteration, Random random );
 }
