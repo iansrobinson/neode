@@ -16,7 +16,6 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.neode.test.Db;
 
-
 public class QueryBasedGetOrCreateTest
 {
     @Test
@@ -31,7 +30,7 @@ public class QueryBasedGetOrCreateTest
         Node node4 = db.createNode();
 
         Random random = new Random();
-        NodeSpecification user =new NodeSpecification( db, "user" );
+        NodeSpecification user = new NodeSpecification( db, "user" );
         SparseNodeListGenerator finder = mock( SparseNodeListGenerator.class );
 
         List<Node> sparseList = asList( node0, null, null, null, node4 );

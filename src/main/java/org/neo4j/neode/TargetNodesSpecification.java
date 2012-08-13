@@ -24,6 +24,11 @@ public class TargetNodesSpecification
         return new ExistingUniqueNodeFinder( nodeCollection, normalDistribution() );
     }
 
+    public static NodeFinder getExisting( GraphQuery graphQuery )
+    {
+        return new QueryBasedGet( graphQuery );
+    }
+
     public static NodeFinder queryBasedGetOrCreate( NodeSpecification nodeSpecification, GraphQuery graphQuery )
     {
         return new QueryBasedGetOrCreate( nodeSpecification,

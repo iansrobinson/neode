@@ -42,6 +42,6 @@ public abstract class PropertyValueSetter
         return integerRange( min, max, ProbabilityDistribution.flatDistribution() );
     }
 
-    abstract Object setProperty( PropertyContainer propertyContainer, String propertyName, String nodeLabel,
+    public abstract Object setProperty( PropertyContainer propertyContainer, String propertyName, String nodeLabel,
                                  int iteration, Random random );
 }
