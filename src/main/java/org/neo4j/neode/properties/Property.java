@@ -9,22 +9,22 @@ public abstract class Property
 {
     public static Property property( String name )
     {
-        return new SimpleProperty( name, new CounterBasedStringPropertyValueSetter(), false );
+        return new SimpleProperty( name, new CounterBasedStringPropertyValueGenerator(), false );
     }
 
     public static Property indexableProperty( String name )
     {
-        return new SimpleProperty( name, new CounterBasedStringPropertyValueSetter(), true );
+        return new SimpleProperty( name, new CounterBasedStringPropertyValueGenerator(), true );
     }
 
-    public static Property property( String name, PropertyValueSetter propertyValueSetter )
+    public static Property property( String name, PropertyValueGenerator generator )
     {
-        return new SimpleProperty( name, propertyValueSetter, false );
+        return new SimpleProperty( name, generator, false );
     }
 
-    public static Property indexableProperty( String name, PropertyValueSetter propertyValueSetter )
+    public static Property indexableProperty( String name, PropertyValueGenerator generator )
     {
-        return new SimpleProperty( name, propertyValueSetter, true );
+        return new SimpleProperty( name, generator, true );
     }
 
     public abstract void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String nodeLabel,

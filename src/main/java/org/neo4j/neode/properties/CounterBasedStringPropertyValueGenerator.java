@@ -4,11 +4,18 @@ import java.util.Random;
 
 import org.neo4j.graphdb.PropertyContainer;
 
-class IterationBasedStringPropertyValueSetter extends PropertyValueSetter
+class CounterBasedStringPropertyValueGenerator extends PropertyValueGenerator
 {
+    private Long counter;
+
+    CounterBasedStringPropertyValueGenerator()
+    {
+        counter = 1l;
+    }
+
     @Override
     public Object generateValue( PropertyContainer propertyContainer, String nodeLabel, int iteration, Random random )
     {
-        return String.format( "%s-%s", nodeLabel, iteration + 1 );
+        return String.format( "%s-%s", nodeLabel, counter++ );
     }
 }

@@ -6,7 +6,7 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.PropertyContainer;
 import org.neo4j.graphdb.Relationship;
 
-class IdBasedStringPropertyValueSetter extends PropertyValueSetter
+class IdBasedStringPropertyValueGenerator extends PropertyValueGenerator
 {
     @Override
     public Object generateValue( PropertyContainer propertyContainer, String nodeLabel, int iteration, Random random )

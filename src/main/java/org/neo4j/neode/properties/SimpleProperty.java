@@ -10,14 +10,14 @@ import org.neo4j.graphdb.index.Index;
 class SimpleProperty extends Property
 {
     private final String propertyName;
-    private final PropertyValueSetter propertyValueSetter;
+    private final PropertyValueGenerator generator;
     private final boolean isIndexable;
     private Index<Node> nodeIndex;
 
-    SimpleProperty( String propertyName, PropertyValueSetter propertyValueSetter, boolean isIndexable )
+    SimpleProperty( String propertyName, PropertyValueGenerator generator, boolean isIndexable )
     {
         this.propertyName = propertyName;
-        this.propertyValueSetter = propertyValueSetter;
+        this.generator = generator;
         this.isIndexable = isIndexable;
     }
 
@@ -25,9 +25,9 @@ class SimpleProperty extends Property
     public void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String nodeLabel,
                              int iteration, Random random )
     {
-        Object value = propertyValueSetter.generateValue( propertyContainer, nodeLabel, iteration,
-                random );
+        Object value = generator.generateValue( propertyContainer, nodeLabel, iteration, random );
         propertyContainer.setProperty( propertyName, value );
+
         if ( isIndexable && propertyContainer instanceof Node )
         {
             if ( nodeIndex == null )

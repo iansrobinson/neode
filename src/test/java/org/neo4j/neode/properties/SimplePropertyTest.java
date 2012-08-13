@@ -18,16 +18,16 @@ public class SimplePropertyTest
     public void shouldSetPropertyValue() throws Exception
     {
         // given
-        PropertyValueSetter propertyValueSetter = new PropertyValueSetter()
+        PropertyValueGenerator generator = new PropertyValueGenerator()
         {
             @Override
-            public Object generateValue( PropertyContainer propertyContainer, String nodeLabel, int iteration, Random
-                    random )
+            public Object generateValue( PropertyContainer propertyContainer, String nodeLabel, int iteration,
+                                         Random random )
             {
                 return "value";
             }
         };
-        Property property = new SimpleProperty( "name", propertyValueSetter, false );
+        Property property = new SimpleProperty( "name", generator, false );
 
         GraphDatabaseService db = Db.impermanentDb();
         Transaction tx = db.beginTx();
@@ -47,16 +47,16 @@ public class SimplePropertyTest
     public void shouldIndexIndexableProperty() throws Exception
     {
         // given
-        PropertyValueSetter propertyValueSetter = new PropertyValueSetter()
+        PropertyValueGenerator generator = new PropertyValueGenerator()
         {
             @Override
-            public Object generateValue( PropertyContainer propertyContainer, String nodeLabel, int iteration, Random
-                    random )
+            public Object generateValue( PropertyContainer propertyContainer, String nodeLabel, int iteration,
+                                         Random random )
             {
                 return "value";
             }
         };
-        Property property = new SimpleProperty( "name", propertyValueSetter, true );
+        Property property = new SimpleProperty( "name", generator, true );
 
         GraphDatabaseService db = Db.impermanentDb();
         Transaction tx = db.beginTx();

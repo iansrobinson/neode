@@ -6,12 +6,12 @@ import org.neo4j.graphdb.PropertyContainer;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
 import org.neo4j.neode.Range;
 
-class RangeBasedIntegerPropertyValueSetter extends PropertyValueSetter
+class RangeBasedIntegerPropertyValueGenerator extends PropertyValueGenerator
 {
     private final Range range;
     private final ProbabilityDistribution probabilityDistribution;
 
-    public RangeBasedIntegerPropertyValueSetter( Range range, ProbabilityDistribution probabilityDistribution )
+    public RangeBasedIntegerPropertyValueGenerator( Range range, ProbabilityDistribution probabilityDistribution )
     {
         this.range = range;
         this.probabilityDistribution = probabilityDistribution;
