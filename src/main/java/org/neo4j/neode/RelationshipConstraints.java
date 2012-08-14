@@ -13,11 +13,12 @@ class RelationshipConstraints
     private final RelationshipUniqueness relationshipUniqueness;
     private final ProbabilityDistribution probabilityDistribution;
 
-    RelationshipConstraints( Range cardinality, RelationshipUniqueness relationshipUniqueness )
+    RelationshipConstraints( Range cardinality, RelationshipUniqueness relationshipUniqueness,
+                             ProbabilityDistribution probabilityDistribution )
     {
         this.cardinality = cardinality;
         this.relationshipUniqueness = relationshipUniqueness;
-        this.probabilityDistribution = ProbabilityDistribution.flatDistribution();
+        this.probabilityDistribution = probabilityDistribution;
     }
 
     public int calculateNumberOfRelsToCreate( Random random )

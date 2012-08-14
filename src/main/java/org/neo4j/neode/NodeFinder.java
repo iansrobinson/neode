@@ -6,6 +6,7 @@ package org.neo4j.neode;
 
 
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
+import static org.neo4j.neode.probabilities.ProbabilityDistribution.flatDistribution;
 
 import java.util.Random;
 
@@ -15,6 +16,7 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.neode.interfaces.SetRelationshipConstraints;
 import org.neo4j.neode.interfaces.SetRelationshipInfo;
+import org.neo4j.neode.probabilities.ProbabilityDistribution;
 import org.neo4j.neode.properties.Property;
 
 public abstract class NodeFinder implements SetRelationshipInfo, SetRelationshipConstraints
@@ -56,16 +58,33 @@ public abstract class NodeFinder implements SetRelationshipInfo, SetRelationship
 
     @Override
     public final TargetNodesSpecification relationshipConstraints( Range cardinality,
+                                                                   ProbabilityDistribution probabilityDistribution,
                                                                    RelationshipUniqueness relationshipUniqueness )
     {
-        relationshipConstraints = new RelationshipConstraints( cardinality, relationshipUniqueness );
+        relationshipConstraints = new RelationshipConstraints(
+                cardinality,
+                relationshipUniqueness,
+                probabilityDistribution );
         return new TargetNodesSpecification( this, relationshipInfo, relationshipConstraints );
+    }
+
+    @Override
+    public final TargetNodesSpecification relationshipConstraints( Range cardinality,
+                                                                   RelationshipUniqueness relationshipUniqueness )
+    {
+        return relationshipConstraints( cardinality, flatDistribution(), relationshipUniqueness );
+    }
+
+    @Override
+    public final TargetNodesSpecification relationshipConstraints( Range cardinality,
+                                                                   ProbabilityDistribution probabilityDistribution )
+    {
+        return relationshipConstraints( cardinality, probabilityDistribution, RelationshipUniqueness.ALLOW_MULTIPLE );
     }
 
     @Override
     public final TargetNodesSpecification relationshipConstraints( Range cardinality )
     {
-        relationshipConstraints = new RelationshipConstraints( cardinality, RelationshipUniqueness.ALLOW_MULTIPLE );
-        return new TargetNodesSpecification( this, relationshipInfo, relationshipConstraints );
+        return relationshipConstraints( cardinality, flatDistribution(), RelationshipUniqueness.ALLOW_MULTIPLE );
     }
 }
