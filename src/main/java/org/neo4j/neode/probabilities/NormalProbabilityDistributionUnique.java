@@ -12,4 +12,10 @@ class NormalProbabilityDistributionUnique extends BaseUniqueProbabilityDistribut
         int standardDeviation = minMax.max() / 2;
         return (int) (minMax.min() + standardDeviation + (gaussian * standardDeviation));
     }
+
+    @Override
+    public String description()
+    {
+        return "normal";
+    }
 }

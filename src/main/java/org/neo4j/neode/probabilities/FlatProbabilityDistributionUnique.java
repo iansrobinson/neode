@@ -10,4 +10,10 @@ class FlatProbabilityDistributionUnique extends BaseUniqueProbabilityDistributio
     {
         return minMax.min() + random.nextInt( minMax.max() + 1 );
     }
+
+    @Override
+    public String description()
+    {
+        return "flat";
+    }
 }

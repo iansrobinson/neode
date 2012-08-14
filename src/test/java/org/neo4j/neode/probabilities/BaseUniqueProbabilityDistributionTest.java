@@ -51,5 +51,11 @@ public class BaseUniqueProbabilityDistributionTest
         {
             return 0;
         }
+
+        @Override
+        public String description()
+        {
+            return "dummy";
+        }
     }
 }

@@ -20,7 +20,9 @@ public class NodeCollection
         }
 
         Random random = new Random();
-        List<Long> newNodeIds = new ArrayList<Long>();
+
+        int arraySize = nodeCollection.nodeIds().size() * ((percent + 10) / 100);
+        List<Long> newNodeIds = new ArrayList<Long>( arraySize );
         for ( Long nodeId : nodeCollection.nodeIds() )
         {
             int score = random.nextInt( 100 ) + 1;

@@ -19,7 +19,7 @@ class CreateNodesBatchCommandBuilder implements UpdateDataset<NodeCollection>
     public NodeCollection update( Dataset dataset, int batchSize )
     {
         CreateNodesBatchCommand command = new CreateNodesBatchCommand( nodeSpecification, quantity, batchSize,
-                new UniqueNodeIdCollector() );
+                new UniqueNodeIdCollector(quantity) );
         return dataset.execute( command );
     }
 

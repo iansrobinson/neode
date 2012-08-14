@@ -11,7 +11,12 @@ class UniqueNodeIdCollector implements NodeIdCollector
 
     UniqueNodeIdCollector()
     {
-        ids = new HashSet<Long>(  );
+        ids = new HashSet<Long>();
+    }
+
+    UniqueNodeIdCollector( int size )
+    {
+        ids = new HashSet<Long>( size );
     }
 
     @Override

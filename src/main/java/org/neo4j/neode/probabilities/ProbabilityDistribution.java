@@ -26,4 +26,6 @@ public abstract class ProbabilityDistribution
     public abstract List<Integer> generateList( int size, Range range, Random random );
 
     public abstract int generateSingle( Range range, Random random );
+
+    public abstract String description();
 }

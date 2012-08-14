@@ -41,8 +41,11 @@ class RelationshipConstraints
 
     public String description()
     {
-        return String.format( "[Min: %s, Max: %s, Uniqueness: %s]", cardinality.min(), cardinality.max(),
-                relationshipUniqueness.name() );
+        return String.format( "[Min: %s, Max: %s, Uniqueness: %s, Distribution: %s]",
+                cardinality.min(),
+                cardinality.max(),
+                relationshipUniqueness.name(),
+                probabilityDistribution.description() );
     }
 
 
