@@ -12,13 +12,20 @@ class SimpleProperty extends Property
     private final String propertyName;
     private final PropertyValueGenerator generator;
     private final boolean isIndexable;
+    private final String indexName;
     private Index<Node> nodeIndex;
 
-    SimpleProperty( String propertyName, PropertyValueGenerator generator, boolean isIndexable )
+    SimpleProperty( String propertyName, PropertyValueGenerator generator, boolean isIndexable, String indexName )
     {
         this.propertyName = propertyName;
         this.generator = generator;
         this.isIndexable = isIndexable;
+        this.indexName = indexName;
+    }
+
+    SimpleProperty( String propertyName, PropertyValueGenerator generator, boolean isIndexable )
+    {
+        this( propertyName, generator, isIndexable, null );
     }
 
     @Override
@@ -32,7 +39,7 @@ class SimpleProperty extends Property
         {
             if ( nodeIndex == null )
             {
-                nodeIndex = db.index().forNodes( nodeLabel );
+                nodeIndex = db.index().forNodes( indexName == null ? nodeLabel : indexName );
             }
             nodeIndex.add( (Node) propertyContainer, propertyName, value );
         }

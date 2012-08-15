@@ -53,6 +53,20 @@ public class NodeCollection
         return nodeIds;
     }
 
+    public NodeCollection add(NodeCollection otherCollection)
+    {
+        if (!otherCollection.label().equals( name ))
+        {
+            throw new IllegalArgumentException(
+                    String.format("Invalid label. Expected: %s. Received: %s.", name, otherCollection.label() ));
+        }
+
+        List<Long> newNodeIds = new ArrayList<Long>( nodeIds.size() + otherCollection.nodeIds().size() );
+        newNodeIds.addAll( nodeIds );
+        newNodeIds.addAll( otherCollection.nodeIds() );
+        return new NodeCollection( name, newNodeIds );
+    }
+
     public UpdateDataset<NodeCollection> createRelationshipsTo( TargetNodesSpecification targetNodesSpecification )
     {
         return new RelateNodesBatchCommandBuilder( this, targetNodesSpecification );

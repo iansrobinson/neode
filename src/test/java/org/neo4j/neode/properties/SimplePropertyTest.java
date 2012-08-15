@@ -44,7 +44,7 @@ public class SimplePropertyTest
     }
 
     @Test
-    public void shouldIndexIndexableProperty() throws Exception
+    public void shouldIndexIndexablePropertyInIndexNamedAfterNodeLabel() throws Exception
     {
         // given
         PropertyValueGenerator generator = new PropertyValueGenerator()
@@ -69,5 +69,33 @@ public class SimplePropertyTest
 
         // then
         assertEquals( node, db.index().forNodes( "user" ).get( "name", "value" ).getSingle() );
+    }
+
+    @Test
+    public void shouldIndexIndexablePropertyInIndexNamedAfterIndexNameIfSupplied() throws Exception
+    {
+        // given
+        PropertyValueGenerator generator = new PropertyValueGenerator()
+        {
+            @Override
+            public Object generateValue( PropertyContainer propertyContainer, String nodeLabel, int iteration,
+                                         Random random )
+            {
+                return "value";
+            }
+        };
+        Property property = new SimpleProperty( "name", generator, true, "myindex" );
+
+        GraphDatabaseService db = Db.impermanentDb();
+        Transaction tx = db.beginTx();
+        Node node = db.createNode();
+
+        // when
+        property.setProperty( node, db, "user", 1, new Random() );
+        tx.success();
+        tx.finish();
+
+        // then
+        assertEquals( node, db.index().forNodes( "myindex" ).get( "name", "value" ).getSingle() );
     }
 }

@@ -54,6 +54,11 @@ public class TargetNodesSpecification
         return new GetOrCreateUniqueNodeFinder( nodeSpecification, maxNumberOfEntities, flatDistribution() );
     }
 
+    public static NodeFinder create(NodeSpecification nodeSpecification)
+    {
+        return new CreateUniqueNodeFinder( nodeSpecification );
+    }
+
     private final NodeFinder nodeFinder;
     private final RelationshipInfo relationshipInfo;
     private final RelationshipConstraints relationshipConstraints;
