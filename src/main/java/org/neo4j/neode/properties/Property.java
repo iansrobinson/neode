@@ -9,12 +9,12 @@ public abstract class Property
 {
     public static Property property( String name )
     {
-        return new SimpleProperty( name, new CounterBasedStringPropertyValueGenerator() );
+        return new NonIndexableProperty( name, new CounterBasedStringPropertyValueGenerator() );
     }
 
     public static Property property( String name, PropertyValueGenerator generator )
     {
-        return new SimpleProperty( name, generator );
+        return new NonIndexableProperty( name, generator );
     }
 
     public static Property indexableProperty( String name )

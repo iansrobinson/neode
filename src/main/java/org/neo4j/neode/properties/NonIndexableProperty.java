@@ -5,12 +5,12 @@ import java.util.Random;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.PropertyContainer;
 
-class SimpleProperty extends Property
+class NonIndexableProperty extends Property
 {
     private final String propertyName;
     private final PropertyValueGenerator generator;
 
-    SimpleProperty( String propertyName, PropertyValueGenerator generator )
+    NonIndexableProperty( String propertyName, PropertyValueGenerator generator )
     {
         this.propertyName = propertyName;
         this.generator = generator;

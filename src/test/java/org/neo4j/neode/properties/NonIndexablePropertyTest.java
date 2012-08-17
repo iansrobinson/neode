@@ -12,7 +12,7 @@ import org.neo4j.graphdb.PropertyContainer;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.neode.test.Db;
 
-public class SimplePropertyTest
+public class NonIndexablePropertyTest
 {
     @Test
     public void shouldSetPropertyValue() throws Exception
@@ -27,7 +27,7 @@ public class SimplePropertyTest
                 return "value";
             }
         };
-        Property property = new SimpleProperty( "name", generator );
+        Property property = new NonIndexableProperty( "name", generator );
 
         GraphDatabaseService db = Db.impermanentDb();
         Transaction tx = db.beginTx();
