@@ -9,32 +9,32 @@ public abstract class Property
 {
     public static Property property( String name )
     {
-        return new SimpleProperty( name, new CounterBasedStringPropertyValueGenerator(), false );
+        return new SimpleProperty( name, new CounterBasedStringPropertyValueGenerator() );
     }
 
     public static Property property( String name, PropertyValueGenerator generator )
     {
-        return new SimpleProperty( name, generator, false );
+        return new SimpleProperty( name, generator );
     }
 
     public static Property indexableProperty( String name )
     {
-        return new SimpleProperty( name, new CounterBasedStringPropertyValueGenerator(), true );
+        return new IndexableProperty( name, new CounterBasedStringPropertyValueGenerator(), null );
     }
 
     public static Property indexableProperty( String name, String indexName )
     {
-        return new SimpleProperty( name, new CounterBasedStringPropertyValueGenerator(), true, indexName );
+        return new IndexableProperty( name, new CounterBasedStringPropertyValueGenerator(), indexName );
     }
 
     public static Property indexableProperty( String name, PropertyValueGenerator generator )
     {
-        return new SimpleProperty( name, generator, true );
+        return new IndexableProperty( name, generator, null );
     }
 
     public static Property indexableProperty( String name, PropertyValueGenerator generator, String indexName )
     {
-        return new SimpleProperty( name, generator, true, indexName );
+        return new IndexableProperty( name, generator, indexName );
     }
 
     public abstract void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String nodeLabel,
