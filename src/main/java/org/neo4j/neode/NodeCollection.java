@@ -21,9 +21,9 @@ public class NodeCollection
 
         Random random = new Random();
 
-        int arraySize = nodeCollection.nodeIds().size() * ((percent + 10) / 100);
+        int arraySize = nodeCollection.size() * ((percent + 10) / 100);
         List<Long> newNodeIds = new ArrayList<Long>( arraySize );
-        for ( Long nodeId : nodeCollection.nodeIds() )
+        for ( Long nodeId : nodeCollection.nodeIds )
         {
             int score = random.nextInt( 100 ) + 1;
             if ( score <= percent )
@@ -48,9 +48,9 @@ public class NodeCollection
         return name;
     }
 
-    public List<Long> nodeIds()
+    public int size()
     {
-        return nodeIds;
+        return nodeIds.size();
     }
 
     public NodeCollection add(NodeCollection otherCollection)
@@ -61,9 +61,9 @@ public class NodeCollection
                     String.format("Invalid label. Expected: %s. Received: %s.", name, otherCollection.label() ));
         }
 
-        List<Long> newNodeIds = new ArrayList<Long>( nodeIds.size() + otherCollection.nodeIds().size() );
+        List<Long> newNodeIds = new ArrayList<Long>( nodeIds.size() + otherCollection.size() );
         newNodeIds.addAll( nodeIds );
-        newNodeIds.addAll( otherCollection.nodeIds() );
+        newNodeIds.addAll( otherCollection.nodeIds );
         return new NodeCollection( name, newNodeIds );
     }
 
@@ -84,5 +84,10 @@ public class NodeCollection
                 "name='" + name + '\'' +
                 ", nodeIds=" + nodeIds +
                 '}';
+    }
+
+    List<Long> nodeIds()
+    {
+        return nodeIds;
     }
 }

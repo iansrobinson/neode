@@ -1,15 +1,15 @@
 package org.neo4j.neode.test;
 
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
-import static org.neo4j.neode.NodeCollection.approxPercent;
 import static org.neo4j.neode.GraphQuery.traversal;
+import static org.neo4j.neode.NodeCollection.approxPercent;
+import static org.neo4j.neode.Range.exactly;
+import static org.neo4j.neode.Range.minMax;
 import static org.neo4j.neode.TargetNodesSpecification.getExisting;
 import static org.neo4j.neode.TargetNodesSpecification.getOrCreate;
 import static org.neo4j.neode.TargetNodesSpecification.queryBasedGetOrCreate;
 import static org.neo4j.neode.probabilities.ProbabilityDistribution.flatDistribution;
 import static org.neo4j.neode.probabilities.ProbabilityDistribution.normalDistribution;
-import static org.neo4j.neode.Range.exactly;
-import static org.neo4j.neode.Range.minMax;
 import static org.neo4j.neode.properties.Property.indexableProperty;
 import static org.neo4j.neode.properties.Property.property;
 
@@ -21,9 +21,9 @@ import org.neo4j.graphdb.traversal.Evaluation;
 import org.neo4j.graphdb.traversal.Evaluator;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.kernel.Traversal;
+import org.neo4j.neode.Dataset;
 import org.neo4j.neode.DatasetManager;
 import org.neo4j.neode.NodeCollection;
-import org.neo4j.neode.Dataset;
 import org.neo4j.neode.NodeSpecification;
 import org.neo4j.neode.RelationshipUniqueness;
 import org.neo4j.neode.logging.SysOutLog;
@@ -94,6 +94,6 @@ public class SocialNetworkExample
 
         db.shutdown();
 
-        System.out.println( "Number of topics: " + topics.nodeIds().size() );
+        System.out.println( "Number of topics: " + topics.size() );
     }
 }

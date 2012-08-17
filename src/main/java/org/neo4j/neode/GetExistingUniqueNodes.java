@@ -29,7 +29,7 @@ class GetExistingUniqueNodes extends Nodes
         {
             indexes = probabilityDistribution.generateList(
                     quantity,
-                    minMax( 0, nodeCollection.nodeIds().size() - 1 ),
+                    minMax( 0, nodeCollection.size() - 1 ),
                     random );
         }
         catch ( IllegalArgumentException e )
@@ -39,7 +39,7 @@ class GetExistingUniqueNodes extends Nodes
                     "nodes specified when applying the relationship constraint. Number of nodes specified by "  +
                     "relationship constraint: %s. Maximum number of nodes available: %s. Either adjust the " +
                     "relationship constraint or increase the number of nodes available.",
-                    nodeCollection.label(), quantity, nodeCollection.nodeIds().size() ) );
+                    nodeCollection.label(), quantity, nodeCollection.size() ) );
         }
         return new Iterable<Node>()
         {

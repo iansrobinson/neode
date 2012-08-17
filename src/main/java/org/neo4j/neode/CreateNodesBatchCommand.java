@@ -11,15 +11,15 @@ class CreateNodesBatchCommand implements BatchCommand<NodeCollection>
     private final NodeSpecification nodeSpecification;
     private final int numberOfIterations;
     private final int batchSize;
-    private final NodeIdCollector endNodeIdCollector;
+    private final NodeIdCollector nodeIdCollector;
 
     CreateNodesBatchCommand( NodeSpecification nodeSpecification, int numberOfIterations, int batchSize,
-                             NodeIdCollector endNodeIdCollector )
+                             NodeIdCollector nodeIdCollector )
     {
         this.nodeSpecification = nodeSpecification;
         this.numberOfIterations = numberOfIterations;
         this.batchSize = batchSize;
-        this.endNodeIdCollector = endNodeIdCollector;
+        this.nodeIdCollector = nodeIdCollector;
     }
 
     @Override
@@ -38,7 +38,7 @@ class CreateNodesBatchCommand implements BatchCommand<NodeCollection>
     public void execute( GraphDatabaseService db, int iteration, Random random )
     {
         Long nodeId = nodeSpecification.build( iteration, random ).getId();
-        endNodeIdCollector.add( nodeId );
+        nodeIdCollector.add( nodeId );
     }
 
     @Override
@@ -74,6 +74,6 @@ class CreateNodesBatchCommand implements BatchCommand<NodeCollection>
     @Override
     public NodeCollection results()
     {
-        return new NodeCollection( nodeSpecification.label(), endNodeIdCollector.nodeIds() );
+        return new NodeCollection( nodeSpecification.label(), nodeIdCollector.nodeIds() );
     }
 }
