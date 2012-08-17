@@ -42,7 +42,7 @@ public class IndexablePropertyTest
     }
 
     @Test
-    public void shouldIndexPropertyInIndexNamedAfterNodeLabelIfIndexNameNotSupplied() throws Exception
+    public void shouldIndexPropertyInIndexNamedAfterLabelIfIndexNameNotSupplied() throws Exception
     {
         // given
         PropertyValueGenerator generator = new PropertyValueGenerator()

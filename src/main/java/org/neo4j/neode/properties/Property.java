@@ -37,6 +37,6 @@ public abstract class Property
         return new IndexableProperty( name, generator, indexName );
     }
 
-    public abstract void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String nodeLabel,
+    public abstract void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String label,
                                       int iteration, Random random );
 }

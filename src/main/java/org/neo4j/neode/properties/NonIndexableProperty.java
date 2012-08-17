@@ -17,10 +17,10 @@ class NonIndexableProperty extends Property
     }
 
     @Override
-    public void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String nodeLabel,
+    public void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String label,
                              int iteration, Random random )
     {
         propertyContainer.setProperty( propertyName,
-                generator.generateValue( propertyContainer, nodeLabel, iteration, random ) );
+                generator.generateValue( propertyContainer, label, iteration, random ) );
     }
 }
