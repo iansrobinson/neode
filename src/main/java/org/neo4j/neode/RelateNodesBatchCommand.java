@@ -26,7 +26,7 @@ class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
     @Override
     public int numberOfIterations()
     {
-        return startNodes.nodeIds().size();
+        return startNodes.size();
     }
 
     @Override

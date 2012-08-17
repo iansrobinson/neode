@@ -21,7 +21,7 @@ public class DatasetManager
 
     public NodeSpecification newNodeSpecification(String label, Property... properties)
     {
-        return new NodeSpecification( db, label, properties );
+        return new NodeSpecification( label, properties );
     }
 
     public Dataset newDataset( String description )

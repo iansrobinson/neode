@@ -22,7 +22,7 @@ class CreateUniqueNodes extends Nodes
         List<Node> nodes = new ArrayList<Node>( quantity );
         for (int iteration = 0; iteration < quantity; iteration++)
         {
-            nodes.add(  nodeSpecification.build( iteration, random ));
+            nodes.add(  nodeSpecification.build( db, iteration, random ));
         }
         return nodes;
     }

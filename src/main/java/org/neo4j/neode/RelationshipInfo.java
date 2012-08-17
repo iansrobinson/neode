@@ -29,14 +29,14 @@ class RelationshipInfo
 
     public String description()
     {
-        String relStart = "-";
-        String relEnd = "->";
+        String prefix = "-";
+        String suffix = "->";
         if ( direction.equals( Direction.INCOMING ) )
         {
-            relStart = "<-";
-            relEnd = "-";
+            prefix = "<-";
+            suffix = "-";
         }
-        return String.format( "%s[:%s]%s", relStart, relationshipType.name(), relEnd );
+        return String.format( "%s[:%s]%s", prefix, relationshipType.name(), suffix );
     }
 
     public Relationship createRelationship( Node firstNode, Node secondNode, GraphDatabaseService db, Random random )
