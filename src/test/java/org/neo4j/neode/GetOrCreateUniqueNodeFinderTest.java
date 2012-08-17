@@ -34,7 +34,7 @@ public class GetOrCreateUniqueNodeFinderTest
         NodeSpecification user = mock( NodeSpecification.class );
         when( user.build( 0, random ) ).thenReturn( newNode );
 
-        GetOrCreateUniqueNodeFinder nodeFinder = new GetOrCreateUniqueNodeFinder( user, 5, probabilityDistribution );
+        GetOrCreateUniqueNodes nodeFinder = new GetOrCreateUniqueNodes( user, 5, probabilityDistribution );
 
         // when
         nodeFinder.getNodes( 1, db, currentNode, random );
@@ -62,7 +62,7 @@ public class GetOrCreateUniqueNodeFinderTest
         NodeSpecification user = mock( NodeSpecification.class );
         when( user.build( 0, random ) ).thenReturn( newNode );
 
-        GetOrCreateUniqueNodeFinder nodeFinder = new GetOrCreateUniqueNodeFinder( user, 5, probabilityDistribution );
+        GetOrCreateUniqueNodes nodeFinder = new GetOrCreateUniqueNodes( user, 5, probabilityDistribution );
 
         // when
         nodeFinder.getNodes( 1, db, currentNode, random );

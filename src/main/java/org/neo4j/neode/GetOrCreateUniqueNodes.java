@@ -11,15 +11,15 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
-class GetOrCreateUniqueNodeFinder extends NodeFinder
+class GetOrCreateUniqueNodes extends Nodes
 {
     private final NodeSpecification nodeSpecification;
     private final int totalNumberOfNodes;
     private final ProbabilityDistribution probabilityDistribution;
     private final List<Long> nodeIds;
 
-    GetOrCreateUniqueNodeFinder( NodeSpecification nodeSpecification, int totalNumberOfNodes,
-                                 ProbabilityDistribution probabilityDistribution )
+    GetOrCreateUniqueNodes( NodeSpecification nodeSpecification, int totalNumberOfNodes,
+                            ProbabilityDistribution probabilityDistribution )
     {
         this.nodeSpecification = nodeSpecification;
         this.totalNumberOfNodes = totalNumberOfNodes;

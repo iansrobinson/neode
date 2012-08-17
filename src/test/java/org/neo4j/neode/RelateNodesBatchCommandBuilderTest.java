@@ -27,7 +27,7 @@ public class RelateNodesBatchCommandBuilderTest
         NodeCollection users = new NodeSpecification( db, "user" ).create( 3 ).update( dataset );
         NodeSpecification product = new NodeSpecification( db, "product" );
         final NodeCollection products = product.create( 3 ).update( dataset );
-        NodeFinder nodeFinder = new NodeFinder()
+        Nodes nodes = new Nodes()
         {
             int index = 0;
 
@@ -47,7 +47,7 @@ public class RelateNodesBatchCommandBuilderTest
 
         // when
         users.createRelationshipsTo(
-                nodeFinder
+                nodes
                         .relationship( withName( "BOUGHT" ) )
                         .relationshipConstraints( Range.exactly( 1 ) ) )
                 .update( dataset );

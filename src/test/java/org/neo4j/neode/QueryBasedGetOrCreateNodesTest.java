@@ -16,7 +16,7 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.neode.test.Db;
 
-public class QueryBasedGetOrCreateTest
+public class QueryBasedGetOrCreateNodesTest
 {
     @Test
     public void shouldReturnAMixtureOfExistingAndNewNodes() throws Exception
@@ -37,7 +37,7 @@ public class QueryBasedGetOrCreateTest
 
         when( finder.getSparseListOfExistingNodes( 5, currentNode, random ) ).thenReturn( sparseList );
 
-        QueryBasedGetOrCreate queryBasedGetOrCreate = new QueryBasedGetOrCreate( user, finder );
+        QueryBasedGetOrCreateNodes queryBasedGetOrCreate = new QueryBasedGetOrCreateNodes( user, finder );
 
         // when
         Iterable<Node> results = queryBasedGetOrCreate.getNodes( 5, db, currentNode, random );

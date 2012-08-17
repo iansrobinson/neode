@@ -19,7 +19,7 @@ public abstract class Property
 
     public static Property indexableProperty( String name )
     {
-        return new IndexableProperty( name, new CounterBasedStringPropertyValueGenerator(), null );
+        return new IndexableProperty( name, new CounterBasedStringPropertyValueGenerator() );
     }
 
     public static Property indexableProperty( String name, String indexName )
@@ -29,7 +29,7 @@ public abstract class Property
 
     public static Property indexableProperty( String name, PropertyValueGenerator generator )
     {
-        return new IndexableProperty( name, generator, null );
+        return new IndexableProperty( name, generator );
     }
 
     public static Property indexableProperty( String name, PropertyValueGenerator generator, String indexName )

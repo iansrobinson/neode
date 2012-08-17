@@ -10,12 +10,12 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
-class ExistingUniqueNodeFinder extends NodeFinder
+class GetExistingUniqueNodes extends Nodes
 {
     private final NodeCollection nodeCollection;
     private final ProbabilityDistribution probabilityDistribution;
 
-    ExistingUniqueNodeFinder( NodeCollection nodeCollection, ProbabilityDistribution probabilityDistribution )
+    GetExistingUniqueNodes( NodeCollection nodeCollection, ProbabilityDistribution probabilityDistribution )
     {
         this.nodeCollection = nodeCollection;
         this.probabilityDistribution = probabilityDistribution;

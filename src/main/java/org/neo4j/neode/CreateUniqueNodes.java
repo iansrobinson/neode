@@ -7,11 +7,11 @@ import java.util.Random;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
-class CreateUniqueNodeFinder extends NodeFinder
+class CreateUniqueNodes extends Nodes
 {
     private final NodeSpecification nodeSpecification;
 
-    CreateUniqueNodeFinder( NodeSpecification nodeSpecification )
+    CreateUniqueNodes( NodeSpecification nodeSpecification )
     {
         this.nodeSpecification = nodeSpecification;
     }

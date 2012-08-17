@@ -5,11 +5,11 @@ import java.util.Random;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
-public class QueryBasedGet extends NodeFinder
+public class QueryBasedGetExistingNodes extends Nodes
 {
     private final GraphQuery query;
 
-    public QueryBasedGet( GraphQuery query )
+    public QueryBasedGetExistingNodes( GraphQuery query )
     {
         this.query = query;
     }

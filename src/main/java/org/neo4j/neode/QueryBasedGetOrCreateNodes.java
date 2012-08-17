@@ -6,12 +6,12 @@ import java.util.Random;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
-class QueryBasedGetOrCreate extends NodeFinder
+class QueryBasedGetOrCreateNodes extends Nodes
 {
     private final NodeSpecification nodeSpecification;
     private final SparseNodeListGenerator sparseNodeListGenerator;
 
-    QueryBasedGetOrCreate( NodeSpecification nodeSpecification, SparseNodeListGenerator sparseNodeListGenerator )
+    QueryBasedGetOrCreateNodes( NodeSpecification nodeSpecification, SparseNodeListGenerator sparseNodeListGenerator )
     {
         this.nodeSpecification = nodeSpecification;
         this.sparseNodeListGenerator = sparseNodeListGenerator;

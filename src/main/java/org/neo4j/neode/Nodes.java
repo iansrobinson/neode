@@ -19,7 +19,7 @@ import org.neo4j.neode.interfaces.SetRelationshipInfo;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
 import org.neo4j.neode.properties.Property;
 
-public abstract class NodeFinder implements SetRelationshipInfo, SetRelationshipConstraints
+public abstract class Nodes implements SetRelationshipInfo, SetRelationshipConstraints
 {
     private RelationshipInfo relationshipInfo;
     private RelationshipConstraints relationshipConstraints;
