@@ -18,7 +18,7 @@ public enum RelationshipUniqueness
     SINGLE_DIRECTION
             {
                 public Relationship createRelationship( GraphDatabaseService db, Node firstNode, Node secondNode,
-                                                        RelationshipInfo relationshipInfo, Random random )
+                                                        RelationshipInfo relationshipInfo, int iteration, Random random )
                 {
                     PathFinder<Path> pathPathFinder =
                             GraphAlgoFactory.shortestPath( relationshipInfo.expander(), 1 );
@@ -28,13 +28,13 @@ public enum RelationshipUniqueness
                         return null;
                     }
 
-                    return relationshipInfo.createRelationship( firstNode, secondNode, db, random );
+                    return relationshipInfo.createRelationship( firstNode, secondNode, db, iteration, random );
                 }
             },
     BOTH_DIRECTIONS
             {
                 public Relationship createRelationship( GraphDatabaseService db, Node firstNode, Node secondNode,
-                                                        RelationshipInfo relationshipInfo, Random random )
+                                                        RelationshipInfo relationshipInfo, int iteration, Random random )
                 {
                     PathFinder<Path> pathPathFinder = GraphAlgoFactory.shortestPath(
                             relationshipInfo.expanderIgnoreDirection(), 1 );
@@ -44,21 +44,21 @@ public enum RelationshipUniqueness
                         return null;
                     }
 
-                    return relationshipInfo.createRelationship( firstNode, secondNode, db, random );
+                    return relationshipInfo.createRelationship( firstNode, secondNode, db, iteration, random );
                 }
             },
     ALLOW_MULTIPLE
             {
                 public Relationship createRelationship( GraphDatabaseService db, Node firstNode, Node secondNode,
-                                                        RelationshipInfo relationshipInfo, Random random )
+                                                        RelationshipInfo relationshipInfo, int iteration, Random random )
                 {
-                    return relationshipInfo.createRelationship( firstNode, secondNode, db, random );
+                    return relationshipInfo.createRelationship( firstNode, secondNode, db, iteration, random );
                 }
             };
 
     public abstract Relationship createRelationship( GraphDatabaseService db, Node firstNode,
                                                      Node secondNode,
-                                                     RelationshipInfo relationshipInfo, Random random );
+                                                     RelationshipInfo relationshipInfo, int iteration, Random random );
 
 
 }

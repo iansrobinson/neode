@@ -15,29 +15,35 @@ import org.neo4j.neode.properties.Property;
 
 public class RelationshipSpecification
 {
-    private final RelationshipType label;
+    private final RelationshipType relationshipType;
     private final List<Property> properties;
 
-    RelationshipSpecification( RelationshipType label, List<Property> properties )
+    RelationshipSpecification( RelationshipType relationshipType, List<Property> properties )
     {
-        this.label = label;
+        this.relationshipType = relationshipType;
         this.properties = properties;
     }
 
-    public Relationship createRelationship( Node startNode, Node endNode, GraphDatabaseService db, Random random )
+    Relationship createRelationship( Node startNode, Node endNode, GraphDatabaseService db, int iteration,
+                                            Random random )
     {
-        Relationship rel = startNode.createRelationshipTo( endNode, label );
+        Relationship rel = startNode.createRelationshipTo( endNode, relationshipType );
 
         for ( Property property : properties )
         {
-            property.setProperty( rel, db, label.name(), 0, random );
+            property.setProperty( rel, db, relationshipType.name(), iteration, random );
         }
 
         return rel;
     }
 
-    public Expander expander( Direction direction )
+    String label()
     {
-        return expanderForTypes( label, direction );
+        return relationshipType.name();
+    }
+
+    Expander expander( Direction direction )
+    {
+        return expanderForTypes( relationshipType, direction );
     }
 }

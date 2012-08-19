@@ -46,7 +46,7 @@ class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
     public void execute( Node currentNode, GraphDatabaseService db, int iteration, Random random )
     {
         totalRels += targetNodesSpecification
-                .addRelationshipsToCurrentNode( db, currentNode, nodeIdCollector, random );
+                .addRelationshipsToCurrentNode( db, currentNode, nodeIdCollector, iteration, random );
     }
 
     @Override

@@ -1,7 +1,5 @@
 package org.neo4j.neode;
 
-import static java.util.Arrays.asList;
-
 import java.util.List;
 import java.util.Random;
 
@@ -15,10 +13,10 @@ public class NodeSpecification
     private final String label;
     private final List<Property> properties;
 
-    NodeSpecification( String label, Property... properties )
+    NodeSpecification( String label, List<Property> properties )
     {
         this.label = label;
-        this.properties = asList( properties );
+        this.properties = properties;
     }
 
     public UpdateDataset<NodeCollection> create( int quantity )

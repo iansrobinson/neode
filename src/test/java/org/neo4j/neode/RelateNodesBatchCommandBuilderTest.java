@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 
+import java.util.Collections;
 import java.util.Random;
 
 import org.junit.Test;
@@ -13,6 +14,7 @@ import org.neo4j.graphdb.DynamicRelationshipType;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.logging.SysOutLog;
+import org.neo4j.neode.properties.Property;
 import org.neo4j.neode.test.Db;
 
 public class RelateNodesBatchCommandBuilderTest
@@ -22,10 +24,12 @@ public class RelateNodesBatchCommandBuilderTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
-        Dataset dataset = executor.newDataset( "Test" );
-        NodeCollection users = new NodeSpecification( "user" ).create( 3 ).update( dataset );
-        NodeSpecification product = new NodeSpecification( "product" );
+        DatasetManager dsm = new DatasetManager( db, SysOutLog.INSTANCE );
+        Dataset dataset = dsm.newDataset( "Test" );
+        NodeCollection users = new NodeSpecification( "user", Collections.<Property>emptyList() )
+                .create( 3 ).update( dataset );
+        NodeSpecification product = new NodeSpecification( "product", Collections.<Property>emptyList() );
+        RelationshipSpecification bought = dsm.relationshipSpecification( "BOUGHT" );
         final NodeCollection products = product.create( 3 ).update( dataset );
         Nodes nodes = new Nodes()
         {
@@ -48,23 +52,23 @@ public class RelateNodesBatchCommandBuilderTest
         // when
         users.createRelationshipsTo(
                 nodes
-                        .relationship( withName( "BOUGHT" ) )
+                        .relationship( bought )
                         .relationshipConstraints( Range.exactly( 1 ) ) )
                 .update( dataset );
 
         // then
-        DynamicRelationshipType bought = withName( "BOUGHT" );
+        DynamicRelationshipType bought_rel = withName( "BOUGHT" );
 
         Node product1 = db.getNodeById( 1 );
-        assertTrue( product1.hasRelationship( bought, Direction.OUTGOING ) );
-        assertEquals( 4l, product1.getSingleRelationship( bought, Direction.OUTGOING ).getEndNode().getId() );
+        assertTrue( product1.hasRelationship( bought_rel, Direction.OUTGOING ) );
+        assertEquals( 4l, product1.getSingleRelationship( bought_rel, Direction.OUTGOING ).getEndNode().getId() );
 
         Node product2 = db.getNodeById( 2 );
-        assertTrue( product2.hasRelationship( bought, Direction.OUTGOING ) );
-        assertEquals( 5l, product2.getSingleRelationship( bought, Direction.OUTGOING ).getEndNode().getId() );
+        assertTrue( product2.hasRelationship( bought_rel, Direction.OUTGOING ) );
+        assertEquals( 5l, product2.getSingleRelationship( bought_rel, Direction.OUTGOING ).getEndNode().getId() );
 
         Node product3 = db.getNodeById( 3 );
-        assertTrue( product3.hasRelationship( bought, Direction.OUTGOING ) );
-        assertEquals( 6l, product3.getSingleRelationship( bought, Direction.OUTGOING ).getEndNode().getId() );
+        assertTrue( product3.hasRelationship( bought_rel, Direction.OUTGOING ) );
+        assertEquals( 6l, product3.getSingleRelationship( bought_rel, Direction.OUTGOING ).getEndNode().getId() );
     }
 }

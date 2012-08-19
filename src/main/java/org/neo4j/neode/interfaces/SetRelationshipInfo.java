@@ -5,17 +5,11 @@
 package org.neo4j.neode.interfaces;
 
 import org.neo4j.graphdb.Direction;
-import org.neo4j.graphdb.RelationshipType;
-import org.neo4j.neode.properties.Property;
+import org.neo4j.neode.RelationshipSpecification;
 
 public interface SetRelationshipInfo
 {
-    SetRelationshipConstraints relationship( RelationshipType relationshipType, Direction direction,
-                                             Property... properties );
+    SetRelationshipConstraints relationship( RelationshipSpecification relationshipSpecification, Direction direction );
 
-    SetRelationshipConstraints relationship( RelationshipType relationshipType, Property... properties );
-
-    SetRelationshipConstraints relationship( String relationshipLabel, Direction direction, Property... properties );
-
-    SetRelationshipConstraints relationship( String relationshipLabel, Property... properties );
+    SetRelationshipConstraints relationship( RelationshipSpecification relationshipSpecification );
 }

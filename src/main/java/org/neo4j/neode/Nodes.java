@@ -5,7 +5,6 @@
 package org.neo4j.neode;
 
 
-import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 import static org.neo4j.neode.probabilities.ProbabilityDistribution.flatDistribution;
 
 import java.util.Random;
@@ -13,11 +12,9 @@ import java.util.Random;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.neode.interfaces.SetRelationshipConstraints;
 import org.neo4j.neode.interfaces.SetRelationshipInfo;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
-import org.neo4j.neode.properties.Property;
 
 public abstract class Nodes implements SetRelationshipInfo, SetRelationshipConstraints
 {
@@ -29,31 +26,17 @@ public abstract class Nodes implements SetRelationshipInfo, SetRelationshipConst
     abstract String label();
 
     @Override
-    public final SetRelationshipConstraints relationship( RelationshipType relationshipType, Direction direction,
-                                                          Property... properties )
+    public final SetRelationshipConstraints relationship(RelationshipSpecification relationshipSpecification,
+                                                         Direction direction)
     {
-        relationshipInfo = new RelationshipInfo( relationshipType, direction, properties );
+        relationshipInfo = new RelationshipInfo( relationshipSpecification, direction );
         return this;
     }
 
     @Override
-    public final SetRelationshipConstraints relationship( RelationshipType relationshipType, Property... properties )
+    public final SetRelationshipConstraints relationship(RelationshipSpecification relationshipSpecification)
     {
-        relationshipInfo = new RelationshipInfo( relationshipType, Direction.OUTGOING, properties );
-        return this;
-    }
-
-    @Override
-    public final SetRelationshipConstraints relationship( String relationshipLabel, Direction direction,
-                                                          Property... properties )
-    {
-        return relationship( withName( relationshipLabel ), direction, properties );
-    }
-
-    @Override
-    public final SetRelationshipConstraints relationship( String relationshipLabel, Property... properties )
-    {
-        return relationship( withName( relationshipLabel ), properties );
+        return relationship( relationshipSpecification, Direction.OUTGOING );
     }
 
     @Override

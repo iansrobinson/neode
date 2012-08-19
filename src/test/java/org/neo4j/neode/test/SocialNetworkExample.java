@@ -25,6 +25,7 @@ import org.neo4j.neode.Dataset;
 import org.neo4j.neode.DatasetManager;
 import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.NodeSpecification;
+import org.neo4j.neode.RelationshipSpecification;
 import org.neo4j.neode.RelationshipUniqueness;
 import org.neo4j.neode.logging.SysOutLog;
 
@@ -34,7 +35,7 @@ public class SocialNetworkExample
     public void buildSocialNetwork() throws Exception
     {
         GraphDatabaseService db = Db.tempDb();
-        DatasetManager datasetManager = new DatasetManager( db, SysOutLog.INSTANCE );
+        DatasetManager dsm = new DatasetManager( db, SysOutLog.INSTANCE );
 
         TraversalDescription findCompanyProjects = Traversal.description()
                 .depthFirst()
@@ -57,36 +58,40 @@ public class SocialNetworkExample
                     }
                 } );
 
-        NodeSpecification userSpec = datasetManager.newNodeSpecification( "user", indexableProperty( "name" ) );
-        NodeSpecification topicSpec = datasetManager.newNodeSpecification( "topic", indexableProperty( "label" ) );
-        NodeSpecification companySpec = datasetManager.newNodeSpecification( "company", property( "name" ) );
-        NodeSpecification projectSpec = datasetManager.newNodeSpecification( "project", property( "title" ) );
+        NodeSpecification user = dsm.nodeSpecification( "user", indexableProperty( "name" ) );
+        NodeSpecification topic = dsm.nodeSpecification( "topic", indexableProperty( "label" ) );
+        NodeSpecification company = dsm.nodeSpecification( "company", property( "name" ) );
+        NodeSpecification project = dsm.nodeSpecification( "project", property( "title" ) );
 
-        Dataset dataset = datasetManager.newDataset( "Social network example" );
+        RelationshipSpecification interested_in = dsm.relationshipSpecification( "INTERESTED_IN" );
+        RelationshipSpecification works_for = dsm.relationshipSpecification( "WORKS_FOR" );
+        RelationshipSpecification worked_on = dsm.relationshipSpecification( "WORKED_ON" );
 
-        NodeCollection users = userSpec.create( 10 ).update( dataset );
+        Dataset dataset = dsm.newDataset( "Social network example" );
+
+        NodeCollection users = user.create( 10 ).update( dataset );
 
         NodeCollection topics = users.createRelationshipsTo(
-                getOrCreate( topicSpec, 10, normalDistribution() )
-                        .relationship( "INTERESTED_IN" )
+                getOrCreate( topic, 10, normalDistribution() )
+                        .relationship( interested_in )
                         .relationshipConstraints( minMax( 1, 3 ) ) )
                 .update( dataset );
 
         users.createRelationshipsTo(
-                getOrCreate( companySpec, 2, flatDistribution() )
-                        .relationship( "WORKS_FOR" )
+                getOrCreate( company, 2, flatDistribution() )
+                        .relationship( works_for )
                         .relationshipConstraints( exactly( 1 ) ) )
                 .updateNoReturn( dataset );
 
         NodeCollection allProjects = users.createRelationshipsTo(
-                queryBasedGetOrCreate( projectSpec, traversal( findCompanyProjects ), 1.2 )
-                        .relationship( "WORKED_ON" )
+                queryBasedGetOrCreate( project, traversal( findCompanyProjects ), 1.2 )
+                        .relationship( worked_on )
                         .relationshipConstraints( minMax( 1, 3 ) ) )
                 .update( dataset );
 
         approxPercent( 30, users ).createRelationshipsTo(
                 getExisting( allProjects )
-                        .relationship( "WORKED_ON" )
+                        .relationship( worked_on )
                         .relationshipConstraints( minMax( 1, 2 ), RelationshipUniqueness.SINGLE_DIRECTION ) )
                 .updateNoReturn( dataset );
 

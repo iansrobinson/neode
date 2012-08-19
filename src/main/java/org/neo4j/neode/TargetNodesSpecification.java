@@ -72,7 +72,7 @@ public class TargetNodesSpecification
     }
 
     int addRelationshipsToCurrentNode( GraphDatabaseService db, Node currentNode,
-                                       NodeIdCollector targetNodeIdCollector, Random random )
+                                       NodeIdCollector targetNodeIdCollector, int iteration, Random random )
     {
         int count = 0;
         Iterable<Node> targetNodes = getRandomSelectionOfNodes( db, currentNode, random );
@@ -80,7 +80,7 @@ public class TargetNodesSpecification
         {
             Relationship relationship = relationshipConstraints
                     .addRelationshipToCurrentNode( currentNode, targetNode, db, targetNodeIdCollector,
-                            relationshipInfo, random );
+                            relationshipInfo, iteration, random );
             if ( relationship != null )
             {
                 count++;

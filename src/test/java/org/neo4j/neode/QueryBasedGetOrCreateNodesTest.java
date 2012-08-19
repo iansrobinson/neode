@@ -6,6 +6,7 @@ import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -14,6 +15,7 @@ import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
+import org.neo4j.neode.properties.Property;
 import org.neo4j.neode.test.Db;
 
 public class QueryBasedGetOrCreateNodesTest
@@ -30,7 +32,7 @@ public class QueryBasedGetOrCreateNodesTest
         Node node4 = db.createNode();
 
         Random random = new Random();
-        NodeSpecification user = new NodeSpecification( "user" );
+        NodeSpecification user = new NodeSpecification( "user", Collections.<Property>emptyList() );
         SparseNodeListGenerator finder = mock( SparseNodeListGenerator.class );
 
         List<Node> sparseList = asList( node0, null, null, null, node4 );
