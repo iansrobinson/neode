@@ -53,7 +53,7 @@ public class NodeCollection
         return nodeIds.size();
     }
 
-    public NodeCollection add(NodeCollection otherCollection)
+    public NodeCollection combine( NodeCollection otherCollection )
     {
         if (!otherCollection.label().equals( name ))
         {
@@ -86,8 +86,8 @@ public class NodeCollection
                 '}';
     }
 
-    List<Long> nodeIds()
+    Long getId(int index)
     {
-        return nodeIds;
+        return nodeIds.get( index );
     }
 }

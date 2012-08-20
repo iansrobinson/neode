@@ -63,7 +63,14 @@ class GetOrCreateUniqueNodes extends Nodes
             @Override
             public Iterator<Node> iterator()
             {
-                return new NodeIterator( nodeIds, nodeIdIndexes, db );
+                return new NodeIterator( new NodeIds()
+                {
+                    @Override
+                    public Long getId( int index )
+                    {
+                        return nodeIds.get( index );
+                    }
+                }, nodeIdIndexes, db );
             }
         };
     }

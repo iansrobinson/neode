@@ -8,28 +8,28 @@ import org.neo4j.graphdb.Node;
 
 class NodeIterator implements Iterator<Node>
 {
-    private final List<Long> nodeIds;
-    private final List<Integer> indexes;
+    private final NodeIds nodeIds;
+    private final List<Integer> nodeIdIndexes;
     private final GraphDatabaseService db;
     private int i = 0;
 
-    NodeIterator( List<Long> nodeIds, List<Integer> indexes, GraphDatabaseService db )
+    NodeIterator( NodeIds nodeIds, List<Integer> nodeIdIndexes, GraphDatabaseService db )
     {
         this.nodeIds = nodeIds;
-        this.indexes = indexes;
+        this.nodeIdIndexes = nodeIdIndexes;
         this.db = db;
     }
 
     @Override
     public boolean hasNext()
     {
-        return i < indexes.size();
+        return i < nodeIdIndexes.size();
     }
 
     @Override
     public Node next()
     {
-        return db.getNodeById( nodeIds.get( indexes.get( i++ ) ) );
+        return db.getNodeById( nodeIds.getId( nodeIdIndexes.get( i++ ) ) );
     }
 
     @Override

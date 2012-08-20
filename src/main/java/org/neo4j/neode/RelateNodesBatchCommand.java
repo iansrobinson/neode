@@ -38,7 +38,7 @@ class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
     @Override
     public void execute( GraphDatabaseService db, int iteration, Random random )
     {
-        Node currentNode = db.getNodeById( startNodes.nodeIds().get( iteration ) );
+        Node currentNode = db.getNodeById( startNodes.getId( iteration ) );
         execute( currentNode, db, iteration, random );
     }
 
@@ -71,7 +71,7 @@ class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
     public void onEnd( Log log )
     {
         log.write( String.format( "      [Avg: %s relationship(s) per %s]",
-                totalRels / startNodes.nodeIds().size(), startNodes.label() ) );
+                totalRels / startNodes.size(), startNodes.label() ) );
     }
 
     @Override

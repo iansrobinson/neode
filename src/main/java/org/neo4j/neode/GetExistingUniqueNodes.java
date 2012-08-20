@@ -24,10 +24,10 @@ class GetExistingUniqueNodes extends Nodes
     @Override
     public Iterable<Node> getNodes( int quantity, final GraphDatabaseService db, Node currentNode, Random random )
     {
-        final List<Integer> indexes;
+        final List<Integer> nodeIdIndexes;
         try
         {
-            indexes = probabilityDistribution.generateList(
+            nodeIdIndexes = probabilityDistribution.generateList(
                     quantity,
                     minMax( 0, nodeCollection.size() - 1 ),
                     random );
@@ -36,7 +36,7 @@ class GetExistingUniqueNodes extends Nodes
         {
             throw new IllegalStateException( String.format( "Get existing '%s' nodes command cannot complete " +
                     "because the maximum number of nodes available is smaller than the number of " +
-                    "nodes specified when applying the relationship constraint. Number of nodes specified by "  +
+                    "nodes specified when applying the relationship constraint. Number of nodes specified by " +
                     "relationship constraint: %s. Maximum number of nodes available: %s. Either adjust the " +
                     "relationship constraint or increase the number of nodes available.",
                     nodeCollection.label(), quantity, nodeCollection.size() ) );
@@ -46,7 +46,14 @@ class GetExistingUniqueNodes extends Nodes
             @Override
             public Iterator<Node> iterator()
             {
-                return new NodeIterator( nodeCollection.nodeIds(), indexes, db );
+                return new NodeIterator( new NodeIds()
+                {
+                    @Override
+                    public Long getId( int index )
+                    {
+                        return nodeCollection.getId( index );
+                    }
+                }, nodeIdIndexes, db );
             }
         };
     }

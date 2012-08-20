@@ -45,7 +45,7 @@ public class CreateNodesBatchCommandTest
     }
 
     @Test
-    public void shouldReturnListOfCreatedNodeIds() throws Exception
+    public void shouldReturnCollectionOfCreatedNodeIds() throws Exception
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
@@ -57,6 +57,11 @@ public class CreateNodesBatchCommandTest
         NodeCollection results = user.create( 5 ).update( dataset );
 
         // then
-        assertEquals( asList( 1l, 2l, 3l, 4l, 5l ), results.nodeIds() );
+        assertEquals( 5, results.size() );
+        assertEquals( (Object) 1L, results.getId( 0 ) );
+        assertEquals( (Object) 2L, results.getId( 1 ) );
+        assertEquals( (Object) 3L, results.getId( 2 ) );
+        assertEquals( (Object) 4L, results.getId( 3 ) );
+        assertEquals( (Object) 5L, results.getId( 4 ) );
     }
 }
