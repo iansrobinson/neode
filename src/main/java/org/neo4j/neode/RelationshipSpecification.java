@@ -25,7 +25,7 @@ public class RelationshipSpecification
     }
 
     Relationship createRelationship( Node startNode, Node endNode, GraphDatabaseService db, int iteration,
-                                            Random random )
+                                     Random random )
     {
         Relationship rel = startNode.createRelationshipTo( endNode, relationshipType );
 

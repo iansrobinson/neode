@@ -16,6 +16,11 @@ class RelationshipInfo
     RelationshipInfo( RelationshipSpecification relationshipSpecification,
                       Direction direction )
     {
+        if (direction.equals( Direction.BOTH ))
+        {
+            throw new IllegalArgumentException( "Direction must be either INCOMING or OUTGOING." );
+        }
+
         this.relationshipSpecification = relationshipSpecification;
         this.direction = direction;
     }
@@ -38,12 +43,10 @@ class RelationshipInfo
         if ( direction.equals( Direction.OUTGOING ) )
         {
             return relationshipSpecification.createRelationship( firstNode, secondNode, db, iteration, random );
-
         }
         else
         {
             return relationshipSpecification.createRelationship( secondNode, firstNode, db, iteration, random );
-
         }
     }
 
@@ -56,6 +59,4 @@ class RelationshipInfo
     {
         return relationshipSpecification.expander( Direction.BOTH );
     }
-
-
 }
