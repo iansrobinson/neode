@@ -49,7 +49,7 @@ public class ConsecutiveIdBasedIterableNodesTest
     }
 
     @Test
-    public void shouldThrowExcpetionIfNextNodeIdIsNotConsecutiveWithCurretnEndNodeId() throws Exception
+    public void shouldThrowExceptionIfNextNodeIdIsNotConsecutiveWithCurrentEndNodeId() throws Exception
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
