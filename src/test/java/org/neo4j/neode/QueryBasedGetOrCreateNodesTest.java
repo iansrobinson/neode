@@ -37,7 +37,7 @@ public class QueryBasedGetOrCreateNodesTest
 
         List<Node> sparseList = asList( node0, null, null, null, node4 );
 
-        when( finder.getSparseListOfExistingNodes( 5, currentNode, random ) ).thenReturn( sparseList );
+        when( finder.getSparseListOfExistingNodes( 5, db, currentNode, random ) ).thenReturn( sparseList );
 
         QueryBasedGetOrCreateNodes queryBasedGetOrCreate = new QueryBasedGetOrCreateNodes( user, finder );
 

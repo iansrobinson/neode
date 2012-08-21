@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.junit.Test;
+import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
@@ -22,20 +23,22 @@ public class SparseNodeListGeneratorTest
     {
         // given
         Random random = new Random();
+        GraphDatabaseService db = mock( GraphDatabaseService.class );
         Node currentNode = mock( Node.class );
 
         GraphQuery query = mock( GraphQuery.class );
         Node node0 = mock( Node.class );
         Node node1 = mock( Node.class );
-        when( query.execute( currentNode ) ).thenReturn( asList( node0, node1 ) );
+        when( query.execute( db, currentNode ) ).thenReturn( asList( node0, node1 ) );
 
         ProbabilityDistribution probabilityDistribution = mock( ProbabilityDistribution.class );
-        when( probabilityDistribution.generateList( 6, Range.minMax( 0, 5 ), random ) ).thenReturn( asList( 0, 1, 2, 3, 4, 5 ) );
+        when( probabilityDistribution.generateList( 6, Range.minMax( 0, 5 ), random ) ).thenReturn( asList( 0, 1, 2,
+                3, 4, 5 ) );
 
         SparseNodeListGenerator generator = new SparseNodeListGenerator( query, 1.2, probabilityDistribution );
 
         // when
-        List<Node> results = generator.getSparseListOfExistingNodes( 5, currentNode, random );
+        List<Node> results = generator.getSparseListOfExistingNodes( 5, db, currentNode, random );
 
         // then
         assertEquals( 5, results.size() );
@@ -51,18 +54,20 @@ public class SparseNodeListGeneratorTest
     {
         // given
         Random random = new Random();
+        GraphDatabaseService db = mock( GraphDatabaseService.class );
         Node currentNode = mock( Node.class );
 
         GraphQuery query = mock( GraphQuery.class );
-        when( query.execute( currentNode ) ).thenReturn( Collections.<Node>emptyList() );
+        when( query.execute( db, currentNode ) ).thenReturn( Collections.<Node>emptyList() );
 
         ProbabilityDistribution probabilityDistribution = mock( ProbabilityDistribution.class );
-        when( probabilityDistribution.generateList( 6, Range.minMax( 0, 5 ), random ) ).thenReturn( asList( 0, 1, 2, 3, 4, 5 ) );
+        when( probabilityDistribution.generateList( 6, Range.minMax( 0, 5 ), random ) ).thenReturn( asList( 0, 1, 2,
+                3, 4, 5 ) );
 
         SparseNodeListGenerator generator = new SparseNodeListGenerator( query, 1.2, probabilityDistribution );
 
         // when
-        List<Node> results = generator.getSparseListOfExistingNodes( 5, currentNode, random );
+        List<Node> results = generator.getSparseListOfExistingNodes( 5, db, currentNode, random );
 
         // then
         for ( Node result : results )

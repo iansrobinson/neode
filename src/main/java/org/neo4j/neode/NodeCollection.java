@@ -53,12 +53,17 @@ public class NodeCollection
         return nodeIds.size();
     }
 
+    public Long getId( int index )
+    {
+        return nodeIds.get( index );
+    }
+
     public NodeCollection combine( NodeCollection otherCollection )
     {
-        if (!otherCollection.label().equals( name ))
+        if ( !otherCollection.label().equals( name ) )
         {
             throw new IllegalArgumentException(
-                    String.format("Invalid label. Expected: %s. Received: %s.", name, otherCollection.label() ));
+                    String.format( "Invalid label. Expected: %s. Received: %s.", name, otherCollection.label() ) );
         }
 
         List<Long> newNodeIds = new ArrayList<Long>( nodeIds.size() + otherCollection.size() );
@@ -72,7 +77,8 @@ public class NodeCollection
         return new RelateNodesBatchCommandBuilder( this, targetNodesSpecification );
     }
 
-    public UpdateDataset<List<NodeCollection>> createRelationshipsTo( TargetNodesSpecificationsChoices targetNodesSpecificationsChoices )
+    public UpdateDataset<List<NodeCollection>> createRelationshipsTo( TargetNodesSpecificationsChoices
+                                                                              targetNodesSpecificationsChoices )
     {
         return new RelateToChoiceOfNodesBatchCommandBuilder( this, targetNodesSpecificationsChoices );
     }
@@ -84,10 +90,5 @@ public class NodeCollection
                 "name='" + name + '\'' +
                 ", nodeIds=" + nodeIds +
                 '}';
-    }
-
-    Long getId(int index)
-    {
-        return nodeIds.get( index );
     }
 }

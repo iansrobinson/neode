@@ -20,7 +20,7 @@ class QueryBasedGetOrCreateNodes extends Nodes
     @Override
     public Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode, Random random )
     {
-        List<Node> nodes = sparseNodeListGenerator.getSparseListOfExistingNodes( quantity, currentNode, random );
+        List<Node> nodes = sparseNodeListGenerator.getSparseListOfExistingNodes( quantity, db, currentNode, random );
         fillGapsInListWithNewNodes( db, nodes, random );
 
         return nodes;

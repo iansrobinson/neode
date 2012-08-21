@@ -17,7 +17,7 @@ public class QueryBasedGetExistingNodes extends Nodes
     @Override
     Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode, Random random )
     {
-        return query.execute( currentNode );
+        return query.execute( db, currentNode );
     }
 
     @Override
