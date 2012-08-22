@@ -25,7 +25,7 @@ public class DatasetManager
 
     public NodeSpecification nodeSpecification( String label, Property... properties )
     {
-        return new NodeSpecification( label, asList( properties ) );
+        return new NodeSpecification( label, asList( properties ), db, random );
     }
 
     public RelationshipSpecification relationshipSpecification( String label, Property... properties )

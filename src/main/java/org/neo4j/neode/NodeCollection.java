@@ -8,9 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.neo4j.graphdb.Node;
 import org.neo4j.neode.interfaces.UpdateDataset;
 
-public class NodeCollection
+public class NodeCollection implements NodeProvider
 {
     public static NodeCollection approxPercent( int percent, NodeCollection nodeCollection )
     {
@@ -48,6 +49,12 @@ public class NodeCollection
         return name;
     }
 
+    @Override
+    public Node getNode( int position )
+    {
+        return null;
+    }
+
     public int size()
     {
         return nodeIds.size();
@@ -77,8 +84,8 @@ public class NodeCollection
         return new RelateNodesBatchCommandBuilder( this, targetNodesSpecification );
     }
 
-    public UpdateDataset<List<NodeCollection>> createRelationshipsTo( TargetNodesSpecificationsChoices
-                                                                              targetNodesSpecificationsChoices )
+    public UpdateDataset<List<NodeCollection>> createRelationshipsTo(
+            TargetNodesSpecificationsChoices targetNodesSpecificationsChoices )
     {
         return new RelateToChoiceOfNodesBatchCommandBuilder( this, targetNodesSpecificationsChoices );
     }

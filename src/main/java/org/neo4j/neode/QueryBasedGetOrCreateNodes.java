@@ -32,7 +32,7 @@ class QueryBasedGetOrCreateNodes extends Nodes
         {
             if ( returnNodes.get( currentNodeIndex ) == null )
             {
-                Node newNode = nodeSpecification.build( db, currentNodeIndex, random );
+                Node newNode = nodeSpecification.build( currentNodeIndex );
                 returnNodes.set( currentNodeIndex, newNode );
             }
         }

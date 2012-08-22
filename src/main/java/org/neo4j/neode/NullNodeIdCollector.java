@@ -20,4 +20,10 @@ class NullNodeIdCollector implements NodeIdCollector
     {
         return Collections.emptyList();
     }
+
+    @Override
+    public List<Long> newList( int capacity )
+    {
+        return new NullList<Long>();
+    }
 }

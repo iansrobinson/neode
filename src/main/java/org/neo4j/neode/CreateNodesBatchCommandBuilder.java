@@ -18,8 +18,9 @@ class CreateNodesBatchCommandBuilder implements UpdateDataset<NodeCollection>
     @Override
     public NodeCollection update( Dataset dataset, int batchSize )
     {
-        CreateNodesBatchCommand command = new CreateNodesBatchCommand( nodeSpecification, quantity, batchSize,
-                new UniqueNodeIdCollector(quantity) );
+        NodeCollectionNew nodeCollection = nodeSpecification.emptyNodeCollection( quantity );
+        CreateNodesBatchCommand command = new CreateNodesBatchCommand( nodeSpecification, quantity, nodeCollection,
+                batchSize);
         return dataset.execute( command );
     }
 
@@ -32,8 +33,8 @@ class CreateNodesBatchCommandBuilder implements UpdateDataset<NodeCollection>
     @Override
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
-        CreateNodesBatchCommand command = new CreateNodesBatchCommand( nodeSpecification, quantity, batchSize,
-                NullNodeIdCollector.INSTANCE );
+        CreateNodesBatchCommand command = new CreateNodesBatchCommand( nodeSpecification, quantity,
+                NodeCollectionNew.NULL, batchSize);
         dataset.execute( command );
     }
 

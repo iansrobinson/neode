@@ -15,14 +15,15 @@ class CreateUniqueNodes extends Nodes
     }
 
     @Override
-    Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode, Random random )
+    Iterable<Node> getNodes( final int quantity, GraphDatabaseService db, Node currentNode, Random random )
     {
         ConsecutiveIdBasedIterableNodes nodes = new ConsecutiveIdBasedIterableNodes( db );
         for (int iteration = 0; iteration < quantity; iteration++)
         {
-            nodes.add(  nodeSpecification.build( db, iteration, random ));
+            nodes.add(  nodeSpecification.build( iteration ));
         }
         return nodes;
+
     }
 
     @Override

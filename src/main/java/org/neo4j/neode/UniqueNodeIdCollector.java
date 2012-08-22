@@ -1,6 +1,7 @@
 package org.neo4j.neode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,6 +29,14 @@ class UniqueNodeIdCollector implements NodeIdCollector
     @Override
     public List<Long> nodeIds()
     {
-        return new ArrayList<Long>( ids );
+        ArrayList<Long> idList = new ArrayList<Long>( ids );
+        Collections.sort( idList );
+        return idList;
+    }
+
+    @Override
+    public List<Long> newList( int capacity )
+    {
+        return new ArrayList<Long>( capacity );
     }
 }

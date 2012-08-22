@@ -10,4 +10,5 @@ interface NodeIdCollector
 {
     void add(Long nodeId);
     List<Long> nodeIds();
+    List<Long> newList(int capacity);
 }

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Transaction;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
 import org.neo4j.test.ImpermanentGraphDatabase;
 
@@ -47,4 +49,24 @@ public final class Db
         d.deleteOnExit();
         return d;
     }
+
+    public static void usingSampleDataset( WithSampleDataset f )
+    {
+        GraphDatabaseService db = Db.impermanentDb();
+        Transaction tx = db.beginTx();
+        Node firstNode = db.createNode();
+        Node secondNode = db.createNode();
+        Node thirdNode = db.createNode();
+        tx.success();
+        tx.finish();
+
+        f.execute( db, firstNode, secondNode, thirdNode );
+    }
+
+    public interface WithSampleDataset
+    {
+        public void execute(GraphDatabaseService db, Node firstNode, Node secondNode, Node thirdNode);
+    }
+
+
 }

@@ -54,7 +54,7 @@ class GetOrCreateUniqueNodes extends Nodes
         {
             if ( nodeIds.get( nodeIdIndex ) == null )
             {
-                nodeIds.set( nodeIdIndex, nodeSpecification.build( db, nodeIdIndex, random ).getId() );
+                nodeIds.set( nodeIdIndex, nodeSpecification.build( nodeIdIndex ).getId() );
             }
 
         }

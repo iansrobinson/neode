@@ -23,12 +23,13 @@ public class RelateNodesBatchCommandBuilderTest
     public void shouldRelateNodes() throws Exception
     {
         // given
+        Random random = new Random();
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager dsm = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = dsm.newDataset( "Test" );
-        NodeCollection users = new NodeSpecification( "user", Collections.<Property>emptyList() )
+        NodeCollection users = new NodeSpecification( "user", Collections.<Property>emptyList(), db, random )
                 .create( 3 ).update( dataset );
-        NodeSpecification product = new NodeSpecification( "product", Collections.<Property>emptyList() );
+        NodeSpecification product = new NodeSpecification( "product", Collections.<Property>emptyList(), db, random );
         RelationshipSpecification bought = dsm.relationshipSpecification( "BOUGHT" );
         final NodeCollection products = product.create( 3 ).update( dataset );
         Nodes nodes = new Nodes()
