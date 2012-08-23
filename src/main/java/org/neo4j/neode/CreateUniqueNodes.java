@@ -1,5 +1,6 @@
 package org.neo4j.neode;
 
+import java.util.Iterator;
 import java.util.Random;
 
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -17,13 +18,35 @@ class CreateUniqueNodes extends Nodes
     @Override
     Iterable<Node> getNodes( final int quantity, GraphDatabaseService db, Node currentNode, Random random )
     {
-        ConsecutiveIdBasedIterableNodes nodes = new ConsecutiveIdBasedIterableNodes( db );
-        for (int iteration = 0; iteration < quantity; iteration++)
+        return new Iterable<Node>()
         {
-            nodes.add(  nodeSpecification.build( iteration ));
-        }
-        return nodes;
+            @Override
+            public Iterator<Node> iterator()
+            {
+                return new Iterator<Node>()
+                {
+                    int count = 0;
 
+                    @Override
+                    public boolean hasNext()
+                    {
+                        return count < quantity;
+                    }
+
+                    @Override
+                    public Node next()
+                    {
+                        return nodeSpecification.build( count++ );
+                    }
+
+                    @Override
+                    public void remove()
+                    {
+                        throw new IllegalStateException();
+                    }
+                };
+            }
+        };
     }
 
     @Override

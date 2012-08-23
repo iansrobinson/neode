@@ -65,6 +65,11 @@ public class NodeCollection implements NodeProvider
         return nodeIds.get( index );
     }
 
+    public List<Long> nodeIds()
+    {
+        return nodeIds;
+    }
+
     public NodeCollection combine( NodeCollection otherCollection )
     {
         if ( !otherCollection.label().equals( name ) )

@@ -2,7 +2,6 @@ package org.neo4j.neode;
 
 import static org.neo4j.neode.Range.minMax;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -24,12 +23,13 @@ class GetExistingUniqueNodes extends Nodes
     @Override
     public Iterable<Node> getNodes( int quantity, final GraphDatabaseService db, Node currentNode, Random random )
     {
+        NodeCollectionNew nc = new NodeCollectionNew( db, nodeCollection.label(), nodeCollection.nodeIds() );
         final List<Integer> nodeIdIndexes;
         try
         {
             nodeIdIndexes = probabilityDistribution.generateList(
                     quantity,
-                    minMax( 0, nodeCollection.size() - 1 ),
+                    minMax( 0, nc.size() - 1 ),
                     random );
         }
         catch ( IllegalArgumentException e )
@@ -39,23 +39,9 @@ class GetExistingUniqueNodes extends Nodes
                     "nodes specified when applying the relationship constraint. Number of nodes specified by " +
                     "relationship constraint: %s. Maximum number of nodes available: %s. Either adjust the " +
                     "relationship constraint or increase the number of nodes available.",
-                    nodeCollection.label(), quantity, nodeCollection.size() ) );
+                    nc.label(), quantity, nc.size() ) );
         }
-        return new Iterable<Node>()
-        {
-            @Override
-            public Iterator<Node> iterator()
-            {
-                return new NodeIterator( new NodeIds()
-                {
-                    @Override
-                    public Long getId( int index )
-                    {
-                        return nodeCollection.getId( index );
-                    }
-                }, nodeIdIndexes, db );
-            }
-        };
+        return nc.subset( nodeIdIndexes );
     }
 
     @Override
