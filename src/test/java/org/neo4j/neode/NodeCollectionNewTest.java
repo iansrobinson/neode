@@ -81,9 +81,9 @@ public class NodeCollectionNewTest
                         asList( firstNode.getId(), secondNode.getId(), thirdNode.getId() ) );
 
                 // then
-                assertEquals( firstNode.getId(), nodeCollection.getNodeId( 0 ) );
-                assertEquals( secondNode.getId(), nodeCollection.getNodeId( 1 ) );
-                assertEquals( thirdNode.getId(), nodeCollection.getNodeId( 2 ) );
+                assertEquals( (Object) firstNode.getId(), nodeCollection.getNodeId( 0 ) );
+                assertEquals( (Object) secondNode.getId(), nodeCollection.getNodeId( 1 ) );
+                assertEquals( (Object) thirdNode.getId(), nodeCollection.getNodeId( 2 ) );
             }
         } );
     }
@@ -166,9 +166,9 @@ public class NodeCollectionNewTest
                 NodeCollectionNew nodeCollection = new NodeCollectionNew( db, "user", 3 );
 
                 // when
-                nodeCollection.add(firstNode);
-                nodeCollection.add(secondNode);
-                nodeCollection.add(thirdNode);
+                nodeCollection.add( firstNode );
+                nodeCollection.add( secondNode );
+                nodeCollection.add( thirdNode );
 
                 // then
                 Iterable<Node> expectedNodes = asList( firstNode, secondNode, thirdNode );
@@ -189,7 +189,17 @@ public class NodeCollectionNewTest
                 boolean result = true;
                 while ( expectedIterator.hasNext() && iterator.hasNext() )
                 {
-                    result &= expectedIterator.next().equals( iterator.next() );
+
+                    T expectedNext = expectedIterator.next();
+                    T next = iterator.next();
+                    if ( expectedNext == null && next == null )
+                    {
+                        result &= true;
+                    }
+                    else
+                    {
+                        result &= expectedNext.equals( next );
+                    }
                 }
                 return result &= (!expectedIterator.hasNext()) && (!iterator.hasNext());
             }

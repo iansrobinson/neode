@@ -39,7 +39,7 @@ public class NodeCollectionNew implements Iterable<Node>
         return db.getNodeById( nodeIds.get( position ) );
     }
 
-    public long getNodeId( int position )
+    public Long getNodeId( int position )
     {
         return nodeIds.get( position );
     }
@@ -70,7 +70,8 @@ public class NodeCollectionNew implements Iterable<Node>
             @Override
             public Node next()
             {
-                return db.getNodeById( nodeIds.get( position++ ) );
+                Long id = nodeIds.get( position++ );
+                return id != null ? db.getNodeById( id ) : null;
             }
 
             @Override
@@ -137,5 +138,6 @@ public class NodeCollectionNew implements Iterable<Node>
     {
         return new NodeCollection( label, nodeIds );
     }
+
 
 }

@@ -2,8 +2,6 @@ package org.neo4j.neode;
 
 import static org.neo4j.neode.Range.minMax;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -16,7 +14,7 @@ class GetOrCreateUniqueNodes extends Nodes
     private final NodeSpecification nodeSpecification;
     private final int totalNumberOfNodes;
     private final ProbabilityDistribution probabilityDistribution;
-    private final List<Long> nodeIds;
+    private final NodeCollectionNew nodeCollection;
 
     GetOrCreateUniqueNodes( NodeSpecification nodeSpecification, int totalNumberOfNodes,
                             ProbabilityDistribution probabilityDistribution )
@@ -24,21 +22,16 @@ class GetOrCreateUniqueNodes extends Nodes
         this.nodeSpecification = nodeSpecification;
         this.totalNumberOfNodes = totalNumberOfNodes;
         this.probabilityDistribution = probabilityDistribution;
-        nodeIds = new ArrayList<Long>( totalNumberOfNodes );
-        for ( int i = 0; i < totalNumberOfNodes; i++ )
-        {
-            nodeIds.add( null );
-        }
+        this.nodeCollection = nodeSpecification.emptyNodeCollection( totalNumberOfNodes );
     }
 
     @Override
     public Iterable<Node> getNodes( int quantity, final GraphDatabaseService db, Node currentNode, Random random )
     {
-        final List<Integer> nodeIdIndexes;
+        final List<Integer> nodeIdCounters;
         try
         {
-            nodeIdIndexes = probabilityDistribution.generateList( quantity, minMax( 0, totalNumberOfNodes - 1 ), random );
-
+            nodeIdCounters = probabilityDistribution.generateList( quantity, minMax( 1, totalNumberOfNodes ), random );
         }
         catch ( IllegalArgumentException e )
         {
@@ -50,29 +43,15 @@ class GetOrCreateUniqueNodes extends Nodes
                     nodeSpecification.label(), quantity, totalNumberOfNodes ) );
         }
 
-        for ( Integer nodeIdIndex : nodeIdIndexes )
+        for ( Integer nodeIdCounter : nodeIdCounters )
         {
-            if ( nodeIds.get( nodeIdIndex ) == null )
+            if (nodeIdCounter > nodeCollection.size())
             {
-                nodeIds.set( nodeIdIndex, nodeSpecification.build( nodeIdIndex ).getId() );
+                nodeCollection.add( nodeSpecification.build(nodeCollection.size()) );
             }
-
         }
-        return new Iterable<Node>()
-        {
-            @Override
-            public Iterator<Node> iterator()
-            {
-                return new NodeIterator( new NodeIds()
-                {
-                    @Override
-                    public Long getId( int index )
-                    {
-                        return nodeIds.get( index );
-                    }
-                }, nodeIdIndexes, db );
-            }
-        };
+
+        return nodeCollection;
     }
 
     @Override

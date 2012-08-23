@@ -15,7 +15,7 @@ import org.neo4j.graphdb.Transaction;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
 import org.neo4j.neode.test.Db;
 
-public class GetOrCreateUniqueNodeFinderTest
+public class GetOrCreateUniqueNodesTest
 {
     @Test
     public void shouldCreateNewEntitiesWhenTheyDoNotCurrentlyExist() throws Exception
@@ -29,9 +29,10 @@ public class GetOrCreateUniqueNodeFinderTest
         Node newNode = db.createNode();
 
         ProbabilityDistribution probabilityDistribution = mock( ProbabilityDistribution.class );
-        when( probabilityDistribution.generateList( 1, Range.minMax( 0, 4 ), random ) ).thenReturn( asList( 0 ) );
+        when( probabilityDistribution.generateList( 1, Range.minMax( 1, 5 ), random ) ).thenReturn( asList( 1 ) );
 
         NodeSpecification user = mock( NodeSpecification.class );
+        when( user.emptyNodeCollection( 5)).thenReturn( new NodeCollectionNew( db, "user", 5 ) );
         when( user.build( 0 ) ).thenReturn( newNode );
 
         GetOrCreateUniqueNodes nodeFinder = new GetOrCreateUniqueNodes( user, 5, probabilityDistribution );
@@ -57,9 +58,10 @@ public class GetOrCreateUniqueNodeFinderTest
         Node newNode = db.createNode();
 
         ProbabilityDistribution probabilityDistribution = mock( ProbabilityDistribution.class );
-        when( probabilityDistribution.generateList( 1, Range.minMax( 0, 4 ), random ) ).thenReturn( asList( 0 ) );
+        when( probabilityDistribution.generateList( 1, Range.minMax( 1, 5 ), random ) ).thenReturn( asList( 1 ) );
 
         NodeSpecification user = mock( NodeSpecification.class );
+        when( user.emptyNodeCollection( 5)).thenReturn( new NodeCollectionNew( db, "user", 5 ) );
         when( user.build( 0 ) ).thenReturn( newNode );
 
         GetOrCreateUniqueNodes nodeFinder = new GetOrCreateUniqueNodes( user, 5, probabilityDistribution );
