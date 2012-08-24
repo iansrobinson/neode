@@ -4,7 +4,6 @@
  */
 package org.neo4j.neode;
 
-import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 
@@ -15,5 +14,5 @@ public abstract class GraphQuery
         return new TraversalBasedGraphQuery( traversalDescription );
     }
 
-    public abstract Iterable<Node> execute( GraphDatabaseService db, Node startNode );
+    public abstract Iterable<Node> execute( Node startNode );
 }

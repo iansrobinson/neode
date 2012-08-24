@@ -33,7 +33,7 @@ public class GraphQueryTest
         GraphQuery query = new GraphQuery()
         {
             @Override
-            public Iterable<Node> execute( GraphDatabaseService db, Node startNode )
+            public Iterable<Node> execute( Node startNode )
             {
              return startNode.traverse( Traverser.Order.DEPTH_FIRST, StopEvaluator.DEPTH_ONE,
                      ReturnableEvaluator.ALL_BUT_START_NODE,withName( "CONNECTED_TO"), Direction.OUTGOING );
@@ -41,7 +41,7 @@ public class GraphQueryTest
         };
 
         // when
-        Iterable<Node> result = query.execute( db, firstNode );
+        Iterable<Node> result = query.execute( firstNode );
 
         // then
         Iterator<Node> iterator = result.iterator();

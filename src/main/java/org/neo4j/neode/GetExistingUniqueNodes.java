@@ -21,7 +21,7 @@ class GetExistingUniqueNodes extends RelationshipBuilder
     }
 
     @Override
-    public Iterable<Node> getNodes( int quantity, final GraphDatabaseService db, Node currentNode, Random random )
+    public Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode, Random random )
     {
         NodeCollectionNew nc = new NodeCollectionNew( db, nodeCollection.label(), nodeCollection.nodeIds() );
         final List<Integer> nodeIdIndexes;

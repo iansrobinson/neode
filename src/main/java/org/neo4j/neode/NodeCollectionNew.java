@@ -122,16 +122,16 @@ public class NodeCollectionNew implements Iterable<Node>
         return new NodeCollectionNew( db, label, newNodeIds );
     }
 
-    public UpdateDataset<NodeCollection> createRelationshipsTo( TargetNodesSpecification targetNodesSpecification )
+    public UpdateDataset<NodeCollection> createRelationshipsTo( CreateRelationshipSpecification createRelationshipSpecification )
     {
-        return new RelateNodesBatchCommandBuilder( new NodeCollection( label, nodeIds ), targetNodesSpecification );
+        return new RelateNodesBatchCommandBuilder( new NodeCollection( label, nodeIds ), createRelationshipSpecification );
     }
 
     public UpdateDataset<List<NodeCollection>> createRelationshipsTo(
-            TargetNodesSpecificationsChoices targetNodesSpecificationsChoices )
+            CreateRelationshipSpecificationChoices createRelationshipSpecificationChoices )
     {
         return new RelateToChoiceOfNodesBatchCommandBuilder( toNodeCollection(),
-                targetNodesSpecificationsChoices );
+                createRelationshipSpecificationChoices );
     }
 
     public NodeCollection toNodeCollection()

@@ -9,18 +9,18 @@ class RelateToChoiceOfNodesBatchCommandBuilder implements UpdateDataset<List<Nod
     private static final int DEFAULT_BATCH_SIZE = 10000;
 
     private final NodeCollection nodeCollection;
-    private final TargetNodesSpecificationsChoices targetNodesSpecificationsChoices;
+    private final CreateRelationshipSpecificationChoices createRelationshipSpecificationChoices;
 
-    RelateToChoiceOfNodesBatchCommandBuilder( NodeCollection nodeCollection, TargetNodesSpecificationsChoices targetNodesSpecificationsChoices )
+    RelateToChoiceOfNodesBatchCommandBuilder( NodeCollection nodeCollection, CreateRelationshipSpecificationChoices createRelationshipSpecificationChoices )
     {
         this.nodeCollection = nodeCollection;
-        this.targetNodesSpecificationsChoices = targetNodesSpecificationsChoices;
+        this.createRelationshipSpecificationChoices = createRelationshipSpecificationChoices;
     }
 
     @Override
     public List<NodeCollection> update( Dataset dataset, int batchSize )
     {
-        Commands commands = targetNodesSpecificationsChoices.createCommandSelector( nodeCollection, batchSize,
+        Commands commands = createRelationshipSpecificationChoices.createCommandSelector( nodeCollection, batchSize,
                 new UniqueNodeIdCollectorFactory() );
         RelateToChoiceOfNodesBatchCommand command =
                 new RelateToChoiceOfNodesBatchCommand( nodeCollection, commands, batchSize );
@@ -37,7 +37,7 @@ class RelateToChoiceOfNodesBatchCommandBuilder implements UpdateDataset<List<Nod
     @Override
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
-        Commands commands = targetNodesSpecificationsChoices.createCommandSelector( nodeCollection, DEFAULT_BATCH_SIZE,
+        Commands commands = createRelationshipSpecificationChoices.createCommandSelector( nodeCollection, DEFAULT_BATCH_SIZE,
                 new NullNodeIdCollectorFactory() );
         RelateToChoiceOfNodesBatchCommand command =
                 new RelateToChoiceOfNodesBatchCommand( nodeCollection, commands, batchSize );

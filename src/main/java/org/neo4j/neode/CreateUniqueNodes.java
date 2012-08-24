@@ -15,7 +15,7 @@ class CreateUniqueNodes extends RelationshipBuilder
     }
 
     @Override
-    Iterable<Node> getNodes( final int quantity, GraphDatabaseService db, Node currentNode, Random random )
+    public Iterable<Node> getNodes( final int quantity, GraphDatabaseService db, Node currentNode, Random random )
     {
         NodeCollectionNew nodeCollection = nodeSpecification.emptyNodeCollection( quantity );
         for ( int i = 0; i < quantity; i++ )
@@ -26,7 +26,7 @@ class CreateUniqueNodes extends RelationshipBuilder
     }
 
     @Override
-    String label()
+    public String label()
     {
         return nodeSpecification.label();
     }

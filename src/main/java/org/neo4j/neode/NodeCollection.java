@@ -84,15 +84,15 @@ public class NodeCollection implements NodeProvider
         return new NodeCollection( name, newNodeIds );
     }
 
-    public UpdateDataset<NodeCollection> createRelationshipsTo( TargetNodesSpecification targetNodesSpecification )
+    public UpdateDataset<NodeCollection> createRelationshipsTo( CreateRelationshipSpecification createRelationshipSpecification )
     {
-        return new RelateNodesBatchCommandBuilder( this, targetNodesSpecification );
+        return new RelateNodesBatchCommandBuilder( this, createRelationshipSpecification );
     }
 
     public UpdateDataset<List<NodeCollection>> createRelationshipsTo(
-            TargetNodesSpecificationsChoices targetNodesSpecificationsChoices )
+            CreateRelationshipSpecificationChoices createRelationshipSpecificationChoices )
     {
-        return new RelateToChoiceOfNodesBatchCommandBuilder( this, targetNodesSpecificationsChoices );
+        return new RelateToChoiceOfNodesBatchCommandBuilder( this, createRelationshipSpecificationChoices );
     }
 
     @Override

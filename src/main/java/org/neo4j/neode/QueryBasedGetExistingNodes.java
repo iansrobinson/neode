@@ -15,13 +15,13 @@ public class QueryBasedGetExistingNodes extends RelationshipBuilder
     }
 
     @Override
-    Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode, Random random )
+    public Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode, Random random )
     {
-        return query.execute( db, currentNode );
+        return query.execute( currentNode );
     }
 
     @Override
-    String label()
+    public String label()
     {
         return "";
     }

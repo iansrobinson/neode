@@ -2,7 +2,7 @@ package org.neo4j.neode.test;
 
 import static org.neo4j.neode.Range.exactly;
 import static org.neo4j.neode.Range.minMax;
-import static org.neo4j.neode.TargetNodesSpecification.create;
+import static org.neo4j.neode.CreateRelationshipSpecification.create;
 
 import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;

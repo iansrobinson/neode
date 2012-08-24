@@ -26,7 +26,7 @@ class GetOrCreateUniqueNodes extends RelationshipBuilder
     }
 
     @Override
-    public Iterable<Node> getNodes( int quantity, final GraphDatabaseService db, Node currentNode, Random random )
+    public Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode, Random random )
     {
         final List<Integer> nodeIdCounters;
         try

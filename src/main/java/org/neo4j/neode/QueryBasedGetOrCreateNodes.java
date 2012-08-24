@@ -20,13 +20,13 @@ class QueryBasedGetOrCreateNodes extends RelationshipBuilder
     @Override
     public Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode, Random random )
     {
-        List<Node> nodes = sparseNodeListGenerator.getSparseListOfExistingNodes( quantity, db, currentNode, random );
-        fillGapsInListWithNewNodes( db, nodes, random );
+        List<Node> nodes = sparseNodeListGenerator.getSparseListOfExistingNodes( quantity, currentNode, random );
+        fillGapsInListWithNewNodes( nodes );
 
         return nodes;
     }
 
-    private void fillGapsInListWithNewNodes( GraphDatabaseService db, List<Node> returnNodes, Random random )
+    private void fillGapsInListWithNewNodes( List<Node> returnNodes )
     {
         for ( int currentNodeIndex = 0; currentNodeIndex < returnNodes.size(); currentNodeIndex++ )
         {

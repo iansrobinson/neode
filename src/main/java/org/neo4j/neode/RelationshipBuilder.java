@@ -16,14 +16,16 @@ import org.neo4j.neode.interfaces.SetRelationshipConstraints;
 import org.neo4j.neode.interfaces.SetRelationshipInfo;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
-public abstract class RelationshipBuilder implements SetRelationshipInfo, SetRelationshipConstraints
+public abstract class RelationshipBuilder implements SetRelationshipInfo, SetRelationshipConstraints, NodeSource
 {
     private RelationshipInfo relationshipInfo;
     private RelationshipConstraints relationshipConstraints;
 
-    abstract Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode, Random random );
+    @Override
+    public abstract Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode, Random random );
 
-    abstract String label();
+    @Override
+    public abstract String label();
 
     @Override
     public final SetRelationshipConstraints relationship(RelationshipSpecification relationshipSpecification,
@@ -40,7 +42,7 @@ public abstract class RelationshipBuilder implements SetRelationshipInfo, SetRel
     }
 
     @Override
-    public final TargetNodesSpecification relationshipConstraints( Range cardinality,
+    public final CreateRelationshipSpecification relationshipConstraints( Range cardinality,
                                                                    ProbabilityDistribution probabilityDistribution,
                                                                    RelationshipUniqueness relationshipUniqueness )
     {
@@ -48,25 +50,25 @@ public abstract class RelationshipBuilder implements SetRelationshipInfo, SetRel
                 cardinality,
                 relationshipUniqueness,
                 probabilityDistribution );
-        return new TargetNodesSpecification( this, relationshipInfo, relationshipConstraints );
+        return new CreateRelationshipSpecification( this, relationshipInfo, relationshipConstraints );
     }
 
     @Override
-    public final TargetNodesSpecification relationshipConstraints( Range cardinality,
+    public final CreateRelationshipSpecification relationshipConstraints( Range cardinality,
                                                                    RelationshipUniqueness relationshipUniqueness )
     {
         return relationshipConstraints( cardinality, flatDistribution(), relationshipUniqueness );
     }
 
     @Override
-    public final TargetNodesSpecification relationshipConstraints( Range cardinality,
+    public final CreateRelationshipSpecification relationshipConstraints( Range cardinality,
                                                                    ProbabilityDistribution probabilityDistribution )
     {
         return relationshipConstraints( cardinality, probabilityDistribution, RelationshipUniqueness.ALLOW_MULTIPLE );
     }
 
     @Override
-    public final TargetNodesSpecification relationshipConstraints( Range cardinality )
+    public final CreateRelationshipSpecification relationshipConstraints( Range cardinality )
     {
         return relationshipConstraints( cardinality, flatDistribution(), RelationshipUniqueness.ALLOW_MULTIPLE );
     }
