@@ -6,7 +6,7 @@ import java.util.Random;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
-class QueryBasedGetOrCreateNodes extends Nodes
+class QueryBasedGetOrCreateNodes extends RelationshipBuilder
 {
     private final NodeSpecification nodeSpecification;
     private final SparseNodeListGenerator sparseNodeListGenerator;

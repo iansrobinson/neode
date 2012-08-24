@@ -9,7 +9,7 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
-class GetOrCreateUniqueNodes extends Nodes
+class GetOrCreateUniqueNodes extends RelationshipBuilder
 {
     private final NodeSpecification nodeSpecification;
     private final int totalNumberOfNodes;

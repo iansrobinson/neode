@@ -13,29 +13,29 @@ import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
 public class TargetNodesSpecification
 {
-    public static Nodes getExisting( NodeCollection nodeCollection,
+    public static RelationshipBuilder getExisting( NodeCollection nodeCollection,
                                           ProbabilityDistribution probabilityDistribution )
     {
         return new GetExistingUniqueNodes( nodeCollection, probabilityDistribution );
     }
 
-    public static Nodes getExisting( NodeCollection nodeCollection )
+    public static RelationshipBuilder getExisting( NodeCollection nodeCollection )
     {
         return new GetExistingUniqueNodes( nodeCollection, normalDistribution() );
     }
 
-    public static Nodes getExisting( GraphQuery graphQuery )
+    public static RelationshipBuilder getExisting( GraphQuery graphQuery )
     {
         return new QueryBasedGetExistingNodes( graphQuery );
     }
 
-    public static Nodes queryBasedGetOrCreate( NodeSpecification nodeSpecification, GraphQuery graphQuery )
+    public static RelationshipBuilder queryBasedGetOrCreate( NodeSpecification nodeSpecification, GraphQuery graphQuery )
     {
         return new QueryBasedGetOrCreateNodes( nodeSpecification,
                 new SparseNodeListGenerator( graphQuery, 1.0, flatDistribution() ) );
     }
 
-    public static Nodes queryBasedGetOrCreate( NodeSpecification nodeSpecification, GraphQuery graphQuery,
+    public static RelationshipBuilder queryBasedGetOrCreate( NodeSpecification nodeSpecification, GraphQuery graphQuery,
                                                     double proportionOfCandidateNodesToRequiredNodes )
     {
         return new QueryBasedGetOrCreateNodes( nodeSpecification,
@@ -43,30 +43,30 @@ public class TargetNodesSpecification
                         flatDistribution() ) );
     }
 
-    public static Nodes getOrCreate( NodeSpecification nodeSpecification, int maxNumberOfEntities,
+    public static RelationshipBuilder getOrCreate( NodeSpecification nodeSpecification, int maxNumberOfEntities,
                                           ProbabilityDistribution probabilityDistribution )
     {
         return new GetOrCreateUniqueNodes( nodeSpecification, maxNumberOfEntities, probabilityDistribution );
     }
 
-    public static Nodes getOrCreate( NodeSpecification nodeSpecification, int maxNumberOfEntities )
+    public static RelationshipBuilder getOrCreate( NodeSpecification nodeSpecification, int maxNumberOfEntities )
     {
         return new GetOrCreateUniqueNodes( nodeSpecification, maxNumberOfEntities, flatDistribution() );
     }
 
-    public static Nodes create(NodeSpecification nodeSpecification)
+    public static RelationshipBuilder create(NodeSpecification nodeSpecification)
     {
         return new CreateUniqueNodes( nodeSpecification );
     }
 
-    private final Nodes nodes;
+    private final RelationshipBuilder relationshipBuilder;
     private final RelationshipInfo relationshipInfo;
     private final RelationshipConstraints relationshipConstraints;
 
-    TargetNodesSpecification( Nodes nodes, RelationshipInfo relationshipInfo,
+    TargetNodesSpecification( RelationshipBuilder relationshipBuilder, RelationshipInfo relationshipInfo,
                               RelationshipConstraints relationshipConstraints )
     {
-        this.nodes = nodes;
+        this.relationshipBuilder = relationshipBuilder;
         this.relationshipInfo = relationshipInfo;
         this.relationshipConstraints = relationshipConstraints;
     }
@@ -91,13 +91,13 @@ public class TargetNodesSpecification
 
     NodeCollection newNodeCollection( List<Long> nodeIds )
     {
-        return new NodeCollection( nodes.label(), nodeIds );
+        return new NodeCollection( relationshipBuilder.label(), nodeIds );
     }
 
     String createRelationshipDescription( String startNodeLabel )
     {
         return String.format( "(%s)%s(%s)",
-                startNodeLabel, relationshipInfo.description(), nodes.label() );
+                startNodeLabel, relationshipInfo.description(), relationshipBuilder.label() );
     }
 
     String createRelationshipConstraintsDescription()
@@ -108,7 +108,7 @@ public class TargetNodesSpecification
     private Iterable<Node> getRandomSelectionOfNodes( GraphDatabaseService db, Node firstNode, Random random )
     {
         int numberOfRelsToCreate = relationshipConstraints.calculateNumberOfRelsToCreate( random );
-        return nodes.getNodes( numberOfRelsToCreate, db, firstNode, random );
+        return relationshipBuilder.getNodes( numberOfRelsToCreate, db, firstNode, random );
     }
 
 }

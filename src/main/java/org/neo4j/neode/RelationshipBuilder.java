@@ -16,7 +16,7 @@ import org.neo4j.neode.interfaces.SetRelationshipConstraints;
 import org.neo4j.neode.interfaces.SetRelationshipInfo;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
-public abstract class Nodes implements SetRelationshipInfo, SetRelationshipConstraints
+public abstract class RelationshipBuilder implements SetRelationshipInfo, SetRelationshipConstraints
 {
     private RelationshipInfo relationshipInfo;
     private RelationshipConstraints relationshipConstraints;

@@ -9,9 +9,9 @@ class RelateNodesBatchCommandBuilder implements UpdateDataset<NodeCollection>
     private final NodeCollection nodeCollection;
     private final TargetNodesSpecification targetNodesSpecification;
 
-    RelateNodesBatchCommandBuilder( NodeCollection nodeCollection, TargetNodesSpecification targetNodesSpecification )
+    RelateNodesBatchCommandBuilder( NodeCollection sourceNodes, TargetNodesSpecification targetNodesSpecification )
     {
-        this.nodeCollection = nodeCollection;
+        this.nodeCollection = sourceNodes;
         this.targetNodesSpecification = targetNodesSpecification;
     }
 

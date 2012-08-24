@@ -32,7 +32,7 @@ public class RelateNodesBatchCommandBuilderTest
         NodeSpecification product = new NodeSpecification( "product", Collections.<Property>emptyList(), db, random );
         RelationshipSpecification bought = dsm.relationshipSpecification( "BOUGHT" );
         final NodeCollection products = product.create( 3 ).update( dataset );
-        Nodes nodes = new Nodes()
+        RelationshipBuilder relationshipBuilder = new RelationshipBuilder()
         {
             int index = 0;
 
@@ -52,7 +52,7 @@ public class RelateNodesBatchCommandBuilderTest
 
         // when
         users.createRelationshipsTo(
-                nodes
+                relationshipBuilder
                         .relationship( bought )
                         .relationshipConstraints( Range.exactly( 1 ) ) )
                 .update( dataset );

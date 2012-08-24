@@ -5,7 +5,7 @@ import java.util.Random;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
-public class QueryBasedGetExistingNodes extends Nodes
+public class QueryBasedGetExistingNodes extends RelationshipBuilder
 {
     private final GraphQuery query;
 

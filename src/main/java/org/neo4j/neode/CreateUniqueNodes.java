@@ -5,7 +5,7 @@ import java.util.Random;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
-class CreateUniqueNodes extends Nodes
+class CreateUniqueNodes extends RelationshipBuilder
 {
     private final NodeSpecification nodeSpecification;
 
@@ -22,7 +22,7 @@ class CreateUniqueNodes extends Nodes
         {
             nodeCollection.add( nodeSpecification.build( i ) );
         }
-        return  nodeCollection;
+        return nodeCollection;
     }
 
     @Override
