@@ -32,6 +32,7 @@ class RelateNodesBatchCommandBuilder implements UpdateDataset<NodeCollection>
     @Override
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
+
         RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodes, createRelationshipSpecification,
                 NullNodeIdCollector.INSTANCE, batchSize );
         dataset.execute( command );

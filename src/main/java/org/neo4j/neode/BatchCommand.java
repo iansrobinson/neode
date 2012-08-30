@@ -15,7 +15,7 @@ interface BatchCommand<T>
     int numberOfIterations();
     int batchSize();
     void execute( GraphDatabaseService db, int iteration, Random random );
-    void execute( Node firstNode, GraphDatabaseService db, int iteration, Random random );
+    void execute( Node currentNode, GraphDatabaseService db, int iteration, Random random );
     String description();
     String shortDescription();
     void onBegin(Log log);

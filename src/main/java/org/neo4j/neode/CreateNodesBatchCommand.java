@@ -40,7 +40,7 @@ class CreateNodesBatchCommand implements BatchCommand<NodeCollection>
     }
 
     @Override
-    public void execute( Node firstNode, GraphDatabaseService db, int iteration, Random random )
+    public void execute( Node currentNode, GraphDatabaseService db, int iteration, Random random )
     {
         execute( db, iteration, random );
     }

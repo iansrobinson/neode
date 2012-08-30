@@ -12,6 +12,11 @@ public abstract class CreateRelationshipSpecificationChoices
         return new RandomCreateRelationshipSpecificationChoices( asList( createRelationshipSpecifications ) );
     }
 
+    public static CreateRelationshipSpecificationChoices all( CreateRelationshipSpecification... createRelationshipSpecifications )
+        {
+            return new AllCreateRelationshipSpecificationChoices( asList( createRelationshipSpecifications ) );
+        }
+
     private final List<CreateRelationshipSpecification> createRelationshipSpecifications;
 
     protected CreateRelationshipSpecificationChoices( List<CreateRelationshipSpecification>
