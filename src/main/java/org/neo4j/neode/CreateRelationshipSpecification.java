@@ -14,15 +14,15 @@ import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
 public class CreateRelationshipSpecification
 {
-    public static SetRelationshipInfo getExisting( NodeCollection nodeCollection,
+    public static SetRelationshipInfo getExisting( NodeIdCollection nodeIdCollection,
                                           ProbabilityDistribution probabilityDistribution )
     {
-        return new GetExistingUniqueNodes( nodeCollection, probabilityDistribution );
+        return new GetExistingUniqueNodes( nodeIdCollection, probabilityDistribution );
     }
 
-    public static SetRelationshipInfo getExisting( NodeCollection nodeCollection )
+    public static SetRelationshipInfo getExisting( NodeIdCollection nodeIdCollection )
     {
-        return new GetExistingUniqueNodes( nodeCollection, normalDistribution() );
+        return new GetExistingUniqueNodes( nodeIdCollection, normalDistribution() );
     }
 
     public static SetRelationshipInfo getExisting( GraphQuery graphQuery )
@@ -90,9 +90,9 @@ public class CreateRelationshipSpecification
         return count;
     }
 
-    NodeCollection newNodeCollection( List<Long> nodeIds )
+    NodeIdCollection newNodeIdCollection( List<Long> nodeIds )
     {
-        return new NodeCollection( nodeSource.label(), nodeIds );
+        return new NodeIdCollection( nodeSource.label(), nodeIds );
     }
 
     String createRelationshipDescription( String startNodeLabel )

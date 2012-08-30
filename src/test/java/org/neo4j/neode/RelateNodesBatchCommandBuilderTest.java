@@ -27,11 +27,11 @@ public class RelateNodesBatchCommandBuilderTest
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager dsm = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = dsm.newDataset( "Test" );
-        NodeCollection users = new NodeSpecification( "user", Collections.<Property>emptyList(), db, random )
+        NodeIdCollection users = new NodeSpecification( "user", Collections.<Property>emptyList(), db, random )
                 .create( 3 ).update( dataset );
         NodeSpecification product = new NodeSpecification( "product", Collections.<Property>emptyList(), db, random );
         RelationshipSpecification bought = dsm.relationshipSpecification( "BOUGHT" );
-        final NodeCollection products = product.create( 3 ).update( dataset );
+        final NodeIdCollection products = product.create( 3 ).update( dataset );
         RelationshipBuilder relationshipBuilder = new RelationshipBuilder()
         {
             int index = 0;
@@ -40,7 +40,7 @@ public class RelateNodesBatchCommandBuilderTest
             public Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode,
                                             Random random )
             {
-                return asList( db.getNodeById( products.getId( index++ ) ) );
+                return asList( db.getNodeById( products.getIdByPosition( index++ ) ) );
             }
 
             @Override

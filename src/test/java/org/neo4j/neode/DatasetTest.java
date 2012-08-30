@@ -116,7 +116,7 @@ public class DatasetTest
     }
 
 
-    private class DummyBatchCommand implements BatchCommand<NodeCollection>
+    private class DummyBatchCommand implements BatchCommand<NodeIdCollection>
     {
         private final int numberOfIterations;
         private final int batchSize;
@@ -176,7 +176,7 @@ public class DatasetTest
         }
 
         @Override
-        public NodeCollection results()
+        public NodeIdCollection results()
         {
             return null;
         }

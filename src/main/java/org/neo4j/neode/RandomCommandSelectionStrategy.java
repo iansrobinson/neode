@@ -16,7 +16,7 @@ class RandomCommandSelectionStrategy implements CommandSelectionStrategy
     }
 
     @Override
-    public BatchCommand<NodeCollection> nextCommand( List<BatchCommand<NodeCollection>> commands, Node currentNode,
+    public BatchCommand<NodeIdCollection> nextCommand( List<BatchCommand<NodeIdCollection>> commands, Node currentNode,
                                                        Random random )
     {
         int index = probabilityDistribution.generateSingle( Range.minMax(0, commands.size() - 1), random );

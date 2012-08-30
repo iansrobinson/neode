@@ -11,6 +11,6 @@ import org.neo4j.graphdb.Node;
 
 interface CommandSelectionStrategy
 {
-    BatchCommand<NodeCollection> nextCommand( List<BatchCommand<NodeCollection>> commands, Node currentNode,
+    BatchCommand<NodeIdCollection> nextCommand( List<BatchCommand<NodeIdCollection>> commands, Node currentNode,
                                                 Random random );
 }

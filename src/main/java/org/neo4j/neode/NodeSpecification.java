@@ -23,7 +23,7 @@ public class NodeSpecification
         this.random = random;
     }
 
-    public UpdateDataset<NodeCollection> create( int quantity )
+    public UpdateDataset<NodeIdCollection> create( int quantity )
     {
         return new CreateNodesBatchCommandBuilder( this, quantity );
     }
@@ -39,9 +39,9 @@ public class NodeSpecification
         return node;
     }
 
-    NodeCollectionNew emptyNodeCollection( int capacity )
+    NodeIdCollection emptyNodeIdCollection(int capacity)
     {
-        return new NodeCollectionNew( db, label, capacity );
+        return new NodeIdCollection( label, capacity );
     }
 
     String label()

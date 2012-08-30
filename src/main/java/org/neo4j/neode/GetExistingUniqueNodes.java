@@ -11,25 +11,24 @@ import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
 class GetExistingUniqueNodes extends RelationshipBuilder
 {
-    private final NodeCollection nodeCollection;
+    private final NodeIdCollection nodeIdCollection;
     private final ProbabilityDistribution probabilityDistribution;
 
-    GetExistingUniqueNodes( NodeCollection nodeCollection, ProbabilityDistribution probabilityDistribution )
+    GetExistingUniqueNodes( NodeIdCollection nodeIdCollection, ProbabilityDistribution probabilityDistribution )
     {
-        this.nodeCollection = nodeCollection;
+        this.nodeIdCollection = nodeIdCollection;
         this.probabilityDistribution = probabilityDistribution;
     }
 
     @Override
     public Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode, Random random )
     {
-        NodeCollectionNew nc = new NodeCollectionNew( db, nodeCollection.label(), nodeCollection.nodeIds() );
-        final List<Integer> nodeIdIndexes;
+        final List<Integer> nodeIdPositions;
         try
         {
-            nodeIdIndexes = probabilityDistribution.generateList(
+            nodeIdPositions = probabilityDistribution.generateList(
                     quantity,
-                    minMax( 0, nc.size() - 1 ),
+                    minMax( 0, nodeIdCollection.size() - 1 ),
                     random );
         }
         catch ( IllegalArgumentException e )
@@ -39,15 +38,15 @@ class GetExistingUniqueNodes extends RelationshipBuilder
                     "nodes specified when applying the relationship constraint. Number of nodes specified by " +
                     "relationship constraint: %s. Maximum number of nodes available: %s. Either adjust the " +
                     "relationship constraint or increase the number of nodes available.",
-                    nc.label(), quantity, nc.size() ) );
+                    nodeIdCollection.label(), quantity, nodeIdCollection.size() ) );
         }
-        return nc.subset( nodeIdIndexes );
+        return new NodeCollectionNew(  db, nodeIdCollection.subset( nodeIdPositions ));
     }
 
     @Override
     public String label()
     {
-        return nodeCollection.label();
+        return nodeIdCollection.label();
     }
 
 }

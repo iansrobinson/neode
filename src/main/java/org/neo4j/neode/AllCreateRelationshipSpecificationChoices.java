@@ -15,13 +15,13 @@ class AllCreateRelationshipSpecificationChoices extends CreateRelationshipSpecif
     }
 
     @Override
-    protected Commands doCreateCommandSelector( List<BatchCommand<NodeCollection>> commands )
+    protected Commands doCreateCommandSelector( List<BatchCommand<NodeIdCollection>> commands )
     {
         return new Commands( commands, this );
     }
 
     @Override
-    public BatchCommand<NodeCollection> nextCommand( List<BatchCommand<NodeCollection>> commands, Node currentNode,
+    public BatchCommand<NodeIdCollection> nextCommand( List<BatchCommand<NodeIdCollection>> commands, Node currentNode,
                                                      Random random )
     {
         return new ExecuteAllCommandsBatchCommand( commands );

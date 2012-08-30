@@ -2,7 +2,7 @@ package org.neo4j.neode;
 
 import org.neo4j.neode.interfaces.UpdateDataset;
 
-class CreateNodesBatchCommandBuilder implements UpdateDataset<NodeCollection>
+class CreateNodesBatchCommandBuilder implements UpdateDataset<NodeIdCollection>
 {
     private static final int DEFAULT_BATCH_SIZE = 20000;
 
@@ -16,16 +16,16 @@ class CreateNodesBatchCommandBuilder implements UpdateDataset<NodeCollection>
     }
 
     @Override
-    public NodeCollection update( Dataset dataset, int batchSize )
+    public NodeIdCollection update( Dataset dataset, int batchSize )
     {
-        NodeCollectionNew nodeCollection = nodeSpecification.emptyNodeCollection( quantity );
-        CreateNodesBatchCommand command = new CreateNodesBatchCommand( nodeSpecification, quantity, nodeCollection,
+        NodeIdCollection nodeIdCollection = nodeSpecification.emptyNodeIdCollection( quantity );
+        CreateNodesBatchCommand command = new CreateNodesBatchCommand( nodeSpecification, quantity, nodeIdCollection,
                 batchSize);
         return dataset.execute( command );
     }
 
     @Override
-    public NodeCollection update( Dataset dataset )
+    public NodeIdCollection update( Dataset dataset )
     {
         return update( dataset, DEFAULT_BATCH_SIZE );
     }
@@ -34,7 +34,7 @@ class CreateNodesBatchCommandBuilder implements UpdateDataset<NodeCollection>
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
         CreateNodesBatchCommand command = new CreateNodesBatchCommand( nodeSpecification, quantity,
-                NodeCollectionNew.NULL, batchSize);
+                NodeIdCollection.NULL, batchSize);
         dataset.execute( command );
     }
 

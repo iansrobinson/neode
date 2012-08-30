@@ -7,15 +7,15 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.logging.Log;
 
-class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<NodeCollection>>
+class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<NodeIdCollection>>
 {
-    private final NodeCollection startNodes;
+    private final NodeIdCollection startNodeIds;
     private final Commands commands;
     private final int batchSize;
 
-    RelateToChoiceOfNodesBatchCommand( NodeCollection startNodes, Commands commands, int batchSize )
+    RelateToChoiceOfNodesBatchCommand( NodeIdCollection startNodeIds, Commands commands, int batchSize )
     {
-        this.startNodes = startNodes;
+        this.startNodeIds = startNodeIds;
         this.commands = commands;
         this.batchSize = batchSize;
     }
@@ -23,7 +23,7 @@ class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<NodeCollect
     @Override
     public int numberOfIterations()
     {
-        return startNodes.size();
+        return startNodeIds.size();
     }
 
     @Override
@@ -35,14 +35,14 @@ class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<NodeCollect
     @Override
     public void execute( GraphDatabaseService db, int iteration, Random random )
     {
-        Node currentNode = db.getNodeById( startNodes.getId( iteration ) );
+        Node currentNode = db.getNodeById( startNodeIds.getIdByPosition( iteration ) );
         execute( currentNode, db, iteration, random );
     }
 
     @Override
     public void execute( Node currentNode, GraphDatabaseService db, int iteration, Random random )
     {
-        BatchCommand<NodeCollection> nextCommand = commands.nextCommand( currentNode, random );
+        BatchCommand<NodeIdCollection> nextCommand = commands.nextCommand( currentNode, random );
         nextCommand.execute( currentNode, db, iteration, random );
     }
 
@@ -71,7 +71,7 @@ class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<NodeCollect
     }
 
     @Override
-    public List<NodeCollection> results()
+    public List<NodeIdCollection> results()
     {
         return commands.results();
     }

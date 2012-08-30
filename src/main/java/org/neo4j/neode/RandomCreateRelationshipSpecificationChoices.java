@@ -13,7 +13,7 @@ class RandomCreateRelationshipSpecificationChoices extends CreateRelationshipSpe
     }
 
     @Override
-    protected Commands doCreateCommandSelector( List<BatchCommand<NodeCollection>> commands )
+    protected Commands doCreateCommandSelector( List<BatchCommand<NodeIdCollection>> commands )
     {
         return new Commands( commands, new RandomCommandSelectionStrategy( flatDistribution() ) );
     }

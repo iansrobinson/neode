@@ -4,32 +4,32 @@ import java.util.List;
 
 import org.neo4j.neode.interfaces.UpdateDataset;
 
-class RelateToChoiceOfNodesBatchCommandBuilder implements UpdateDataset<List<NodeCollection>>
+class RelateToChoiceOfNodesBatchCommandBuilder implements UpdateDataset<List<NodeIdCollection>>
 {
     private static final int DEFAULT_BATCH_SIZE = 10000;
 
-    private final NodeCollection nodeCollection;
+    private final NodeIdCollection nodeIdCollection;
     private final CreateRelationshipSpecificationChoices createRelationshipSpecificationChoices;
 
-    RelateToChoiceOfNodesBatchCommandBuilder( NodeCollection nodeCollection, CreateRelationshipSpecificationChoices createRelationshipSpecificationChoices )
+    RelateToChoiceOfNodesBatchCommandBuilder( NodeIdCollection nodeIdCollection, CreateRelationshipSpecificationChoices createRelationshipSpecificationChoices )
     {
-        this.nodeCollection = nodeCollection;
+        this.nodeIdCollection = nodeIdCollection;
         this.createRelationshipSpecificationChoices = createRelationshipSpecificationChoices;
     }
 
     @Override
-    public List<NodeCollection> update( Dataset dataset, int batchSize )
+    public List<NodeIdCollection> update( Dataset dataset, int batchSize )
     {
-        Commands commands = createRelationshipSpecificationChoices.createCommandSelector( nodeCollection, batchSize,
+        Commands commands = createRelationshipSpecificationChoices.createCommandSelector( nodeIdCollection, batchSize,
                 new UniqueNodeIdCollectorFactory() );
         RelateToChoiceOfNodesBatchCommand command =
-                new RelateToChoiceOfNodesBatchCommand( nodeCollection, commands, batchSize );
+                new RelateToChoiceOfNodesBatchCommand( nodeIdCollection, commands, batchSize );
         dataset.execute( command );
         return command.results();
     }
 
     @Override
-    public List<NodeCollection> update( Dataset dataset )
+    public List<NodeIdCollection> update( Dataset dataset )
     {
         return update( dataset, DEFAULT_BATCH_SIZE );
     }
@@ -37,10 +37,10 @@ class RelateToChoiceOfNodesBatchCommandBuilder implements UpdateDataset<List<Nod
     @Override
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
-        Commands commands = createRelationshipSpecificationChoices.createCommandSelector( nodeCollection, DEFAULT_BATCH_SIZE,
+        Commands commands = createRelationshipSpecificationChoices.createCommandSelector( nodeIdCollection, DEFAULT_BATCH_SIZE,
                 new NullNodeIdCollectorFactory() );
         RelateToChoiceOfNodesBatchCommand command =
-                new RelateToChoiceOfNodesBatchCommand( nodeCollection, commands, batchSize );
+                new RelateToChoiceOfNodesBatchCommand( nodeIdCollection, commands, batchSize );
         dataset.execute( command );
     }
 

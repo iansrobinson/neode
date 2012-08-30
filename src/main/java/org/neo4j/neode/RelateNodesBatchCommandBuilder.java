@@ -2,29 +2,29 @@ package org.neo4j.neode;
 
 import org.neo4j.neode.interfaces.UpdateDataset;
 
-class RelateNodesBatchCommandBuilder implements UpdateDataset<NodeCollection>
+class RelateNodesBatchCommandBuilder implements UpdateDataset<NodeIdCollection>
 {
     private static final int DEFAULT_BATCH_SIZE = 10000;
 
-    private final NodeCollection sourceNodes;
+    private final NodeIdCollection sourceNodeIds;
     private final CreateRelationshipSpecification createRelationshipSpecification;
 
-    RelateNodesBatchCommandBuilder( NodeCollection sourceNodes, CreateRelationshipSpecification createRelationshipSpecification )
+    RelateNodesBatchCommandBuilder( NodeIdCollection sourceNodeIds, CreateRelationshipSpecification createRelationshipSpecification )
     {
-        this.sourceNodes = sourceNodes;
+        this.sourceNodeIds = sourceNodeIds;
         this.createRelationshipSpecification = createRelationshipSpecification;
     }
 
     @Override
-    public NodeCollection update( Dataset dataset, int batchSize )
+    public NodeIdCollection update( Dataset dataset, int batchSize )
     {
-        RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodes, createRelationshipSpecification,
+        RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodeIds, createRelationshipSpecification,
                 new UniqueNodeIdCollector(), batchSize );
         return dataset.execute( command );
     }
 
     @Override
-    public NodeCollection update( Dataset dataset )
+    public NodeIdCollection update( Dataset dataset )
     {
         return update( dataset, DEFAULT_BATCH_SIZE );
     }
@@ -33,7 +33,7 @@ class RelateNodesBatchCommandBuilder implements UpdateDataset<NodeCollection>
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
 
-        RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodes, createRelationshipSpecification,
+        RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodeIds, createRelationshipSpecification,
                 NullNodeIdCollector.INSTANCE, batchSize );
         dataset.execute( command );
     }

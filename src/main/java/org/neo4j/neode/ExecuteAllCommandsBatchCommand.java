@@ -6,11 +6,11 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.logging.Log;
 
-public class ExecuteAllCommandsBatchCommand implements BatchCommand<NodeCollection>
+public class ExecuteAllCommandsBatchCommand implements BatchCommand<NodeIdCollection>
 {
-    private final Iterable<BatchCommand<NodeCollection>> commands;
+    private final Iterable<BatchCommand<NodeIdCollection>> commands;
 
-    public ExecuteAllCommandsBatchCommand( Iterable<BatchCommand<NodeCollection>> commands )
+    public ExecuteAllCommandsBatchCommand( Iterable<BatchCommand<NodeIdCollection>> commands )
     {
         this.commands = commands;
     }
@@ -30,7 +30,7 @@ public class ExecuteAllCommandsBatchCommand implements BatchCommand<NodeCollecti
     @Override
     public void execute( GraphDatabaseService db, int iteration, Random random )
     {
-        for ( BatchCommand<NodeCollection> command : commands )
+        for ( BatchCommand<NodeIdCollection> command : commands )
         {
             command.execute( db, iteration, random );
         }
@@ -65,7 +65,7 @@ public class ExecuteAllCommandsBatchCommand implements BatchCommand<NodeCollecti
     }
 
     @Override
-    public NodeCollection results()
+    public NodeIdCollection results()
     {
         return null;
     }

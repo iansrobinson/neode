@@ -14,7 +14,7 @@ class GetOrCreateUniqueNodes extends RelationshipBuilder
     private final NodeSpecification nodeSpecification;
     private final int totalNumberOfNodes;
     private final ProbabilityDistribution probabilityDistribution;
-    private final NodeCollectionNew nodeCollection;
+    private final NodeIdCollection nodeIdCollection;
 
     GetOrCreateUniqueNodes( NodeSpecification nodeSpecification, int totalNumberOfNodes,
                             ProbabilityDistribution probabilityDistribution )
@@ -22,7 +22,7 @@ class GetOrCreateUniqueNodes extends RelationshipBuilder
         this.nodeSpecification = nodeSpecification;
         this.totalNumberOfNodes = totalNumberOfNodes;
         this.probabilityDistribution = probabilityDistribution;
-        this.nodeCollection = nodeSpecification.emptyNodeCollection( totalNumberOfNodes );
+        this.nodeIdCollection = nodeSpecification.emptyNodeIdCollection( totalNumberOfNodes );
     }
 
     @Override
@@ -45,13 +45,13 @@ class GetOrCreateUniqueNodes extends RelationshipBuilder
 
         for ( Integer nodeIdCounter : nodeIdCounters )
         {
-            if (nodeIdCounter > nodeCollection.size())
+            if ( nodeIdCounter > nodeIdCollection.size() )
             {
-                nodeCollection.add( nodeSpecification.build(nodeCollection.size()) );
+                nodeIdCollection.add( nodeSpecification.build( nodeIdCollection.size() ).getId() );
             }
         }
 
-        return nodeCollection;
+        return new NodeCollectionNew( db, nodeIdCollection );
     }
 
     @Override

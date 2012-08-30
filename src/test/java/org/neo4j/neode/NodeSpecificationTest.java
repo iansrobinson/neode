@@ -66,20 +66,4 @@ public class NodeSpecificationTest
         assertEquals( "value", node.getProperty( "myproperty" ) );
     }
 
-    @Test
-    public void shouldCreateNewEmptyNodeCollection() throws Exception
-    {
-        // given
-        GraphDatabaseService db = Db.impermanentDb();
-                Random random = new Random();
-
-        NodeSpecification nodeSpecification = new NodeSpecification( "user", Collections.<Property>emptyList(), db, random );
-
-        // when
-        NodeCollectionNew nodeCollection = nodeSpecification.emptyNodeCollection( 1 );
-
-        // then
-        assertNotNull( nodeCollection );
-        assertEquals( "user", nodeCollection.label() );
-    }
 }

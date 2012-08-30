@@ -9,24 +9,24 @@ import org.neo4j.neode.logging.Log;
 
 class Commands
 {
-    private final List<BatchCommand<NodeCollection>> commands;
+    private final List<BatchCommand<NodeIdCollection>> commands;
     private final CommandSelectionStrategy commandSelectionStrategy;
 
-    Commands( List<BatchCommand<NodeCollection>> commands, CommandSelectionStrategy commandSelectionStrategy )
+    Commands( List<BatchCommand<NodeIdCollection>> commands, CommandSelectionStrategy commandSelectionStrategy )
     {
         this.commands = commands;
         this.commandSelectionStrategy = commandSelectionStrategy;
     }
 
-    public BatchCommand<NodeCollection> nextCommand( Node currentNode, Random random )
+    public BatchCommand<NodeIdCollection> nextCommand( Node currentNode, Random random )
     {
         return commandSelectionStrategy.nextCommand( commands, currentNode, random );
     }
 
-    public List<NodeCollection> results()
+    public List<NodeIdCollection> results()
     {
-        List<NodeCollection> results = new ArrayList<NodeCollection>();
-        for ( BatchCommand<NodeCollection> command : commands )
+        List<NodeIdCollection> results = new ArrayList<NodeIdCollection>();
+        for ( BatchCommand<NodeIdCollection> command : commands )
         {
             results.add( command.results() );
         }
@@ -35,7 +35,7 @@ class Commands
 
     public void onBegin( Log log )
     {
-        for ( BatchCommand<NodeCollection> command : commands )
+        for ( BatchCommand<NodeIdCollection> command : commands )
         {
             log.write( String.format( "      [%s]", command.shortDescription() ) );
             command.onBegin( log );
@@ -44,7 +44,7 @@ class Commands
 
     public void onEnd( Log log )
     {
-        for ( BatchCommand<NodeCollection> command : commands )
+        for ( BatchCommand<NodeIdCollection> command : commands )
         {
             log.write( String.format( "      [%s]", command.shortDescription() ) );
             command.onEnd( log );

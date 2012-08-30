@@ -31,7 +31,7 @@ public class AllCreateRelationshipSpecificationChoicesTest
         RelationshipSpecification work_address = dsm.relationshipSpecification( "WORK_ADDRESS" );
         RelationshipSpecification home_address = dsm.relationshipSpecification( "HOME_ADDRESS" );
 
-        NodeCollection users = user.create( 1 ).update( dataset );
+        NodeIdCollection users = user.create( 1 ).update( dataset );
         users.createRelationshipsTo(
                 all(
                         create( workAddress )
@@ -44,7 +44,7 @@ public class AllCreateRelationshipSpecificationChoicesTest
 
         dataset.end();
 
-        Node userNode = db.getNodeById( users.getId( 0 ) );
+        Node userNode = db.getNodeById( users.getIdByPosition( 0 ) );
 
         Iterator<Relationship> workAddressRels = userNode.getRelationships( withName( "WORK_ADDRESS" ) ).iterator();
         Iterator<Relationship> homeAddressRels = userNode.getRelationships( withName( "HOME_ADDRESS" ) ).iterator();

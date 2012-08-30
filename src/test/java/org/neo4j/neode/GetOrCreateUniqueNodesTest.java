@@ -32,7 +32,7 @@ public class GetOrCreateUniqueNodesTest
         when( probabilityDistribution.generateList( 1, Range.minMax( 1, 5 ), random ) ).thenReturn( asList( 1 ) );
 
         NodeSpecification user = mock( NodeSpecification.class );
-        when( user.emptyNodeCollection( 5)).thenReturn( new NodeCollectionNew( db, "user", 5 ) );
+        when( user.emptyNodeIdCollection( 5 ) ).thenReturn( new NodeIdCollection( "user", 5 ) );
         when( user.build( 0 ) ).thenReturn( newNode );
 
         GetOrCreateUniqueNodes nodeFinder = new GetOrCreateUniqueNodes( user, 5, probabilityDistribution );
@@ -61,7 +61,7 @@ public class GetOrCreateUniqueNodesTest
         when( probabilityDistribution.generateList( 1, Range.minMax( 1, 5 ), random ) ).thenReturn( asList( 1 ) );
 
         NodeSpecification user = mock( NodeSpecification.class );
-        when( user.emptyNodeCollection( 5)).thenReturn( new NodeCollectionNew( db, "user", 5 ) );
+        when( user.emptyNodeIdCollection( 5 ) ).thenReturn( new NodeIdCollection( "user", 5 ) );
         when( user.build( 0 ) ).thenReturn( newNode );
 
         GetOrCreateUniqueNodes nodeFinder = new GetOrCreateUniqueNodes( user, 5, probabilityDistribution );

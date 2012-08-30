@@ -25,18 +25,18 @@ public abstract class CreateRelationshipSpecificationChoices
         this.createRelationshipSpecifications = createRelationshipSpecifications;
     }
 
-    Commands createCommandSelector( NodeCollection startNodes, int batchSize,
+    Commands createCommandSelector( NodeIdCollection startNodeIds, int batchSize,
                                            NodeIdCollectorFactory nodeIdCollectorFactory )
     {
-        List<BatchCommand<NodeCollection>> commands = new ArrayList<BatchCommand<NodeCollection>>();
+        List<BatchCommand<NodeIdCollection>> commands = new ArrayList<BatchCommand<NodeIdCollection>>();
         for ( CreateRelationshipSpecification createRelationshipSpecification : createRelationshipSpecifications )
         {
             RelateNodesBatchCommand command = new RelateNodesBatchCommand(
-                    startNodes, createRelationshipSpecification, nodeIdCollectorFactory.createNodeIdCollector(), batchSize );
+                    startNodeIds, createRelationshipSpecification, nodeIdCollectorFactory.createNodeIdCollector(), batchSize );
             commands.add( command );
         }
         return doCreateCommandSelector( commands );
     }
 
-    abstract protected Commands doCreateCommandSelector( List<BatchCommand<NodeCollection>> commands );
+    abstract protected Commands doCreateCommandSelector( List<BatchCommand<NodeIdCollection>> commands );
 }

@@ -17,12 +17,12 @@ class CreateUniqueNodes extends RelationshipBuilder
     @Override
     public Iterable<Node> getNodes( final int quantity, GraphDatabaseService db, Node currentNode, Random random )
     {
-        NodeCollectionNew nodeCollection = nodeSpecification.emptyNodeCollection( quantity );
+        NodeIdCollection nodeIdCollection = nodeSpecification.emptyNodeIdCollection( quantity );
         for ( int i = 0; i < quantity; i++ )
         {
-            nodeCollection.add( nodeSpecification.build( i ) );
+            nodeIdCollection.add( nodeSpecification.build( i ).getId() );
         }
-        return nodeCollection;
+        return new NodeCollectionNew( db, nodeIdCollection );
     }
 
     @Override
