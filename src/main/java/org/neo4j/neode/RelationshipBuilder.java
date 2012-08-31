@@ -42,7 +42,7 @@ public abstract class RelationshipBuilder implements SetRelationshipInfo, SetRel
     }
 
     @Override
-    public final CreateRelationshipSpecification relationshipConstraints( Range cardinality,
+    public final TargetNodes relationshipConstraints( Range cardinality,
                                                                    ProbabilityDistribution probabilityDistribution,
                                                                    RelationshipUniqueness relationshipUniqueness )
     {
@@ -50,25 +50,25 @@ public abstract class RelationshipBuilder implements SetRelationshipInfo, SetRel
                 cardinality,
                 relationshipUniqueness,
                 probabilityDistribution );
-        return new CreateRelationshipSpecification( this, relationshipInfo, relationshipConstraints );
+        return new TargetNodes( this, relationshipInfo, relationshipConstraints );
     }
 
     @Override
-    public final CreateRelationshipSpecification relationshipConstraints( Range cardinality,
+    public final TargetNodes relationshipConstraints( Range cardinality,
                                                                    RelationshipUniqueness relationshipUniqueness )
     {
         return relationshipConstraints( cardinality, flatDistribution(), relationshipUniqueness );
     }
 
     @Override
-    public final CreateRelationshipSpecification relationshipConstraints( Range cardinality,
+    public final TargetNodes relationshipConstraints( Range cardinality,
                                                                    ProbabilityDistribution probabilityDistribution )
     {
         return relationshipConstraints( cardinality, probabilityDistribution, RelationshipUniqueness.ALLOW_MULTIPLE );
     }
 
     @Override
-    public final CreateRelationshipSpecification relationshipConstraints( Range cardinality )
+    public final TargetNodes relationshipConstraints( Range cardinality )
     {
         return relationshipConstraints( cardinality, flatDistribution(), RelationshipUniqueness.ALLOW_MULTIPLE );
     }

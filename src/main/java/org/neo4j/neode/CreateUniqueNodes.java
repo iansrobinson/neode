@@ -22,7 +22,7 @@ class CreateUniqueNodes extends RelationshipBuilder
         {
             nodeIdCollection.add( nodeSpecification.build( i ).getId() );
         }
-        return new NodeCollectionNew( db, nodeIdCollection );
+        return new NodeCollection( db, nodeIdCollection );
     }
 
     @Override

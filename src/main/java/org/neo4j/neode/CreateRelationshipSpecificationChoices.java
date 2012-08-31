@@ -7,32 +7,32 @@ import java.util.List;
 
 public abstract class CreateRelationshipSpecificationChoices
 {
-    public static CreateRelationshipSpecificationChoices randomChoice( CreateRelationshipSpecification... createRelationshipSpecifications )
+    public static CreateRelationshipSpecificationChoices randomChoice( TargetNodes... targetNodes )
     {
-        return new RandomCreateRelationshipSpecificationChoices( asList( createRelationshipSpecifications ) );
+        return new RandomCreateRelationshipSpecificationChoices( asList( targetNodes ) );
     }
 
-    public static CreateRelationshipSpecificationChoices all( CreateRelationshipSpecification... createRelationshipSpecifications )
+    public static CreateRelationshipSpecificationChoices all( TargetNodes... targetNodes )
         {
-            return new AllCreateRelationshipSpecificationChoices( asList( createRelationshipSpecifications ) );
+            return new AllCreateRelationshipSpecificationChoices( asList( targetNodes ) );
         }
 
-    private final List<CreateRelationshipSpecification> createRelationshipSpecifications;
+    private final List<TargetNodes> targetNodes;
 
-    protected CreateRelationshipSpecificationChoices( List<CreateRelationshipSpecification>
-                                                              createRelationshipSpecifications )
+    protected CreateRelationshipSpecificationChoices( List<TargetNodes>
+                                                              targetNodes )
     {
-        this.createRelationshipSpecifications = createRelationshipSpecifications;
+        this.targetNodes = targetNodes;
     }
 
-    Commands createCommandSelector( NodeIdCollection startNodeIds, int batchSize,
-                                           NodeIdCollectorFactory nodeIdCollectorFactory )
+    Commands createCommandSelector( NodeIdCollection sourceNodeIds, int batchSize,
+                                           NodeIdCollectionFactory nodeIdCollectionFactory )
     {
         List<BatchCommand<NodeIdCollection>> commands = new ArrayList<BatchCommand<NodeIdCollection>>();
-        for ( CreateRelationshipSpecification createRelationshipSpecification : createRelationshipSpecifications )
+        for ( TargetNodes targetNode : targetNodes )
         {
             RelateNodesBatchCommand command = new RelateNodesBatchCommand(
-                    startNodeIds, createRelationshipSpecification, nodeIdCollectorFactory.createNodeIdCollector(), batchSize );
+                    sourceNodeIds, targetNode, targetNode.newNodeIdCollection( nodeIdCollectionFactory ), batchSize );
             commands.add( command );
         }
         return doCreateCommandSelector( commands );

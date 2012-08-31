@@ -1,9 +1,9 @@
 package org.neo4j.neode.test;
 
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
-import static org.neo4j.neode.CreateRelationshipSpecification.getExisting;
-import static org.neo4j.neode.CreateRelationshipSpecification.getOrCreate;
-import static org.neo4j.neode.CreateRelationshipSpecification.queryBasedGetOrCreate;
+import static org.neo4j.neode.TargetNodes.getExisting;
+import static org.neo4j.neode.TargetNodes.getOrCreate;
+import static org.neo4j.neode.TargetNodes.queryBasedGetOrCreate;
 import static org.neo4j.neode.GraphQuery.traversal;
 import static org.neo4j.neode.Range.exactly;
 import static org.neo4j.neode.Range.minMax;

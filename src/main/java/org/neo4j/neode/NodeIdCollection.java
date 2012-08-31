@@ -1,7 +1,6 @@
 package org.neo4j.neode;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -10,7 +9,7 @@ import org.neo4j.neode.interfaces.UpdateDataset;
 
 public class NodeIdCollection implements Iterable<Long>
 {
-    public static final NodeIdCollection NULL = new NodeIdCollection( null, Collections.<Long>emptyList() );
+    public static final NodeIdCollection NULL = new NodeIdCollection( null, new NullList<Long>() );
 
     private final String label;
     private final List<Long> nodeIds;
@@ -92,10 +91,10 @@ public class NodeIdCollection implements Iterable<Long>
         return new NodeIdCollection( label, newNodeIds );
     }
 
-    public UpdateDataset<NodeIdCollection> createRelationshipsTo( CreateRelationshipSpecification
-                                                                          createRelationshipSpecification )
+    public UpdateDataset<NodeIdCollection> createRelationshipsTo( TargetNodes
+                                                                          targetNodes )
     {
-        return new RelateNodesBatchCommandBuilder( this, createRelationshipSpecification );
+        return new RelateNodesBatchCommandBuilder( this, targetNodes );
     }
 
     public UpdateDataset<List<NodeIdCollection>> createRelationshipsTo(

@@ -51,7 +51,7 @@ class GetOrCreateUniqueNodes extends RelationshipBuilder
             }
         }
 
-        return new NodeCollectionNew( db, nodeIdCollection );
+        return new NodeCollection( db, nodeIdCollection );
     }
 
     @Override

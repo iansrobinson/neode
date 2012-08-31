@@ -14,7 +14,7 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.test.Db;
 
-public class NodeCollectionNewTest
+public class NodeCollectionTest
 {
     @Test
     public void shouldReturnNodeByPosition() throws Exception
@@ -27,7 +27,7 @@ public class NodeCollectionNewTest
                 // given
                 NodeIdCollection nodeIdCollection = new NodeIdCollection( "user",
                         asList( firstNode.getId(), secondNode.getId(), thirdNode.getId() ) );
-                NodeCollectionNew nodeCollection = new NodeCollectionNew( db, nodeIdCollection );
+                NodeCollection nodeCollection = new NodeCollection( db, nodeIdCollection );
 
                 // then
                 assertEquals( firstNode, nodeCollection.getNode( 0 ) );
@@ -48,7 +48,7 @@ public class NodeCollectionNewTest
                 // given
                 NodeIdCollection nodeIdCollection = new NodeIdCollection( "user",
                         asList( firstNode.getId(), secondNode.getId(), thirdNode.getId() ) );
-                NodeCollectionNew nodeCollection = new NodeCollectionNew( db, nodeIdCollection );
+                NodeCollection nodeCollection = new NodeCollection( db, nodeIdCollection );
 
                 // then
                 Iterable<Node> expectedNodes = asList( firstNode, secondNode, thirdNode );
@@ -67,7 +67,7 @@ public class NodeCollectionNewTest
             {
                 // given
                 NodeIdCollection nodeIdCollection = new NodeIdCollection( "user", 3 );
-                NodeCollectionNew nodeCollection = new NodeCollectionNew( db, nodeIdCollection );
+                NodeCollection nodeCollection = new NodeCollection( db, nodeIdCollection );
 
                 // when
                 nodeCollection.add( firstNode );

@@ -5,12 +5,12 @@ import java.util.Iterator;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
-public class NodeCollectionNew implements Iterable<Node>
+public class NodeCollection implements Iterable<Node>
 {
     private final GraphDatabaseService db;
     private final NodeIdCollection nodeIdCollection;
 
-    NodeCollectionNew( GraphDatabaseService db, NodeIdCollection nodeIdCollection )
+    NodeCollection( GraphDatabaseService db, NodeIdCollection nodeIdCollection )
     {
         this.db = db;
         this.nodeIdCollection = nodeIdCollection;

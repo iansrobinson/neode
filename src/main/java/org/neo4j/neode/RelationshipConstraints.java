@@ -27,14 +27,14 @@ class RelationshipConstraints
     }
 
     public Relationship addRelationshipToCurrentNode( Node currentNode, Node targetNode, GraphDatabaseService db,
-                                                      NodeIdCollector targetNodeIdCollector,
+                                                      NodeIdCollection targetNodeIds,
                                                       RelationshipInfo relationshipInfo, int iteration, Random random )
     {
         Relationship relationship = relationshipUniqueness.createRelationship( db, currentNode, targetNode,
                 relationshipInfo, iteration, random );
         if ( relationship != null )
         {
-            targetNodeIdCollector.add( targetNode.getId() );
+            targetNodeIds.add( targetNode.getId() );
         }
         return relationship;
     }

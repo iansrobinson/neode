@@ -8,10 +8,10 @@ import org.neo4j.graphdb.Node;
 class AllCreateRelationshipSpecificationChoices extends CreateRelationshipSpecificationChoices implements
         CommandSelectionStrategy
 {
-    public AllCreateRelationshipSpecificationChoices( List<CreateRelationshipSpecification>
-                                                              createRelationshipSpecifications )
+    public AllCreateRelationshipSpecificationChoices( List<TargetNodes>
+                                                              targetNodeses )
     {
-        super(createRelationshipSpecifications);
+        super( targetNodeses );
     }
 
     @Override

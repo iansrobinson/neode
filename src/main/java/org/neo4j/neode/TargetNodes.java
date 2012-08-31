@@ -12,10 +12,10 @@ import org.neo4j.graphdb.Relationship;
 import org.neo4j.neode.interfaces.SetRelationshipInfo;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
-public class CreateRelationshipSpecification
+public class TargetNodes
 {
     public static SetRelationshipInfo getExisting( NodeIdCollection nodeIdCollection,
-                                          ProbabilityDistribution probabilityDistribution )
+                                                   ProbabilityDistribution probabilityDistribution )
     {
         return new GetExistingUniqueNodes( nodeIdCollection, probabilityDistribution );
     }
@@ -30,14 +30,15 @@ public class CreateRelationshipSpecification
         return new QueryBasedGetExistingNodes( graphQuery );
     }
 
-    public static SetRelationshipInfo queryBasedGetOrCreate( NodeSpecification nodeSpecification, GraphQuery graphQuery )
+    public static SetRelationshipInfo queryBasedGetOrCreate( NodeSpecification nodeSpecification,
+                                                             GraphQuery graphQuery )
     {
         return new QueryBasedGetOrCreateNodes( nodeSpecification,
                 new SparseNodeListGenerator( graphQuery, 1.0, flatDistribution() ) );
     }
 
     public static SetRelationshipInfo queryBasedGetOrCreate( NodeSpecification nodeSpecification, GraphQuery graphQuery,
-                                                    double proportionOfCandidateNodesToRequiredNodes )
+                                                             double proportionOfCandidateNodesToRequiredNodes )
     {
         return new QueryBasedGetOrCreateNodes( nodeSpecification,
                 new SparseNodeListGenerator( graphQuery, proportionOfCandidateNodesToRequiredNodes,
@@ -45,7 +46,7 @@ public class CreateRelationshipSpecification
     }
 
     public static SetRelationshipInfo getOrCreate( NodeSpecification nodeSpecification, int maxNumberOfEntities,
-                                          ProbabilityDistribution probabilityDistribution )
+                                                   ProbabilityDistribution probabilityDistribution )
     {
         return new GetOrCreateUniqueNodes( nodeSpecification, maxNumberOfEntities, probabilityDistribution );
     }
@@ -55,7 +56,7 @@ public class CreateRelationshipSpecification
         return new GetOrCreateUniqueNodes( nodeSpecification, maxNumberOfEntities, flatDistribution() );
     }
 
-    public static SetRelationshipInfo create(NodeSpecification nodeSpecification)
+    public static SetRelationshipInfo create( NodeSpecification nodeSpecification )
     {
         return new CreateUniqueNodes( nodeSpecification );
     }
@@ -64,8 +65,8 @@ public class CreateRelationshipSpecification
     private final RelationshipInfo relationshipInfo;
     private final RelationshipConstraints relationshipConstraints;
 
-    CreateRelationshipSpecification( NodeSource nodeSource, RelationshipInfo relationshipInfo,
-                                     RelationshipConstraints relationshipConstraints )
+    TargetNodes( NodeSource nodeSource, RelationshipInfo relationshipInfo,
+                 RelationshipConstraints relationshipConstraints )
     {
         this.nodeSource = nodeSource;
         this.relationshipInfo = relationshipInfo;
@@ -73,14 +74,14 @@ public class CreateRelationshipSpecification
     }
 
     int addRelationshipsToCurrentNode( GraphDatabaseService db, Node currentNode,
-                                       NodeIdCollector targetNodeIdCollector, int iteration, Random random )
+                                       NodeIdCollection targetNodeIds, int iteration, Random random )
     {
         int count = 0;
         Iterable<Node> targetNodes = getRandomSelectionOfNodes( db, currentNode, random );
         for ( Node targetNode : targetNodes )
         {
             Relationship relationship = relationshipConstraints
-                    .addRelationshipToCurrentNode( currentNode, targetNode, db, targetNodeIdCollector,
+                    .addRelationshipToCurrentNode( currentNode, targetNode, db, targetNodeIds,
                             relationshipInfo, iteration, random );
             if ( relationship != null )
             {
@@ -95,13 +96,18 @@ public class CreateRelationshipSpecification
         return new NodeIdCollection( nodeSource.label(), nodeIds );
     }
 
-    String createRelationshipDescription( String startNodeLabel )
+    NodeIdCollection newNodeIdCollection( NodeIdCollectionFactory nodeIdCollectionFactory )
+    {
+        return nodeIdCollectionFactory.createNodeIdCollection( nodeSource.label() );
+    }
+
+    String description( String startNodeLabel )
     {
         return String.format( "(%s)%s(%s)",
                 startNodeLabel, relationshipInfo.description(), nodeSource.label() );
     }
 
-    String createRelationshipConstraintsDescription()
+    String relationshipConstraintsDescription()
     {
         return relationshipConstraints.description();
     }

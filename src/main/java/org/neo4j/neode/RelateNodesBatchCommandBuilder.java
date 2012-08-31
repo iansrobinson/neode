@@ -1,5 +1,7 @@
 package org.neo4j.neode;
 
+import java.util.ArrayList;
+
 import org.neo4j.neode.interfaces.UpdateDataset;
 
 class RelateNodesBatchCommandBuilder implements UpdateDataset<NodeIdCollection>
@@ -7,19 +9,19 @@ class RelateNodesBatchCommandBuilder implements UpdateDataset<NodeIdCollection>
     private static final int DEFAULT_BATCH_SIZE = 10000;
 
     private final NodeIdCollection sourceNodeIds;
-    private final CreateRelationshipSpecification createRelationshipSpecification;
+    private final TargetNodes targetNodes;
 
-    RelateNodesBatchCommandBuilder( NodeIdCollection sourceNodeIds, CreateRelationshipSpecification createRelationshipSpecification )
+    RelateNodesBatchCommandBuilder( NodeIdCollection sourceNodeIds, TargetNodes targetNodes )
     {
         this.sourceNodeIds = sourceNodeIds;
-        this.createRelationshipSpecification = createRelationshipSpecification;
+        this.targetNodes = targetNodes;
     }
 
     @Override
     public NodeIdCollection update( Dataset dataset, int batchSize )
     {
-        RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodeIds, createRelationshipSpecification,
-                new UniqueNodeIdCollector(), batchSize );
+        RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodeIds, targetNodes,
+               targetNodes.newNodeIdCollection( new ArrayList<Long>() ), batchSize );
         return dataset.execute( command );
     }
 
@@ -33,8 +35,8 @@ class RelateNodesBatchCommandBuilder implements UpdateDataset<NodeIdCollection>
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
 
-        RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodeIds, createRelationshipSpecification,
-                NullNodeIdCollector.INSTANCE, batchSize );
+        RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodeIds, targetNodes,
+                NodeIdCollection.NULL, batchSize );
         dataset.execute( command );
     }
 

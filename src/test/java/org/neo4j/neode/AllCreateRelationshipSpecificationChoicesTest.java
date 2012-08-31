@@ -3,7 +3,7 @@ package org.neo4j.neode;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
-import static org.neo4j.neode.CreateRelationshipSpecification.create;
+import static org.neo4j.neode.TargetNodes.create;
 import static org.neo4j.neode.CreateRelationshipSpecificationChoices.all;
 import static org.neo4j.neode.Range.exactly;
 

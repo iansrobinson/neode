@@ -1,6 +1,6 @@
 package org.neo4j.neode.test;
 
-import static org.neo4j.neode.CreateRelationshipSpecification.getOrCreate;
+import static org.neo4j.neode.TargetNodes.getOrCreate;
 import static org.neo4j.neode.CreateRelationshipSpecificationChoices.randomChoice;
 import static org.neo4j.neode.Range.minMax;
 import static org.neo4j.neode.properties.Property.indexableProperty;

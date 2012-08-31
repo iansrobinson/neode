@@ -6,10 +6,10 @@ import java.util.List;
 
 class RandomCreateRelationshipSpecificationChoices extends CreateRelationshipSpecificationChoices
 {
-    protected RandomCreateRelationshipSpecificationChoices( List<CreateRelationshipSpecification>
-                                                                    createRelationshipSpecifications )
+    protected RandomCreateRelationshipSpecificationChoices( List<TargetNodes>
+                                                                    targetNodeses )
     {
-        super( createRelationshipSpecifications );
+        super( targetNodeses );
     }
 
     @Override

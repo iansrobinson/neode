@@ -40,7 +40,7 @@ class GetExistingUniqueNodes extends RelationshipBuilder
                     "relationship constraint or increase the number of nodes available.",
                     nodeIdCollection.label(), quantity, nodeIdCollection.size() ) );
         }
-        return new NodeCollectionNew(  db, nodeIdCollection.subset( nodeIdPositions ));
+        return new NodeCollection(  db, nodeIdCollection.subset( nodeIdPositions ));
     }
 
     @Override
