@@ -5,15 +5,15 @@ import java.util.List;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.neode.logging.Log;
 
-class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<NodeIdCollection>>
+class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<NodeCollection>>
 {
-    private final NodeIdCollection startNodeIds;
+    private final NodeCollection startNodes;
     private final Commands commands;
     private final int batchSize;
 
-    RelateToChoiceOfNodesBatchCommand( NodeIdCollection startNodeIds, Commands commands, int batchSize )
+    RelateToChoiceOfNodesBatchCommand( NodeCollection startNodes, Commands commands, int batchSize )
     {
-        this.startNodeIds = startNodeIds;
+        this.startNodes = startNodes;
         this.commands = commands;
         this.batchSize = batchSize;
     }
@@ -21,7 +21,7 @@ class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<NodeIdColle
     @Override
     public int numberOfIterations()
     {
-        return startNodeIds.size();
+        return startNodes.size();
     }
 
     @Override
@@ -33,7 +33,7 @@ class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<NodeIdColle
     @Override
     public void execute( GraphDatabaseService db, int iteration )
     {
-        BatchCommand<NodeIdCollection> nextCommand = commands.nextCommand();
+        BatchCommand<NodeCollection> nextCommand = commands.nextCommand();
         nextCommand.execute( db, iteration );
     }
 
@@ -62,8 +62,8 @@ class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<NodeIdColle
     }
 
     @Override
-    public List<NodeIdCollection> results()
+    public List<NodeCollection> results( GraphDatabaseService db )
     {
-        return commands.results();
+        return commands.results( db );
     }
 }

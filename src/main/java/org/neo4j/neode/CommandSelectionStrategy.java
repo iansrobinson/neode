@@ -8,5 +8,5 @@ import java.util.List;
 
 interface CommandSelectionStrategy
 {
-    BatchCommand<NodeIdCollection> nextCommand( List<BatchCommand<NodeIdCollection>> commands );
+    BatchCommand<NodeCollection> nextCommand( List<BatchCommand<NodeCollection>> commands );
 }

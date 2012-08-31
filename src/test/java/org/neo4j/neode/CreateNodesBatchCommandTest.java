@@ -54,14 +54,14 @@ public class CreateNodesBatchCommandTest
         NodeSpecification user = new NodeSpecification( "user", asList( indexableProperty( "key" ) ), db );
 
         // when
-        NodeIdCollection results = user.create( 5 ).update( dataset );
+        NodeCollection results = user.create( 5 ).update( dataset );
 
         // then
         assertEquals( 5, results.size() );
-        assertEquals( (Object) 1L, results.getIdByPosition( 0 ) );
-        assertEquals( (Object) 2L, results.getIdByPosition( 1 ) );
-        assertEquals( (Object) 3L, results.getIdByPosition( 2 ) );
-        assertEquals( (Object) 4L, results.getIdByPosition( 3 ) );
-        assertEquals( (Object) 5L, results.getIdByPosition( 4 ) );
+        assertEquals( (Object) 1L, results.getNodeByPosition( 0 ).getId() );
+        assertEquals( (Object) 2L, results.getNodeByPosition( 1 ).getId() );
+        assertEquals( (Object) 3L, results.getNodeByPosition( 2 ).getId() );
+        assertEquals( (Object) 4L, results.getNodeByPosition( 3 ).getId() );
+        assertEquals( (Object) 5L, results.getNodeByPosition( 4 ).getId() );
     }
 }

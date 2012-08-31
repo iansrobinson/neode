@@ -16,5 +16,5 @@ interface BatchCommand<T>
     String shortDescription();
     void onBegin(Log log);
     void onEnd(Log log);
-    T results();
+    T results( GraphDatabaseService db );
 }

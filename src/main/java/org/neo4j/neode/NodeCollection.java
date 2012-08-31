@@ -1,12 +1,16 @@
 package org.neo4j.neode;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
+import org.neo4j.neode.interfaces.UpdateDataset;
 
 public class NodeCollection implements Iterable<Node>
 {
+    public static final NodeCollection NULL = new NodeCollection( null, NodeIdCollection.NULL );
+
     private final GraphDatabaseService db;
     private final NodeIdCollection nodeIdCollection;
 
@@ -21,7 +25,7 @@ public class NodeCollection implements Iterable<Node>
         nodeIdCollection.add( node.getId() );
     }
 
-    public Node getNode( int position )
+    public Node getNodeByPosition( int position )
     {
         return db.getNodeById( nodeIdCollection.getIdByPosition( position ) );
     }
@@ -62,5 +66,31 @@ public class NodeCollection implements Iterable<Node>
                 idIterator.remove();
             }
         };
+    }
+
+    public NodeCollection subset( List<Integer> positions )
+    {
+        return new NodeCollection( db, nodeIdCollection.subset( positions ) );
+    }
+
+    public NodeCollection approxPercentage( int percentage )
+    {
+        return new NodeCollection( db, nodeIdCollection.approxPercentage( percentage ) );
+    }
+
+    public NodeCollection combine( NodeCollection other )
+    {
+        return new NodeCollection( db, nodeIdCollection.combine( other.nodeIdCollection ) );
+    }
+
+    public UpdateDataset<NodeCollection> createRelationshipsTo( TargetNodesStrategy targetNodesStrategy )
+    {
+        return new RelateNodesBatchCommandBuilder( this, targetNodesStrategy );
+    }
+
+    public UpdateDataset<List<NodeCollection>> createRelationshipsTo(
+            ChoiceOfTargetNodesStrategy choiceOfTargetNodesStrategy )
+    {
+        return new RelateToChoiceOfNodesBatchCommandBuilder( this, choiceOfTargetNodesStrategy );
     }
 }

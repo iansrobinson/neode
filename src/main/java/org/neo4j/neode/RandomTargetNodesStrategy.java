@@ -13,7 +13,7 @@ class RandomTargetNodesStrategy extends ChoiceOfTargetNodesStrategy
     }
 
     @Override
-    protected Commands doCreateCommandSelector( List<BatchCommand<NodeIdCollection>> commands )
+    protected Commands doCreateCommandSelector( List<BatchCommand<NodeCollection>> commands )
     {
         return new Commands( commands, new RandomCommandSelectionStrategy( flatDistribution() ) );
     }

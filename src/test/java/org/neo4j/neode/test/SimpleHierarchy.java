@@ -1,14 +1,14 @@
 package org.neo4j.neode.test;
 
-import static org.neo4j.neode.TargetNodesStrategy.create;
 import static org.neo4j.neode.Range.exactly;
 import static org.neo4j.neode.Range.minMax;
+import static org.neo4j.neode.TargetNodesStrategy.create;
 
 import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.neode.Dataset;
 import org.neo4j.neode.DatasetManager;
-import org.neo4j.neode.NodeIdCollection;
+import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.NodeSpecification;
 import org.neo4j.neode.RelationshipSpecification;
 import org.neo4j.neode.logging.SysOutLog;
@@ -25,8 +25,8 @@ public class SimpleHierarchy
         NodeSpecification entity = dsm.nodeSpecification( "entity" );
         RelationshipSpecification child = dsm.relationshipSpecification( "CHILD" );
 
-        NodeIdCollection root = entity.create( 1 ).update( dataset );
-        NodeIdCollection children = root.createRelationshipsTo(
+        NodeCollection root = entity.create( 1 ).update( dataset );
+        NodeCollection children = root.createRelationshipsTo(
                 create( entity )
                         .relationship( child )
                         .relationshipConstraints( exactly( 3 ) ) )

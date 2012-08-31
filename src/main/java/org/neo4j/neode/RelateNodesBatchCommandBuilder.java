@@ -4,29 +4,29 @@ import java.util.ArrayList;
 
 import org.neo4j.neode.interfaces.UpdateDataset;
 
-class RelateNodesBatchCommandBuilder implements UpdateDataset<NodeIdCollection>
+class RelateNodesBatchCommandBuilder implements UpdateDataset<NodeCollection>
 {
     private static final int DEFAULT_BATCH_SIZE = 10000;
 
-    private final NodeIdCollection sourceNodeIds;
+    private final NodeCollection sourceNodes;
     private final TargetNodesStrategy targetNodesStrategy;
 
-    RelateNodesBatchCommandBuilder( NodeIdCollection sourceNodeIds, TargetNodesStrategy targetNodesStrategy )
+    RelateNodesBatchCommandBuilder( NodeCollection sourceNodes, TargetNodesStrategy targetNodesStrategy )
     {
-        this.sourceNodeIds = sourceNodeIds;
+        this.sourceNodes = sourceNodes;
         this.targetNodesStrategy = targetNodesStrategy;
     }
 
     @Override
-    public NodeIdCollection update( Dataset dataset, int batchSize )
+    public NodeCollection update( Dataset dataset, int batchSize )
     {
-        RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodeIds, targetNodesStrategy,
+        RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodes, targetNodesStrategy,
                targetNodesStrategy.newNodeIdCollection( new ArrayList<Long>() ), batchSize );
         return dataset.execute( command );
     }
 
     @Override
-    public NodeIdCollection update( Dataset dataset )
+    public NodeCollection update( Dataset dataset )
     {
         return update( dataset, DEFAULT_BATCH_SIZE );
     }
@@ -35,7 +35,7 @@ class RelateNodesBatchCommandBuilder implements UpdateDataset<NodeIdCollection>
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
 
-        RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodeIds, targetNodesStrategy,
+        RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodes, targetNodesStrategy,
                 NodeIdCollection.NULL, batchSize );
         dataset.execute( command );
     }

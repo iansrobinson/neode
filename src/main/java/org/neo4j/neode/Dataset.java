@@ -35,13 +35,18 @@ public class Dataset
         command.onEnd( log );
         log.write( String.format( "End   [%s] %s\n", command.description(), elapsedTime( startTime ) ) );
 
-        return command.results();
+        return command.results( db );
     }
 
     public void end()
     {
         log.write( String.format( "Store [%s]\n\nEnd   [%s] %s",
                 ((EmbeddedGraphDatabase) db).getStoreDir(), description, elapsedTime( runStartTime ) ) );
+    }
+
+    GraphDatabaseService db()
+    {
+        return db;
     }
 
     private void doExecute( int startIteration, BatchCommand command, long startTime )
@@ -52,7 +57,8 @@ public class Dataset
         Transaction tx = db.beginTx();
         try
         {
-            for ( int iteration = startIteration; iterationIsInRange( startIteration, command, iteration ); iteration++ )
+            for ( int iteration = startIteration; iterationIsInRange( startIteration, command,
+                    iteration ); iteration++ )
             {
                 command.execute( db, iteration );
                 tx.success();

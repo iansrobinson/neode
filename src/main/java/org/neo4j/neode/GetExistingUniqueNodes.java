@@ -10,12 +10,12 @@ import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
 class GetExistingUniqueNodes implements TargetNodesSource
 {
-    private final NodeIdCollection nodeIdCollection;
+    private final NodeCollection nodeCollection;
     private final ProbabilityDistribution probabilityDistribution;
 
-    GetExistingUniqueNodes( NodeIdCollection nodeIdCollection, ProbabilityDistribution probabilityDistribution )
+    GetExistingUniqueNodes( NodeCollection nodeCollection, ProbabilityDistribution probabilityDistribution )
     {
-        this.nodeIdCollection = nodeIdCollection;
+        this.nodeCollection = nodeCollection;
         this.probabilityDistribution = probabilityDistribution;
     }
 
@@ -27,7 +27,7 @@ class GetExistingUniqueNodes implements TargetNodesSource
         {
             nodeIdPositions = probabilityDistribution.generateList(
                     quantity,
-                    minMax( 0, nodeIdCollection.size() - 1 )
+                    minMax( 0, nodeCollection.size() - 1 )
             );
         }
         catch ( IllegalArgumentException e )
@@ -37,15 +37,15 @@ class GetExistingUniqueNodes implements TargetNodesSource
                     "nodes specified when applying the relationship constraint. Number of nodes specified by " +
                     "relationship constraint: %s. Maximum number of nodes available: %s. Either adjust the " +
                     "relationship constraint or increase the number of nodes available.",
-                    nodeIdCollection.label(), quantity, nodeIdCollection.size() ) );
+                    nodeCollection.label(), quantity, nodeCollection.size() ) );
         }
-        return new NodeCollection(  db, nodeIdCollection.subset( nodeIdPositions ));
+        return nodeCollection.subset( nodeIdPositions );
     }
 
     @Override
     public String label()
     {
-        return nodeIdCollection.label();
+        return nodeCollection.label();
     }
 
 }

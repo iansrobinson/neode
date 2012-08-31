@@ -91,15 +91,16 @@ public class NodeIdCollection implements Iterable<Long>
         return new NodeIdCollection( label, newNodeIds );
     }
 
-    public UpdateDataset<NodeIdCollection> createRelationshipsTo( TargetNodesStrategy
-                                                                          targetNodesStrategy )
+    public UpdateDataset<NodeIdCollection> createRelationshipsTo( TargetNodesStrategy targetNodesStrategy )
     {
-        return new RelateNodesBatchCommandBuilder( this, targetNodesStrategy );
+        return null;
+        //return new RelateNodesBatchCommandBuilder( this, targetNodesStrategy );
     }
 
     public UpdateDataset<List<NodeIdCollection>> createRelationshipsTo(
             ChoiceOfTargetNodesStrategy choiceOfTargetNodesStrategy )
     {
-        return new RelateToChoiceOfNodesBatchCommandBuilder( this, choiceOfTargetNodesStrategy );
+        return null;
+        //return new RelateToChoiceOfNodesBatchCommandBuilder( this, choiceOfTargetNodesStrategy );
     }
 }

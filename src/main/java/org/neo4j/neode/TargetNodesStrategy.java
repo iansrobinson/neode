@@ -13,17 +13,17 @@ import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
 public class TargetNodesStrategy
 {
-    public static SetRelationshipInfo getExisting( NodeIdCollection nodeIdCollection,
+    public static SetRelationshipInfo getExisting( NodeCollection nodeCollection,
                                                    ProbabilityDistribution probabilityDistribution )
     {
-        GetExistingUniqueNodes targetNodesSource = new GetExistingUniqueNodes( nodeIdCollection,
+        GetExistingUniqueNodes targetNodesSource = new GetExistingUniqueNodes( nodeCollection,
                 probabilityDistribution );
         return new TargetNodesStrategyBuilder( targetNodesSource );
     }
 
-    public static SetRelationshipInfo getExisting( NodeIdCollection nodeIdCollection )
+    public static SetRelationshipInfo getExisting( NodeCollection nodeCollection )
     {
-        GetExistingUniqueNodes targetNodesSource = new GetExistingUniqueNodes( nodeIdCollection,
+        GetExistingUniqueNodes targetNodesSource = new GetExistingUniqueNodes( nodeCollection,
                 normalDistribution() );
         return new TargetNodesStrategyBuilder( targetNodesSource );
     }

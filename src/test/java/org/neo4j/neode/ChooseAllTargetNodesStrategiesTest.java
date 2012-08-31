@@ -39,7 +39,7 @@ public class ChooseAllTargetNodesStrategiesTest
         RelationshipSpecification work_address = dsm.relationshipSpecification( "WORK_ADDRESS" );
         RelationshipSpecification home_address = dsm.relationshipSpecification( "HOME_ADDRESS" );
 
-        NodeIdCollection users = user.create( 2 ).update( dataset );
+        NodeCollection users = user.create( 2 ).update( dataset );
         users.createRelationshipsTo(
                 all(
                         create( workAddress )
@@ -52,7 +52,7 @@ public class ChooseAllTargetNodesStrategiesTest
 
         dataset.end();
 
-        Node user1Node = db.getNodeById( users.getIdByPosition( 0 ) );
+        Node user1Node = users.getNodeByPosition( 0 );
 
         Iterator<Relationship> workAddressRels1 = user1Node.getRelationships( withName( "WORK_ADDRESS" ) ).iterator();
         Iterator<Relationship> homeAddressRels1 = user1Node.getRelationships( withName( "HOME_ADDRESS" ) ).iterator();
@@ -64,7 +64,7 @@ public class ChooseAllTargetNodesStrategiesTest
         assertNotNull( homeAddressRels1.next() );
         assertFalse( homeAddressRels1.hasNext() );
 
-        Node user2Node = db.getNodeById( users.getIdByPosition( 1 ) );
+        Node user2Node = users.getNodeByPosition( 1 );
 
         Iterator<Relationship> workAddressRels2 = user2Node.getRelationships( withName( "WORK_ADDRESS" ) ).iterator();
         Iterator<Relationship> homeAddressRels2 = user2Node.getRelationships( withName( "HOME_ADDRESS" ) ).iterator();

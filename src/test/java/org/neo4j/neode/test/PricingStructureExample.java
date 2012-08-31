@@ -1,8 +1,8 @@
 package org.neo4j.neode.test;
 
-import static org.neo4j.neode.TargetNodesStrategy.getOrCreate;
 import static org.neo4j.neode.ChoiceOfTargetNodesStrategy.randomChoice;
 import static org.neo4j.neode.Range.minMax;
+import static org.neo4j.neode.TargetNodesStrategy.getOrCreate;
 import static org.neo4j.neode.properties.Property.indexableProperty;
 import static org.neo4j.neode.properties.Property.property;
 import static org.neo4j.neode.properties.PropertyValueGenerator.integerRange;
@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.neode.Dataset;
 import org.neo4j.neode.DatasetManager;
-import org.neo4j.neode.NodeIdCollection;
+import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.NodeSpecification;
 import org.neo4j.neode.RelationshipSpecification;
 import org.neo4j.neode.logging.SysOutLog;
@@ -34,9 +34,9 @@ public class PricingStructureExample
         RelationshipSpecification connected_to = dsm.relationshipSpecification( "CONNECTED_TO",
                 property( "quantity", integerRange( 1, 5 ) ) );
 
-        NodeIdCollection roots = root.create( 10 ).update( dataset );
+        NodeCollection roots = root.create( 10 ).update( dataset );
 
-        List<NodeIdCollection> subnodes = roots.createRelationshipsTo(
+        List<NodeCollection> subnodes = roots.createRelationshipsTo(
                 randomChoice(
                         getOrCreate( intermediate, 20 )
                                 .relationship( connected_to )
@@ -46,7 +46,7 @@ public class PricingStructureExample
                                 .relationshipConstraints( minMax( 1, 3 ) ) ) )
                 .update( dataset );
 
-        for ( NodeIdCollection subnode : subnodes )
+        for ( NodeCollection subnode : subnodes )
         {
             if ( subnode.label().equals( "intermediate" ) )
             {

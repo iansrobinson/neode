@@ -10,13 +10,13 @@ class ChooseAllTargetNodesStrategies extends ChoiceOfTargetNodesStrategy impleme
     }
 
     @Override
-    protected Commands doCreateCommandSelector( List<BatchCommand<NodeIdCollection>> commands )
+    protected Commands doCreateCommandSelector( List<BatchCommand<NodeCollection>> commands )
     {
         return new Commands( commands, this );
     }
 
     @Override
-    public BatchCommand<NodeIdCollection> nextCommand( List<BatchCommand<NodeIdCollection>> commands )
+    public BatchCommand<NodeCollection> nextCommand( List<BatchCommand<NodeCollection>> commands )
     {
         return new ExecuteAllCommandsBatchCommand( commands );
     }

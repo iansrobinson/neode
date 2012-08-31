@@ -24,18 +24,18 @@ public abstract class ChoiceOfTargetNodesStrategy
         this.targetNodeStrategies = targetNodeStrategies;
     }
 
-    Commands createCommandSelector( NodeIdCollection sourceNodeIds, int batchSize,
+    Commands createCommandSelector( NodeCollection sourceNodes, int batchSize,
                                     NodeIdCollectionFactory nodeIdCollectionFactory )
     {
-        List<BatchCommand<NodeIdCollection>> commands = new ArrayList<BatchCommand<NodeIdCollection>>();
+        List<BatchCommand<NodeCollection>> commands = new ArrayList<BatchCommand<NodeCollection>>();
         for ( TargetNodesStrategy targetNodeStrategy : targetNodeStrategies )
         {
-            RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodeIds, targetNodeStrategy,
+            RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodes, targetNodeStrategy,
                     targetNodeStrategy.newNodeIdCollection( nodeIdCollectionFactory ), batchSize );
             commands.add( command );
         }
         return doCreateCommandSelector( commands );
     }
 
-    abstract protected Commands doCreateCommandSelector( List<BatchCommand<NodeIdCollection>> commands );
+    abstract protected Commands doCreateCommandSelector( List<BatchCommand<NodeCollection>> commands );
 }

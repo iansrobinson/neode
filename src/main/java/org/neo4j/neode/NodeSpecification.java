@@ -20,7 +20,7 @@ public class NodeSpecification
         this.db = db;
     }
 
-    public UpdateDataset<NodeIdCollection> create( int quantity )
+    public UpdateDataset<NodeCollection> create( int quantity )
     {
         return new CreateNodesBatchCommandBuilder( this, quantity );
     }
@@ -34,11 +34,6 @@ public class NodeSpecification
             property.setProperty( node, db, label, iteration );
         }
         return node;
-    }
-
-    NodeIdCollection emptyNodeIdCollection(int capacity)
-    {
-        return new NodeIdCollection( label, capacity );
     }
 
     NodeCollection emptyNodeCollection(int capacity)

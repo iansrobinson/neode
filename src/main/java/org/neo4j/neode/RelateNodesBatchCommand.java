@@ -4,18 +4,18 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.logging.Log;
 
-class RelateNodesBatchCommand implements BatchCommand<NodeIdCollection>
+class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
 {
-    private final NodeIdCollection sourceNodeIds;
+    private final NodeCollection sourceNodes;
     private final TargetNodesStrategy targetNodesStrategy;
     private final NodeIdCollection targetNodeIds;
     private final int batchSize;
     private long totalRels = 0;
 
-    RelateNodesBatchCommand( NodeIdCollection sourceNodeIds, TargetNodesStrategy targetNodesStrategy,
+    RelateNodesBatchCommand( NodeCollection sourceNodes, TargetNodesStrategy targetNodesStrategy,
                              NodeIdCollection targetNodeIds, int batchSize )
     {
-        this.sourceNodeIds = sourceNodeIds;
+        this.sourceNodes = sourceNodes;
         this.targetNodesStrategy = targetNodesStrategy;
         this.targetNodeIds = targetNodeIds;
         this.batchSize = batchSize;
@@ -24,7 +24,7 @@ class RelateNodesBatchCommand implements BatchCommand<NodeIdCollection>
     @Override
     public int numberOfIterations()
     {
-        return sourceNodeIds.size();
+        return sourceNodes.size();
     }
 
     @Override
@@ -36,7 +36,7 @@ class RelateNodesBatchCommand implements BatchCommand<NodeIdCollection>
     @Override
     public void execute( GraphDatabaseService db, int iteration )
     {
-        Node currentNode = db.getNodeById( sourceNodeIds.getIdByPosition( iteration ) );
+        Node currentNode = sourceNodes.getNodeByPosition( iteration );
         totalRels += targetNodesStrategy
                 .addRelationshipsToCurrentNode( db, currentNode, targetNodeIds, iteration );
     }
@@ -50,7 +50,7 @@ class RelateNodesBatchCommand implements BatchCommand<NodeIdCollection>
     @Override
     public String shortDescription()
     {
-        return targetNodesStrategy.description( sourceNodeIds.label() );
+        return targetNodesStrategy.description( sourceNodes.label() );
     }
 
     @Override
@@ -63,12 +63,12 @@ class RelateNodesBatchCommand implements BatchCommand<NodeIdCollection>
     public void onEnd( Log log )
     {
         log.write( String.format( "      [Avg: %s relationship(s) per %s]",
-                totalRels / sourceNodeIds.size(), sourceNodeIds.label() ) );
+                totalRels / sourceNodes.size(), sourceNodes.label() ) );
     }
 
     @Override
-    public NodeIdCollection results()
+    public NodeCollection results( GraphDatabaseService db )
     {
-        return targetNodeIds;
+        return new NodeCollection( db, targetNodeIds );
     }
 }

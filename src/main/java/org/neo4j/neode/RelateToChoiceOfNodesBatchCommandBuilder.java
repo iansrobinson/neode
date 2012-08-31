@@ -4,32 +4,32 @@ import java.util.List;
 
 import org.neo4j.neode.interfaces.UpdateDataset;
 
-class RelateToChoiceOfNodesBatchCommandBuilder implements UpdateDataset<List<NodeIdCollection>>
+class RelateToChoiceOfNodesBatchCommandBuilder implements UpdateDataset<List<NodeCollection>>
 {
     private static final int DEFAULT_BATCH_SIZE = 10000;
 
-    private final NodeIdCollection nodeIdCollection;
+    private final NodeCollection nodeCollection;
     private final ChoiceOfTargetNodesStrategy choiceOfTargetNodesStrategy;
 
-    RelateToChoiceOfNodesBatchCommandBuilder( NodeIdCollection nodeIdCollection, ChoiceOfTargetNodesStrategy choiceOfTargetNodesStrategy )
+    RelateToChoiceOfNodesBatchCommandBuilder( NodeCollection nodeCollection, ChoiceOfTargetNodesStrategy choiceOfTargetNodesStrategy )
     {
-        this.nodeIdCollection = nodeIdCollection;
+        this.nodeCollection = nodeCollection;
         this.choiceOfTargetNodesStrategy = choiceOfTargetNodesStrategy;
     }
 
     @Override
-    public List<NodeIdCollection> update( Dataset dataset, int batchSize )
+    public List<NodeCollection> update( Dataset dataset, int batchSize )
     {
-        Commands commands = choiceOfTargetNodesStrategy.createCommandSelector( nodeIdCollection, batchSize,
+        Commands commands = choiceOfTargetNodesStrategy.createCommandSelector( nodeCollection, batchSize,
                 NodeIdCollectionFactory.INSTANCE );
         RelateToChoiceOfNodesBatchCommand command =
-                new RelateToChoiceOfNodesBatchCommand( nodeIdCollection, commands, batchSize );
+                new RelateToChoiceOfNodesBatchCommand( nodeCollection, commands, batchSize );
         dataset.execute( command );
-        return command.results();
+        return command.results( dataset.db() );
     }
 
     @Override
-    public List<NodeIdCollection> update( Dataset dataset )
+    public List<NodeCollection> update( Dataset dataset )
     {
         return update( dataset, DEFAULT_BATCH_SIZE );
     }
@@ -37,11 +37,11 @@ class RelateToChoiceOfNodesBatchCommandBuilder implements UpdateDataset<List<Nod
     @Override
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
-        Commands commands = choiceOfTargetNodesStrategy.createCommandSelector( nodeIdCollection,
+        Commands commands = choiceOfTargetNodesStrategy.createCommandSelector( nodeCollection,
                 DEFAULT_BATCH_SIZE,
                 NodeIdCollectionFactory.NULL );
         RelateToChoiceOfNodesBatchCommand command =
-                new RelateToChoiceOfNodesBatchCommand( nodeIdCollection, commands, batchSize );
+                new RelateToChoiceOfNodesBatchCommand( nodeCollection, commands, batchSize );
         dataset.execute( command );
     }
 

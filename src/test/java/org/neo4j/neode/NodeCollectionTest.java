@@ -30,9 +30,9 @@ public class NodeCollectionTest
                 NodeCollection nodeCollection = new NodeCollection( db, nodeIdCollection );
 
                 // then
-                assertEquals( firstNode, nodeCollection.getNode( 0 ) );
-                assertEquals( secondNode, nodeCollection.getNode( 1 ) );
-                assertEquals( thirdNode, nodeCollection.getNode( 2 ) );
+                assertEquals( firstNode, nodeCollection.getNodeByPosition( 0 ) );
+                assertEquals( secondNode, nodeCollection.getNodeByPosition( 1 ) );
+                assertEquals( thirdNode, nodeCollection.getNodeByPosition( 2 ) );
             }
         } );
     }

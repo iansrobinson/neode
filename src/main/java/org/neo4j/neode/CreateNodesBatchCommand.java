@@ -3,19 +3,19 @@ package org.neo4j.neode;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.neode.logging.Log;
 
-class CreateNodesBatchCommand implements BatchCommand<NodeIdCollection>
+class CreateNodesBatchCommand implements BatchCommand<NodeCollection>
 {
     private final NodeSpecification nodeSpecification;
     private final int numberOfIterations;
-    private final NodeIdCollection nodeIdCollection;
+    private final NodeCollection nodeCollection;
     private final int batchSize;
 
-    CreateNodesBatchCommand( NodeSpecification nodeSpecification, int numberOfIterations, NodeIdCollection
-            nodeIdCollection, int batchSize )
+    CreateNodesBatchCommand( NodeSpecification nodeSpecification, int numberOfIterations, NodeCollection
+            nodeCollection, int batchSize )
     {
         this.nodeSpecification = nodeSpecification;
         this.numberOfIterations = numberOfIterations;
-        this.nodeIdCollection = nodeIdCollection;
+        this.nodeCollection = nodeCollection;
         this.batchSize = batchSize;
     }
 
@@ -34,7 +34,7 @@ class CreateNodesBatchCommand implements BatchCommand<NodeIdCollection>
     @Override
     public void execute( GraphDatabaseService db, int iteration )
     {
-        nodeIdCollection.add( nodeSpecification.build( iteration ).getId() );
+        nodeCollection.add( nodeSpecification.build( iteration ) );
     }
 
     @Override
@@ -62,8 +62,8 @@ class CreateNodesBatchCommand implements BatchCommand<NodeIdCollection>
     }
 
     @Override
-    public NodeIdCollection results()
+    public NodeCollection results( GraphDatabaseService db )
     {
-        return nodeIdCollection;
+        return nodeCollection;
     }
 }

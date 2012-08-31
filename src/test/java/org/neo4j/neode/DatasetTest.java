@@ -166,7 +166,7 @@ public class DatasetTest
         }
 
         @Override
-        public NodeIdCollection results()
+        public NodeIdCollection results( GraphDatabaseService db )
         {
             return null;
         }

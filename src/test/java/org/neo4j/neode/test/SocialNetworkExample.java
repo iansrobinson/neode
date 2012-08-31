@@ -1,12 +1,12 @@
 package org.neo4j.neode.test;
 
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
-import static org.neo4j.neode.TargetNodesStrategy.getExisting;
-import static org.neo4j.neode.TargetNodesStrategy.getOrCreate;
-import static org.neo4j.neode.TargetNodesStrategy.queryBasedGetOrCreate;
 import static org.neo4j.neode.GraphQuery.traversal;
 import static org.neo4j.neode.Range.exactly;
 import static org.neo4j.neode.Range.minMax;
+import static org.neo4j.neode.TargetNodesStrategy.getExisting;
+import static org.neo4j.neode.TargetNodesStrategy.getOrCreate;
+import static org.neo4j.neode.TargetNodesStrategy.queryBasedGetOrCreate;
 import static org.neo4j.neode.probabilities.ProbabilityDistribution.flatDistribution;
 import static org.neo4j.neode.probabilities.ProbabilityDistribution.normalDistribution;
 import static org.neo4j.neode.properties.Property.indexableProperty;
@@ -22,6 +22,7 @@ import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.kernel.Traversal;
 import org.neo4j.neode.Dataset;
 import org.neo4j.neode.DatasetManager;
+import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.NodeIdCollection;
 import org.neo4j.neode.NodeSpecification;
 import org.neo4j.neode.RelationshipSpecification;
@@ -68,9 +69,9 @@ public class SocialNetworkExample
 
         Dataset dataset = dsm.newDataset( "Social network example" );
 
-        NodeIdCollection users = user.create( 10 ).update( dataset );
+        NodeCollection users = user.create( 10 ).update( dataset );
 
-        NodeIdCollection topics = users.createRelationshipsTo(
+        NodeCollection topics = users.createRelationshipsTo(
                 getOrCreate( topic, 10, normalDistribution() )
                         .relationship( interested_in )
                         .relationshipConstraints( minMax( 1, 3 ) ) )
@@ -82,7 +83,7 @@ public class SocialNetworkExample
                         .relationshipConstraints( exactly( 1 ) ) )
                 .updateNoReturn( dataset );
 
-        NodeIdCollection allProjects = users.createRelationshipsTo(
+        NodeCollection allProjects = users.createRelationshipsTo(
                 queryBasedGetOrCreate( project, traversal( findCompanyProjects ), 1.2 )
                         .relationship( worked_on )
                         .relationshipConstraints( minMax( 1, 3 ) ) )
