@@ -25,7 +25,7 @@ class RelateToChoiceOfNodesBatchCommandBuilder implements UpdateDataset<List<Nod
         RelateToChoiceOfNodesBatchCommand command =
                 new RelateToChoiceOfNodesBatchCommand( nodeCollection, commands, batchSize );
         dataset.execute( command );
-        return command.results( dataset.db() );
+        return command.results();
     }
 
     @Override

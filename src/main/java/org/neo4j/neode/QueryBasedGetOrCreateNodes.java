@@ -2,7 +2,6 @@ package org.neo4j.neode;
 
 import java.util.List;
 
-import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
 class QueryBasedGetOrCreateNodes implements TargetNodesSource
@@ -17,7 +16,7 @@ class QueryBasedGetOrCreateNodes implements TargetNodesSource
     }
 
     @Override
-    public Iterable<Node> getTargetNodes( int quantity, Node currentNode, GraphDatabaseService db )
+    public Iterable<Node> getTargetNodes( int quantity, Node currentNode )
     {
         List<Node> nodes = sparseNodeListGenerator.getSparseListOfExistingNodes( quantity, currentNode );
         fillGapsInListWithNewNodes( nodes );

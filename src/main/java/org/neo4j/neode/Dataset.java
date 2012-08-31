@@ -35,7 +35,7 @@ public class Dataset
         command.onEnd( log );
         log.write( String.format( "End   [%s] %s\n", command.description(), elapsedTime( startTime ) ) );
 
-        return command.results( db );
+        return command.results();
     }
 
     public void end()
@@ -60,7 +60,7 @@ public class Dataset
             for ( int iteration = startIteration; iterationIsInRange( startIteration, command,
                     iteration ); iteration++ )
             {
-                command.execute( db, iteration );
+                command.execute( iteration );
                 tx.success();
             }
         }

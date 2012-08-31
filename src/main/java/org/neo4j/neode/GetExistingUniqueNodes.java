@@ -4,7 +4,6 @@ import static org.neo4j.neode.Range.minMax;
 
 import java.util.List;
 
-import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
@@ -20,7 +19,7 @@ class GetExistingUniqueNodes implements TargetNodesSource
     }
 
     @Override
-    public Iterable<Node> getTargetNodes( int quantity, Node currentNode, GraphDatabaseService db )
+    public Iterable<Node> getTargetNodes( int quantity, Node currentNode )
     {
         final List<Integer> nodeIdPositions;
         try

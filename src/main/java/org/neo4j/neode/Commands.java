@@ -3,7 +3,6 @@ package org.neo4j.neode;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.neode.logging.Log;
 
 class Commands
@@ -22,12 +21,12 @@ class Commands
         return commandSelectionStrategy.nextCommand( commands );
     }
 
-    public List<NodeCollection> results( GraphDatabaseService db )
+    public List<NodeCollection> results()
     {
         List<NodeCollection> results = new ArrayList<NodeCollection>();
         for ( BatchCommand<NodeCollection> command : commands )
         {
-            results.add( command.results( db ) );
+            results.add( command.results() );
         }
         return results;
     }

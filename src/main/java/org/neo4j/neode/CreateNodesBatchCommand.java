@@ -1,6 +1,5 @@
 package org.neo4j.neode;
 
-import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.neode.logging.Log;
 
 class CreateNodesBatchCommand implements BatchCommand<NodeCollection>
@@ -32,7 +31,7 @@ class CreateNodesBatchCommand implements BatchCommand<NodeCollection>
     }
 
     @Override
-    public void execute( GraphDatabaseService db, int iteration )
+    public void execute( int iteration )
     {
         nodeCollection.add( nodeSpecification.build( iteration ) );
     }
@@ -62,7 +61,7 @@ class CreateNodesBatchCommand implements BatchCommand<NodeCollection>
     }
 
     @Override
-    public NodeCollection results( GraphDatabaseService db )
+    public NodeCollection results()
     {
         return nodeCollection;
     }

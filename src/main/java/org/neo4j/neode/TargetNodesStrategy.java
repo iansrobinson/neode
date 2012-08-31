@@ -84,11 +84,10 @@ public class TargetNodesStrategy
         this.relationshipConstraints = relationshipConstraints;
     }
 
-    int addRelationshipsToCurrentNode( GraphDatabaseService db, Node currentNode, NodeCollection targetNodes,
-                                       int iteration )
+    int addRelationshipsToCurrentNode( Node currentNode, NodeCollection targetNodes, int iteration )
     {
         int numberOfRelsToCreate = relationshipConstraints.calculateNumberOfRelsToCreate();
-        Iterable<Node> otherNodes = targetNodesSource.getTargetNodes( numberOfRelsToCreate, currentNode, db );
+        Iterable<Node> otherNodes = targetNodesSource.getTargetNodes( numberOfRelsToCreate, currentNode );
 
         int count = 0;
         for ( Node otherNode : otherNodes )

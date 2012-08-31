@@ -40,7 +40,7 @@ public class QueryBasedGetOrCreateNodesTest
         QueryBasedGetOrCreateNodes queryBasedGetOrCreate = new QueryBasedGetOrCreateNodes( user, finder );
 
         // when
-        Iterable<Node> results = queryBasedGetOrCreate.getTargetNodes( 5, currentNode, db );
+        Iterable<Node> results = queryBasedGetOrCreate.getTargetNodes( 5, currentNode );
         tx.success();
         tx.finish();
 

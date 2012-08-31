@@ -23,7 +23,7 @@ public class DatasetTest
 
         DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = executor.newDataset( "Test" );
-        DummyBatchCommand command = new DummyBatchCommand( 10, 2 );
+        DummyBatchCommand command = new DummyBatchCommand( db, 10, 2 );
 
         // when
         dataset.execute( command );
@@ -45,7 +45,7 @@ public class DatasetTest
 
         DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = executor.newDataset( "Test" );
-        DummyBatchCommand command = new DummyBatchCommand( 10, 3 );
+        DummyBatchCommand command = new DummyBatchCommand( db, 10, 3 );
 
         // when
         dataset.execute( command );
@@ -67,7 +67,7 @@ public class DatasetTest
 
         DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = executor.newDataset( "Test" );
-        DummyBatchCommand command = new DummyBatchCommand( 3, 5 );
+        DummyBatchCommand command = new DummyBatchCommand( db, 3, 5 );
 
         // when
         dataset.execute( command );
@@ -114,12 +114,14 @@ public class DatasetTest
 
     private class DummyBatchCommand implements BatchCommand<NodeCollection>
     {
+        private final GraphDatabaseService db;
         private final int numberOfIterations;
         private final int batchSize;
         private int callCount = 0;
 
-        private DummyBatchCommand( int numberOfIterations, int batchSize )
+        private DummyBatchCommand( GraphDatabaseService db, int numberOfIterations, int batchSize )
         {
+            this.db = db;
             this.numberOfIterations = numberOfIterations;
             this.batchSize = batchSize;
         }
@@ -137,7 +139,7 @@ public class DatasetTest
         }
 
         @Override
-        public void execute( GraphDatabaseService db, int iteration )
+        public void execute( int iteration )
         {
             db.createNode();
             callCount++;
@@ -166,7 +168,7 @@ public class DatasetTest
         }
 
         @Override
-        public NodeCollection results( GraphDatabaseService db )
+        public NodeCollection results()
         {
             return null;
         }

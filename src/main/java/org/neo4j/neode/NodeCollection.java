@@ -24,12 +24,12 @@ public class NodeCollection implements Iterable<Node>
         this.nodeIds = nodeIds;
     }
 
-    public void add( Node node )
+    void add( Node node )
     {
         nodeIds.add( node.getId() );
     }
 
-    public Node getNodeByPosition( int position )
+    Node getNodeByPosition( int position )
     {
         return db.getNodeById( nodeIds.get( position ) );
     }
@@ -72,7 +72,7 @@ public class NodeCollection implements Iterable<Node>
         };
     }
 
-    public NodeCollection subset( List<Integer> positions )
+    NodeCollection subset( List<Integer> positions )
     {
         List<Long> newNodeIds = new ArrayList<Long>( positions.size() );
         for ( Integer position : positions )

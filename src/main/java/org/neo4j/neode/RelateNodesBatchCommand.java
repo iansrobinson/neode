@@ -1,6 +1,5 @@
 package org.neo4j.neode;
 
-import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.logging.Log;
 
@@ -34,11 +33,11 @@ class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
     }
 
     @Override
-    public void execute( GraphDatabaseService db, int iteration )
+    public void execute( int iteration )
     {
         Node currentNode = sourceNodes.getNodeByPosition( iteration );
         totalRels += targetNodesStrategy
-                .addRelationshipsToCurrentNode( db, currentNode, targetNodes, iteration );
+                .addRelationshipsToCurrentNode( currentNode, targetNodes, iteration );
     }
 
     @Override
@@ -67,7 +66,7 @@ class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
     }
 
     @Override
-    public NodeCollection results( GraphDatabaseService db )
+    public NodeCollection results()
     {
         return targetNodes;
     }

@@ -1,6 +1,5 @@
 package org.neo4j.neode;
 
-import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
 public class QueryBasedGetExistingNodes implements TargetNodesSource
@@ -13,7 +12,7 @@ public class QueryBasedGetExistingNodes implements TargetNodesSource
     }
 
     @Override
-    public Iterable<Node> getTargetNodes( int quantity, Node currentNode, GraphDatabaseService db )
+    public Iterable<Node> getTargetNodes( int quantity, Node currentNode )
     {
         return query.execute( currentNode );
     }

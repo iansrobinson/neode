@@ -1,6 +1,5 @@
 package org.neo4j.neode;
 
-import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
 class CreateUniqueNodes implements TargetNodesSource
@@ -13,7 +12,7 @@ class CreateUniqueNodes implements TargetNodesSource
     }
 
     @Override
-    public Iterable<Node> getTargetNodes( int quantity, Node currentNode, GraphDatabaseService db )
+    public Iterable<Node> getTargetNodes( int quantity, Node currentNode )
     {
         NodeCollection nodeCollection = nodeSpecification.emptyNodeCollection( quantity );
         for ( int i = 0; i < quantity; i++ )
