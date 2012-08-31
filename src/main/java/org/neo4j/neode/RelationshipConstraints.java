@@ -24,14 +24,14 @@ class RelationshipConstraints
     }
 
     public Relationship createRelationship( Node currentNode, Node targetNode,
-                                            NodeIdCollection targetNodeIds,
+                                            NodeCollection targetNodes,
                                             RelationshipInfo relationshipInfo, int iteration )
     {
         Relationship relationship = relationshipUniqueness.createRelationship( currentNode, targetNode,
                 relationshipInfo, iteration );
         if ( relationship != null )
         {
-            targetNodeIds.add( targetNode.getId() );
+            targetNodes.add( targetNode );
         }
         return relationship;
     }

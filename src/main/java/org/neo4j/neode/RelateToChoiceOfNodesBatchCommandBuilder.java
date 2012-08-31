@@ -20,8 +20,8 @@ class RelateToChoiceOfNodesBatchCommandBuilder implements UpdateDataset<List<Nod
     @Override
     public List<NodeCollection> update( Dataset dataset, int batchSize )
     {
-        Commands commands = choiceOfTargetNodesStrategy.createCommandSelector( nodeCollection, batchSize,
-                NodeIdCollectionFactory.INSTANCE );
+        Commands commands = choiceOfTargetNodesStrategy.createCommandSelector( dataset.db(), nodeCollection, batchSize,
+                NodeCollectionFactory.INSTANCE );
         RelateToChoiceOfNodesBatchCommand command =
                 new RelateToChoiceOfNodesBatchCommand( nodeCollection, commands, batchSize );
         dataset.execute( command );
@@ -37,9 +37,9 @@ class RelateToChoiceOfNodesBatchCommandBuilder implements UpdateDataset<List<Nod
     @Override
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
-        Commands commands = choiceOfTargetNodesStrategy.createCommandSelector( nodeCollection,
+        Commands commands = choiceOfTargetNodesStrategy.createCommandSelector( dataset.db(), nodeCollection,
                 DEFAULT_BATCH_SIZE,
-                NodeIdCollectionFactory.NULL );
+                NodeCollectionFactory.NULL );
         RelateToChoiceOfNodesBatchCommand command =
                 new RelateToChoiceOfNodesBatchCommand( nodeCollection, commands, batchSize );
         dataset.execute( command );

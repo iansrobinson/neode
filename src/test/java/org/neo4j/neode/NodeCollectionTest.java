@@ -4,6 +4,7 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.hamcrest.Description;
@@ -25,9 +26,8 @@ public class NodeCollectionTest
             public void execute( GraphDatabaseService db, Node firstNode, Node secondNode, Node thirdNode )
             {
                 // given
-                NodeIdCollection nodeIdCollection = new NodeIdCollection( "user",
+                NodeCollection nodeCollection = new NodeCollection( db, "user",
                         asList( firstNode.getId(), secondNode.getId(), thirdNode.getId() ) );
-                NodeCollection nodeCollection = new NodeCollection( db, nodeIdCollection );
 
                 // then
                 assertEquals( firstNode, nodeCollection.getNodeByPosition( 0 ) );
@@ -46,9 +46,8 @@ public class NodeCollectionTest
             public void execute( GraphDatabaseService db, Node firstNode, Node secondNode, Node thirdNode )
             {
                 // given
-                NodeIdCollection nodeIdCollection = new NodeIdCollection( "user",
+                NodeCollection nodeCollection = new NodeCollection( db, "user",
                         asList( firstNode.getId(), secondNode.getId(), thirdNode.getId() ) );
-                NodeCollection nodeCollection = new NodeCollection( db, nodeIdCollection );
 
                 // then
                 Iterable<Node> expectedNodes = asList( firstNode, secondNode, thirdNode );
@@ -66,8 +65,7 @@ public class NodeCollectionTest
             public void execute( GraphDatabaseService db, Node firstNode, Node secondNode, Node thirdNode )
             {
                 // given
-                NodeIdCollection nodeIdCollection = new NodeIdCollection( "user", 3 );
-                NodeCollection nodeCollection = new NodeCollection( db, nodeIdCollection );
+                NodeCollection nodeCollection = new NodeCollection( db, "user", new ArrayList<Long>() );
 
                 // when
                 nodeCollection.add( firstNode );
@@ -77,6 +75,90 @@ public class NodeCollectionTest
                 // then
                 Iterable<Node> expectedNodes = asList( firstNode, secondNode, thirdNode );
                 assertThat( nodeCollection, returnsSameItems( expectedNodes ) );
+            }
+        } );
+    }
+
+    @Test
+    public void shouldReturnLabel() throws Exception
+    {
+        Db.usingSampleDataset( new Db.WithSampleDataset()
+        {
+            @Override
+            public void execute( GraphDatabaseService db, Node firstNode, Node secondNode, Node thirdNode )
+            {
+                // given
+                NodeCollection nodeCollection = new NodeCollection( db, "user",
+                        asList( firstNode.getId(), secondNode.getId(), thirdNode.getId() ) );
+                // then
+                assertEquals( "user", nodeCollection.label() );
+            }
+        } );
+    }
+
+    @Test
+    public void shouldReturnNumberOfNodes() throws Exception
+    {
+
+        Db.usingSampleDataset( new Db.WithSampleDataset()
+        {
+            @Override
+            public void execute( GraphDatabaseService db, Node firstNode, Node secondNode, Node thirdNode )
+            {
+                // given
+                NodeCollection nodeCollection = new NodeCollection( db, "user",
+                        asList( firstNode.getId(), secondNode.getId(), thirdNode.getId() ) );
+                // then
+                assertEquals( 3, nodeCollection.size() );
+            }
+        } );
+    }
+
+
+    @Test
+    public void shouldReturnSubsetOfSelf() throws Exception
+    {
+
+        Db.usingSampleDataset( new Db.WithSampleDataset()
+        {
+            @Override
+            public void execute( GraphDatabaseService db, Node firstNode, Node secondNode, Node thirdNode )
+            {
+                // given
+                NodeCollection nodeCollection = new NodeCollection( db, "user",
+                        asList( firstNode.getId(), secondNode.getId(), thirdNode.getId() ) );
+
+                // when
+                NodeCollection subset = nodeCollection.subset( asList( 0, 2 ) );
+
+                // then
+                Iterable<Node> expectedNodes = asList( firstNode, thirdNode );
+                assertThat( subset, returnsSameItems( expectedNodes ) );
+            }
+        } );
+    }
+
+    @Test
+    public void shouldBeAbleToCombineCollections() throws Exception
+    {
+
+        Db.usingSampleDataset( new Db.WithSampleDataset()
+        {
+            @Override
+            public void execute( GraphDatabaseService db, Node firstNode, Node secondNode, Node thirdNode )
+            {
+                // given
+                NodeCollection firstCollection = new NodeCollection( db, "user",
+                        asList( firstNode.getId(), secondNode.getId() ) );
+                NodeCollection secondCollection = new NodeCollection( db, "user",
+                        asList( thirdNode.getId() ) );
+
+                // when
+                NodeCollection combined = firstCollection.combine( secondCollection );
+
+                // then
+                Iterable<Node> expectedNodes = asList( firstNode, secondNode, thirdNode );
+                assertThat( combined, returnsSameItems( expectedNodes ) );
             }
         } );
     }

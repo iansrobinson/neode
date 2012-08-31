@@ -6,6 +6,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -28,7 +30,7 @@ public class GetOrCreateUniqueNodesTest
         when( probabilityDistribution.generateList( 1, Range.minMax( 1, 5 ) ) ).thenReturn( asList( 1 ) );
 
         NodeSpecification user = mock( NodeSpecification.class );
-        when( user.emptyNodeCollection( 5 ) ).thenReturn(  new NodeCollection(db, new NodeIdCollection( "user", 5 )) );
+        when( user.emptyNodeCollection( 5 ) ).thenReturn(  new NodeCollection(db, "user", new ArrayList<Long>( 5 ) ) );
         when( user.build( 0 ) ).thenReturn( newNode );
 
         GetOrCreateUniqueNodes nodeFinder = new GetOrCreateUniqueNodes( user, 5, probabilityDistribution );
@@ -55,7 +57,7 @@ public class GetOrCreateUniqueNodesTest
         when( probabilityDistribution.generateList( 1, Range.minMax( 1, 5 ) ) ).thenReturn( asList( 1 ) );
 
         NodeSpecification user = mock( NodeSpecification.class );
-        when( user.emptyNodeCollection( 5 ) ).thenReturn(  new NodeCollection(db, new NodeIdCollection( "user", 5 )) );
+        when( user.emptyNodeCollection( 5 ) ).thenReturn(  new NodeCollection(db, "user", new ArrayList<Long>( 5 ) ) );
         when( user.build( 0 ) ).thenReturn( newNode );
 
         GetOrCreateUniqueNodes nodeFinder = new GetOrCreateUniqueNodes( user, 5, probabilityDistribution );

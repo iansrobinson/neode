@@ -84,17 +84,17 @@ public class TargetNodesStrategy
         this.relationshipConstraints = relationshipConstraints;
     }
 
-    int addRelationshipsToCurrentNode( GraphDatabaseService db, Node currentNode, NodeIdCollection targetNodeIds,
+    int addRelationshipsToCurrentNode( GraphDatabaseService db, Node currentNode, NodeCollection targetNodes,
                                        int iteration )
     {
         int numberOfRelsToCreate = relationshipConstraints.calculateNumberOfRelsToCreate();
-        Iterable<Node> targetNodes = targetNodesSource.getTargetNodes( numberOfRelsToCreate, currentNode, db );
+        Iterable<Node> otherNodes = targetNodesSource.getTargetNodes( numberOfRelsToCreate, currentNode, db );
 
         int count = 0;
-        for ( Node targetNode : targetNodes )
+        for ( Node otherNode : otherNodes )
         {
             Relationship relationship = relationshipConstraints
-                    .createRelationship( currentNode, targetNode, targetNodeIds, relationshipInfo, iteration );
+                    .createRelationship( currentNode, otherNode, targetNodes, relationshipInfo, iteration );
             if ( relationship != null )
             {
                 count++;
@@ -103,14 +103,14 @@ public class TargetNodesStrategy
         return count;
     }
 
-    NodeIdCollection newNodeIdCollection( List<Long> nodeIds )
+    NodeCollection newNodeCollection( GraphDatabaseService db, List<Long> nodeIds )
     {
-        return new NodeIdCollection( targetNodesSource.label(), nodeIds );
+        return new NodeCollection( db, targetNodesSource.label(), nodeIds );
     }
 
-    NodeIdCollection newNodeIdCollection( NodeIdCollectionFactory nodeIdCollectionFactory )
+    NodeCollection newNodeCollection( GraphDatabaseService db, NodeCollectionFactory nodeCollectionFactory )
     {
-        return nodeIdCollectionFactory.createNodeIdCollection( targetNodesSource.label() );
+        return nodeCollectionFactory.createNodeCollection( db, targetNodesSource.label() );
     }
 
     String description( String startNodeLabel )

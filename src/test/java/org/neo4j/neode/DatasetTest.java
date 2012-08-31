@@ -112,7 +112,7 @@ public class DatasetTest
         }
     }
 
-    private class DummyBatchCommand implements BatchCommand<NodeIdCollection>
+    private class DummyBatchCommand implements BatchCommand<NodeCollection>
     {
         private final int numberOfIterations;
         private final int batchSize;
@@ -166,7 +166,7 @@ public class DatasetTest
         }
 
         @Override
-        public NodeIdCollection results( GraphDatabaseService db )
+        public NodeCollection results( GraphDatabaseService db )
         {
             return null;
         }

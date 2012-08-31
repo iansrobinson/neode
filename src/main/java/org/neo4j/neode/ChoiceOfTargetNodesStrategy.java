@@ -5,6 +5,8 @@ import static java.util.Arrays.asList;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.neo4j.graphdb.GraphDatabaseService;
+
 public abstract class ChoiceOfTargetNodesStrategy
 {
     public static ChoiceOfTargetNodesStrategy randomChoice( TargetNodesStrategy... targetNodeStrategies )
@@ -24,14 +26,14 @@ public abstract class ChoiceOfTargetNodesStrategy
         this.targetNodeStrategies = targetNodeStrategies;
     }
 
-    Commands createCommandSelector( NodeCollection sourceNodes, int batchSize,
-                                    NodeIdCollectionFactory nodeIdCollectionFactory )
+    Commands createCommandSelector( GraphDatabaseService db, NodeCollection sourceNodes, int batchSize,
+                                    NodeCollectionFactory nodeCollectionFactory )
     {
         List<BatchCommand<NodeCollection>> commands = new ArrayList<BatchCommand<NodeCollection>>();
         for ( TargetNodesStrategy targetNodeStrategy : targetNodeStrategies )
         {
             RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodes, targetNodeStrategy,
-                    targetNodeStrategy.newNodeIdCollection( nodeIdCollectionFactory ), batchSize );
+                    targetNodeStrategy.newNodeCollection( db, nodeCollectionFactory ), batchSize );
             commands.add( command );
         }
         return doCreateCommandSelector( commands );

@@ -23,7 +23,6 @@ import org.neo4j.kernel.Traversal;
 import org.neo4j.neode.Dataset;
 import org.neo4j.neode.DatasetManager;
 import org.neo4j.neode.NodeCollection;
-import org.neo4j.neode.NodeIdCollection;
 import org.neo4j.neode.NodeSpecification;
 import org.neo4j.neode.RelationshipSpecification;
 import org.neo4j.neode.RelationshipUniqueness;

@@ -8,16 +8,16 @@ class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
 {
     private final NodeCollection sourceNodes;
     private final TargetNodesStrategy targetNodesStrategy;
-    private final NodeIdCollection targetNodeIds;
+    private final NodeCollection targetNodes;
     private final int batchSize;
     private long totalRels = 0;
 
     RelateNodesBatchCommand( NodeCollection sourceNodes, TargetNodesStrategy targetNodesStrategy,
-                             NodeIdCollection targetNodeIds, int batchSize )
+                             NodeCollection targetNodes, int batchSize )
     {
         this.sourceNodes = sourceNodes;
         this.targetNodesStrategy = targetNodesStrategy;
-        this.targetNodeIds = targetNodeIds;
+        this.targetNodes = targetNodes;
         this.batchSize = batchSize;
     }
 
@@ -38,7 +38,7 @@ class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
     {
         Node currentNode = sourceNodes.getNodeByPosition( iteration );
         totalRels += targetNodesStrategy
-                .addRelationshipsToCurrentNode( db, currentNode, targetNodeIds, iteration );
+                .addRelationshipsToCurrentNode( db, currentNode, targetNodes, iteration );
     }
 
     @Override
@@ -69,6 +69,6 @@ class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
     @Override
     public NodeCollection results( GraphDatabaseService db )
     {
-        return new NodeCollection( db, targetNodeIds );
+        return targetNodes;
     }
 }

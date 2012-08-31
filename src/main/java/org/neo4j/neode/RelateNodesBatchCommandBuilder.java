@@ -21,7 +21,7 @@ class RelateNodesBatchCommandBuilder implements UpdateDataset<NodeCollection>
     public NodeCollection update( Dataset dataset, int batchSize )
     {
         RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodes, targetNodesStrategy,
-               targetNodesStrategy.newNodeIdCollection( new ArrayList<Long>() ), batchSize );
+               targetNodesStrategy.newNodeCollection( dataset.db(), new ArrayList<Long>() ), batchSize );
         return dataset.execute( command );
     }
 
@@ -36,7 +36,7 @@ class RelateNodesBatchCommandBuilder implements UpdateDataset<NodeCollection>
     {
 
         RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodes, targetNodesStrategy,
-                NodeIdCollection.NULL, batchSize );
+                NodeCollection.NULL, batchSize );
         dataset.execute( command );
     }
 
