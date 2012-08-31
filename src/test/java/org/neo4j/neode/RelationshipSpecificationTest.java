@@ -29,10 +29,10 @@ public class RelationshipSpecificationTest
         Node endNode = db.createNode();
 
         RelationshipSpecification specification = new RelationshipSpecification( withName( "FRIEND" ),
-                Collections.<Property>emptyList() );
+                Collections.<Property>emptyList(), db );
 
         // when
-        specification.createRelationship( startNode, endNode, db, 0 );
+        specification.createRelationship( startNode, endNode, 0 );
         tx.success();
         tx.finish();
 
@@ -60,10 +60,10 @@ public class RelationshipSpecificationTest
             }
         };
         RelationshipSpecification specification = new RelationshipSpecification( withName( "FRIEND" ),
-                asList( property( "name", propertyValueGenerator ) ) );
+                asList( property( "name", propertyValueGenerator ) ), db );
 
         // when
-        specification.createRelationship( startNode, endNode, db, 0 );
+        specification.createRelationship( startNode, endNode, 0 );
         tx.success();
         tx.finish();
 
@@ -77,7 +77,7 @@ public class RelationshipSpecificationTest
     {
         // given
         RelationshipSpecification specification = new RelationshipSpecification( withName( "FRIEND" ),
-                Collections.<Property>emptyList() );
+                Collections.<Property>emptyList(), Db.impermanentDb() );
 
         // then
         assertEquals("FRIEND", specification.label());

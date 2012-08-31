@@ -18,7 +18,7 @@ import org.neo4j.neode.test.Db;
 public class RelationshipInfoTest
 {
     private static final RelationshipSpecification relationshipSpecification =
-            new RelationshipSpecification( withName( "FRIEND" ), Collections.<Property>emptyList() );
+            new RelationshipSpecification( withName( "FRIEND" ), Collections.<Property>emptyList(), Db.impermanentDb() );
 
     @Test
     public void shouldReturnDescriptionOfRelationship() throws Exception

@@ -39,11 +39,11 @@ class RelationshipInfo
     {
         if ( direction.equals( Direction.OUTGOING ) )
         {
-            return relationshipSpecification.createRelationship( firstNode, secondNode, db, iteration );
+            return relationshipSpecification.createRelationship( firstNode, secondNode, iteration );
         }
         else
         {
-            return relationshipSpecification.createRelationship( secondNode, firstNode, db, iteration );
+            return relationshipSpecification.createRelationship( secondNode, firstNode, iteration );
         }
     }
 

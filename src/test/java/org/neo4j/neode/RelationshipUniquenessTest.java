@@ -31,7 +31,7 @@ public class RelationshipUniquenessTest
         firstNode.createRelationshipTo( secondNode, friend_of );
 
         RelationshipSpecification relationshipSpecification = new RelationshipSpecification( friend_of,
-                Collections.<Property>emptyList() );
+                Collections.<Property>emptyList(), db );
         RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.OUTGOING );
 
         RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.SINGLE_DIRECTION;
@@ -60,7 +60,7 @@ public class RelationshipUniquenessTest
         secondNode.createRelationshipTo( firstNode, friend_of );
 
         RelationshipSpecification relationshipSpecification = new RelationshipSpecification( friend_of,
-                Collections.<Property>emptyList() );
+                Collections.<Property>emptyList(), db );
         RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.OUTGOING );
 
         RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.SINGLE_DIRECTION;
@@ -89,7 +89,7 @@ public class RelationshipUniquenessTest
         firstNode.createRelationshipTo( secondNode, friend_of );
 
         RelationshipSpecification relationshipSpecification = new RelationshipSpecification( friend_of,
-                Collections.<Property>emptyList() );
+                Collections.<Property>emptyList(), db );
         RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.OUTGOING );
 
         RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.BOTH_DIRECTIONS;
@@ -118,7 +118,7 @@ public class RelationshipUniquenessTest
         secondNode.createRelationshipTo( firstNode, friend_of );
 
         RelationshipSpecification relationshipSpecification = new RelationshipSpecification( friend_of,
-                Collections.<Property>emptyList() );
+                Collections.<Property>emptyList(), db );
         RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.OUTGOING );
 
         RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.BOTH_DIRECTIONS;
@@ -146,7 +146,7 @@ public class RelationshipUniquenessTest
         firstNode.createRelationshipTo( secondNode, friend_of );
 
         RelationshipSpecification relationshipSpecification = new RelationshipSpecification( friend_of,
-                Collections.<Property>emptyList() );
+                Collections.<Property>emptyList(), db );
         RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.OUTGOING );
 
         RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.ALLOW_MULTIPLE;
@@ -176,7 +176,7 @@ public class RelationshipUniquenessTest
         secondNode.createRelationshipTo( firstNode, friend_of );
 
         RelationshipSpecification relationshipSpecification = new RelationshipSpecification( friend_of,
-                Collections.<Property>emptyList() );
+                Collections.<Property>emptyList(), db );
         RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.OUTGOING );
 
         RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.ALLOW_MULTIPLE;

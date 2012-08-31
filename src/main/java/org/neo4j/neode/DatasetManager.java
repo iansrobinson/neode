@@ -32,7 +32,7 @@ public class DatasetManager
     public RelationshipSpecification relationshipSpecification( RelationshipType relationshipType,
                                                                 Property... properties )
     {
-        return new RelationshipSpecification( relationshipType, asList( properties ) );
+        return new RelationshipSpecification( relationshipType, asList( properties ), db );
     }
 
     public Dataset newDataset( String description )

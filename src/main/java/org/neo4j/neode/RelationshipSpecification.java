@@ -16,14 +16,16 @@ public class RelationshipSpecification
 {
     private final RelationshipType relationshipType;
     private final List<Property> properties;
+    private final GraphDatabaseService db;
 
-    RelationshipSpecification( RelationshipType relationshipType, List<Property> properties )
+    RelationshipSpecification( RelationshipType relationshipType, List<Property> properties, GraphDatabaseService db )
     {
         this.relationshipType = relationshipType;
         this.properties = properties;
+        this.db = db;
     }
 
-    Relationship createRelationship( Node startNode, Node endNode, GraphDatabaseService db, int iteration )
+    Relationship createRelationship( Node startNode, Node endNode, int iteration )
     {
         Relationship rel = startNode.createRelationshipTo( endNode, relationshipType );
 
