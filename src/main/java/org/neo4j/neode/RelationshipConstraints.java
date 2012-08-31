@@ -23,9 +23,9 @@ class RelationshipConstraints
         return probabilityDistribution.generateSingle( cardinality );
     }
 
-    public Relationship addRelationshipToCurrentNode( Node currentNode, Node targetNode,
-                                                      NodeIdCollection targetNodeIds,
-                                                      RelationshipInfo relationshipInfo, int iteration )
+    public Relationship createRelationship( Node currentNode, Node targetNode,
+                                            NodeIdCollection targetNodeIds,
+                                            RelationshipInfo relationshipInfo, int iteration )
     {
         Relationship relationship = relationshipUniqueness.createRelationship( currentNode, targetNode,
                 relationshipInfo, iteration );

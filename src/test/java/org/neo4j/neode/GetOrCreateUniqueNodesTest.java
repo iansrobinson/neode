@@ -28,13 +28,13 @@ public class GetOrCreateUniqueNodesTest
         when( probabilityDistribution.generateList( 1, Range.minMax( 1, 5 ) ) ).thenReturn( asList( 1 ) );
 
         NodeSpecification user = mock( NodeSpecification.class );
-        when( user.emptyNodeIdCollection( 5 ) ).thenReturn( new NodeIdCollection( "user", 5 ) );
+        when( user.emptyNodeCollection( 5 ) ).thenReturn(  new NodeCollection(db, new NodeIdCollection( "user", 5 )) );
         when( user.build( 0 ) ).thenReturn( newNode );
 
         GetOrCreateUniqueNodes nodeFinder = new GetOrCreateUniqueNodes( user, 5, probabilityDistribution );
 
         // when
-        nodeFinder.getTargetNodes( 1, db, currentNode );
+        nodeFinder.getTargetNodes( 1, currentNode, db );
         tx.success();
         tx.finish();
 
@@ -55,14 +55,14 @@ public class GetOrCreateUniqueNodesTest
         when( probabilityDistribution.generateList( 1, Range.minMax( 1, 5 ) ) ).thenReturn( asList( 1 ) );
 
         NodeSpecification user = mock( NodeSpecification.class );
-        when( user.emptyNodeIdCollection( 5 ) ).thenReturn( new NodeIdCollection( "user", 5 ) );
+        when( user.emptyNodeCollection( 5 ) ).thenReturn(  new NodeCollection(db, new NodeIdCollection( "user", 5 )) );
         when( user.build( 0 ) ).thenReturn( newNode );
 
         GetOrCreateUniqueNodes nodeFinder = new GetOrCreateUniqueNodes( user, 5, probabilityDistribution );
 
         // when
-        nodeFinder.getTargetNodes( 1, db, currentNode );
-        nodeFinder.getTargetNodes( 1, db, currentNode );
+        nodeFinder.getTargetNodes( 1, currentNode, db );
+        nodeFinder.getTargetNodes( 1, currentNode, db );
         tx.success();
         tx.finish();
 

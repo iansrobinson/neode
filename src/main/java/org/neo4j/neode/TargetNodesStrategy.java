@@ -87,13 +87,14 @@ public class TargetNodesStrategy
     int addRelationshipsToCurrentNode( GraphDatabaseService db, Node currentNode, NodeIdCollection targetNodeIds,
                                        int iteration )
     {
+        int numberOfRelsToCreate = relationshipConstraints.calculateNumberOfRelsToCreate();
+        Iterable<Node> targetNodes = targetNodesSource.getTargetNodes( numberOfRelsToCreate, currentNode, db );
+
         int count = 0;
-        Iterable<Node> targetNodes = getRandomSelectionOfNodes( db, currentNode );
         for ( Node targetNode : targetNodes )
         {
             Relationship relationship = relationshipConstraints
-                    .addRelationshipToCurrentNode( currentNode, targetNode, targetNodeIds,
-                            relationshipInfo, iteration );
+                    .createRelationship( currentNode, targetNode, targetNodeIds, relationshipInfo, iteration );
             if ( relationship != null )
             {
                 count++;
@@ -122,11 +123,4 @@ public class TargetNodesStrategy
     {
         return relationshipConstraints.description();
     }
-
-    private Iterable<Node> getRandomSelectionOfNodes( GraphDatabaseService db, Node firstNode )
-    {
-        int numberOfRelsToCreate = relationshipConstraints.calculateNumberOfRelsToCreate();
-        return targetNodesSource.getTargetNodes( numberOfRelsToCreate, db, firstNode );
-    }
-
 }

@@ -13,7 +13,7 @@ public class QueryBasedGetExistingNodes implements TargetNodesSource
     }
 
     @Override
-    public Iterable<Node> getTargetNodes( int quantity, GraphDatabaseService db, Node currentNode )
+    public Iterable<Node> getTargetNodes( int quantity, Node currentNode, GraphDatabaseService db )
     {
         return query.execute( currentNode );
     }

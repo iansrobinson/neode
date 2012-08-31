@@ -41,6 +41,12 @@ public class NodeSpecification
         return new NodeIdCollection( label, capacity );
     }
 
+    NodeCollection emptyNodeCollection(int capacity)
+    {
+        NodeIdCollection nodeIdCollection = new NodeIdCollection( label, capacity );
+        return new NodeCollection( db, nodeIdCollection );
+    }
+
     String label()
     {
         return label;

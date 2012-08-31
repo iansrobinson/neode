@@ -17,7 +17,7 @@ class QueryBasedGetOrCreateNodes implements TargetNodesSource
     }
 
     @Override
-    public Iterable<Node> getTargetNodes( int quantity, GraphDatabaseService db, Node currentNode )
+    public Iterable<Node> getTargetNodes( int quantity, Node currentNode, GraphDatabaseService db )
     {
         List<Node> nodes = sparseNodeListGenerator.getSparseListOfExistingNodes( quantity, currentNode );
         fillGapsInListWithNewNodes( nodes );

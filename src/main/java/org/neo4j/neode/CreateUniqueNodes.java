@@ -13,14 +13,14 @@ class CreateUniqueNodes implements TargetNodesSource
     }
 
     @Override
-    public Iterable<Node> getTargetNodes( int quantity, GraphDatabaseService db, Node currentNode )
+    public Iterable<Node> getTargetNodes( int quantity, Node currentNode, GraphDatabaseService db )
     {
-        NodeIdCollection nodeIdCollection = nodeSpecification.emptyNodeIdCollection( quantity );
+        NodeCollection nodeCollection = nodeSpecification.emptyNodeCollection( quantity );
         for ( int i = 0; i < quantity; i++ )
         {
-            nodeIdCollection.add( nodeSpecification.build( i ).getId() );
+            nodeCollection.add( nodeSpecification.build( i ) );
         }
-        return new NodeCollection( db, nodeIdCollection );
+        return nodeCollection;
     }
 
     @Override

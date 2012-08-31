@@ -26,7 +26,7 @@ public class CreateUniqueNodesTest
                 new NodeSpecification( "user", Collections.<Property>emptyList(), db ) );
 
         // when
-        Iterable<Node> nodes = command.getTargetNodes( 3, db, null );
+        Iterable<Node> nodes = command.getTargetNodes( 3, null, db );
 
         // then
         Iterator<Node> iterator = nodes.iterator();

@@ -20,7 +20,7 @@ class GetExistingUniqueNodes implements TargetNodesSource
     }
 
     @Override
-    public Iterable<Node> getTargetNodes( int quantity, GraphDatabaseService db, Node currentNode )
+    public Iterable<Node> getTargetNodes( int quantity, Node currentNode, GraphDatabaseService db )
     {
         final List<Integer> nodeIdPositions;
         try

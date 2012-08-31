@@ -10,5 +10,5 @@ import org.neo4j.graphdb.Node;
 interface TargetNodesSource
 {
     public String label();
-    public Iterable<Node> getTargetNodes( int quantity, GraphDatabaseService db, Node currentNode );
+    public Iterable<Node> getTargetNodes( int quantity, Node currentNode, GraphDatabaseService db );
 }

@@ -13,7 +13,7 @@ class GetOrCreateUniqueNodes implements TargetNodesSource
     private final NodeSpecification nodeSpecification;
     private final int totalNumberOfNodes;
     private final ProbabilityDistribution probabilityDistribution;
-    private final NodeIdCollection nodeIdCollection;
+    private final NodeCollection nodeCollection;
 
     GetOrCreateUniqueNodes( NodeSpecification nodeSpecification, int totalNumberOfNodes,
                             ProbabilityDistribution probabilityDistribution )
@@ -21,11 +21,11 @@ class GetOrCreateUniqueNodes implements TargetNodesSource
         this.nodeSpecification = nodeSpecification;
         this.totalNumberOfNodes = totalNumberOfNodes;
         this.probabilityDistribution = probabilityDistribution;
-        this.nodeIdCollection = nodeSpecification.emptyNodeIdCollection( totalNumberOfNodes );
+        this.nodeCollection = nodeSpecification.emptyNodeCollection( totalNumberOfNodes );
     }
 
     @Override
-    public Iterable<Node> getTargetNodes( int quantity, GraphDatabaseService db, Node currentNode )
+    public Iterable<Node> getTargetNodes( int quantity, Node currentNode, GraphDatabaseService db )
     {
         final List<Integer> nodeIdCounters;
         try
@@ -44,13 +44,13 @@ class GetOrCreateUniqueNodes implements TargetNodesSource
 
         for ( Integer nodeIdCounter : nodeIdCounters )
         {
-            if ( nodeIdCounter > nodeIdCollection.size() )
+            if ( nodeIdCounter > nodeCollection.size() )
             {
-                nodeIdCollection.add( nodeSpecification.build( nodeIdCollection.size() ).getId() );
+                nodeCollection.add( nodeSpecification.build( nodeCollection.size() ) );
             }
         }
 
-        return new NodeCollection( db, nodeIdCollection );
+        return nodeCollection;
     }
 
     @Override
