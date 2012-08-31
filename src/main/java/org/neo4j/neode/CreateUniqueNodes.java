@@ -3,7 +3,7 @@ package org.neo4j.neode;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
-class CreateUniqueNodes extends RelationshipBuilder
+class CreateUniqueNodes implements TargetNodesSource
 {
     private final NodeSpecification nodeSpecification;
 

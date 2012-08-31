@@ -3,7 +3,7 @@ package org.neo4j.neode;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
-public class QueryBasedGetExistingNodes extends RelationshipBuilder
+public class QueryBasedGetExistingNodes implements TargetNodesSource
 {
     private final GraphQuery query;
 

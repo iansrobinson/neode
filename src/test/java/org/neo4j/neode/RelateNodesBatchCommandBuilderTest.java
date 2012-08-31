@@ -30,7 +30,7 @@ public class RelateNodesBatchCommandBuilderTest
         NodeSpecification product = new NodeSpecification( "product", Collections.<Property>emptyList(), db );
         RelationshipSpecification bought = dsm.relationshipSpecification( "BOUGHT" );
         final NodeIdCollection products = product.create( 3 ).update( dataset );
-        RelationshipBuilder relationshipBuilder = new RelationshipBuilder()
+        TargetNodesSource targetNodesSource = new TargetNodesSource()
         {
             int index = 0;
 
@@ -46,10 +46,11 @@ public class RelateNodesBatchCommandBuilderTest
                 return null;
             }
         };
+        TargetNodesStrategyBuilder targetNodesStrategyBuilder = new TargetNodesStrategyBuilder( targetNodesSource );
 
         // when
         users.createRelationshipsTo(
-                relationshipBuilder
+                targetNodesStrategyBuilder
                         .relationship( bought )
                         .relationshipConstraints( Range.exactly( 1 ) ) )
                 .update( dataset );

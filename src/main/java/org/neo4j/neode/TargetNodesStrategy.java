@@ -16,48 +16,60 @@ public class TargetNodesStrategy
     public static SetRelationshipInfo getExisting( NodeIdCollection nodeIdCollection,
                                                    ProbabilityDistribution probabilityDistribution )
     {
-        return new GetExistingUniqueNodes( nodeIdCollection, probabilityDistribution );
+        GetExistingUniqueNodes targetNodesSource = new GetExistingUniqueNodes( nodeIdCollection,
+                probabilityDistribution );
+        return new TargetNodesStrategyBuilder( targetNodesSource );
     }
 
     public static SetRelationshipInfo getExisting( NodeIdCollection nodeIdCollection )
     {
-        return new GetExistingUniqueNodes( nodeIdCollection, normalDistribution() );
+        GetExistingUniqueNodes targetNodesSource = new GetExistingUniqueNodes( nodeIdCollection,
+                normalDistribution() );
+        return new TargetNodesStrategyBuilder( targetNodesSource );
     }
 
     public static SetRelationshipInfo getExisting( GraphQuery graphQuery )
     {
-        return new QueryBasedGetExistingNodes( graphQuery );
+        QueryBasedGetExistingNodes targetNodesSource = new QueryBasedGetExistingNodes( graphQuery );
+        return new TargetNodesStrategyBuilder( targetNodesSource );
     }
 
     public static SetRelationshipInfo queryBasedGetOrCreate( NodeSpecification nodeSpecification,
                                                              GraphQuery graphQuery )
     {
-        return new QueryBasedGetOrCreateNodes( nodeSpecification,
+        QueryBasedGetOrCreateNodes targetNodesSource = new QueryBasedGetOrCreateNodes( nodeSpecification,
                 new SparseNodeListGenerator( graphQuery, 1.0, flatDistribution() ) );
+        return new TargetNodesStrategyBuilder( targetNodesSource );
     }
 
     public static SetRelationshipInfo queryBasedGetOrCreate( NodeSpecification nodeSpecification, GraphQuery graphQuery,
                                                              double proportionOfCandidateNodesToRequiredNodes )
     {
-        return new QueryBasedGetOrCreateNodes( nodeSpecification,
+        QueryBasedGetOrCreateNodes targetNodesSource = new QueryBasedGetOrCreateNodes( nodeSpecification,
                 new SparseNodeListGenerator( graphQuery, proportionOfCandidateNodesToRequiredNodes,
                         flatDistribution() ) );
+        return new TargetNodesStrategyBuilder( targetNodesSource );
     }
 
     public static SetRelationshipInfo getOrCreate( NodeSpecification nodeSpecification, int maxNumberOfEntities,
                                                    ProbabilityDistribution probabilityDistribution )
     {
-        return new GetOrCreateUniqueNodes( nodeSpecification, maxNumberOfEntities, probabilityDistribution );
+        GetOrCreateUniqueNodes targetNodesSource = new GetOrCreateUniqueNodes( nodeSpecification,
+                maxNumberOfEntities, probabilityDistribution );
+        return new TargetNodesStrategyBuilder( targetNodesSource );
     }
 
     public static SetRelationshipInfo getOrCreate( NodeSpecification nodeSpecification, int maxNumberOfEntities )
     {
-        return new GetOrCreateUniqueNodes( nodeSpecification, maxNumberOfEntities, flatDistribution() );
+        GetOrCreateUniqueNodes targetNodesSource = new GetOrCreateUniqueNodes( nodeSpecification,
+                maxNumberOfEntities, flatDistribution() );
+        return new TargetNodesStrategyBuilder( targetNodesSource );
     }
 
     public static SetRelationshipInfo create( NodeSpecification nodeSpecification )
     {
-        return new CreateUniqueNodes( nodeSpecification );
+        CreateUniqueNodes targetNodesSource = new CreateUniqueNodes( nodeSpecification );
+        return new TargetNodesStrategyBuilder( targetNodesSource );
     }
 
     private final TargetNodesSource targetNodesSource;

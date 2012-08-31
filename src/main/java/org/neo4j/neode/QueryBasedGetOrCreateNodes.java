@@ -5,7 +5,7 @@ import java.util.List;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
-class QueryBasedGetOrCreateNodes extends RelationshipBuilder
+class QueryBasedGetOrCreateNodes implements TargetNodesSource
 {
     private final NodeSpecification nodeSpecification;
     private final SparseNodeListGenerator sparseNodeListGenerator;

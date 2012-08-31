@@ -8,21 +8,19 @@ package org.neo4j.neode;
 import static org.neo4j.neode.probabilities.ProbabilityDistribution.flatDistribution;
 
 import org.neo4j.graphdb.Direction;
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
 import org.neo4j.neode.interfaces.SetRelationshipConstraints;
 import org.neo4j.neode.interfaces.SetRelationshipInfo;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
-public abstract class RelationshipBuilder implements SetRelationshipInfo, SetRelationshipConstraints, TargetNodesSource
+public class TargetNodesStrategyBuilder implements SetRelationshipInfo, SetRelationshipConstraints
 {
+    private final TargetNodesSource targetNodesSource;
     private RelationshipInfo relationshipInfo;
 
-    @Override
-    public abstract Iterable<Node> getTargetNodes( int quantity, GraphDatabaseService db, Node currentNode );
-
-    @Override
-    public abstract String label();
+    TargetNodesStrategyBuilder( TargetNodesSource targetNodesSource )
+    {
+        this.targetNodesSource = targetNodesSource;
+    }
 
     @Override
     public final SetRelationshipConstraints relationship( RelationshipSpecification relationshipSpecification,
@@ -46,7 +44,7 @@ public abstract class RelationshipBuilder implements SetRelationshipInfo, SetRel
         RelationshipConstraints relationshipConstraints = new RelationshipConstraints( cardinality,
                 relationshipUniqueness,
                 probabilityDistribution );
-        return new TargetNodesStrategy( this, relationshipInfo, relationshipConstraints );
+        return new TargetNodesStrategy( targetNodesSource, relationshipInfo, relationshipConstraints );
     }
 
     @Override
