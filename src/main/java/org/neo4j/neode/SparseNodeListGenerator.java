@@ -40,7 +40,7 @@ class SparseNodeListGenerator
 
         int candidatePoolSize = (int) round( size * proportionOfNodesToListSize );
         List<Integer> candidatePoolIndexes = probabilityDistribution
-                .generateList( candidatePoolSize, Range.minMax( 0, candidatePoolSize - 1 ), random );
+                .generateList( candidatePoolSize, Range.minMax( 0, candidatePoolSize - 1 ) );
 
         Iterator<Integer> candidatePoolIndexesIterator = candidatePoolIndexes.iterator();
         Iterator<Node> existingNodesIterator = query.execute( currentNode ).iterator();

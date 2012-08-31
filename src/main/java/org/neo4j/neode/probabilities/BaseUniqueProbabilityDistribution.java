@@ -4,15 +4,13 @@ import static org.neo4j.neode.Range.exactly;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.neo4j.neode.Range;
 
 abstract class BaseUniqueProbabilityDistribution extends ProbabilityDistribution
 {
     @Override
-    public final List<Integer> generateList( Range sizeRange, Range range,
-                                             Random random )
+    public final List<Integer> generateList( Range sizeRange, Range range )
     {
         if ( (range.difference() + 1) < sizeRange.max() )
         {
@@ -23,13 +21,13 @@ abstract class BaseUniqueProbabilityDistribution extends ProbabilityDistribution
 
         int numberOfResults = (sizeRange.difference() == 0) ?
                 sizeRange.max() :
-                sizeRange.min() + random.nextInt( sizeRange.difference() );
+                sizeRange.min() + random().nextInt( sizeRange.difference() );
 
         List<Integer> generatedNumbers = new ArrayList<Integer>( numberOfResults );
 
         while ( generatedNumbers.size() < numberOfResults )
         {
-            int nextNumber = getNextNumber( range, random );
+            int nextNumber = getNextNumber( range );
             if ( range.isInRange( nextNumber )  && !generatedNumbers.contains( nextNumber ) )
             {
                 generatedNumbers.add( nextNumber );
@@ -39,22 +37,22 @@ abstract class BaseUniqueProbabilityDistribution extends ProbabilityDistribution
     }
 
     @Override
-    public final List<Integer> generateList( int size, Range range, Random random )
+    public final List<Integer> generateList( int size, Range range )
     {
-        return generateList( exactly( size ), range, random );
+        return generateList( exactly( size ), range );
     }
 
     @Override
-    public final int generateSingle( Range range, Random random )
+    public final int generateSingle( Range range )
     {
-        int nextNumber = getNextNumber( range, random );
+        int nextNumber = getNextNumber( range );
         while ( !range.isInRange( nextNumber ) )
         {
-            nextNumber = getNextNumber( range, random );
+            nextNumber = getNextNumber( range );
         }
 
         return nextNumber;
     }
 
-    protected abstract int getNextNumber( Range minMax, Random random );
+    protected abstract int getNextNumber( Range minMax );
 }

@@ -7,7 +7,6 @@ import static org.neo4j.neode.Range.minMax;
 import static org.neo4j.neode.probabilities.NormalProbabilityDistributionUnique.normalDistribution;
 
 import java.util.List;
-import java.util.Random;
 
 import org.junit.Test;
 
@@ -20,7 +19,7 @@ public class NormalProbabilityDistributionUniqueTest
         ProbabilityDistribution generator = normalDistribution();
 
         // when
-        List<Integer> results = generator.generateList( 5, minMax( 1, 5 ), new Random() );
+        List<Integer> results = generator.generateList( 5, minMax( 1, 5 ) );
 
         // then
         assertTrue( results.contains( 1 ) );
@@ -37,7 +36,7 @@ public class NormalProbabilityDistributionUniqueTest
         ProbabilityDistribution generator = normalDistribution();
 
         // when
-        int result = generator.generateSingle( exactly( 1 ), new Random() );
+        int result = generator.generateSingle( exactly( 1 ) );
 
         // then
         assertEquals( 1, result );

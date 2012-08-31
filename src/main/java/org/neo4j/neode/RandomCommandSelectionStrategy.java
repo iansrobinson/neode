@@ -19,7 +19,7 @@ class RandomCommandSelectionStrategy implements CommandSelectionStrategy
     public BatchCommand<NodeIdCollection> nextCommand( List<BatchCommand<NodeIdCollection>> commands, Node currentNode,
                                                        Random random )
     {
-        int index = probabilityDistribution.generateSingle( Range.minMax(0, commands.size() - 1), random );
+        int index = probabilityDistribution.generateSingle( Range.minMax(0, commands.size() - 1) );
         return commands.get( index );
     }
 }

@@ -28,8 +28,8 @@ class GetExistingUniqueNodes extends RelationshipBuilder
         {
             nodeIdPositions = probabilityDistribution.generateList(
                     quantity,
-                    minMax( 0, nodeIdCollection.size() - 1 ),
-                    random );
+                    minMax( 0, nodeIdCollection.size() - 1 )
+            );
         }
         catch ( IllegalArgumentException e )
         {

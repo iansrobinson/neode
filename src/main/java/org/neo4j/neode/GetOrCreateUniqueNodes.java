@@ -31,7 +31,7 @@ class GetOrCreateUniqueNodes extends RelationshipBuilder
         final List<Integer> nodeIdCounters;
         try
         {
-            nodeIdCounters = probabilityDistribution.generateList( quantity, minMax( 1, totalNumberOfNodes ), random );
+            nodeIdCounters = probabilityDistribution.generateList( quantity, minMax( 1, totalNumberOfNodes ) );
         }
         catch ( IllegalArgumentException e )
         {

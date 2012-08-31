@@ -23,7 +23,7 @@ class RelationshipConstraints
 
     public int calculateNumberOfRelsToCreate( Random random )
     {
-        return probabilityDistribution.generateSingle( cardinality, random );
+        return probabilityDistribution.generateSingle( cardinality );
     }
 
     public Relationship addRelationshipToCurrentNode( Node currentNode, Node targetNode, GraphDatabaseService db,

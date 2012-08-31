@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.neo4j.neode.Range.minMax;
 
 import java.util.List;
-import java.util.Random;
 
 import org.junit.Test;
 import org.neo4j.neode.Range;
@@ -20,7 +19,7 @@ public class BaseUniqueProbabilityDistributionTest
         try
         {
             // when
-            probabilityDistribution.generateList( minMax( 0, 2 ), minMax( 1, 1 ), new Random() );
+            probabilityDistribution.generateList( minMax( 0, 2 ), minMax( 1, 1 ) );
         }
         catch ( IllegalArgumentException e )
         {
@@ -38,7 +37,7 @@ public class BaseUniqueProbabilityDistributionTest
         ProbabilityDistribution probabilityDistribution = new DummyProbabilityDistribution();
 
         // when
-        List<Integer> results = probabilityDistribution.generateList( minMax( 0, 0 ), minMax( 0, 1 ), new Random() );
+        List<Integer> results = probabilityDistribution.generateList( minMax( 0, 0 ), minMax( 0, 1 ) );
 
         // then
         assertEquals( 0, results.size() );
@@ -47,7 +46,7 @@ public class BaseUniqueProbabilityDistributionTest
     private class DummyProbabilityDistribution extends BaseUniqueProbabilityDistribution
     {
         @Override
-        protected int getNextNumber( Range minMax, Random random )
+        protected int getNextNumber( Range minMax )
         {
             return 0;
         }

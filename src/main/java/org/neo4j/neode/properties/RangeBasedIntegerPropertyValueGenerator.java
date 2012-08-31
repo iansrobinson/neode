@@ -20,6 +20,6 @@ class RangeBasedIntegerPropertyValueGenerator extends PropertyValueGenerator
     @Override
     public Object generateValue( PropertyContainer propertyContainer, String nodeLabel, int iteration, Random random )
     {
-        return probabilityDistribution.generateSingle( range, random );
+        return probabilityDistribution.generateSingle( range );
     }
 }
