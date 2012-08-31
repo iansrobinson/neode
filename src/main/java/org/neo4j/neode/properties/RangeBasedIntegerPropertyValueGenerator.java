@@ -1,7 +1,5 @@
 package org.neo4j.neode.properties;
 
-import java.util.Random;
-
 import org.neo4j.graphdb.PropertyContainer;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
 import org.neo4j.neode.Range;
@@ -18,7 +16,7 @@ class RangeBasedIntegerPropertyValueGenerator extends PropertyValueGenerator
     }
 
     @Override
-    public Object generateValue( PropertyContainer propertyContainer, String nodeLabel, int iteration, Random random )
+    public Object generateValue( PropertyContainer propertyContainer, String nodeLabel, int iteration )
     {
         return probabilityDistribution.generateSingle( range );
     }

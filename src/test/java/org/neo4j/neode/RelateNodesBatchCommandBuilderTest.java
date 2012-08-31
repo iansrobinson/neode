@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 
 import java.util.Collections;
-import java.util.Random;
 
 import org.junit.Test;
 import org.neo4j.graphdb.Direction;
@@ -23,13 +22,12 @@ public class RelateNodesBatchCommandBuilderTest
     public void shouldRelateNodes() throws Exception
     {
         // given
-        Random random = new Random();
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager dsm = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = dsm.newDataset( "Test" );
-        NodeIdCollection users = new NodeSpecification( "user", Collections.<Property>emptyList(), db, random )
+        NodeIdCollection users = new NodeSpecification( "user", Collections.<Property>emptyList(), db )
                 .create( 3 ).update( dataset );
-        NodeSpecification product = new NodeSpecification( "product", Collections.<Property>emptyList(), db, random );
+        NodeSpecification product = new NodeSpecification( "product", Collections.<Property>emptyList(), db );
         RelationshipSpecification bought = dsm.relationshipSpecification( "BOUGHT" );
         final NodeIdCollection products = product.create( 3 ).update( dataset );
         RelationshipBuilder relationshipBuilder = new RelationshipBuilder()
@@ -37,8 +35,7 @@ public class RelateNodesBatchCommandBuilderTest
             int index = 0;
 
             @Override
-            public Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode,
-                                            Random random )
+            public Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode )
             {
                 return asList( db.getNodeById( products.getIdByPosition( index++ ) ) );
             }

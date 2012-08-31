@@ -1,7 +1,6 @@
 package org.neo4j.neode;
 
 import java.util.List;
-import java.util.Random;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -13,14 +12,12 @@ public class NodeSpecification
     private final String label;
     private final List<Property> properties;
     private final GraphDatabaseService db;
-    private final Random random;
 
-    NodeSpecification( String label, List<Property> properties, GraphDatabaseService db, Random random )
+    NodeSpecification( String label, List<Property> properties, GraphDatabaseService db )
     {
         this.label = label;
         this.properties = properties;
         this.db = db;
-        this.random = random;
     }
 
     public UpdateDataset<NodeIdCollection> create( int quantity )
@@ -34,7 +31,7 @@ public class NodeSpecification
         node.setProperty( "_label", label );
         for ( Property property : properties )
         {
-            property.setProperty( node, db, label, iteration, random );
+            property.setProperty( node, db, label, iteration );
         }
         return node;
     }

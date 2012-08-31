@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Collections;
-import java.util.Random;
 
 import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -23,10 +22,8 @@ public class NodeSpecificationTest
         // given
         GraphDatabaseService db = Db.impermanentDb();
         Transaction tx = db.beginTx();
-        Random random = new Random();
 
-        NodeSpecification nodeSpecification = new NodeSpecification( "user", Collections.<Property>emptyList(), db,
-                random );
+        NodeSpecification nodeSpecification = new NodeSpecification( "user", Collections.<Property>emptyList(), db );
 
         // when
         Node node = nodeSpecification.build( 1 );
@@ -44,18 +41,17 @@ public class NodeSpecificationTest
         // given
         GraphDatabaseService db = Db.impermanentDb();
         Transaction tx = db.beginTx();
-        Random random = new Random();
 
         Property property = new Property()
         {
             @Override
             public void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String label,
-                                     int iteration, Random random )
+                                     int iteration )
             {
                 propertyContainer.setProperty( "myproperty", "value" );
             }
         };
-        NodeSpecification nodeSpecification = new NodeSpecification( "user", asList( property ), db, random );
+        NodeSpecification nodeSpecification = new NodeSpecification( "user", asList( property ), db );
 
         // when
         Node node = nodeSpecification.build( 1 );

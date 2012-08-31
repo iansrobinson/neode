@@ -1,7 +1,5 @@
 package org.neo4j.neode;
 
-import java.util.Random;
-
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
@@ -15,7 +13,7 @@ public class QueryBasedGetExistingNodes extends RelationshipBuilder
     }
 
     @Override
-    public Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode, Random random )
+    public Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode )
     {
         return query.execute( currentNode );
     }

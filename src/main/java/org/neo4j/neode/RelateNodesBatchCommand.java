@@ -1,7 +1,5 @@
 package org.neo4j.neode;
 
-import java.util.Random;
-
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.logging.Log;
@@ -36,17 +34,17 @@ class RelateNodesBatchCommand implements BatchCommand<NodeIdCollection>
     }
 
     @Override
-    public void execute( GraphDatabaseService db, int iteration, Random random )
+    public void execute( GraphDatabaseService db, int iteration )
     {
         Node currentNode = db.getNodeById( sourceNodeIds.getIdByPosition( iteration ) );
-        execute( currentNode, db, iteration, random );
+        execute( currentNode, db, iteration );
     }
 
     @Override
-    public void execute( Node currentNode, GraphDatabaseService db, int iteration, Random random )
+    public void execute( Node currentNode, GraphDatabaseService db, int iteration )
     {
         totalRels += targetNodes
-                .addRelationshipsToCurrentNode( db, currentNode, targetNodeIds, iteration, random );
+                .addRelationshipsToCurrentNode( db, currentNode, targetNodeIds, iteration );
     }
 
     @Override

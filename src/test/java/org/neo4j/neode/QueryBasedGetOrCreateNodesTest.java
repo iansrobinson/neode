@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -31,18 +30,17 @@ public class QueryBasedGetOrCreateNodesTest
         Node node0 = db.createNode();
         Node node4 = db.createNode();
 
-        Random random = new Random();
-        NodeSpecification user = new NodeSpecification( "user", Collections.<Property>emptyList(), db, random );
+        NodeSpecification user = new NodeSpecification( "user", Collections.<Property>emptyList(), db );
         SparseNodeListGenerator finder = mock( SparseNodeListGenerator.class );
 
         List<Node> sparseList = asList( node0, null, null, null, node4 );
 
-        when( finder.getSparseListOfExistingNodes( 5, currentNode, random ) ).thenReturn( sparseList );
+        when( finder.getSparseListOfExistingNodes( 5, currentNode ) ).thenReturn( sparseList );
 
         QueryBasedGetOrCreateNodes queryBasedGetOrCreate = new QueryBasedGetOrCreateNodes( user, finder );
 
         // when
-        Iterable<Node> results = queryBasedGetOrCreate.getNodes( 5, db, currentNode, random );
+        Iterable<Node> results = queryBasedGetOrCreate.getNodes( 5, db, currentNode );
         tx.success();
         tx.finish();
 

@@ -1,7 +1,5 @@
 package org.neo4j.neode.properties;
 
-import java.util.Random;
-
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.PropertyContainer;
 
@@ -18,9 +16,9 @@ class NonIndexableProperty extends Property
 
     @Override
     public void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String label,
-                             int iteration, Random random )
+                             int iteration )
     {
         propertyContainer.setProperty( propertyName,
-                generator.generateValue( propertyContainer, label, iteration, random ) );
+                generator.generateValue( propertyContainer, label, iteration ) );
     }
 }

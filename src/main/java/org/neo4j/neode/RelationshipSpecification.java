@@ -3,7 +3,6 @@ package org.neo4j.neode;
 import static org.neo4j.kernel.Traversal.expanderForTypes;
 
 import java.util.List;
-import java.util.Random;
 
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Expander;
@@ -24,14 +23,13 @@ public class RelationshipSpecification
         this.properties = properties;
     }
 
-    Relationship createRelationship( Node startNode, Node endNode, GraphDatabaseService db, int iteration,
-                                     Random random )
+    Relationship createRelationship( Node startNode, Node endNode, GraphDatabaseService db, int iteration )
     {
         Relationship rel = startNode.createRelationshipTo( endNode, relationshipType );
 
         for ( Property property : properties )
         {
-            property.setProperty( rel, db, relationshipType.name(), iteration, random );
+            property.setProperty( rel, db, relationshipType.name(), iteration );
         }
 
         return rel;

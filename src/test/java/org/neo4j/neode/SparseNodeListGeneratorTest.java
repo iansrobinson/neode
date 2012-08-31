@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import org.junit.Test;
 import org.neo4j.graphdb.Node;
@@ -21,7 +20,6 @@ public class SparseNodeListGeneratorTest
     public void shouldReturnSparseListOfExistingNodes() throws Exception
     {
         // given
-        Random random = new Random();
         Node currentNode = mock( Node.class );
 
         GraphQuery query = mock( GraphQuery.class );
@@ -36,7 +34,7 @@ public class SparseNodeListGeneratorTest
         SparseNodeListGenerator generator = new SparseNodeListGenerator( query, 1.2, probabilityDistribution );
 
         // when
-        List<Node> results = generator.getSparseListOfExistingNodes( 5, currentNode, random );
+        List<Node> results = generator.getSparseListOfExistingNodes( 5, currentNode );
 
         // then
         assertEquals( 5, results.size() );
@@ -51,7 +49,6 @@ public class SparseNodeListGeneratorTest
     public void shouldReturnListOfNullsWhenQueryCannotFindNodes() throws Exception
     {
         // given
-        Random random = new Random();
         Node currentNode = mock( Node.class );
 
         GraphQuery query = mock( GraphQuery.class );
@@ -64,7 +61,7 @@ public class SparseNodeListGeneratorTest
         SparseNodeListGenerator generator = new SparseNodeListGenerator( query, 1.2, probabilityDistribution );
 
         // when
-        List<Node> results = generator.getSparseListOfExistingNodes( 5, currentNode, random );
+        List<Node> results = generator.getSparseListOfExistingNodes( 5, currentNode );
 
         // then
         for ( Node result : results )

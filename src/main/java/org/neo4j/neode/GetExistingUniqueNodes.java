@@ -3,7 +3,6 @@ package org.neo4j.neode;
 import static org.neo4j.neode.Range.minMax;
 
 import java.util.List;
-import java.util.Random;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -21,7 +20,7 @@ class GetExistingUniqueNodes extends RelationshipBuilder
     }
 
     @Override
-    public Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode, Random random )
+    public Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode )
     {
         final List<Integer> nodeIdPositions;
         try

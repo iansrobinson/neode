@@ -4,7 +4,6 @@ import static org.neo4j.neode.probabilities.ProbabilityDistribution.flatDistribu
 import static org.neo4j.neode.probabilities.ProbabilityDistribution.normalDistribution;
 
 import java.util.List;
-import java.util.Random;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -73,16 +72,16 @@ public class TargetNodes
         this.relationshipConstraints = relationshipConstraints;
     }
 
-    int addRelationshipsToCurrentNode( GraphDatabaseService db, Node currentNode,
-                                       NodeIdCollection targetNodeIds, int iteration, Random random )
+    int addRelationshipsToCurrentNode( GraphDatabaseService db, Node currentNode, NodeIdCollection targetNodeIds,
+                                       int iteration )
     {
         int count = 0;
-        Iterable<Node> targetNodes = getRandomSelectionOfNodes( db, currentNode, random );
+        Iterable<Node> targetNodes = getRandomSelectionOfNodes( db, currentNode );
         for ( Node targetNode : targetNodes )
         {
             Relationship relationship = relationshipConstraints
                     .addRelationshipToCurrentNode( currentNode, targetNode, db, targetNodeIds,
-                            relationshipInfo, iteration, random );
+                            relationshipInfo, iteration );
             if ( relationship != null )
             {
                 count++;
@@ -112,10 +111,10 @@ public class TargetNodes
         return relationshipConstraints.description();
     }
 
-    private Iterable<Node> getRandomSelectionOfNodes( GraphDatabaseService db, Node firstNode, Random random )
+    private Iterable<Node> getRandomSelectionOfNodes( GraphDatabaseService db, Node firstNode )
     {
-        int numberOfRelsToCreate = relationshipConstraints.calculateNumberOfRelsToCreate( random );
-        return nodeSource.getNodes( numberOfRelsToCreate, db, firstNode, random );
+        int numberOfRelsToCreate = relationshipConstraints.calculateNumberOfRelsToCreate();
+        return nodeSource.getNodes( numberOfRelsToCreate, db, firstNode );
     }
 
 }

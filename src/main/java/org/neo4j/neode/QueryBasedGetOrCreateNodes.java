@@ -1,7 +1,6 @@
 package org.neo4j.neode;
 
 import java.util.List;
-import java.util.Random;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -18,9 +17,9 @@ class QueryBasedGetOrCreateNodes extends RelationshipBuilder
     }
 
     @Override
-    public Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode, Random random )
+    public Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode )
     {
-        List<Node> nodes = sparseNodeListGenerator.getSparseListOfExistingNodes( quantity, currentNode, random );
+        List<Node> nodes = sparseNodeListGenerator.getSparseListOfExistingNodes( quantity, currentNode );
         fillGapsInListWithNewNodes( nodes );
 
         return nodes;

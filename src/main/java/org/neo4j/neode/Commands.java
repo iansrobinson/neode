@@ -2,7 +2,6 @@ package org.neo4j.neode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.logging.Log;
@@ -18,9 +17,9 @@ class Commands
         this.commandSelectionStrategy = commandSelectionStrategy;
     }
 
-    public BatchCommand<NodeIdCollection> nextCommand( Node currentNode, Random random )
+    public BatchCommand<NodeIdCollection> nextCommand( Node currentNode )
     {
-        return commandSelectionStrategy.nextCommand( commands, currentNode, random );
+        return commandSelectionStrategy.nextCommand( commands, currentNode );
     }
 
     public List<NodeIdCollection> results()

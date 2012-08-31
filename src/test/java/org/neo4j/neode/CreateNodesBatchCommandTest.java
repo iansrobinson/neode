@@ -5,8 +5,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.neo4j.neode.properties.Property.indexableProperty;
 
-import java.util.Random;
-
 import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.neode.logging.SysOutLog;
@@ -21,7 +19,7 @@ public class CreateNodesBatchCommandTest
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = executor.newDataset( "Test" );
-        NodeSpecification user = new NodeSpecification( "user",  asList( indexableProperty( "name" ) ), db, new Random(  ) );
+        NodeSpecification user = new NodeSpecification( "user",  asList( indexableProperty( "name" ) ), db );
 
         // when
         user.create( 1 ).update( dataset );
@@ -37,7 +35,7 @@ public class CreateNodesBatchCommandTest
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = executor.newDataset( "Test" );
-        NodeSpecification user = new NodeSpecification( "user", asList( indexableProperty( "name" ) ), db, new Random(  ) );
+        NodeSpecification user = new NodeSpecification( "user", asList( indexableProperty( "name" ) ), db );
 
         // when
         user.create( 1 ).update( dataset );
@@ -53,7 +51,7 @@ public class CreateNodesBatchCommandTest
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = executor.newDataset( "Test" );
-        NodeSpecification user = new NodeSpecification( "user", asList( indexableProperty( "key" ) ), db, new Random(  ) );
+        NodeSpecification user = new NodeSpecification( "user", asList( indexableProperty( "key" ) ), db );
 
         // when
         NodeIdCollection results = user.create( 5 ).update( dataset );

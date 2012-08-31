@@ -2,8 +2,6 @@ package org.neo4j.neode;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Random;
-
 import org.junit.Test;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.logging.Log;
@@ -141,16 +139,16 @@ public class DatasetTest
         }
 
         @Override
-        public void execute( GraphDatabaseService db, int iteration, Random random )
+        public void execute( GraphDatabaseService db, int iteration )
         {
             db.createNode();
             callCount++;
         }
 
         @Override
-        public void execute( Node currentNode, GraphDatabaseService db, int iteration, Random random )
+        public void execute( Node currentNode, GraphDatabaseService db, int iteration )
         {
-            execute( db, iteration, random );
+            execute( db, iteration );
         }
 
         @Override

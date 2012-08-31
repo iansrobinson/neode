@@ -1,7 +1,5 @@
 package org.neo4j.neode;
 
-import java.util.Random;
-
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Expander;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -37,16 +35,15 @@ class RelationshipInfo
         return String.format( "%s[:%s]%s", prefix, relationshipSpecification.label(), suffix );
     }
 
-    public Relationship createRelationship( Node firstNode, Node secondNode, GraphDatabaseService db, int iteration,
-                                            Random random )
+    public Relationship createRelationship( Node firstNode, Node secondNode, GraphDatabaseService db, int iteration )
     {
         if ( direction.equals( Direction.OUTGOING ) )
         {
-            return relationshipSpecification.createRelationship( firstNode, secondNode, db, iteration, random );
+            return relationshipSpecification.createRelationship( firstNode, secondNode, db, iteration );
         }
         else
         {
-            return relationshipSpecification.createRelationship( secondNode, firstNode, db, iteration, random );
+            return relationshipSpecification.createRelationship( secondNode, firstNode, db, iteration );
         }
     }
 

@@ -1,7 +1,5 @@
 package org.neo4j.neode.properties;
 
-import java.util.Random;
-
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.PropertyContainer;
@@ -27,9 +25,9 @@ class IndexableProperty extends Property
 
     @Override
     public void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String label,
-                             int iteration, Random random )
+                             int iteration )
     {
-        Object value = generator.generateValue( propertyContainer, label, iteration, random );
+        Object value = generator.generateValue( propertyContainer, label, iteration );
         propertyContainer.setProperty( propertyName, value );
 
         String name = indexName != null ? indexName : label;

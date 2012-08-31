@@ -6,7 +6,6 @@ import static org.junit.Assert.fail;
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 
 import java.util.Collections;
-import java.util.Random;
 
 import org.junit.Test;
 import org.neo4j.graphdb.Direction;
@@ -45,7 +44,7 @@ public class RelationshipInfoTest
         RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.OUTGOING );
 
         // when
-        relationshipInfo.createRelationship( firstNode, secondNode, db, 0, new Random() );
+        relationshipInfo.createRelationship( firstNode, secondNode, db, 0 );
         tx.success();
         tx.finish();
 
@@ -65,7 +64,7 @@ public class RelationshipInfoTest
         RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.INCOMING );
 
         // when
-        relationshipInfo.createRelationship( firstNode, secondNode, db, 0, new Random() );
+        relationshipInfo.createRelationship( firstNode, secondNode, db, 0 );
         tx.success();
         tx.finish();
 

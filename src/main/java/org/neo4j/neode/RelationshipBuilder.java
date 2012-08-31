@@ -7,8 +7,6 @@ package org.neo4j.neode;
 
 import static org.neo4j.neode.probabilities.ProbabilityDistribution.flatDistribution;
 
-import java.util.Random;
-
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -22,7 +20,7 @@ public abstract class RelationshipBuilder implements SetRelationshipInfo, SetRel
     private RelationshipConstraints relationshipConstraints;
 
     @Override
-    public abstract Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode, Random random );
+    public abstract Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode );
 
     @Override
     public abstract String label();

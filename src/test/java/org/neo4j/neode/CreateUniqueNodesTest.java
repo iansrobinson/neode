@@ -5,7 +5,6 @@ import static org.junit.Assert.assertFalse;
 
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.Random;
 
 import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -20,14 +19,13 @@ public class CreateUniqueNodesTest
     public void shouldCreateNewNodes() throws Exception
     {
         // given
-        Random random = new Random(  );
         GraphDatabaseService db = Db.impermanentDb();
         Transaction tx = db.beginTx();
 
-        CreateUniqueNodes command = new CreateUniqueNodes( new NodeSpecification( "user", Collections.<Property>emptyList(), db, random) );
+        CreateUniqueNodes command = new CreateUniqueNodes( new NodeSpecification( "user", Collections.<Property>emptyList(), db ) );
 
         // when
-        Iterable<Node> nodes = command.getNodes( 3, db, null, random );
+        Iterable<Node> nodes = command.getNodes( 3, db, null );
 
         // then
         Iterator<Node> iterator = nodes.iterator();

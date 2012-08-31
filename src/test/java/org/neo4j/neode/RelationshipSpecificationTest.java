@@ -6,7 +6,6 @@ import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 import static org.neo4j.neode.properties.Property.property;
 
 import java.util.Collections;
-import java.util.Random;
 
 import org.junit.Test;
 import org.neo4j.graphdb.Direction;
@@ -33,7 +32,7 @@ public class RelationshipSpecificationTest
                 Collections.<Property>emptyList() );
 
         // when
-        specification.createRelationship( startNode, endNode, db, 0, new Random() );
+        specification.createRelationship( startNode, endNode, db, 0 );
         tx.success();
         tx.finish();
 
@@ -55,7 +54,7 @@ public class RelationshipSpecificationTest
         {
             @Override
             public Object generateValue( PropertyContainer propertyContainer, String nodeLabel, int
-                    iteration, Random random )
+                    iteration )
             {
                 return "value";
             }
@@ -64,7 +63,7 @@ public class RelationshipSpecificationTest
                 asList( property( "name", propertyValueGenerator ) ) );
 
         // when
-        specification.createRelationship( startNode, endNode, db, 0, new Random() );
+        specification.createRelationship( startNode, endNode, db, 0 );
         tx.success();
         tx.finish();
 

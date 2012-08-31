@@ -1,7 +1,5 @@
 package org.neo4j.neode;
 
-import java.util.Random;
-
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
@@ -21,17 +19,17 @@ class RelationshipConstraints
         this.probabilityDistribution = probabilityDistribution;
     }
 
-    public int calculateNumberOfRelsToCreate( Random random )
+    public int calculateNumberOfRelsToCreate()
     {
         return probabilityDistribution.generateSingle( cardinality );
     }
 
     public Relationship addRelationshipToCurrentNode( Node currentNode, Node targetNode, GraphDatabaseService db,
                                                       NodeIdCollection targetNodeIds,
-                                                      RelationshipInfo relationshipInfo, int iteration, Random random )
+                                                      RelationshipInfo relationshipInfo, int iteration )
     {
         Relationship relationship = relationshipUniqueness.createRelationship( db, currentNode, targetNode,
-                relationshipInfo, iteration, random );
+                relationshipInfo, iteration );
         if ( relationship != null )
         {
             targetNodeIds.add( targetNode.getId() );

@@ -6,7 +6,6 @@ import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.Random;
 
 import org.junit.Test;
 import org.neo4j.graphdb.Direction;
@@ -38,7 +37,7 @@ public class RelationshipUniquenessTest
         RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.SINGLE_DIRECTION;
 
         // when
-        relationshipUniqueness.createRelationship( db, firstNode, secondNode, relationshipInfo, 0, new Random() );
+        relationshipUniqueness.createRelationship( db, firstNode, secondNode, relationshipInfo, 0 );
         tx.success();
         tx.finish();
 
@@ -67,7 +66,7 @@ public class RelationshipUniquenessTest
         RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.SINGLE_DIRECTION;
 
         // when
-        relationshipUniqueness.createRelationship( db, firstNode, secondNode, relationshipInfo, 0, new Random() );
+        relationshipUniqueness.createRelationship( db, firstNode, secondNode, relationshipInfo, 0 );
         tx.success();
         tx.finish();
 
@@ -96,7 +95,7 @@ public class RelationshipUniquenessTest
         RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.BOTH_DIRECTIONS;
 
         // when
-        relationshipUniqueness.createRelationship( db, firstNode, secondNode, relationshipInfo, 0, new Random() );
+        relationshipUniqueness.createRelationship( db, firstNode, secondNode, relationshipInfo, 0 );
         tx.success();
         tx.finish();
 
@@ -125,7 +124,7 @@ public class RelationshipUniquenessTest
         RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.BOTH_DIRECTIONS;
 
         // when
-        relationshipUniqueness.createRelationship( db, firstNode, secondNode, relationshipInfo, 0, new Random() );
+        relationshipUniqueness.createRelationship( db, firstNode, secondNode, relationshipInfo, 0 );
         tx.success();
         tx.finish();
 
@@ -153,7 +152,7 @@ public class RelationshipUniquenessTest
         RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.ALLOW_MULTIPLE;
 
         // when
-        relationshipUniqueness.createRelationship( db, firstNode, secondNode, relationshipInfo, 0, new Random() );
+        relationshipUniqueness.createRelationship( db, firstNode, secondNode, relationshipInfo, 0 );
         tx.success();
         tx.finish();
 
@@ -183,7 +182,7 @@ public class RelationshipUniquenessTest
         RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.ALLOW_MULTIPLE;
 
         // when
-        relationshipUniqueness.createRelationship( db, firstNode, secondNode, relationshipInfo, 0, new Random() );
+        relationshipUniqueness.createRelationship( db, firstNode, secondNode, relationshipInfo, 0 );
         tx.success();
         tx.finish();
 

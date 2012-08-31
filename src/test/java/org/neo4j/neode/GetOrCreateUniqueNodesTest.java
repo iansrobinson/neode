@@ -6,8 +6,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Random;
-
 import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -21,8 +19,6 @@ public class GetOrCreateUniqueNodesTest
     public void shouldCreateNewEntitiesWhenTheyDoNotCurrentlyExist() throws Exception
     {
         // given
-        Random random = new Random();
-
         GraphDatabaseService db = Db.impermanentDb();
         Transaction tx = db.beginTx();
         Node currentNode = db.createNode();
@@ -38,7 +34,7 @@ public class GetOrCreateUniqueNodesTest
         GetOrCreateUniqueNodes nodeFinder = new GetOrCreateUniqueNodes( user, 5, probabilityDistribution );
 
         // when
-        nodeFinder.getNodes( 1, db, currentNode, random );
+        nodeFinder.getNodes( 1, db, currentNode );
         tx.success();
         tx.finish();
 
@@ -50,8 +46,6 @@ public class GetOrCreateUniqueNodesTest
     public void shouldReuseExistingNodes() throws Exception
     {
         // given
-        Random random = new Random();
-
         GraphDatabaseService db = Db.impermanentDb();
         Transaction tx = db.beginTx();
         Node currentNode = db.createNode();
@@ -67,8 +61,8 @@ public class GetOrCreateUniqueNodesTest
         GetOrCreateUniqueNodes nodeFinder = new GetOrCreateUniqueNodes( user, 5, probabilityDistribution );
 
         // when
-        nodeFinder.getNodes( 1, db, currentNode, random );
-        nodeFinder.getNodes( 1, db, currentNode, random );
+        nodeFinder.getNodes( 1, db, currentNode );
+        nodeFinder.getNodes( 1, db, currentNode );
         tx.success();
         tx.finish();
 

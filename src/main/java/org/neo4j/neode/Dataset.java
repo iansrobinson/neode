@@ -1,7 +1,5 @@
 package org.neo4j.neode;
 
-import java.util.Random;
-
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
@@ -12,15 +10,13 @@ public class Dataset
     private final String description;
     private final GraphDatabaseService db;
     private final Log log;
-    private final Random random;
     private final long runStartTime;
 
-    Dataset( String description, GraphDatabaseService db, Log log, Random random )
+    Dataset( String description, GraphDatabaseService db, Log log )
     {
         this.description = description;
         this.db = db;
         this.log = log;
-        this.random = random;
         runStartTime = System.nanoTime();
         log.write( String.format( "Begin [%s]\n", description ) );
     }
@@ -58,7 +54,7 @@ public class Dataset
         {
             for ( int iteration = startIteration; iterationIsInRange( startIteration, command, iteration ); iteration++ )
             {
-                command.execute( db, iteration, random );
+                command.execute( db, iteration );
                 tx.success();
             }
         }

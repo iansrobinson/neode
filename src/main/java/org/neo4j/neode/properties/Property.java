@@ -1,7 +1,5 @@
 package org.neo4j.neode.properties;
 
-import java.util.Random;
-
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.PropertyContainer;
 
@@ -38,5 +36,5 @@ public abstract class Property
     }
 
     public abstract void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String label,
-                                      int iteration, Random random );
+                                      int iteration );
 }

@@ -1,7 +1,5 @@
 package org.neo4j.neode;
 
-import java.util.Random;
-
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.logging.Log;
@@ -28,18 +26,18 @@ public class ExecuteAllCommandsBatchCommand implements BatchCommand<NodeIdCollec
     }
 
     @Override
-    public void execute( GraphDatabaseService db, int iteration, Random random )
+    public void execute( GraphDatabaseService db, int iteration )
     {
         for ( BatchCommand<NodeIdCollection> command : commands )
         {
-            command.execute( db, iteration, random );
+            command.execute( db, iteration );
         }
     }
 
     @Override
-    public void execute( Node currentNode, GraphDatabaseService db, int iteration, Random random )
+    public void execute( Node currentNode, GraphDatabaseService db, int iteration )
     {
-        execute( db, iteration, random );
+        execute( db, iteration );
     }
 
     @Override

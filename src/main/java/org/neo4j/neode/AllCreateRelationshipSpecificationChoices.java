@@ -1,7 +1,6 @@
 package org.neo4j.neode;
 
 import java.util.List;
-import java.util.Random;
 
 import org.neo4j.graphdb.Node;
 
@@ -21,8 +20,7 @@ class AllCreateRelationshipSpecificationChoices extends CreateRelationshipSpecif
     }
 
     @Override
-    public BatchCommand<NodeIdCollection> nextCommand( List<BatchCommand<NodeIdCollection>> commands, Node currentNode,
-                                                     Random random )
+    public BatchCommand<NodeIdCollection> nextCommand( List<BatchCommand<NodeIdCollection>> commands, Node currentNode )
     {
         return new ExecuteAllCommandsBatchCommand( commands );
     }

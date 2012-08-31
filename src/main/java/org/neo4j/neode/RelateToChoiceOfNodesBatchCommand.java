@@ -1,7 +1,6 @@
 package org.neo4j.neode;
 
 import java.util.List;
-import java.util.Random;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -33,17 +32,17 @@ class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<NodeIdColle
     }
 
     @Override
-    public void execute( GraphDatabaseService db, int iteration, Random random )
+    public void execute( GraphDatabaseService db, int iteration )
     {
         Node currentNode = db.getNodeById( startNodeIds.getIdByPosition( iteration ) );
-        execute( currentNode, db, iteration, random );
+        execute( currentNode, db, iteration );
     }
 
     @Override
-    public void execute( Node currentNode, GraphDatabaseService db, int iteration, Random random )
+    public void execute( Node currentNode, GraphDatabaseService db, int iteration )
     {
-        BatchCommand<NodeIdCollection> nextCommand = commands.nextCommand( currentNode, random );
-        nextCommand.execute( currentNode, db, iteration, random );
+        BatchCommand<NodeIdCollection> nextCommand = commands.nextCommand( currentNode );
+        nextCommand.execute( currentNode, db, iteration );
     }
 
     @Override

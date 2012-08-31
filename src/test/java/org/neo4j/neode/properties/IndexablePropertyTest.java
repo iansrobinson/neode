@@ -2,8 +2,6 @@ package org.neo4j.neode.properties;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Random;
-
 import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -20,8 +18,7 @@ public class IndexablePropertyTest
         PropertyValueGenerator generator = new PropertyValueGenerator()
         {
             @Override
-            public Object generateValue( PropertyContainer propertyContainer, String nodeLabel, int iteration,
-                                         Random random )
+            public Object generateValue( PropertyContainer propertyContainer, String nodeLabel, int iteration )
             {
                 return "value";
             }
@@ -33,7 +30,7 @@ public class IndexablePropertyTest
         Node node = db.createNode();
 
         // when
-        property.setProperty( node, db, "user", 1, new Random() );
+        property.setProperty( node, db, "user", 1 );
         tx.success();
         tx.finish();
 
@@ -48,8 +45,7 @@ public class IndexablePropertyTest
         PropertyValueGenerator generator = new PropertyValueGenerator()
         {
             @Override
-            public Object generateValue( PropertyContainer propertyContainer, String nodeLabel, int iteration,
-                                         Random random )
+            public Object generateValue( PropertyContainer propertyContainer, String nodeLabel, int iteration )
             {
                 return "value";
             }
@@ -61,7 +57,7 @@ public class IndexablePropertyTest
         Node node = db.createNode();
 
         // when
-        property.setProperty( node, db, "user", 1, new Random() );
+        property.setProperty( node, db, "user", 1 );
         tx.success();
         tx.finish();
 

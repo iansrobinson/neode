@@ -4,8 +4,6 @@
  */
 package org.neo4j.neode.properties;
 
-import java.util.Random;
-
 import org.neo4j.graphdb.PropertyContainer;
 import org.neo4j.neode.Range;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
@@ -37,6 +35,5 @@ public abstract class PropertyValueGenerator
         return integerRange( min, max, ProbabilityDistribution.flatDistribution() );
     }
 
-    public abstract Object generateValue( PropertyContainer propertyContainer, String nodeLabel, int iteration,
-                                          Random random );
+    public abstract Object generateValue( PropertyContainer propertyContainer, String nodeLabel, int iteration );
 }

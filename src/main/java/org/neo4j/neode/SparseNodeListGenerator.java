@@ -5,7 +5,6 @@ import static java.lang.Math.round;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
@@ -30,7 +29,7 @@ class SparseNodeListGenerator
         this.proportionOfNodesToListSize = proportionOfNodesToListSize;
     }
 
-    public List<Node> getSparseListOfExistingNodes( int size, Node currentNode, Random random )
+    public List<Node> getSparseListOfExistingNodes( int size, Node currentNode )
     {
         List<Node> sparseList = new ArrayList<Node>( size );
         for ( int i = 0; i < size; i++ )

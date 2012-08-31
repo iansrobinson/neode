@@ -1,7 +1,5 @@
 package org.neo4j.neode;
 
-import java.util.Random;
-
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.logging.Log;
@@ -35,15 +33,15 @@ class CreateNodesBatchCommand implements BatchCommand<NodeIdCollection>
     }
 
     @Override
-    public void execute( GraphDatabaseService db, int iteration, Random random )
+    public void execute( GraphDatabaseService db, int iteration )
     {
         nodeIdCollection.add( nodeSpecification.build( iteration ).getId() );
     }
 
     @Override
-    public void execute( Node currentNode, GraphDatabaseService db, int iteration, Random random )
+    public void execute( Node currentNode, GraphDatabaseService db, int iteration )
     {
-        execute( db, iteration, random );
+        execute( db, iteration );
     }
 
     @Override
