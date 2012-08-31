@@ -3,7 +3,6 @@ package org.neo4j.neode;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.neo4j.graphdb.Node;
 import org.neo4j.neode.logging.Log;
 
 class Commands
@@ -17,9 +16,9 @@ class Commands
         this.commandSelectionStrategy = commandSelectionStrategy;
     }
 
-    public BatchCommand<NodeIdCollection> nextCommand( Node currentNode )
+    public BatchCommand<NodeIdCollection> nextCommand()
     {
-        return commandSelectionStrategy.nextCommand( commands, currentNode );
+        return commandSelectionStrategy.nextCommand( commands );
     }
 
     public List<NodeIdCollection> results()
@@ -48,6 +47,5 @@ class Commands
             log.write( String.format( "      [%s]", command.shortDescription() ) );
             command.onEnd( log );
         }
-
     }
 }

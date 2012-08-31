@@ -7,16 +7,16 @@ import org.neo4j.neode.logging.Log;
 class RelateNodesBatchCommand implements BatchCommand<NodeIdCollection>
 {
     private final NodeIdCollection sourceNodeIds;
-    private final TargetNodes targetNodes;
+    private final TargetNodesStrategy targetNodesStrategy;
     private final NodeIdCollection targetNodeIds;
     private final int batchSize;
     private long totalRels = 0;
 
-    RelateNodesBatchCommand( NodeIdCollection sourceNodeIds, TargetNodes targetNodes,
+    RelateNodesBatchCommand( NodeIdCollection sourceNodeIds, TargetNodesStrategy targetNodesStrategy,
                              NodeIdCollection targetNodeIds, int batchSize )
     {
         this.sourceNodeIds = sourceNodeIds;
-        this.targetNodes = targetNodes;
+        this.targetNodesStrategy = targetNodesStrategy;
         this.targetNodeIds = targetNodeIds;
         this.batchSize = batchSize;
     }
@@ -37,13 +37,7 @@ class RelateNodesBatchCommand implements BatchCommand<NodeIdCollection>
     public void execute( GraphDatabaseService db, int iteration )
     {
         Node currentNode = db.getNodeById( sourceNodeIds.getIdByPosition( iteration ) );
-        execute( currentNode, db, iteration );
-    }
-
-    @Override
-    public void execute( Node currentNode, GraphDatabaseService db, int iteration )
-    {
-        totalRels += targetNodes
+        totalRels += targetNodesStrategy
                 .addRelationshipsToCurrentNode( db, currentNode, targetNodeIds, iteration );
     }
 
@@ -56,13 +50,13 @@ class RelateNodesBatchCommand implements BatchCommand<NodeIdCollection>
     @Override
     public String shortDescription()
     {
-        return targetNodes.description( sourceNodeIds.label() );
+        return targetNodesStrategy.description( sourceNodeIds.label() );
     }
 
     @Override
     public void onBegin( Log log )
     {
-        log.write( String.format( "      %s", targetNodes.relationshipConstraintsDescription() ) );
+        log.write( String.format( "      %s", targetNodesStrategy.relationshipConstraintsDescription() ) );
     }
 
     @Override

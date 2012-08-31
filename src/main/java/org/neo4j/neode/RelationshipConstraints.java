@@ -1,6 +1,5 @@
 package org.neo4j.neode;
 
-import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
@@ -24,11 +23,11 @@ class RelationshipConstraints
         return probabilityDistribution.generateSingle( cardinality );
     }
 
-    public Relationship addRelationshipToCurrentNode( Node currentNode, Node targetNode, GraphDatabaseService db,
+    public Relationship addRelationshipToCurrentNode( Node currentNode, Node targetNode,
                                                       NodeIdCollection targetNodeIds,
                                                       RelationshipInfo relationshipInfo, int iteration )
     {
-        Relationship relationship = relationshipUniqueness.createRelationship( db, currentNode, targetNode,
+        Relationship relationship = relationshipUniqueness.createRelationship( currentNode, targetNode,
                 relationshipInfo, iteration );
         if ( relationship != null )
         {

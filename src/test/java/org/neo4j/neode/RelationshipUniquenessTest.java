@@ -37,7 +37,7 @@ public class RelationshipUniquenessTest
         RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.SINGLE_DIRECTION;
 
         // when
-        relationshipUniqueness.createRelationship( db, firstNode, secondNode, relationshipInfo, 0 );
+        relationshipUniqueness.createRelationship( firstNode, secondNode, relationshipInfo, 0 );
         tx.success();
         tx.finish();
 
@@ -66,7 +66,7 @@ public class RelationshipUniquenessTest
         RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.SINGLE_DIRECTION;
 
         // when
-        relationshipUniqueness.createRelationship( db, firstNode, secondNode, relationshipInfo, 0 );
+        relationshipUniqueness.createRelationship( firstNode, secondNode, relationshipInfo, 0 );
         tx.success();
         tx.finish();
 
@@ -95,7 +95,7 @@ public class RelationshipUniquenessTest
         RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.BOTH_DIRECTIONS;
 
         // when
-        relationshipUniqueness.createRelationship( db, firstNode, secondNode, relationshipInfo, 0 );
+        relationshipUniqueness.createRelationship( firstNode, secondNode, relationshipInfo, 0 );
         tx.success();
         tx.finish();
 
@@ -124,7 +124,7 @@ public class RelationshipUniquenessTest
         RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.BOTH_DIRECTIONS;
 
         // when
-        relationshipUniqueness.createRelationship( db, firstNode, secondNode, relationshipInfo, 0 );
+        relationshipUniqueness.createRelationship( firstNode, secondNode, relationshipInfo, 0 );
         tx.success();
         tx.finish();
 
@@ -152,7 +152,7 @@ public class RelationshipUniquenessTest
         RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.ALLOW_MULTIPLE;
 
         // when
-        relationshipUniqueness.createRelationship( db, firstNode, secondNode, relationshipInfo, 0 );
+        relationshipUniqueness.createRelationship( firstNode, secondNode, relationshipInfo, 0 );
         tx.success();
         tx.finish();
 
@@ -182,7 +182,7 @@ public class RelationshipUniquenessTest
         RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.ALLOW_MULTIPLE;
 
         // when
-        relationshipUniqueness.createRelationship( db, firstNode, secondNode, relationshipInfo, 0 );
+        relationshipUniqueness.createRelationship( firstNode, secondNode, relationshipInfo, 0 );
         tx.success();
         tx.finish();
 

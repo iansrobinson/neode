@@ -17,8 +17,8 @@ public class CreateNodesBatchCommandTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
-        Dataset dataset = executor.newDataset( "Test" );
+        DatasetManager dsm = new DatasetManager( db, SysOutLog.INSTANCE );
+        Dataset dataset = dsm.newDataset( "Test" );
         NodeSpecification user = new NodeSpecification( "user",  asList( indexableProperty( "name" ) ), db );
 
         // when
@@ -33,8 +33,8 @@ public class CreateNodesBatchCommandTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
-        Dataset dataset = executor.newDataset( "Test" );
+        DatasetManager dsm = new DatasetManager( db, SysOutLog.INSTANCE );
+        Dataset dataset = dsm.newDataset( "Test" );
         NodeSpecification user = new NodeSpecification( "user", asList( indexableProperty( "name" ) ), db );
 
         // when
@@ -49,8 +49,8 @@ public class CreateNodesBatchCommandTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        DatasetManager executor = new DatasetManager( db, SysOutLog.INSTANCE );
-        Dataset dataset = executor.newDataset( "Test" );
+        DatasetManager dsm = new DatasetManager( db, SysOutLog.INSTANCE );
+        Dataset dataset = dsm.newDataset( "Test" );
         NodeSpecification user = new NodeSpecification( "user", asList( indexableProperty( "key" ) ), db );
 
         // when

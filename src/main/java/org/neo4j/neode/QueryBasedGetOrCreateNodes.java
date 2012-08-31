@@ -17,7 +17,7 @@ class QueryBasedGetOrCreateNodes extends RelationshipBuilder
     }
 
     @Override
-    public Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode )
+    public Iterable<Node> getTargetNodes( int quantity, GraphDatabaseService db, Node currentNode )
     {
         List<Node> nodes = sparseNodeListGenerator.getSparseListOfExistingNodes( quantity, currentNode );
         fillGapsInListWithNewNodes( nodes );

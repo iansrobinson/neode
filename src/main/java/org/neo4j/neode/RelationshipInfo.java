@@ -2,7 +2,6 @@ package org.neo4j.neode;
 
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.Expander;
-import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 
@@ -35,7 +34,7 @@ class RelationshipInfo
         return String.format( "%s[:%s]%s", prefix, relationshipSpecification.label(), suffix );
     }
 
-    public Relationship createRelationship( Node firstNode, Node secondNode, GraphDatabaseService db, int iteration )
+    public Relationship createRelationship( Node firstNode, Node secondNode, int iteration )
     {
         if ( direction.equals( Direction.OUTGOING ) )
         {

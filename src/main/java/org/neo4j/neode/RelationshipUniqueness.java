@@ -6,7 +6,6 @@ package org.neo4j.neode;
 
 import org.neo4j.graphalgo.GraphAlgoFactory;
 import org.neo4j.graphalgo.PathFinder;
-import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Path;
 import org.neo4j.graphdb.Relationship;
@@ -15,7 +14,7 @@ public enum RelationshipUniqueness
 {
     SINGLE_DIRECTION
             {
-                public Relationship createRelationship( GraphDatabaseService db, Node firstNode, Node secondNode,
+                public Relationship createRelationship( Node firstNode, Node secondNode,
                                                         RelationshipInfo relationshipInfo, int iteration )
                 {
                     PathFinder<Path> pathPathFinder =
@@ -26,12 +25,12 @@ public enum RelationshipUniqueness
                         return null;
                     }
 
-                    return relationshipInfo.createRelationship( firstNode, secondNode, db, iteration );
+                    return relationshipInfo.createRelationship( firstNode, secondNode, iteration );
                 }
             },
     BOTH_DIRECTIONS
             {
-                public Relationship createRelationship( GraphDatabaseService db, Node firstNode, Node secondNode,
+                public Relationship createRelationship( Node firstNode, Node secondNode,
                                                         RelationshipInfo relationshipInfo, int iteration )
                 {
                     PathFinder<Path> pathPathFinder = GraphAlgoFactory.shortestPath(
@@ -42,21 +41,20 @@ public enum RelationshipUniqueness
                         return null;
                     }
 
-                    return relationshipInfo.createRelationship( firstNode, secondNode, db, iteration );
+                    return relationshipInfo.createRelationship( firstNode, secondNode, iteration );
                 }
             },
     ALLOW_MULTIPLE
             {
-                public Relationship createRelationship( GraphDatabaseService db, Node firstNode, Node secondNode,
+                public Relationship createRelationship( Node firstNode, Node secondNode,
                                                         RelationshipInfo relationshipInfo, int iteration )
                 {
-                    return relationshipInfo.createRelationship( firstNode, secondNode, db, iteration );
+                    return relationshipInfo.createRelationship( firstNode, secondNode, iteration );
                 }
             };
 
-    public abstract Relationship createRelationship( GraphDatabaseService db, Node firstNode,
-                                                     Node secondNode,
-                                                     RelationshipInfo relationshipInfo, int iteration );
+    public abstract Relationship createRelationship( Node firstNode, Node secondNode, RelationshipInfo relationshipInfo,
+                                                     int iteration );
 
 
 }

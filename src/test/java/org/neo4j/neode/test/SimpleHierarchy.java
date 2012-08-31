@@ -1,6 +1,6 @@
 package org.neo4j.neode.test;
 
-import static org.neo4j.neode.TargetNodes.create;
+import static org.neo4j.neode.TargetNodesStrategy.create;
 import static org.neo4j.neode.Range.exactly;
 import static org.neo4j.neode.Range.minMax;
 

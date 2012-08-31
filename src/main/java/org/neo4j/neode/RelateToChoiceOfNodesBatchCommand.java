@@ -3,7 +3,6 @@ package org.neo4j.neode;
 import java.util.List;
 
 import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
 import org.neo4j.neode.logging.Log;
 
 class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<NodeIdCollection>>
@@ -34,15 +33,8 @@ class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<NodeIdColle
     @Override
     public void execute( GraphDatabaseService db, int iteration )
     {
-        Node currentNode = db.getNodeById( startNodeIds.getIdByPosition( iteration ) );
-        execute( currentNode, db, iteration );
-    }
-
-    @Override
-    public void execute( Node currentNode, GraphDatabaseService db, int iteration )
-    {
-        BatchCommand<NodeIdCollection> nextCommand = commands.nextCommand( currentNode );
-        nextCommand.execute( currentNode, db, iteration );
+        BatchCommand<NodeIdCollection> nextCommand = commands.nextCommand();
+        nextCommand.execute( db, iteration );
     }
 
     @Override
@@ -60,13 +52,13 @@ class RelateToChoiceOfNodesBatchCommand implements BatchCommand<List<NodeIdColle
     @Override
     public void onBegin( Log log )
     {
-        commands.onBegin(log);
+        commands.onBegin( log );
     }
 
     @Override
     public void onEnd( Log log )
     {
-        commands.onEnd(log);
+        commands.onEnd( log );
     }
 
     @Override

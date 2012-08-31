@@ -13,7 +13,7 @@ public class QueryBasedGetExistingNodes extends RelationshipBuilder
     }
 
     @Override
-    public Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode )
+    public Iterable<Node> getTargetNodes( int quantity, GraphDatabaseService db, Node currentNode )
     {
         return query.execute( currentNode );
     }

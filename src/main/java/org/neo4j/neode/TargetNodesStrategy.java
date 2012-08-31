@@ -11,7 +11,7 @@ import org.neo4j.graphdb.Relationship;
 import org.neo4j.neode.interfaces.SetRelationshipInfo;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
-public class TargetNodes
+public class TargetNodesStrategy
 {
     public static SetRelationshipInfo getExisting( NodeIdCollection nodeIdCollection,
                                                    ProbabilityDistribution probabilityDistribution )
@@ -60,14 +60,14 @@ public class TargetNodes
         return new CreateUniqueNodes( nodeSpecification );
     }
 
-    private final NodeSource nodeSource;
+    private final TargetNodesSource targetNodesSource;
     private final RelationshipInfo relationshipInfo;
     private final RelationshipConstraints relationshipConstraints;
 
-    TargetNodes( NodeSource nodeSource, RelationshipInfo relationshipInfo,
-                 RelationshipConstraints relationshipConstraints )
+    TargetNodesStrategy( TargetNodesSource targetNodesSource, RelationshipInfo relationshipInfo,
+                         RelationshipConstraints relationshipConstraints )
     {
-        this.nodeSource = nodeSource;
+        this.targetNodesSource = targetNodesSource;
         this.relationshipInfo = relationshipInfo;
         this.relationshipConstraints = relationshipConstraints;
     }
@@ -80,7 +80,7 @@ public class TargetNodes
         for ( Node targetNode : targetNodes )
         {
             Relationship relationship = relationshipConstraints
-                    .addRelationshipToCurrentNode( currentNode, targetNode, db, targetNodeIds,
+                    .addRelationshipToCurrentNode( currentNode, targetNode, targetNodeIds,
                             relationshipInfo, iteration );
             if ( relationship != null )
             {
@@ -92,18 +92,18 @@ public class TargetNodes
 
     NodeIdCollection newNodeIdCollection( List<Long> nodeIds )
     {
-        return new NodeIdCollection( nodeSource.label(), nodeIds );
+        return new NodeIdCollection( targetNodesSource.label(), nodeIds );
     }
 
     NodeIdCollection newNodeIdCollection( NodeIdCollectionFactory nodeIdCollectionFactory )
     {
-        return nodeIdCollectionFactory.createNodeIdCollection( nodeSource.label() );
+        return nodeIdCollectionFactory.createNodeIdCollection( targetNodesSource.label() );
     }
 
     String description( String startNodeLabel )
     {
         return String.format( "(%s)%s(%s)",
-                startNodeLabel, relationshipInfo.description(), nodeSource.label() );
+                startNodeLabel, relationshipInfo.description(), targetNodesSource.label() );
     }
 
     String relationshipConstraintsDescription()
@@ -114,7 +114,7 @@ public class TargetNodes
     private Iterable<Node> getRandomSelectionOfNodes( GraphDatabaseService db, Node firstNode )
     {
         int numberOfRelsToCreate = relationshipConstraints.calculateNumberOfRelsToCreate();
-        return nodeSource.getNodes( numberOfRelsToCreate, db, firstNode );
+        return targetNodesSource.getTargetNodes( numberOfRelsToCreate, db, firstNode );
     }
 
 }

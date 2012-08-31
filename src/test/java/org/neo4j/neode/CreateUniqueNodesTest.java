@@ -22,17 +22,18 @@ public class CreateUniqueNodesTest
         GraphDatabaseService db = Db.impermanentDb();
         Transaction tx = db.beginTx();
 
-        CreateUniqueNodes command = new CreateUniqueNodes( new NodeSpecification( "user", Collections.<Property>emptyList(), db ) );
+        CreateUniqueNodes command = new CreateUniqueNodes(
+                new NodeSpecification( "user", Collections.<Property>emptyList(), db ) );
 
         // when
-        Iterable<Node> nodes = command.getNodes( 3, db, null );
+        Iterable<Node> nodes = command.getTargetNodes( 3, db, null );
 
         // then
         Iterator<Node> iterator = nodes.iterator();
 
-        assertEquals("user", iterator.next().getProperty( "_label" ));
-        assertEquals("user", iterator.next().getProperty( "_label" ));
-        assertEquals("user", iterator.next().getProperty( "_label" ));
+        assertEquals( "user", iterator.next().getProperty( "_label" ) );
+        assertEquals( "user", iterator.next().getProperty( "_label" ) );
+        assertEquals( "user", iterator.next().getProperty( "_label" ) );
         assertFalse( iterator.hasNext() );
 
         tx.success();

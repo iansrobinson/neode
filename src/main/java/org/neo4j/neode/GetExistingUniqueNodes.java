@@ -20,7 +20,7 @@ class GetExistingUniqueNodes extends RelationshipBuilder
     }
 
     @Override
-    public Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode )
+    public Iterable<Node> getTargetNodes( int quantity, GraphDatabaseService db, Node currentNode )
     {
         final List<Integer> nodeIdPositions;
         try

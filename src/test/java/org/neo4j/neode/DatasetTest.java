@@ -3,13 +3,12 @@ package org.neo4j.neode;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.neo4j.graphdb.Node;
-import org.neo4j.neode.logging.Log;
-import org.neo4j.neode.logging.SysOutLog;
-import org.neo4j.neode.test.Db;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.event.TransactionData;
 import org.neo4j.graphdb.event.TransactionEventHandler;
+import org.neo4j.neode.logging.Log;
+import org.neo4j.neode.logging.SysOutLog;
+import org.neo4j.neode.test.Db;
 
 public class DatasetTest
 {
@@ -113,7 +112,6 @@ public class DatasetTest
         }
     }
 
-
     private class DummyBatchCommand implements BatchCommand<NodeIdCollection>
     {
         private final int numberOfIterations;
@@ -143,12 +141,6 @@ public class DatasetTest
         {
             db.createNode();
             callCount++;
-        }
-
-        @Override
-        public void execute( Node currentNode, GraphDatabaseService db, int iteration )
-        {
-            execute( db, iteration );
         }
 
         @Override

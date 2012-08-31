@@ -7,8 +7,8 @@ package org.neo4j.neode;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
-interface NodeSource
+interface TargetNodesSource
 {
     public String label();
-    public Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode );
+    public Iterable<Node> getTargetNodes( int quantity, GraphDatabaseService db, Node currentNode );
 }

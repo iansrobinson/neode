@@ -1,7 +1,6 @@
 package org.neo4j.neode;
 
 import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
 import org.neo4j.neode.logging.Log;
 
 public class ExecuteAllCommandsBatchCommand implements BatchCommand<NodeIdCollection>
@@ -16,13 +15,13 @@ public class ExecuteAllCommandsBatchCommand implements BatchCommand<NodeIdCollec
     @Override
     public int numberOfIterations()
     {
-        return 0;
+        throw new IllegalAccessError();
     }
 
     @Override
     public int batchSize()
     {
-        return 0;
+        throw new IllegalAccessError();
     }
 
     @Override
@@ -35,36 +34,32 @@ public class ExecuteAllCommandsBatchCommand implements BatchCommand<NodeIdCollec
     }
 
     @Override
-    public void execute( Node currentNode, GraphDatabaseService db, int iteration )
-    {
-        execute( db, iteration );
-    }
-
-    @Override
     public String description()
     {
-        return null;
+        throw new IllegalAccessError();
     }
 
     @Override
     public String shortDescription()
     {
-        return null;
+        throw new IllegalAccessError();
     }
 
     @Override
     public void onBegin( Log log )
     {
+        throw new IllegalAccessError();
     }
 
     @Override
     public void onEnd( Log log )
     {
+        throw new IllegalAccessError();
     }
 
     @Override
     public NodeIdCollection results()
     {
-        return null;
+        throw new IllegalAccessError();
     }
 }

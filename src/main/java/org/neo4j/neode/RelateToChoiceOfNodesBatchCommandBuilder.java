@@ -9,18 +9,18 @@ class RelateToChoiceOfNodesBatchCommandBuilder implements UpdateDataset<List<Nod
     private static final int DEFAULT_BATCH_SIZE = 10000;
 
     private final NodeIdCollection nodeIdCollection;
-    private final CreateRelationshipSpecificationChoices createRelationshipSpecificationChoices;
+    private final ChoiceOfTargetNodesStrategy choiceOfTargetNodesStrategy;
 
-    RelateToChoiceOfNodesBatchCommandBuilder( NodeIdCollection nodeIdCollection, CreateRelationshipSpecificationChoices createRelationshipSpecificationChoices )
+    RelateToChoiceOfNodesBatchCommandBuilder( NodeIdCollection nodeIdCollection, ChoiceOfTargetNodesStrategy choiceOfTargetNodesStrategy )
     {
         this.nodeIdCollection = nodeIdCollection;
-        this.createRelationshipSpecificationChoices = createRelationshipSpecificationChoices;
+        this.choiceOfTargetNodesStrategy = choiceOfTargetNodesStrategy;
     }
 
     @Override
     public List<NodeIdCollection> update( Dataset dataset, int batchSize )
     {
-        Commands commands = createRelationshipSpecificationChoices.createCommandSelector( nodeIdCollection, batchSize,
+        Commands commands = choiceOfTargetNodesStrategy.createCommandSelector( nodeIdCollection, batchSize,
                 NodeIdCollectionFactory.INSTANCE );
         RelateToChoiceOfNodesBatchCommand command =
                 new RelateToChoiceOfNodesBatchCommand( nodeIdCollection, commands, batchSize );
@@ -37,7 +37,7 @@ class RelateToChoiceOfNodesBatchCommandBuilder implements UpdateDataset<List<Nod
     @Override
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
-        Commands commands = createRelationshipSpecificationChoices.createCommandSelector( nodeIdCollection,
+        Commands commands = choiceOfTargetNodesStrategy.createCommandSelector( nodeIdCollection,
                 DEFAULT_BATCH_SIZE,
                 NodeIdCollectionFactory.NULL );
         RelateToChoiceOfNodesBatchCommand command =

@@ -34,7 +34,7 @@ public class GetOrCreateUniqueNodesTest
         GetOrCreateUniqueNodes nodeFinder = new GetOrCreateUniqueNodes( user, 5, probabilityDistribution );
 
         // when
-        nodeFinder.getNodes( 1, db, currentNode );
+        nodeFinder.getTargetNodes( 1, db, currentNode );
         tx.success();
         tx.finish();
 
@@ -61,8 +61,8 @@ public class GetOrCreateUniqueNodesTest
         GetOrCreateUniqueNodes nodeFinder = new GetOrCreateUniqueNodes( user, 5, probabilityDistribution );
 
         // when
-        nodeFinder.getNodes( 1, db, currentNode );
-        nodeFinder.getNodes( 1, db, currentNode );
+        nodeFinder.getTargetNodes( 1, db, currentNode );
+        nodeFinder.getTargetNodes( 1, db, currentNode );
         tx.success();
         tx.finish();
 

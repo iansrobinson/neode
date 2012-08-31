@@ -13,7 +13,7 @@ class CreateUniqueNodes extends RelationshipBuilder
     }
 
     @Override
-    public Iterable<Node> getNodes( final int quantity, GraphDatabaseService db, Node currentNode )
+    public Iterable<Node> getTargetNodes( int quantity, GraphDatabaseService db, Node currentNode )
     {
         NodeIdCollection nodeIdCollection = nodeSpecification.emptyNodeIdCollection( quantity );
         for ( int i = 0; i < quantity; i++ )

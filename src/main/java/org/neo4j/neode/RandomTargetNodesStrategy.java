@@ -4,12 +4,12 @@ import static org.neo4j.neode.probabilities.ProbabilityDistribution.flatDistribu
 
 import java.util.List;
 
-class RandomCreateRelationshipSpecificationChoices extends CreateRelationshipSpecificationChoices
+class RandomTargetNodesStrategy extends ChoiceOfTargetNodesStrategy
 {
-    protected RandomCreateRelationshipSpecificationChoices( List<TargetNodes>
-                                                                    targetNodeses )
+    protected RandomTargetNodesStrategy( List<TargetNodesStrategy>
+                                                 targetNodeseStrategies )
     {
-        super( targetNodeses );
+        super( targetNodeseStrategies );
     }
 
     @Override

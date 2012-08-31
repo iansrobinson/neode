@@ -14,59 +14,57 @@ import org.neo4j.neode.interfaces.SetRelationshipConstraints;
 import org.neo4j.neode.interfaces.SetRelationshipInfo;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
-public abstract class RelationshipBuilder implements SetRelationshipInfo, SetRelationshipConstraints, NodeSource
+public abstract class RelationshipBuilder implements SetRelationshipInfo, SetRelationshipConstraints, TargetNodesSource
 {
     private RelationshipInfo relationshipInfo;
-    private RelationshipConstraints relationshipConstraints;
 
     @Override
-    public abstract Iterable<Node> getNodes( int quantity, GraphDatabaseService db, Node currentNode );
+    public abstract Iterable<Node> getTargetNodes( int quantity, GraphDatabaseService db, Node currentNode );
 
     @Override
     public abstract String label();
 
     @Override
-    public final SetRelationshipConstraints relationship(RelationshipSpecification relationshipSpecification,
-                                                         Direction direction)
+    public final SetRelationshipConstraints relationship( RelationshipSpecification relationshipSpecification,
+                                                          Direction direction )
     {
         relationshipInfo = new RelationshipInfo( relationshipSpecification, direction );
         return this;
     }
 
     @Override
-    public final SetRelationshipConstraints relationship(RelationshipSpecification relationshipSpecification)
+    public final SetRelationshipConstraints relationship( RelationshipSpecification relationshipSpecification )
     {
         return relationship( relationshipSpecification, Direction.OUTGOING );
     }
 
     @Override
-    public final TargetNodes relationshipConstraints( Range cardinality,
-                                                                   ProbabilityDistribution probabilityDistribution,
-                                                                   RelationshipUniqueness relationshipUniqueness )
+    public final TargetNodesStrategy relationshipConstraints( Range cardinality,
+                                                              ProbabilityDistribution probabilityDistribution,
+                                                              RelationshipUniqueness relationshipUniqueness )
     {
-        relationshipConstraints = new RelationshipConstraints(
-                cardinality,
+        RelationshipConstraints relationshipConstraints = new RelationshipConstraints( cardinality,
                 relationshipUniqueness,
                 probabilityDistribution );
-        return new TargetNodes( this, relationshipInfo, relationshipConstraints );
+        return new TargetNodesStrategy( this, relationshipInfo, relationshipConstraints );
     }
 
     @Override
-    public final TargetNodes relationshipConstraints( Range cardinality,
-                                                                   RelationshipUniqueness relationshipUniqueness )
+    public final TargetNodesStrategy relationshipConstraints( Range cardinality,
+                                                              RelationshipUniqueness relationshipUniqueness )
     {
         return relationshipConstraints( cardinality, flatDistribution(), relationshipUniqueness );
     }
 
     @Override
-    public final TargetNodes relationshipConstraints( Range cardinality,
-                                                                   ProbabilityDistribution probabilityDistribution )
+    public final TargetNodesStrategy relationshipConstraints( Range cardinality,
+                                                              ProbabilityDistribution probabilityDistribution )
     {
         return relationshipConstraints( cardinality, probabilityDistribution, RelationshipUniqueness.ALLOW_MULTIPLE );
     }
 
     @Override
-    public final TargetNodes relationshipConstraints( Range cardinality )
+    public final TargetNodesStrategy relationshipConstraints( Range cardinality )
     {
         return relationshipConstraints( cardinality, flatDistribution(), RelationshipUniqueness.ALLOW_MULTIPLE );
     }

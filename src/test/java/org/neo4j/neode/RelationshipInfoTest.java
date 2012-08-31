@@ -44,7 +44,7 @@ public class RelationshipInfoTest
         RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.OUTGOING );
 
         // when
-        relationshipInfo.createRelationship( firstNode, secondNode, db, 0 );
+        relationshipInfo.createRelationship( firstNode, secondNode, 0 );
         tx.success();
         tx.finish();
 
@@ -64,7 +64,7 @@ public class RelationshipInfoTest
         RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.INCOMING );
 
         // when
-        relationshipInfo.createRelationship( firstNode, secondNode, db, 0 );
+        relationshipInfo.createRelationship( firstNode, secondNode, 0 );
         tx.success();
         tx.finish();
 

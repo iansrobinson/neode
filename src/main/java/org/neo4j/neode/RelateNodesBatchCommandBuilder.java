@@ -9,19 +9,19 @@ class RelateNodesBatchCommandBuilder implements UpdateDataset<NodeIdCollection>
     private static final int DEFAULT_BATCH_SIZE = 10000;
 
     private final NodeIdCollection sourceNodeIds;
-    private final TargetNodes targetNodes;
+    private final TargetNodesStrategy targetNodesStrategy;
 
-    RelateNodesBatchCommandBuilder( NodeIdCollection sourceNodeIds, TargetNodes targetNodes )
+    RelateNodesBatchCommandBuilder( NodeIdCollection sourceNodeIds, TargetNodesStrategy targetNodesStrategy )
     {
         this.sourceNodeIds = sourceNodeIds;
-        this.targetNodes = targetNodes;
+        this.targetNodesStrategy = targetNodesStrategy;
     }
 
     @Override
     public NodeIdCollection update( Dataset dataset, int batchSize )
     {
-        RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodeIds, targetNodes,
-               targetNodes.newNodeIdCollection( new ArrayList<Long>() ), batchSize );
+        RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodeIds, targetNodesStrategy,
+               targetNodesStrategy.newNodeIdCollection( new ArrayList<Long>() ), batchSize );
         return dataset.execute( command );
     }
 
@@ -35,7 +35,7 @@ class RelateNodesBatchCommandBuilder implements UpdateDataset<NodeIdCollection>
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
 
-        RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodeIds, targetNodes,
+        RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodeIds, targetNodesStrategy,
                 NodeIdCollection.NULL, batchSize );
         dataset.execute( command );
     }
