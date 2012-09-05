@@ -114,7 +114,6 @@ public class NodeCollectionTest
         } );
     }
 
-
     @Test
     public void shouldReturnSubsetOfSelf() throws Exception
     {
@@ -152,6 +151,51 @@ public class NodeCollectionTest
                         asList( firstNode.getId(), secondNode.getId() ) );
                 NodeCollection secondCollection = new NodeCollection( db, "user",
                         asList( thirdNode.getId() ) );
+
+                // when
+                NodeCollection combined = firstCollection.combine( secondCollection );
+
+                // then
+                Iterable<Node> expectedNodes = asList( firstNode, secondNode, thirdNode );
+                assertThat( combined, returnsSameItems( expectedNodes ) );
+            }
+        } );
+    }
+
+    @Test
+    public void shouldNotBeAbleToAddSameNodeTwice() throws Exception
+    {
+        Db.usingSampleDataset( new Db.WithSampleDataset()
+        {
+            @Override
+            public void execute( GraphDatabaseService db, Node firstNode, Node secondNode, Node thirdNode )
+            {
+                // given
+                NodeCollection nodeCollection = new NodeCollection( db, "user", asList( firstNode.getId()) );
+
+                // when
+                nodeCollection.add( firstNode );
+
+                // then
+                Iterable<Node> expectedNodes = asList( firstNode );
+                assertThat( nodeCollection, returnsSameItems( expectedNodes ) );
+            }
+        } );
+    }
+
+    @Test
+    public void shouldIgnoreDuplicatesWhenCombiningCollections() throws Exception
+    {
+        Db.usingSampleDataset( new Db.WithSampleDataset()
+        {
+            @Override
+            public void execute( GraphDatabaseService db, Node firstNode, Node secondNode, Node thirdNode )
+            {
+                // given
+                NodeCollection firstCollection = new NodeCollection( db, "user",
+                        asList( firstNode.getId(), secondNode.getId() ) );
+                NodeCollection secondCollection = new NodeCollection( db, "user",
+                        asList( secondNode.getId(), thirdNode.getId() ) );
 
                 // when
                 NodeCollection combined = firstCollection.combine( secondCollection );

@@ -1,9 +1,11 @@
 package org.neo4j.neode;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -26,7 +28,11 @@ public class NodeCollection implements Iterable<Node>
 
     void add( Node node )
     {
-        nodeIds.add( node.getId() );
+        long id = node.getId();
+        if ( !nodeIds.contains( id ) )
+        {
+            nodeIds.add( id );
+        }
     }
 
     Node getNodeByPosition( int position )
@@ -107,10 +113,10 @@ public class NodeCollection implements Iterable<Node>
 
     public NodeCollection combine( NodeCollection other )
     {
-        List<Long> newNodeIds = new ArrayList<Long>( nodeIds.size() + other.nodeIds.size() );
+        Set<Long> newNodeIds = new HashSet<Long>( nodeIds.size() + other.nodeIds.size() );
         newNodeIds.addAll( nodeIds );
         newNodeIds.addAll( other.nodeIds );
-        return new NodeCollection( db, label, newNodeIds );
+        return new NodeCollection( db, label, new ArrayList<Long>( newNodeIds ) );
     }
 
     public UpdateDataset<NodeCollection> createRelationshipsTo( TargetNodesStrategy targetNodesStrategy )

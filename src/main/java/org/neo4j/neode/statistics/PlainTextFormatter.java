@@ -39,7 +39,7 @@ public class PlainTextFormatter
 
         int lineLength = maxLengthNodeLabel + (3 * maxLengthNumber) + 13;
 
-        log.write( String.format( "Graph statistics for '%s'\n", graphStatistics.description() ) );
+        log.write( String.format( "Graph statistics for '%s':\n", graphStatistics.description() ) );
         for ( NodeStatistic nodeStatistic : graphStatistics.nodeStatistics() )
         {
             log.write( repeat( "=", lineLength ) );
