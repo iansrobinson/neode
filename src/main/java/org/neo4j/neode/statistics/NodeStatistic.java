@@ -1,7 +1,6 @@
 package org.neo4j.neode.statistics;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.neo4j.graphdb.Node;
@@ -17,30 +16,31 @@ public class NodeStatistic
     {
         this.label = label;
         count = 0;
-        relationshipStatistics = new HashMap<String, RelationshipStatistic>(  );
+        relationshipStatistics = new HashMap<String, RelationshipStatistic>();
     }
 
     public String label()
     {
-         return label;
+        return label;
     }
 
-    public void update(Node node)
+    public void update( Node node )
     {
         count++;
 
-        Map<String, RelationshipCounter> relationshipCounters = new HashMap<String, RelationshipCounter>(  );
+        Map<String, RelationshipCounter> relationshipCounters = new HashMap<String, RelationshipCounter>();
 
         for ( Relationship relationship : node.getRelationships() )
         {
             String label = relationship.getType().name();
 
-            RelationshipCounter relationshipCounter =
-                    relationshipCounters.containsKey( label ) ?
-                    relationshipCounters.get( label ) :
-                    relationshipCounters.put( label, new RelationshipCounter() );
+            RelationshipCounter relationshipCounter =  relationshipCounters.get( label );
+            if (relationshipCounter == null)
+            {
+                relationshipCounters.put( label, relationshipCounter = new RelationshipCounter() );
+            }
 
-            if (relationship.getStartNode().equals( node ))
+            if ( relationship.getStartNode().equals( node ) )
             {
                 relationshipCounter.incrementOutgoing();
             }
@@ -50,10 +50,16 @@ public class NodeStatistic
             }
         }
 
-//        for ( String label : relationshipCounters.keySet() )
-//        {
-//            RelationshipStatistic re
-//        }
+        for ( String label : relationshipCounters.keySet() )
+        {
+            RelationshipStatistic relationshipStatistic =  relationshipStatistics.get( label );
+            if (relationshipStatistic == null)
+            {
+                relationshipStatistics.put( label, relationshipStatistic = new RelationshipStatistic( label ) );
+            }
+
+            relationshipStatistic.update( relationshipCounters.get( label ) );
+        }
     }
 
     public int count()
@@ -61,8 +67,14 @@ public class NodeStatistic
         return count;
     }
 
-    public Iterator<RelationshipStatistic> relationshipStatistics()
+    public Iterable<RelationshipStatistic> relationshipStatistics()
     {
-        return null;  //To change body of created methods use File | Settings | File Templates.
+        return relationshipStatistics.values();
     }
+
+    public RelationshipStatistic getRelationshipStatistic( String label )
+    {
+        return relationshipStatistics.get( label );
+    }
+
 }

@@ -3,16 +3,14 @@ package org.neo4j.neode.statistics;
 public class RelationshipStatistic
 {
     private final String label;
-    private int nodeCount;
-    private int incomingCount;
-    private int outgoingCount;
+    private Counter incomingCount;
+    private Counter outgoingCount;
 
     public RelationshipStatistic( String label )
     {
         this.label = label;
-        nodeCount = 0;
-        incomingCount = 0;
-        outgoingCount = 0;
+        incomingCount = new Counter();
+        outgoingCount = new Counter();
     }
 
     public String label()
@@ -20,20 +18,19 @@ public class RelationshipStatistic
         return label;
     }
 
-    public void update(RelationshipCounter counter)
+    public void update( RelationshipCounter counter )
     {
-        nodeCount++;
-        incomingCount+=counter.incoming();
-        outgoingCount+=counter.outgoing();
+        incomingCount.update( counter.incoming() );
+        outgoingCount.update( counter.outgoing() );
     }
 
-    public int averageIncoming()
+    public Counter incoming()
     {
-        return incomingCount/nodeCount;
+        return incomingCount;
     }
 
-    public int averageOutgoing()
+    public Counter outgoing()
     {
-        return outgoingCount/nodeCount;
+        return outgoingCount;
     }
 }

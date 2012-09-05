@@ -1,9 +1,12 @@
 package org.neo4j.neode;
 
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
 import org.neo4j.neode.logging.Log;
+import org.neo4j.neode.statistics.GraphStatistics;
+import org.neo4j.tooling.GlobalGraphOperations;
 
 public class Dataset
 {
@@ -40,7 +43,7 @@ public class Dataset
 
     public void end()
     {
-        log.write( String.format( "Store [%s]\n\nEnd   [%s] %s",
+        log.write( String.format( "Store [%s]\n\nEnd   [%s] %s\n",
                 ((EmbeddedGraphDatabase) db).getStoreDir(), description, elapsedTime( runStartTime ) ) );
     }
 
@@ -69,6 +72,16 @@ public class Dataset
             tx.finish();
         }
 
+    }
+
+    public GraphStatistics createStatistics()
+    {
+        GraphStatistics graphStatistics = new GraphStatistics(description);
+        for (Node node : GlobalGraphOperations.at( db ).getAllNodes())
+        {
+            graphStatistics.add( node );
+        }
+        return graphStatistics;
     }
 
     private static boolean iterationIsInRange( int startIteration, BatchCommand command, int iteration )

@@ -27,6 +27,8 @@ import org.neo4j.neode.NodeSpecification;
 import org.neo4j.neode.RelationshipSpecification;
 import org.neo4j.neode.RelationshipUniqueness;
 import org.neo4j.neode.logging.SysOutLog;
+import org.neo4j.neode.statistics.GraphStatistics;
+import org.neo4j.neode.statistics.PlainTextFormatter;
 
 public class SocialNetworkExample
 {
@@ -95,6 +97,9 @@ public class SocialNetworkExample
                 .updateNoReturn( dataset );
 
         dataset.end();
+
+        GraphStatistics statistics = dataset.createStatistics();
+        new PlainTextFormatter( SysOutLog.INSTANCE ).describe( statistics );
 
         db.shutdown();
 

@@ -61,8 +61,9 @@ class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
     @Override
     public void onEnd( Log log )
     {
+        long average = sourceNodes.size() == 0 ? 0 : totalRels / sourceNodes.size();
         log.write( String.format( "      [Avg: %s relationship(s) per %s]",
-                totalRels / sourceNodes.size(), sourceNodes.label() ) );
+                average, sourceNodes.label() ) );
     }
 
     @Override

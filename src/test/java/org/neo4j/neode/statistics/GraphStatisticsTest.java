@@ -25,7 +25,7 @@ public class GraphStatisticsTest
         tx.success();
         tx.finish();
 
-        GraphStatistics graphStatistics = new GraphStatistics();
+        GraphStatistics graphStatistics = new GraphStatistics( "test" );
 
         // when
         graphStatistics.add( node );
@@ -49,15 +49,23 @@ public class GraphStatisticsTest
         Node secondNode = db.createNode();
         secondNode.setProperty( "_label", "user" );
         firstNode.createRelationshipTo( secondNode, withName( "FRIEND" ) );
-        secondNode.createRelationshipTo( firstNode, withName("FRIEND") );
+        secondNode.createRelationshipTo( firstNode, withName( "FRIEND" ) );
         tx.success();
         tx.finish();
 
-        GraphStatistics graphStatistics = new GraphStatistics();
+        GraphStatistics graphStatistics = new GraphStatistics( "test" );
 
         // when
         graphStatistics.add( firstNode );
+        graphStatistics.add( secondNode );
 
-       // then
+        // then
+        NodeStatistic nodeStatistic = graphStatistics.getNodeStatistic( "user" );
+
+        assertEquals( 2, nodeStatistic.count() );
+        assertEquals( 2, nodeStatistic.getRelationshipStatistic( "FRIEND" ).incoming().total() );
+        assertEquals( 2, nodeStatistic.getRelationshipStatistic( "FRIEND" ).outgoing().total() );
+        assertEquals( 1, nodeStatistic.getRelationshipStatistic( "FRIEND" ).incoming().average() );
+        assertEquals( 1, nodeStatistic.getRelationshipStatistic( "FRIEND" ).outgoing().average() );
     }
 }
