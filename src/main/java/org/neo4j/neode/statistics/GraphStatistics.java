@@ -113,7 +113,7 @@ public class GraphStatistics
         return descripton;
     }
 
-    public void DescribeTo( GraphStatisticsFormatter formatter )
+    public void describeTo( GraphStatisticsFormatter formatter )
     {
         formatter.describe( this );
     }
