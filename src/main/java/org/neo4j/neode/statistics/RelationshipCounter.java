@@ -1,32 +1,32 @@
 package org.neo4j.neode.statistics;
 
-public class RelationshipCounter
+class RelationshipCounter
 {
     private int incoming;
     private int outgoing;
 
-    public RelationshipCounter()
+    RelationshipCounter()
     {
         incoming = 0;
         outgoing = 0;
     }
 
-    public void incrementIncoming()
+    void incrementIncoming()
     {
         incoming++;
     }
 
-    public void incrementOutgoing()
+    void incrementOutgoing()
     {
         outgoing++;
     }
 
-    public int incoming()
+    int incoming()
     {
         return incoming;
     }
 
-    public int outgoing()
+    int outgoing()
     {
         return outgoing;
     }

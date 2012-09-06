@@ -4,11 +4,11 @@ import java.util.Map;
 
 import org.neo4j.neode.logging.Log;
 
-public class PlainTextFormatter
+public class AsciiDocFormatter implements GraphStatisticsFormatter
 {
     private final Log log;
 
-    public PlainTextFormatter( Log log )
+    public AsciiDocFormatter( Log log )
     {
         this.log = log;
     }

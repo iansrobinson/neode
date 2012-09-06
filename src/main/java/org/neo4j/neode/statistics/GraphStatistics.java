@@ -3,22 +3,47 @@ package org.neo4j.neode.statistics;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
+import org.neo4j.tooling.GlobalGraphOperations;
 
 public class GraphStatistics
 {
+
+    public static GraphStatistics create( GraphDatabaseService db, String description,
+                                          NodeLabelResolver nodeLabelResolver )
+    {
+        GraphStatistics graphStatistics = new GraphStatistics( description, nodeLabelResolver );
+        for ( Node node : GlobalGraphOperations.at( db ).getAllNodes() )
+        {
+            graphStatistics.add( node );
+        }
+        return graphStatistics;
+    }
+
+    public static GraphStatistics create( GraphDatabaseService db, String description )
+    {
+        return create( db, description, new NeodeNodeLabelResolver() );
+    }
+
     private final String descripton;
+    private final NodeLabelResolver nodeLabelResolver;
     private final Map<String, NodeStatistic> nodeStatistics;
 
-    public GraphStatistics( String descripton )
+    private GraphStatistics( String descripton, NodeLabelResolver nodeLabelResolver )
     {
         this.descripton = descripton;
+        this.nodeLabelResolver = nodeLabelResolver;
         nodeStatistics = new HashMap<String, NodeStatistic>();
     }
 
-    public void add( Node node )
+    private void add( Node node )
     {
-        String label = node.hasProperty( "_label" ) ? node.getProperty( "_label" ).toString() : "_UNKNOWN";
+        String label = nodeLabelResolver.labelFor( node );
+        if ( label == null )
+        {
+            label = "_UNKNOWN";
+        }
 
         NodeStatistic nodeStatistic = nodeStatistics.get( label );
         if ( nodeStatistic == null )
@@ -44,7 +69,7 @@ public class GraphStatistics
         int total = 0;
         for ( NodeStatistic nodeStatistic : nodeStatistics.values() )
         {
-            total+= nodeStatistic.count();
+            total += nodeStatistic.count();
         }
         return total;
     }
@@ -64,7 +89,7 @@ public class GraphStatistics
 
     public Map<String, Integer> totalsPerRelationship()
     {
-        Map<String, Integer> totals = new HashMap<String, Integer>(  );
+        Map<String, Integer> totals = new HashMap<String, Integer>();
 
         for ( NodeStatistic nodeStatistic : nodeStatistics.values() )
         {
@@ -72,7 +97,7 @@ public class GraphStatistics
             {
                 String label = relationshipStatistic.label();
                 Integer total = totals.get( label );
-                if (total == null)
+                if ( total == null )
                 {
                     totals.put( label, total = 0 );
                 }
@@ -86,5 +111,10 @@ public class GraphStatistics
     public String description()
     {
         return descripton;
+    }
+
+    public void DescribeTo( GraphStatisticsFormatter formatter )
+    {
+        formatter.describe( this );
     }
 }

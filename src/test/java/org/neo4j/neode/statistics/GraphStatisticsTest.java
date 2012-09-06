@@ -20,15 +20,14 @@ public class GraphStatisticsTest
         // given
         GraphDatabaseService db = Db.impermanentDb();
         Transaction tx = db.beginTx();
+        db.getNodeById( 0 ).delete();
         Node node = db.createNode();
         node.setProperty( "_label", "user" );
         tx.success();
         tx.finish();
 
-        GraphStatistics graphStatistics = new GraphStatistics( "test" );
-
         // when
-        graphStatistics.add( node );
+        GraphStatistics graphStatistics = GraphStatistics.create( db, "test db" );
 
         // then
         Iterator<NodeStatistic> iterator = graphStatistics.nodeStatistics().iterator();
@@ -53,11 +52,8 @@ public class GraphStatisticsTest
         tx.success();
         tx.finish();
 
-        GraphStatistics graphStatistics = new GraphStatistics( "test" );
-
         // when
-        graphStatistics.add( firstNode );
-        graphStatistics.add( secondNode );
+        GraphStatistics graphStatistics = GraphStatistics.create( db, "test db" );
 
         // then
         NodeStatistic nodeStatistic = graphStatistics.getNodeStatistic( "user" );

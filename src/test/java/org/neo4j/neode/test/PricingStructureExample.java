@@ -17,8 +17,8 @@ import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.NodeSpecification;
 import org.neo4j.neode.RelationshipSpecification;
 import org.neo4j.neode.logging.SysOutLog;
+import org.neo4j.neode.statistics.AsciiDocFormatter;
 import org.neo4j.neode.statistics.GraphStatistics;
-import org.neo4j.neode.statistics.PlainTextFormatter;
 
 public class PricingStructureExample
 {
@@ -63,8 +63,8 @@ public class PricingStructureExample
 
         dataset.end();
 
-        GraphStatistics statistics = dataset.createStatistics();
-        new PlainTextFormatter( SysOutLog.INSTANCE ).describe( statistics );
+        GraphStatistics statistics = GraphStatistics.create( db, "Pricing Structure" );
+        new AsciiDocFormatter( SysOutLog.INSTANCE ).describe( statistics );
 
         db.shutdown();
 

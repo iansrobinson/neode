@@ -6,7 +6,7 @@ public class RelationshipStatistic
     private Counter incomingCount;
     private Counter outgoingCount;
 
-    public RelationshipStatistic( String label )
+    RelationshipStatistic( String label )
     {
         this.label = label;
         incomingCount = new Counter();
@@ -18,7 +18,7 @@ public class RelationshipStatistic
         return label;
     }
 
-    public void update( RelationshipCounter counter )
+    void update( RelationshipCounter counter )
     {
         incomingCount.update( counter.incoming() );
         outgoingCount.update( counter.outgoing() );

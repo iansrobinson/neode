@@ -12,7 +12,7 @@ public class NodeStatistic
     private int count;
     private Map<String, RelationshipStatistic> relationshipStatistics;
 
-    public NodeStatistic( String label )
+    NodeStatistic( String label )
     {
         this.label = label;
         count = 0;
@@ -24,7 +24,7 @@ public class NodeStatistic
         return label;
     }
 
-    public void update( Node node )
+    void update( Node node )
     {
         count++;
 

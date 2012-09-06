@@ -7,7 +7,7 @@ public class Counter
     private int high;
     private int low;
 
-    public Counter()
+    Counter()
     {
         count = 0;
         total = 0;
@@ -15,7 +15,7 @@ public class Counter
         low = 0;
     }
 
-    public void update(int value)
+    void update(int value)
     {
         count++;
         total+= value;
