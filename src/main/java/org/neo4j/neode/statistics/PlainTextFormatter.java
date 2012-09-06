@@ -42,20 +42,21 @@ public class PlainTextFormatter
         log.write( String.format( "Graph statistics for '%s':\n", graphStatistics.description() ) );
         for ( NodeStatistic nodeStatistic : graphStatistics.nodeStatistics() )
         {
-            log.write( repeat( "=", lineLength ) );
+            log.write( horizontalLine( lineLength ) );
             log.write( String.format( "| %s | %s |",
                     padRight( nodeStatistic.label(), maxLengthNodeLabel ),
                     padRight( nodeStatistic.count(), 6 + (3 * maxLengthNumber) ) ) );
-            log.write( repeat( "=", lineLength ) );
+            log.write( horizontalLine( lineLength ) );
             log.write( String.format( "| %s | %s | %s | %s |",
                     repeat( " ", maxLengthNodeLabel ),
                     padLeft( "Average", maxLengthNumber ),
                     padLeft( "High", maxLengthNumber ),
                     padLeft( "Low", maxLengthNumber ) ) );
-            log.write( repeat( "-", lineLength ) );
+            log.write( horizontalLine( lineLength ) );
             for ( RelationshipStatistic relationshipStatistic : nodeStatistic.relationshipStatistics() )
             {
                 log.write( String.format( "| %s|", padRight( relationshipStatistic.label(), lineLength - 3 ) ) );
+                log.write( horizontalLine( lineLength ) );
                 log.write( String.format( "| %s | %s | %s | %s |",
                         padLeft( "OUTGOING", maxLengthNodeLabel ),
                         padLeft( relationshipStatistic.outgoing().average(), maxLengthNumber ),
@@ -68,18 +69,18 @@ public class PlainTextFormatter
                         padLeft( relationshipStatistic.incoming().high(), maxLengthNumber ),
                         padLeft( relationshipStatistic.incoming().low(), maxLengthNumber ) ) );
 
-                log.write( repeat( "-", lineLength ) );
+                log.write( horizontalLine( lineLength ) );
             }
             log.write( "" );
         }
-        log.write( repeat( "=", lineLength ) );
+        log.write( horizontalLine( lineLength ) );
         log.write( String.format( "| %s |", padRight( "Totals", lineLength - 4 )));
-        log.write( repeat( "=", lineLength ) );
+        log.write( horizontalLine( lineLength ) );
         log.write( String.format( "| %s | %s |",padRight( "Nodes", maxLengthNodeLabel ),
                 padRight( graphStatistics.totalNodes(), 6 + (3 * maxLengthNumber) ) ) );
         log.write( String.format( "| %s | %s |",padRight( "Relationships", maxLengthNodeLabel ),
                 padRight( graphStatistics.totalRelationships(), 6 + (3 * maxLengthNumber) ) ) );
-        log.write( repeat( "-", lineLength ) );
+        log.write( horizontalLine( lineLength ) );
 
         Map<String,Integer> relationshipTotals = graphStatistics.totalsPerRelationship();
         for ( String label : relationshipTotals.keySet() )
@@ -87,8 +88,13 @@ public class PlainTextFormatter
             log.write( String.format( "| %s | %s |",padRight( label, maxLengthNodeLabel ),
                     padRight( relationshipTotals.get( label ), 6 + (3 * maxLengthNumber) ) ) );
         }
-        log.write( repeat( "-", lineLength ) );
+        log.write( horizontalLine( lineLength ) );
 
+    }
+
+    private String horizontalLine( int lineLength )
+    {
+        return "+" + repeat( "-", lineLength - 2 ) + "+";
     }
 
     private static int updateMaxLength( int maxLength, int value )
