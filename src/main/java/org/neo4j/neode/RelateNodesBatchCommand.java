@@ -5,7 +5,7 @@ import org.neo4j.neode.logging.Log;
 
 class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
 {
-    private final NodeCollection sourceNodes;
+    private final NodeCollection.NodeList sourceNodes;
     private final TargetNodesStrategy targetNodesStrategy;
     private final NodeCollection targetNodes;
     private final int batchSize;
@@ -14,7 +14,7 @@ class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
     RelateNodesBatchCommand( NodeCollection sourceNodes, TargetNodesStrategy targetNodesStrategy,
                              NodeCollection targetNodes, int batchSize )
     {
-        this.sourceNodes = sourceNodes;
+        this.sourceNodes = sourceNodes.toNodeList();
         this.targetNodesStrategy = targetNodesStrategy;
         this.targetNodes = targetNodes;
         this.batchSize = batchSize;

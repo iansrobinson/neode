@@ -3,7 +3,7 @@ package org.neo4j.neode;
 import static org.neo4j.neode.probabilities.ProbabilityDistribution.flatDistribution;
 import static org.neo4j.neode.probabilities.ProbabilityDistribution.normalDistribution;
 
-import java.util.List;
+import java.util.Set;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -102,7 +102,7 @@ public class TargetNodesStrategy
         return count;
     }
 
-    NodeCollection newNodeCollection( GraphDatabaseService db, List<Long> nodeIds )
+    NodeCollection newNodeCollection( GraphDatabaseService db, Set<Long> nodeIds )
     {
         return new NodeCollection( db, targetNodesSource.label(), nodeIds );
     }

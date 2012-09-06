@@ -4,8 +4,9 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -27,12 +28,13 @@ public class NodeCollectionTest
             {
                 // given
                 NodeCollection nodeCollection = new NodeCollection( db, "user",
-                        asList( firstNode.getId(), secondNode.getId(), thirdNode.getId() ) );
+                        toSet( firstNode.getId(), secondNode.getId(), thirdNode.getId() ) );
 
                 // then
-                assertEquals( firstNode, nodeCollection.getNodeByPosition( 0 ) );
-                assertEquals( secondNode, nodeCollection.getNodeByPosition( 1 ) );
-                assertEquals( thirdNode, nodeCollection.getNodeByPosition( 2 ) );
+                NodeCollection.NodeList nodeList = nodeCollection.toNodeList();
+                assertEquals( firstNode, nodeList.getNodeByPosition( 0 ) );
+                assertEquals( secondNode, nodeList.getNodeByPosition( 1 ) );
+                assertEquals( thirdNode, nodeList.getNodeByPosition( 2 ) );
             }
         } );
     }
@@ -47,7 +49,7 @@ public class NodeCollectionTest
             {
                 // given
                 NodeCollection nodeCollection = new NodeCollection( db, "user",
-                        asList( firstNode.getId(), secondNode.getId(), thirdNode.getId() ) );
+                        toSet( firstNode.getId(), secondNode.getId(), thirdNode.getId() ) );
 
                 // then
                 Iterable<Node> expectedNodes = asList( firstNode, secondNode, thirdNode );
@@ -65,7 +67,7 @@ public class NodeCollectionTest
             public void execute( GraphDatabaseService db, Node firstNode, Node secondNode, Node thirdNode )
             {
                 // given
-                NodeCollection nodeCollection = new NodeCollection( db, "user", new ArrayList<Long>() );
+                NodeCollection nodeCollection = new NodeCollection( db, "user", new HashSet<Long>() );
 
                 // when
                 nodeCollection.add( firstNode );
@@ -89,7 +91,7 @@ public class NodeCollectionTest
             {
                 // given
                 NodeCollection nodeCollection = new NodeCollection( db, "user",
-                        asList( firstNode.getId(), secondNode.getId(), thirdNode.getId() ) );
+                        toSet( firstNode.getId(), secondNode.getId(), thirdNode.getId() ) );
                 // then
                 assertEquals( "user", nodeCollection.label() );
             }
@@ -107,7 +109,7 @@ public class NodeCollectionTest
             {
                 // given
                 NodeCollection nodeCollection = new NodeCollection( db, "user",
-                        asList( firstNode.getId(), secondNode.getId(), thirdNode.getId() ) );
+                        toSet( firstNode.getId(), secondNode.getId(), thirdNode.getId() ) );
                 // then
                 assertEquals( 3, nodeCollection.size() );
             }
@@ -125,7 +127,7 @@ public class NodeCollectionTest
             {
                 // given
                 NodeCollection nodeCollection = new NodeCollection( db, "user",
-                        asList( firstNode.getId(), secondNode.getId(), thirdNode.getId() ) );
+                        toSet( firstNode.getId(), secondNode.getId(), thirdNode.getId() ) );
 
                 // when
                 NodeCollection subset = nodeCollection.subset( asList( 0, 2 ) );
@@ -148,9 +150,9 @@ public class NodeCollectionTest
             {
                 // given
                 NodeCollection firstCollection = new NodeCollection( db, "user",
-                        asList( firstNode.getId(), secondNode.getId() ) );
+                        toSet( firstNode.getId(), secondNode.getId() ) );
                 NodeCollection secondCollection = new NodeCollection( db, "user",
-                        asList( thirdNode.getId() ) );
+                        toSet( thirdNode.getId() ) );
 
                 // when
                 NodeCollection combined = firstCollection.combine( secondCollection );
@@ -171,7 +173,7 @@ public class NodeCollectionTest
             public void execute( GraphDatabaseService db, Node firstNode, Node secondNode, Node thirdNode )
             {
                 // given
-                NodeCollection nodeCollection = new NodeCollection( db, "user", asList( firstNode.getId()) );
+                NodeCollection nodeCollection = new NodeCollection( db, "user", toSet( firstNode.getId()) );
 
                 // when
                 nodeCollection.add( firstNode );
@@ -193,9 +195,9 @@ public class NodeCollectionTest
             {
                 // given
                 NodeCollection firstCollection = new NodeCollection( db, "user",
-                        asList( firstNode.getId(), secondNode.getId() ) );
+                        toSet( firstNode.getId(), secondNode.getId() ) );
                 NodeCollection secondCollection = new NodeCollection( db, "user",
-                        asList( secondNode.getId(), thirdNode.getId() ) );
+                        toSet( secondNode.getId(), thirdNode.getId() ) );
 
                 // when
                 NodeCollection combined = firstCollection.combine( secondCollection );
@@ -240,6 +242,11 @@ public class NodeCollectionTest
                 description.appendText( "Iterables do not return the same items" );
             }
         };
+    }
+
+    private static <T> Set<T> toSet(T... values)
+    {
+        return new HashSet<T>( asList( values ) );
     }
 
 }

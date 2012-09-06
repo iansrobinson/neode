@@ -1,6 +1,6 @@
 package org.neo4j.neode;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -37,9 +37,9 @@ public class NodeSpecification
         return node;
     }
 
-    NodeCollection emptyNodeCollection(int capacity)
+    NodeCollection emptyNodeCollection( int capacity )
     {
-        return new NodeCollection( db, label, new ArrayList<Long>( capacity ) );
+        return new NodeCollection( db, label, new HashSet<Long>( capacity ) );
     }
 
     String label()

@@ -1,6 +1,6 @@
 package org.neo4j.neode;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.neo4j.neode.interfaces.UpdateDataset;
 
@@ -21,7 +21,7 @@ class RelateNodesBatchCommandBuilder implements UpdateDataset<NodeCollection>
     public NodeCollection update( Dataset dataset, int batchSize )
     {
         RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodes, targetNodesStrategy,
-               targetNodesStrategy.newNodeCollection( dataset.db(), new ArrayList<Long>() ), batchSize );
+                targetNodesStrategy.newNodeCollection( dataset.db(), new HashSet<Long>() ), batchSize );
         return dataset.execute( command );
     }
 

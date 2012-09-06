@@ -1,6 +1,7 @@
 package org.neo4j.neode;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -13,13 +14,13 @@ import org.neo4j.neode.interfaces.UpdateDataset;
 
 public class NodeCollection implements Iterable<Node>
 {
-    public static final NodeCollection NULL = new NodeCollection( null, null, new NullList<Long>() );
+    public static final NodeCollection NULL = new NodeCollection( null, null, new NullSet<Long>() );
 
     private final GraphDatabaseService db;
     private final String label;
-    private final List<Long> nodeIds;
+    private final Set<Long> nodeIds;
 
-    NodeCollection( GraphDatabaseService db, String label, List<Long> nodeIds )
+    NodeCollection( GraphDatabaseService db, String label, Set<Long> nodeIds )
     {
         this.db = db;
         this.label = label;
@@ -28,16 +29,7 @@ public class NodeCollection implements Iterable<Node>
 
     void add( Node node )
     {
-        long id = node.getId();
-        if ( !nodeIds.contains( id ) )
-        {
-            nodeIds.add( id );
-        }
-    }
-
-    Node getNodeByPosition( int position )
-    {
-        return db.getNodeById( nodeIds.get( position ) );
+        nodeIds.add( node.getId() );
     }
 
     public String label()
@@ -80,10 +72,12 @@ public class NodeCollection implements Iterable<Node>
 
     NodeCollection subset( List<Integer> positions )
     {
-        List<Long> newNodeIds = new ArrayList<Long>( positions.size() );
+        ArrayList<Long> nodeIdList = new ArrayList<Long>( nodeIds );
+
+        Set<Long> newNodeIds = new HashSet<Long>( positions.size() );
         for ( Integer position : positions )
         {
-            newNodeIds.add( nodeIds.get( position ) );
+            newNodeIds.add( nodeIdList.get( position ) );
         }
 
         return new NodeCollection( db, label, newNodeIds );
@@ -99,7 +93,7 @@ public class NodeCollection implements Iterable<Node>
         Random random = new Random();
 
         int arraySize = nodeIds.size() * ((percentage + 10) / 100);
-        List<Long> newNodeIds = new ArrayList<Long>( arraySize );
+        Set<Long> newNodeIds = new HashSet<Long>( arraySize );
         for ( Long nodeId : nodeIds )
         {
             int score = random.nextInt( 100 ) + 1;
@@ -116,7 +110,7 @@ public class NodeCollection implements Iterable<Node>
         Set<Long> newNodeIds = new HashSet<Long>( nodeIds.size() + other.nodeIds.size() );
         newNodeIds.addAll( nodeIds );
         newNodeIds.addAll( other.nodeIds );
-        return new NodeCollection( db, label, new ArrayList<Long>( newNodeIds ) );
+        return new NodeCollection( db, label, newNodeIds );
     }
 
     public UpdateDataset<NodeCollection> createRelationshipsTo( TargetNodesStrategy targetNodesStrategy )
@@ -128,5 +122,39 @@ public class NodeCollection implements Iterable<Node>
             ChoiceOfTargetNodesStrategy choiceOfTargetNodesStrategy )
     {
         return new RelateToChoiceOfNodesBatchCommandBuilder( this, choiceOfTargetNodesStrategy );
+    }
+
+    NodeList toNodeList()
+    {
+        return new NodeList( db, label, nodeIds );
+    }
+
+    static class NodeList
+    {
+        private final GraphDatabaseService db;
+        private final String label;
+        private final List<Long> nodeIds;
+
+        NodeList( GraphDatabaseService db, String label, Collection<Long> nodeIds )
+        {
+            this.db = db;
+            this.label = label;
+            this.nodeIds = new ArrayList<Long>( nodeIds );
+        }
+
+        Node getNodeByPosition( int position )
+        {
+            return db.getNodeById( nodeIds.get( position ) );
+        }
+
+        String label()
+        {
+            return label;
+        }
+
+        int size()
+        {
+            return nodeIds.size();
+        }
     }
 }

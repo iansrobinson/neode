@@ -4,7 +4,7 @@
  */
 package org.neo4j.neode;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 
@@ -15,7 +15,7 @@ enum NodeCollectionFactory
                 @Override
                 NodeCollection createNodeCollection( GraphDatabaseService db, String label )
                 {
-                    return new NodeCollection( db, label, new ArrayList<Long>() );
+                    return new NodeCollection( db, label, new HashSet<Long>() );
                 }
             },
     NULL
