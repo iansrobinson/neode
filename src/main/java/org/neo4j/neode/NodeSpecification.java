@@ -2,6 +2,7 @@ package org.neo4j.neode;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -40,6 +41,11 @@ public class NodeSpecification
     NodeCollection emptyNodeCollection( int capacity )
     {
         return new NodeCollection( db, label, new HashSet<Long>( capacity ) );
+    }
+
+    NodeCollection newNodeCollection( Set<Long> nodeIds)
+    {
+        return new NodeCollection( db, label, nodeIds );
     }
 
     String label()

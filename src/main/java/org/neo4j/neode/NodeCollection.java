@@ -1,7 +1,6 @@
 package org.neo4j.neode;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -19,17 +18,28 @@ public class NodeCollection implements Iterable<Node>
     private final GraphDatabaseService db;
     private final String label;
     private final Set<Long> nodeIds;
+    private final List<Long> nodeIdList;
 
     NodeCollection( GraphDatabaseService db, String label, Set<Long> nodeIds )
     {
         this.db = db;
         this.label = label;
         this.nodeIds = nodeIds;
+        nodeIdList = new ArrayList<Long>( nodeIds );
     }
 
     void add( Node node )
     {
-        nodeIds.add( node.getId() );
+        long id = node.getId();
+        if ( nodeIds.add( id ) )
+        {
+            nodeIdList.add( id );
+        }
+    }
+
+    Node getNodeByPosition( int position )
+    {
+        return db.getNodeById( nodeIdList.get( position ) );
     }
 
     public String label()
@@ -72,8 +82,6 @@ public class NodeCollection implements Iterable<Node>
 
     NodeCollection subset( List<Integer> positions )
     {
-        ArrayList<Long> nodeIdList = new ArrayList<Long>( nodeIds );
-
         Set<Long> newNodeIds = new HashSet<Long>( positions.size() );
         for ( Integer position : positions )
         {
@@ -124,37 +132,4 @@ public class NodeCollection implements Iterable<Node>
         return new RelateToChoiceOfNodesBatchCommandBuilder( this, choiceOfTargetNodesStrategy );
     }
 
-    NodeList toNodeList()
-    {
-        return new NodeList( db, label, nodeIds );
-    }
-
-    static class NodeList
-    {
-        private final GraphDatabaseService db;
-        private final String label;
-        private final List<Long> nodeIds;
-
-        NodeList( GraphDatabaseService db, String label, Collection<Long> nodeIds )
-        {
-            this.db = db;
-            this.label = label;
-            this.nodeIds = new ArrayList<Long>( nodeIds );
-        }
-
-        Node getNodeByPosition( int position )
-        {
-            return db.getNodeById( nodeIds.get( position ) );
-        }
-
-        String label()
-        {
-            return label;
-        }
-
-        int size()
-        {
-            return nodeIds.size();
-        }
-    }
 }

@@ -1,74 +1,58 @@
 package org.neo4j.neode;
 
 import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.neo4j.neode.properties.Property.property;
+import static org.neo4j.neode.properties.PropertyValueGenerator.iterationBased;
 
-import java.util.HashSet;
+import java.util.Iterator;
 
 import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Transaction;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
 import org.neo4j.neode.test.Db;
 
 public class GetOrCreateUniqueNodesTest
 {
     @Test
-    public void shouldCreateNewEntitiesWhenTheyDoNotCurrentlyExist() throws Exception
+    public void shouldReturnSpecifiedNumberOfNodes() throws Exception
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
-        Node currentNode = db.createNode();
-        Node newNode = db.createNode();
+        db.beginTx();
 
+        NodeSpecification nodeSpecification = new NodeSpecification( "user",
+                asList( property( "name", iterationBased() ) ), db );
         ProbabilityDistribution probabilityDistribution = mock( ProbabilityDistribution.class );
-        when( probabilityDistribution.generateList( 1, Range.minMax( 1, 5 ) ) ).thenReturn( asList( 1 ) );
+        when( probabilityDistribution.generateList( 2, Range.minMax( 0, 4 ) ) ).thenReturn( asList( 0, 4 ) );
+        when( probabilityDistribution.generateList( 3, Range.minMax( 0, 4 ) ) ).thenReturn( asList( 1, 4, 2 ) );
 
-        NodeSpecification user = mock( NodeSpecification.class );
-        when( user.emptyNodeCollection( 5 ) ).thenReturn( new NodeCollection( db, "user", new HashSet<Long>( 5 ) ) );
-        when( user.build( 0 ) ).thenReturn( newNode );
-
-        GetOrCreateUniqueNodes nodeFinder = new GetOrCreateUniqueNodes( user, 5, probabilityDistribution );
+        GetOrCreateUniqueNodes targetNodesSource = new GetOrCreateUniqueNodes( nodeSpecification, 5,
+                probabilityDistribution );
 
         // when
-        nodeFinder.getTargetNodes( 1, currentNode );
-        tx.success();
-        tx.finish();
+        targetNodesSource.getTargetNodes( 2, null );
+        Iterable<Node> targetNodes = targetNodesSource.getTargetNodes( 3, null );
 
         // then
-        verify( user ).build( 0 );
-    }
+        Iterator<Node> iterator = targetNodes.iterator();
+        Node firstNode = iterator.next();
+        Node secondNode = iterator.next();
+        Node thirdNode = iterator.next();
+        assertFalse( iterator.hasNext() );
 
-    @Test
-    public void shouldReuseExistingNodes() throws Exception
-    {
-        // given
-        GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
-        Node currentNode = db.createNode();
-        Node newNode = db.createNode();
 
-        ProbabilityDistribution probabilityDistribution = mock( ProbabilityDistribution.class );
-        when( probabilityDistribution.generateList( 1, Range.minMax( 1, 5 ) ) ).thenReturn( asList( 1 ) );
+        assertEquals( "user-3", firstNode.getProperty( "name" ) );
+        assertEquals( 4L, firstNode.getId() );
 
-        NodeSpecification user = mock( NodeSpecification.class );
-        when( user.emptyNodeCollection( 5 ) ).thenReturn( new NodeCollection( db, "user", new HashSet<Long>( 5 ) ) );
-        when( user.build( 0 ) ).thenReturn( newNode );
+        assertEquals( "user-5", secondNode.getProperty( "name" ) );
+        assertEquals( 2L, secondNode.getId() );
 
-        GetOrCreateUniqueNodes nodeFinder = new GetOrCreateUniqueNodes( user, 5, probabilityDistribution );
-
-        // when
-        nodeFinder.getTargetNodes( 1, currentNode );
-        nodeFinder.getTargetNodes( 1, currentNode );
-        tx.success();
-        tx.finish();
-
-        // then
-        verify( user, times( 1 ) ).build( 0 );
+        assertEquals( "user-2", thirdNode.getProperty( "name" ) );
+        assertEquals( 3L, thirdNode.getId() );
     }
 }

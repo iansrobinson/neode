@@ -31,10 +31,9 @@ public class NodeCollectionTest
                         toSet( firstNode.getId(), secondNode.getId(), thirdNode.getId() ) );
 
                 // then
-                NodeCollection.NodeList nodeList = nodeCollection.toNodeList();
-                assertEquals( firstNode, nodeList.getNodeByPosition( 0 ) );
-                assertEquals( secondNode, nodeList.getNodeByPosition( 1 ) );
-                assertEquals( thirdNode, nodeList.getNodeByPosition( 2 ) );
+                assertEquals( firstNode, nodeCollection.getNodeByPosition( 0 ) );
+                assertEquals( secondNode, nodeCollection.getNodeByPosition( 1 ) );
+                assertEquals( thirdNode, nodeCollection.getNodeByPosition( 2 ) );
             }
         } );
     }

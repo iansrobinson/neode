@@ -37,7 +37,7 @@ public class RelateNodesBatchCommandBuilderTest
             @Override
             public Iterable<Node> getTargetNodes( int quantity, Node currentNode )
             {
-                return asList( products.toNodeList().getNodeByPosition( index++ ) );
+                return asList( products.getNodeByPosition( index++ ) );
             }
 
             @Override

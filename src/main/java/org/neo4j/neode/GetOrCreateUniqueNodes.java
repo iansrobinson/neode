@@ -2,7 +2,10 @@ package org.neo4j.neode;
 
 import static org.neo4j.neode.Range.minMax;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
@@ -12,7 +15,7 @@ class GetOrCreateUniqueNodes implements TargetNodesSource
     private final NodeSpecification nodeSpecification;
     private final int totalNumberOfNodes;
     private final ProbabilityDistribution probabilityDistribution;
-    private final NodeCollection nodeCollection;
+    private final ArrayList<Long> nodeIds;
 
     GetOrCreateUniqueNodes( NodeSpecification nodeSpecification, int totalNumberOfNodes,
                             ProbabilityDistribution probabilityDistribution )
@@ -20,16 +23,21 @@ class GetOrCreateUniqueNodes implements TargetNodesSource
         this.nodeSpecification = nodeSpecification;
         this.totalNumberOfNodes = totalNumberOfNodes;
         this.probabilityDistribution = probabilityDistribution;
-        this.nodeCollection = nodeSpecification.emptyNodeCollection( totalNumberOfNodes );
+
+        nodeIds = new ArrayList<Long>( totalNumberOfNodes );
+        for (int i = 0; i < totalNumberOfNodes; i++)
+        {
+            nodeIds.add( null );
+        }
     }
 
     @Override
     public Iterable<Node> getTargetNodes( int quantity, Node currentNode )
     {
-        final List<Integer> nodeIdCounters;
+        final List<Integer> nodeIdPositions;
         try
         {
-            nodeIdCounters = probabilityDistribution.generateList( quantity, minMax( 1, totalNumberOfNodes ) );
+            nodeIdPositions = probabilityDistribution.generateList( quantity, minMax( 0, totalNumberOfNodes - 1 ) );
         }
         catch ( IllegalArgumentException e )
         {
@@ -41,15 +49,19 @@ class GetOrCreateUniqueNodes implements TargetNodesSource
                     nodeSpecification.label(), quantity, totalNumberOfNodes ) );
         }
 
-        for ( Integer nodeIdCounter : nodeIdCounters )
+        Set<Long> returnNodeIds = new HashSet<Long>(quantity);
+
+        for ( Integer nodeIdPosition : nodeIdPositions )
         {
-            if ( nodeIdCounter > nodeCollection.size() )
+            Long returnNodeId = nodeIds.get( nodeIdPosition );
+            if ( returnNodeId == null)
             {
-                nodeCollection.add( nodeSpecification.build( nodeCollection.size() ) );
+                nodeIds.set( nodeIdPosition, returnNodeId = nodeSpecification.build( nodeIdPosition ).getId() );
             }
+            returnNodeIds.add( returnNodeId );
         }
 
-        return nodeCollection;
+        return nodeSpecification.newNodeCollection( returnNodeIds );
     }
 
     @Override
