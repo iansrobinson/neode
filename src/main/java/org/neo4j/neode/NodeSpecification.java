@@ -8,6 +8,7 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.interfaces.UpdateDataset;
 import org.neo4j.neode.properties.Property;
+import org.neo4j.tooling.GlobalGraphOperations;
 
 public class NodeSpecification
 {
@@ -26,6 +27,21 @@ public class NodeSpecification
     {
         return new CreateNodesBatchCommandBuilder( this, quantity );
     }
+
+    public NodeCollection getAll()
+    {
+        Iterable<Node> allNodes = GlobalGraphOperations.at( db ).getAllNodes();
+        Set<Long> nodeIds = new HashSet<Long>(  );
+        for ( Node node : allNodes )
+        {
+            if (node.hasProperty( "_label" ) && node.getProperty( "_label" ).equals( label ))
+            {
+                nodeIds.add( node.getId() );
+            }
+        }
+        return newNodeCollection( nodeIds );
+    }
+
 
     Node build( int iteration )
     {
