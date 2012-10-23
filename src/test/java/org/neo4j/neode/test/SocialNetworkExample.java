@@ -2,7 +2,6 @@ package org.neo4j.neode.test;
 
 import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 import static org.neo4j.neode.GraphQuery.traversal;
-import static org.neo4j.neode.Range.exactly;
 import static org.neo4j.neode.Range.minMax;
 import static org.neo4j.neode.TargetNodesStrategy.getExisting;
 import static org.neo4j.neode.TargetNodesStrategy.getOrCreate;
@@ -74,26 +73,30 @@ public class SocialNetworkExample
 
         NodeCollection topics = users.createRelationshipsTo(
                 getOrCreate( topic, 10, normalDistribution() )
+                        .numberOfNodes( minMax( 1, 3 ) )
                         .relationship( interested_in )
-                        .relationshipConstraints( minMax( 1, 3 ) ) )
+                        .exactlyOneRelationship() )
                 .update( dataset );
 
         users.createRelationshipsTo(
                 getOrCreate( company, 2, flatDistribution() )
+                        .numberOfNodes( 1 )
                         .relationship( works_for )
-                        .relationshipConstraints( exactly( 1 ) ) )
+                        .exactlyOneRelationship() )
                 .updateNoReturn( dataset );
 
         NodeCollection allProjects = users.createRelationshipsTo(
                 queryBasedGetOrCreate( project, traversal( findCompanyProjects ), 1.2 )
+                        .numberOfNodes( minMax( 1, 3 ) )
                         .relationship( worked_on )
-                        .relationshipConstraints( minMax( 1, 3 ) ) )
+                        .exactlyOneRelationship() )
                 .update( dataset );
 
         users.approxPercentage( 30 ).createRelationshipsTo(
                 getExisting( allProjects )
+                        .numberOfNodes( minMax( 1, 2 ) )
                         .relationship( worked_on )
-                        .relationshipConstraints( minMax( 1, 2 ), RelationshipUniqueness.SINGLE_DIRECTION ) )
+                        .relationshipConstraints( RelationshipUniqueness.SINGLE_DIRECTION ) )
                 .updateNoReturn( dataset );
 
         dataset.end();

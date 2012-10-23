@@ -1,6 +1,5 @@
 package org.neo4j.neode.test;
 
-import static org.neo4j.neode.Range.exactly;
 import static org.neo4j.neode.Range.minMax;
 import static org.neo4j.neode.TargetNodesStrategy.create;
 
@@ -28,13 +27,15 @@ public class SimpleHierarchy
         NodeCollection root = entity.create( 1 ).update( dataset );
         NodeCollection children = root.createRelationshipsTo(
                 create( entity )
+                        .numberOfNodes( 3 )
                         .relationship( child )
-                        .relationshipConstraints( exactly( 3 ) ) )
+                        .exactlyOneRelationship() )
                 .update( dataset );
         children.createRelationshipsTo(
                 create( entity )
+                        .numberOfNodes( minMax( 1, 3 ) )
                         .relationship( child )
-                        .relationshipConstraints( minMax( 1, 3 ) ) )
+                        .exactlyOneRelationship() )
                 .updateNoReturn( dataset );
 
         dataset.end();

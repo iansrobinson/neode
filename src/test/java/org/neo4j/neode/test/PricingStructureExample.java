@@ -41,11 +41,13 @@ public class PricingStructureExample
         List<NodeCollection> subnodes = roots.createRelationshipsTo(
                 randomChoice(
                         getOrCreate( intermediate, 20 )
+                                .numberOfNodes( minMax( 1, 3 ) )
                                 .relationship( connected_to )
-                                .relationshipConstraints( minMax( 1, 3 ) ),
+                                .exactlyOneRelationship(),
                         getOrCreate( leaf, 100 )
+                                .numberOfNodes( minMax( 1, 3 ) )
                                 .relationship( connected_to )
-                                .relationshipConstraints( minMax( 1, 3 ) ) ) )
+                                .exactlyOneRelationship() ) )
                 .update( dataset );
 
         for ( NodeCollection subnode : subnodes )
@@ -54,8 +56,9 @@ public class PricingStructureExample
             {
                 subnode.createRelationshipsTo(
                         getOrCreate( leaf, 100 )
+                                .numberOfNodes( minMax( 1, 3 ) )
                                 .relationship( connected_to )
-                                .relationshipConstraints( minMax( 1, 3 ) ) )
+                                .exactlyOneRelationship() )
                         .updateNoReturn( dataset );
 
             }

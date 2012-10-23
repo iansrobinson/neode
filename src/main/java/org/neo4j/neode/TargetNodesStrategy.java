@@ -8,12 +8,12 @@ import java.util.Set;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
-import org.neo4j.neode.interfaces.SetRelationshipInfo;
+import org.neo4j.neode.interfaces.SetNumberOfNodes;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
 public class TargetNodesStrategy
 {
-    public static SetRelationshipInfo getExisting( NodeCollection nodeCollection,
+    public static SetNumberOfNodes getExisting( NodeCollection nodeCollection,
                                                    ProbabilityDistribution probabilityDistribution )
     {
         GetExistingUniqueNodes targetNodesSource = new GetExistingUniqueNodes( nodeCollection,
@@ -21,20 +21,20 @@ public class TargetNodesStrategy
         return new TargetNodesStrategyBuilder( targetNodesSource );
     }
 
-    public static SetRelationshipInfo getExisting( NodeCollection nodeCollection )
+    public static SetNumberOfNodes getExisting( NodeCollection nodeCollection )
     {
         GetExistingUniqueNodes targetNodesSource = new GetExistingUniqueNodes( nodeCollection,
                 normalDistribution() );
         return new TargetNodesStrategyBuilder( targetNodesSource );
     }
 
-    public static SetRelationshipInfo getExisting( GraphQuery graphQuery )
+    public static SetNumberOfNodes getExisting( GraphQuery graphQuery )
     {
         QueryBasedGetExistingNodes targetNodesSource = new QueryBasedGetExistingNodes( graphQuery );
         return new TargetNodesStrategyBuilder( targetNodesSource );
     }
 
-    public static SetRelationshipInfo queryBasedGetOrCreate( NodeSpecification nodeSpecification,
+    public static SetNumberOfNodes queryBasedGetOrCreate( NodeSpecification nodeSpecification,
                                                              GraphQuery graphQuery )
     {
         QueryBasedGetOrCreateNodes targetNodesSource = new QueryBasedGetOrCreateNodes( nodeSpecification,
@@ -42,7 +42,7 @@ public class TargetNodesStrategy
         return new TargetNodesStrategyBuilder( targetNodesSource );
     }
 
-    public static SetRelationshipInfo queryBasedGetOrCreate( NodeSpecification nodeSpecification, GraphQuery graphQuery,
+    public static SetNumberOfNodes queryBasedGetOrCreate( NodeSpecification nodeSpecification, GraphQuery graphQuery,
                                                              double proportionOfCandidateNodesToRequiredNodes )
     {
         QueryBasedGetOrCreateNodes targetNodesSource = new QueryBasedGetOrCreateNodes( nodeSpecification,
@@ -51,7 +51,7 @@ public class TargetNodesStrategy
         return new TargetNodesStrategyBuilder( targetNodesSource );
     }
 
-    public static SetRelationshipInfo getOrCreate( NodeSpecification nodeSpecification, int maxNumberOfEntities,
+    public static SetNumberOfNodes getOrCreate( NodeSpecification nodeSpecification, int maxNumberOfEntities,
                                                    ProbabilityDistribution probabilityDistribution )
     {
         GetOrCreateUniqueNodes targetNodesSource = new GetOrCreateUniqueNodes( nodeSpecification,
@@ -59,47 +59,55 @@ public class TargetNodesStrategy
         return new TargetNodesStrategyBuilder( targetNodesSource );
     }
 
-    public static SetRelationshipInfo getOrCreate( NodeSpecification nodeSpecification, int maxNumberOfEntities )
+    public static SetNumberOfNodes getOrCreate( NodeSpecification nodeSpecification, int maxNumberOfEntities )
     {
         GetOrCreateUniqueNodes targetNodesSource = new GetOrCreateUniqueNodes( nodeSpecification,
                 maxNumberOfEntities, flatDistribution() );
         return new TargetNodesStrategyBuilder( targetNodesSource );
     }
 
-    public static SetRelationshipInfo create( NodeSpecification nodeSpecification )
+    public static SetNumberOfNodes create( NodeSpecification nodeSpecification )
     {
         CreateUniqueNodes targetNodesSource = new CreateUniqueNodes( nodeSpecification );
         return new TargetNodesStrategyBuilder( targetNodesSource );
     }
 
     private final TargetNodesSource targetNodesSource;
+    private final Range numberOfNodes;
     private final RelationshipInfo relationshipInfo;
     private final RelationshipConstraints relationshipConstraints;
+    private final ProbabilityDistribution probabilityDistribution;
 
-    TargetNodesStrategy( TargetNodesSource targetNodesSource, RelationshipInfo relationshipInfo,
+    TargetNodesStrategy( TargetNodesSource targetNodesSource, Range numberOfNodes, RelationshipInfo relationshipInfo,
                          RelationshipConstraints relationshipConstraints )
     {
         this.targetNodesSource = targetNodesSource;
+        this.numberOfNodes = numberOfNodes;
         this.relationshipInfo = relationshipInfo;
         this.relationshipConstraints = relationshipConstraints;
+        this.probabilityDistribution = flatDistribution();
     }
 
     int addRelationshipsToCurrentNode( Node currentNode, NodeCollection targetNodes, int iteration )
     {
-        int numberOfRelsToCreate = relationshipConstraints.calculateNumberOfRelsToCreate();
-        Iterable<Node> otherNodes = targetNodesSource.getTargetNodes( numberOfRelsToCreate, currentNode );
+        int numberOfNodesToCreate = numberOfNodes.getRandom( probabilityDistribution );
+        Iterable<Node> otherNodes = targetNodesSource.getTargetNodes( numberOfNodesToCreate, currentNode );
 
-        int count = 0;
+        int relationshipCount = 0;
         for ( Node otherNode : otherNodes )
         {
-            Relationship relationship = relationshipConstraints
-                    .createRelationship( currentNode, otherNode, targetNodes, relationshipInfo, iteration );
-            if ( relationship != null )
+            int numberOfRelsPerNode = relationshipConstraints.calculateNumberOfRelsToCreate();
+            for (int relationshipIndex = 0; relationshipIndex < numberOfRelsPerNode; relationshipIndex++)
             {
-                count++;
+                Relationship relationship = relationshipConstraints
+                        .createRelationship( currentNode, otherNode, targetNodes, relationshipInfo, iteration );
+                if ( relationship != null )
+                {
+                    relationshipCount++;
+                }
             }
         }
-        return count;
+        return relationshipCount;
     }
 
     NodeCollection newNodeCollection( GraphDatabaseService db, Set<Long> nodeIds )

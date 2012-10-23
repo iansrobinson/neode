@@ -51,6 +51,7 @@ public class RelateNodesBatchCommandBuilderTest
         // when
         users.createRelationshipsTo(
                 targetNodesStrategyBuilder
+                        .numberOfNodes( Range.exactly( 1 ) )
                         .relationship( bought )
                         .relationshipConstraints( Range.exactly( 1 ) ) )
                 .update( dataset );

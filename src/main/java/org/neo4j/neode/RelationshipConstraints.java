@@ -20,7 +20,7 @@ class RelationshipConstraints
 
     public int calculateNumberOfRelsToCreate()
     {
-        return probabilityDistribution.generateSingle( cardinality );
+        return cardinality.getRandom( probabilityDistribution );
     }
 
     public Relationship createRelationship( Node currentNode, Node targetNode,

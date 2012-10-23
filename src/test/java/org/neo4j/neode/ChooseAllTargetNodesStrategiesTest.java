@@ -43,9 +43,11 @@ public class ChooseAllTargetNodesStrategiesTest
         users.createRelationshipsTo(
                 all(
                         create( workAddress )
+                                .numberOfNodes( 2 )
                                 .relationship( work_address )
-                                .relationshipConstraints( exactly( 2 ) ),
+                                .relationshipConstraints( exactly( 1 ) ),
                         create( homeAddress )
+                                .numberOfNodes( 1 )
                                 .relationship( home_address )
                                 .relationshipConstraints( exactly( 1 ) ) ) )
                 .update( dataset );

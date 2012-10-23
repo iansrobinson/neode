@@ -1,5 +1,7 @@
 package org.neo4j.neode;
 
+import org.neo4j.neode.probabilities.ProbabilityDistribution;
+
 public class Range
 {
     public static Range minMax(int min, int max)
@@ -49,6 +51,15 @@ public class Range
     public boolean isInRange( int value )
     {
         return value >= min() && value <= max;
+    }
+
+    public int getRandom(ProbabilityDistribution probabilityDistribution)
+    {
+        if (difference() == 0)
+        {
+            return min();
+        }
+        return probabilityDistribution.generateSingle( this );
     }
 
     @Override
