@@ -1,5 +1,10 @@
 package org.neo4j.neode.properties;
 
+import static java.util.Arrays.asList;
+
+import java.util.Collections;
+import java.util.List;
+
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.PropertyContainer;
@@ -9,18 +14,20 @@ class IndexableProperty extends Property
 {
     private final String propertyName;
     private final PropertyValueGenerator generator;
-    private final String indexName;
+    private final List<String> indexNames;
 
-    IndexableProperty( String propertyName, PropertyValueGenerator generator )
-    {
-        this(propertyName, generator, null );
-    }
-
-    IndexableProperty( String propertyName, PropertyValueGenerator generator, String indexName )
+    IndexableProperty( String propertyName, PropertyValueGenerator generator, String... indexNames )
     {
         this.propertyName = propertyName;
         this.generator = generator;
-        this.indexName = indexName;
+        if ( indexNames == null )
+        {
+            this.indexNames = Collections.emptyList();
+        }
+        else
+        {
+            this.indexNames = asList( indexNames );
+        }
     }
 
     @Override
@@ -30,15 +37,29 @@ class IndexableProperty extends Property
         Object value = generator.generateValue( propertyContainer, label, iteration );
         propertyContainer.setProperty( propertyName, value );
 
-        String name = indexName != null ? indexName : label;
-
-        if ( propertyContainer instanceof Node )
+        if ( indexNames.isEmpty() )
         {
-            db.index().forNodes( name ).add( (Node) propertyContainer, propertyName, value );
+            indexProperty( propertyContainer, db, label, value );
         }
         else
         {
-            db.index().forRelationships( name ).add( (Relationship) propertyContainer, propertyName, value );
+            for ( String indexName : indexNames )
+            {
+                indexProperty( propertyContainer, db, indexName, value );
+            }
+        }
+    }
+
+    private void indexProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String indexName,
+                                Object value )
+    {
+        if ( propertyContainer instanceof Node )
+        {
+            db.index().forNodes( indexName ).add( (Node) propertyContainer, propertyName, value );
+        }
+        else
+        {
+            db.index().forRelationships( indexName ).add( (Relationship) propertyContainer, propertyName, value );
         }
     }
 }
