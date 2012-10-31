@@ -79,13 +79,14 @@ public class TargetNodesStrategy
     private final ProbabilityDistribution probabilityDistribution;
 
     TargetNodesStrategy( TargetNodesSource targetNodesSource, Range numberOfNodes, RelationshipInfo relationshipInfo,
-                         RelationshipConstraints relationshipConstraints )
+                         RelationshipConstraints relationshipConstraints,
+                         ProbabilityDistribution probabilityDistribution )
     {
         this.targetNodesSource = targetNodesSource;
         this.numberOfNodes = numberOfNodes;
         this.relationshipInfo = relationshipInfo;
         this.relationshipConstraints = relationshipConstraints;
-        this.probabilityDistribution = flatDistribution();
+        this.probabilityDistribution = probabilityDistribution;
     }
 
     int addRelationshipsToCurrentNode( Node currentNode, NodeCollection targetNodes, int iteration )

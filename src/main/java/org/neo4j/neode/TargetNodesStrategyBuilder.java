@@ -17,6 +17,7 @@ public class TargetNodesStrategyBuilder implements SetNumberOfNodes, SetRelation
 {
     private final TargetNodesSource targetNodesSource;
     private Range nodeRange;
+    private ProbabilityDistribution probabilityDistribution;
     private RelationshipInfo relationshipInfo;
 
     TargetNodesStrategyBuilder( TargetNodesSource targetNodesSource )
@@ -28,6 +29,7 @@ public class TargetNodesStrategyBuilder implements SetNumberOfNodes, SetRelation
     public SetRelationshipInfo numberOfNodes( int numberOfNodes )
     {
         nodeRange = Range.exactly( numberOfNodes );
+        this.probabilityDistribution = flatDistribution();
         return this;
     }
 
@@ -35,6 +37,15 @@ public class TargetNodesStrategyBuilder implements SetNumberOfNodes, SetRelation
     public SetRelationshipInfo numberOfNodes( Range numberOfNodes )
     {
         nodeRange = numberOfNodes;
+        this.probabilityDistribution = flatDistribution();
+        return this;
+    }
+
+    @Override
+    public SetRelationshipInfo numberOfNodes( Range numberOfNodes, ProbabilityDistribution probabilityDistribution )
+    {
+        nodeRange = numberOfNodes;
+        this.probabilityDistribution = probabilityDistribution;
         return this;
     }
 
@@ -60,7 +71,8 @@ public class TargetNodesStrategyBuilder implements SetNumberOfNodes, SetRelation
         RelationshipConstraints relationshipConstraints = new RelationshipConstraints( cardinality,
                 relationshipUniqueness,
                 probabilityDistribution );
-        return new TargetNodesStrategy( targetNodesSource, nodeRange, relationshipInfo, relationshipConstraints );
+        return new TargetNodesStrategy( targetNodesSource, nodeRange, relationshipInfo, relationshipConstraints,
+                probabilityDistribution );
     }
 
     @Override
