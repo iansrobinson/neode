@@ -72,7 +72,7 @@ public class TargetNodesStrategyBuilder implements SetNumberOfNodes, SetRelation
                 relationshipUniqueness,
                 probabilityDistribution );
         return new TargetNodesStrategy( targetNodesSource, nodeRange, relationshipInfo, relationshipConstraints,
-                probabilityDistribution );
+                this.probabilityDistribution );
     }
 
     @Override
