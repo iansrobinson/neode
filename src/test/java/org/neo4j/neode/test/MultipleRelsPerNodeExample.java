@@ -34,7 +34,7 @@ public class MultipleRelsPerNodeExample
 
         NodeCollection roots = root.create( 1 ).update( dataset );
 
-        roots.createRelationshipsTo( TargetNodesStrategy.create( leaf ).numberOfNodes( 2 ).relationship(
+        roots.createRelationshipsTo( TargetNodesStrategy.create( leaf ).numberOfTargetNodes( 2 ).relationship(
                 connected_to ).relationshipConstraints( Range.exactly( 2 ) ) ).updateNoReturn( dataset );
 
         dataset.end();

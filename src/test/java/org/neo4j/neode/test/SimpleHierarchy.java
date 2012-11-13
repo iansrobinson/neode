@@ -27,13 +27,13 @@ public class SimpleHierarchy
         NodeCollection root = entity.create( 1 ).update( dataset );
         NodeCollection children = root.createRelationshipsTo(
                 create( entity )
-                        .numberOfNodes( 3 )
+                        .numberOfTargetNodes( 3 )
                         .relationship( child )
                         .exactlyOneRelationship() )
                 .update( dataset );
         children.createRelationshipsTo(
                 create( entity )
-                        .numberOfNodes( minMax( 1, 3 ) )
+                        .numberOfTargetNodes( minMax( 1, 3 ) )
                         .relationship( child )
                         .exactlyOneRelationship() )
                 .updateNoReturn( dataset );

@@ -17,7 +17,7 @@ public class TargetNodesStrategyBuilder implements SetNumberOfNodes, SetRelation
 {
     private final TargetNodesSource targetNodesSource;
     private Range nodeRange;
-    private ProbabilityDistribution probabilityDistribution;
+    private ProbabilityDistribution targetNodesProbabilityDistribution;
     private RelationshipInfo relationshipInfo;
 
     TargetNodesStrategyBuilder( TargetNodesSource targetNodesSource )
@@ -26,26 +26,27 @@ public class TargetNodesStrategyBuilder implements SetNumberOfNodes, SetRelation
     }
 
     @Override
-    public SetRelationshipInfo numberOfNodes( int numberOfNodes )
+    public SetRelationshipInfo numberOfTargetNodes( int numberOfNodes )
     {
         nodeRange = Range.exactly( numberOfNodes );
-        this.probabilityDistribution = flatDistribution();
+        this.targetNodesProbabilityDistribution = flatDistribution();
         return this;
     }
 
     @Override
-    public SetRelationshipInfo numberOfNodes( Range numberOfNodes )
+    public SetRelationshipInfo numberOfTargetNodes( Range numberOfNodes )
     {
         nodeRange = numberOfNodes;
-        this.probabilityDistribution = flatDistribution();
+        this.targetNodesProbabilityDistribution = flatDistribution();
         return this;
     }
 
     @Override
-    public SetRelationshipInfo numberOfNodes( Range numberOfNodes, ProbabilityDistribution probabilityDistribution )
+    public SetRelationshipInfo numberOfTargetNodes( Range numberOfNodes, ProbabilityDistribution
+            probabilityDistribution )
     {
         nodeRange = numberOfNodes;
-        this.probabilityDistribution = probabilityDistribution;
+        this.targetNodesProbabilityDistribution = probabilityDistribution;
         return this;
     }
 
@@ -71,8 +72,9 @@ public class TargetNodesStrategyBuilder implements SetNumberOfNodes, SetRelation
         RelationshipConstraints relationshipConstraints = new RelationshipConstraints( cardinality,
                 relationshipUniqueness,
                 probabilityDistribution );
-        return new TargetNodesStrategy( targetNodesSource, nodeRange, relationshipInfo, relationshipConstraints,
-                this.probabilityDistribution );
+        return new TargetNodesStrategy( targetNodesSource, nodeRange, this.targetNodesProbabilityDistribution, relationshipInfo, relationshipConstraints
+
+        );
     }
 
     @Override

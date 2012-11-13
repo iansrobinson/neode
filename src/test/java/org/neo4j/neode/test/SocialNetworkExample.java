@@ -61,7 +61,7 @@ public class SocialNetworkExample
         NodeSpecification user = dsm.nodeSpecification( "user", indexableProperty( "name" ) );
         NodeSpecification topic = dsm.nodeSpecification( "topic", indexableProperty( "label" ) );
         NodeSpecification company = dsm.nodeSpecification( "company", property( "name" ) );
-        NodeSpecification project = dsm.nodeSpecification( "project", property( "title" ) );
+        NodeSpecification project = dsm.nodeSpecification( "project", property( "name" ) );
 
         RelationshipSpecification interested_in = dsm.relationshipSpecification( "INTERESTED_IN" );
         RelationshipSpecification works_for = dsm.relationshipSpecification( "WORKS_FOR" );
@@ -73,28 +73,28 @@ public class SocialNetworkExample
 
         NodeCollection topics = users.createRelationshipsTo(
                 getOrCreate( topic, 10, normalDistribution() )
-                        .numberOfNodes( minMax( 1, 3 ) )
+                        .numberOfTargetNodes( minMax( 1, 3 ) )
                         .relationship( interested_in )
                         .exactlyOneRelationship() )
                 .update( dataset );
 
         users.createRelationshipsTo(
                 getOrCreate( company, 2, flatDistribution() )
-                        .numberOfNodes( 1 )
+                        .numberOfTargetNodes( 1 )
                         .relationship( works_for )
                         .exactlyOneRelationship() )
                 .updateNoReturn( dataset );
 
         NodeCollection allProjects = users.createRelationshipsTo(
                 queryBasedGetOrCreate( project, traversal( findCompanyProjects ), 1.2 )
-                        .numberOfNodes( minMax( 1, 3 ) )
+                        .numberOfTargetNodes( minMax( 1, 3 ) )
                         .relationship( worked_on )
                         .exactlyOneRelationship() )
                 .update( dataset );
 
         users.approxPercentage( 30 ).createRelationshipsTo(
                 getExisting( allProjects )
-                        .numberOfNodes( minMax( 1, 2 ) )
+                        .numberOfTargetNodes( minMax( 1, 2 ) )
                         .relationship( worked_on )
                         .relationshipConstraints( RelationshipUniqueness.SINGLE_DIRECTION ) )
                 .updateNoReturn( dataset );

@@ -73,25 +73,27 @@ public class TargetNodesStrategy
     }
 
     private final TargetNodesSource targetNodesSource;
-    private final Range numberOfNodes;
+    private final Range targetNodesRange;
+    private final ProbabilityDistribution targetNodesProbabilityDistribution;
     private final RelationshipInfo relationshipInfo;
     private final RelationshipConstraints relationshipConstraints;
-    private final ProbabilityDistribution probabilityDistribution;
 
-    TargetNodesStrategy( TargetNodesSource targetNodesSource, Range numberOfNodes, RelationshipInfo relationshipInfo,
-                         RelationshipConstraints relationshipConstraints,
-                         ProbabilityDistribution probabilityDistribution )
+    TargetNodesStrategy( TargetNodesSource targetNodesSource,
+                         Range targetNodesRange,
+                         ProbabilityDistribution targetNodesProbabilityDistribution,
+                         RelationshipInfo relationshipInfo,
+                         RelationshipConstraints relationshipConstraints )
     {
         this.targetNodesSource = targetNodesSource;
-        this.numberOfNodes = numberOfNodes;
+        this.targetNodesRange = targetNodesRange;
         this.relationshipInfo = relationshipInfo;
         this.relationshipConstraints = relationshipConstraints;
-        this.probabilityDistribution = probabilityDistribution;
+        this.targetNodesProbabilityDistribution = targetNodesProbabilityDistribution;
     }
 
     int addRelationshipsToCurrentNode( Node currentNode, NodeCollection targetNodes, int iteration )
     {
-        int numberOfNodesToCreate = numberOfNodes.getRandom( probabilityDistribution );
+        int numberOfNodesToCreate = targetNodesRange.getRandom( targetNodesProbabilityDistribution );
         Iterable<Node> otherNodes = targetNodesSource.getTargetNodes( numberOfNodesToCreate, currentNode );
 
         int relationshipCount = 0;
