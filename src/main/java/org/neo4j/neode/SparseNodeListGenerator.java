@@ -1,9 +1,9 @@
 package org.neo4j.neode;
 
 import static java.lang.Math.round;
+import static org.neo4j.neode.Range.minMax;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.neo4j.graphdb.Node;
@@ -30,45 +30,21 @@ class SparseNodeListGenerator
         this.proportionOfNodesToListSize = proportionOfNodesToListSize;
     }
 
-    public List<Node> getSparseListOfExistingNodesOld( int size, Node currentNode )
-    {
-        List<Node> sparseList = new ArrayList<Node>( size );
-        for ( int i = 0; i < size; i++ )
-        {
-            sparseList.add( null );
-        }
-
-        int candidatePoolSize = (int) round( size * proportionOfNodesToListSize );
-        List<Integer> candidatePoolIndexes = probabilityDistribution
-                .generateList( candidatePoolSize, Range.minMax( 0, candidatePoolSize - 1 ) );
-
-        Iterator<Integer> candidatePoolIndexesIterator = candidatePoolIndexes.iterator();
-        Iterator<Node> existingNodesIterator = query.execute( currentNode ).iterator();
-
-        while ( existingNodesIterator.hasNext() && candidatePoolIndexesIterator.hasNext() )
-        {
-            Integer nextExistingNodeIndex = candidatePoolIndexesIterator.next();
-            if ( nextExistingNodeIndex < size )
-            {
-                sparseList.set( nextExistingNodeIndex, existingNodesIterator.next() );
-            }
-        }
-        return sparseList;
-    }
-
     public List<Node> getSparseListOfExistingNodes( int size, Node currentNode )
     {
         List<Node> existingNodes = new ArrayList<Node>( IteratorUtil.asCollection( query.execute( currentNode ) ) );
         List<Node> sparseList = new ArrayList<Node>( size );
 
         int candidatePoolSize = (int) round( size * proportionOfNodesToListSize );
+        List<Integer> candidateIndexes = probabilityDistribution.generateList( candidatePoolSize,
+                minMax( 0, candidatePoolSize - 1 ) );
 
         for ( int i = 0; i < size; i++ )
         {
-            int index = probabilityDistribution.generateSingle( Range.minMax( 0, candidatePoolSize - 1 ) );
-            if ( index < existingNodes.size() )
+            int candidateIndex =  candidateIndexes.get( i );
+            if ( candidateIndex < existingNodes.size() )
             {
-                sparseList.add( existingNodes.get( index ) );
+                sparseList.add( existingNodes.get( candidateIndex ) );
             }
             else
             {

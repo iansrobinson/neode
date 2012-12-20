@@ -34,9 +34,7 @@ public class SparseNodeListGeneratorTest
         SparseNodeListGenerator generator = new SparseNodeListGenerator( query, 1.2, probabilityDistribution );
 
         // when
-        // TODO: New method causes test to fail; keeping old method in test.
-//        List<Node> results = generator.getSparseListOfExistingNodes( 5, currentNode );
-        List<Node> results = generator.getSparseListOfExistingNodesOld( 5, currentNode );
+        List<Node> results = generator.getSparseListOfExistingNodes( 5, currentNode );
 
         // then
         assertEquals( 5, results.size() );
