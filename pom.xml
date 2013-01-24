@@ -14,7 +14,7 @@
     <dependency>
       <groupId>org.neo4j</groupId>
       <artifactId>neo4j</artifactId>
-      <version>1.9.M02</version>
+      <version>1.9.M04</version>
     </dependency>
     <dependency>
       <artifactId>junit</artifactId>
@@ -25,7 +25,7 @@
     <dependency>
       <groupId>org.neo4j</groupId>
       <artifactId>neo4j-kernel</artifactId>
-      <version>1.9.M02</version>
+      <version>1.9.M04</version>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
