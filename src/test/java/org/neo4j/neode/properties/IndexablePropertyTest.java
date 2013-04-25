@@ -50,7 +50,7 @@ public class IndexablePropertyTest
                 return "value";
             }
         };
-        Property property = new IndexableProperty( "name", generator, null );
+        Property property = new IndexableProperty( "name", generator );
 
         GraphDatabaseService db = Db.impermanentDb();
         Transaction tx = db.beginTx();

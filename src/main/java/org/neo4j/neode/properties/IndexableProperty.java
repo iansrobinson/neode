@@ -16,18 +16,20 @@ class IndexableProperty extends Property
     private final PropertyValueGenerator generator;
     private final List<String> indexNames;
 
+    IndexableProperty( String propertyName, PropertyValueGenerator generator )
+    {
+        this.propertyName = propertyName;
+        this.generator = generator;
+        this.indexNames = Collections.emptyList();
+
+    }
+
     IndexableProperty( String propertyName, PropertyValueGenerator generator, String... indexNames )
     {
         this.propertyName = propertyName;
         this.generator = generator;
-        if ( indexNames == null )
-        {
-            this.indexNames = Collections.emptyList();
-        }
-        else
-        {
-            this.indexNames = asList( indexNames );
-        }
+        this.indexNames = asList( indexNames );
+
     }
 
     @Override

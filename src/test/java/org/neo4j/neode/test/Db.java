@@ -2,12 +2,14 @@ package org.neo4j.neode.test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
-import org.neo4j.kernel.EmbeddedGraphDatabase;
-import org.neo4j.test.ImpermanentGraphDatabase;
+import org.neo4j.graphdb.factory.GraphDatabaseFactory;
+import org.neo4j.test.TestGraphDatabaseFactory;
 
 public final class Db
 {
@@ -17,12 +19,15 @@ public final class Db
 
     public static GraphDatabaseService impermanentDb()
     {
-        return new ImpermanentGraphDatabase();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put( "online_backup_enabled", "false" );
+
+        return new TestGraphDatabaseFactory().newImpermanentDatabaseBuilder().setConfig( params ).newGraphDatabase();
     }
 
     public static GraphDatabaseService tempDb()
     {
-        return new EmbeddedGraphDatabase( createTempDatabaseDir().getAbsolutePath() );
+        return new GraphDatabaseFactory().newEmbeddedDatabase( createTempDatabaseDir().getAbsolutePath() );
     }
 
     private static File createTempDatabaseDir()
@@ -61,11 +66,12 @@ public final class Db
         tx.finish();
 
         f.execute( db, firstNode, secondNode, thirdNode );
+        db.shutdown();
     }
 
     public interface WithSampleDataset
     {
-        public void execute(GraphDatabaseService db, Node firstNode, Node secondNode, Node thirdNode);
+        public void execute( GraphDatabaseService db, Node firstNode, Node secondNode, Node thirdNode );
     }
 
 
