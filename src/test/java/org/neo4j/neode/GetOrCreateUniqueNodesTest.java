@@ -1,20 +1,23 @@
 package org.neo4j.neode;
 
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.neo4j.neode.properties.Property.property;
-import static org.neo4j.neode.properties.PropertyValueGenerator.iterationBased;
-
 import java.util.Iterator;
 
 import org.junit.Test;
+
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
 import org.neo4j.neode.test.Db;
+
+import static java.util.Arrays.asList;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import static org.neo4j.neode.properties.Property.property;
+import static org.neo4j.neode.properties.PropertyValueGenerator.iterationBased;
 
 public class GetOrCreateUniqueNodesTest
 {

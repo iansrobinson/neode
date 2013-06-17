@@ -1,9 +1,5 @@
 package org.neo4j.neode;
 
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -11,10 +7,16 @@ import java.util.Set;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.junit.Test;
-import org.junit.internal.matchers.TypeSafeMatcher;
+import org.hamcrest.TypeSafeMatcher;
+
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.test.Db;
+
+import static java.util.Arrays.asList;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 public class NodeCollectionTest
 {
@@ -172,7 +174,7 @@ public class NodeCollectionTest
             public void execute( GraphDatabaseService db, Node firstNode, Node secondNode, Node thirdNode )
             {
                 // given
-                NodeCollection nodeCollection = new NodeCollection( db, "user", toSet( firstNode.getId()) );
+                NodeCollection nodeCollection = new NodeCollection( db, "user", toSet( firstNode.getId() ) );
 
                 // when
                 nodeCollection.add( firstNode );
@@ -243,9 +245,9 @@ public class NodeCollectionTest
         };
     }
 
-    private static <T> Set<T> toSet(T... values)
+    private static <T> Set<T> toSet( T... values )
     {
-        return new HashSet<T>( asList( values ) );
+        return new HashSet<>( asList( values ) );
     }
 
 }

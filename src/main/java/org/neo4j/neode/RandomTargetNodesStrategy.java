@@ -1,8 +1,8 @@
 package org.neo4j.neode;
 
-import static org.neo4j.neode.probabilities.ProbabilityDistribution.flatDistribution;
-
 import java.util.List;
+
+import static org.neo4j.neode.probabilities.ProbabilityDistribution.flatDistribution;
 
 class RandomTargetNodesStrategy extends ChoiceOfTargetNodesStrategy
 {

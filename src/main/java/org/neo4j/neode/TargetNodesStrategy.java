@@ -1,8 +1,5 @@
 package org.neo4j.neode;
 
-import static org.neo4j.neode.probabilities.ProbabilityDistribution.flatDistribution;
-import static org.neo4j.neode.probabilities.ProbabilityDistribution.normalDistribution;
-
 import java.util.Set;
 
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -11,10 +8,13 @@ import org.neo4j.graphdb.Relationship;
 import org.neo4j.neode.interfaces.SetNumberOfNodes;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
+import static org.neo4j.neode.probabilities.ProbabilityDistribution.flatDistribution;
+import static org.neo4j.neode.probabilities.ProbabilityDistribution.normalDistribution;
+
 public class TargetNodesStrategy
 {
     public static SetNumberOfNodes getExisting( NodeCollection nodeCollection,
-                                                   ProbabilityDistribution probabilityDistribution )
+                                                ProbabilityDistribution probabilityDistribution )
     {
         GetExistingUniqueNodes targetNodesSource = new GetExistingUniqueNodes( nodeCollection,
                 probabilityDistribution );
@@ -35,7 +35,7 @@ public class TargetNodesStrategy
     }
 
     public static SetNumberOfNodes queryBasedGetOrCreate( NodeSpecification nodeSpecification,
-                                                             GraphQuery graphQuery )
+                                                          GraphQuery graphQuery )
     {
         QueryBasedGetOrCreateNodes targetNodesSource = new QueryBasedGetOrCreateNodes( nodeSpecification,
                 new SparseNodeListGenerator( graphQuery, 1.0, flatDistribution() ) );
@@ -43,7 +43,7 @@ public class TargetNodesStrategy
     }
 
     public static SetNumberOfNodes queryBasedGetOrCreate( NodeSpecification nodeSpecification, GraphQuery graphQuery,
-                                                             double proportionOfCandidateNodesToRequiredNodes )
+                                                          double proportionOfCandidateNodesToRequiredNodes )
     {
         QueryBasedGetOrCreateNodes targetNodesSource = new QueryBasedGetOrCreateNodes( nodeSpecification,
                 new SparseNodeListGenerator( graphQuery, proportionOfCandidateNodesToRequiredNodes,
@@ -52,7 +52,7 @@ public class TargetNodesStrategy
     }
 
     public static SetNumberOfNodes getOrCreate( NodeSpecification nodeSpecification, int maxNumberOfEntities,
-                                                   ProbabilityDistribution probabilityDistribution )
+                                                ProbabilityDistribution probabilityDistribution )
     {
         GetOrCreateUniqueNodes targetNodesSource = new GetOrCreateUniqueNodes( nodeSpecification,
                 maxNumberOfEntities, probabilityDistribution );
@@ -100,7 +100,7 @@ public class TargetNodesStrategy
         for ( Node otherNode : otherNodes )
         {
             int numberOfRelsPerNode = relationshipConstraints.calculateNumberOfRelsToCreate();
-            for (int relationshipIndex = 0; relationshipIndex < numberOfRelsPerNode; relationshipIndex++)
+            for ( int relationshipIndex = 0; relationshipIndex < numberOfRelsPerNode; relationshipIndex++ )
             {
                 Relationship relationship = relationshipConstraints
                         .createRelationship( currentNode, otherNode, targetNodes, relationshipInfo, iteration );

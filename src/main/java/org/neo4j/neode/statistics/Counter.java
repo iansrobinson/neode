@@ -15,15 +15,15 @@ public class Counter
         low = 0;
     }
 
-    void update(int value)
+    void update( int value )
     {
         count++;
-        total+= value;
-        if (value > high)
+        total += value;
+        if ( value > high )
         {
             high = value;
         }
-        if (low == 0 || value < low)
+        if ( low == 0 || value < low )
         {
             low = value;
         }
@@ -46,6 +46,6 @@ public class Counter
 
     public int average()
     {
-        return total/count;
+        return total / count;
     }
 }

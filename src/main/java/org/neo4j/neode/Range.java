@@ -4,12 +4,12 @@ import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
 public class Range
 {
-    public static Range minMax(int min, int max)
+    public static Range minMax( int min, int max )
     {
         return new Range( min, max );
     }
 
-    public static Range exactly(int count)
+    public static Range exactly( int count )
     {
         return new Range( count, count );
     }
@@ -19,12 +19,12 @@ public class Range
 
     private Range( int min, int max )
     {
-        if (min < 0)
+        if ( min < 0 )
         {
             throw new IllegalArgumentException( "Min must be greater or equal to 0" );
         }
 
-        if (max < min)
+        if ( max < min )
         {
             throw new IllegalArgumentException( "Max must be greater or equal to min" );
         }
@@ -53,9 +53,9 @@ public class Range
         return value >= min() && value <= max;
     }
 
-    public int getRandom(ProbabilityDistribution probabilityDistribution)
+    public int getRandom( ProbabilityDistribution probabilityDistribution )
     {
-        if (difference() == 0)
+        if ( difference() == 0 )
         {
             return min();
         }

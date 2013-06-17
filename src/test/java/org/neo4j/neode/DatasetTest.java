@@ -1,14 +1,15 @@
 package org.neo4j.neode;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
+
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.event.TransactionData;
 import org.neo4j.graphdb.event.TransactionEventHandler;
 import org.neo4j.neode.logging.Log;
 import org.neo4j.neode.logging.SysOutLog;
 import org.neo4j.neode.test.Db;
+
+import static org.junit.Assert.assertEquals;
 
 public class DatasetTest
 {

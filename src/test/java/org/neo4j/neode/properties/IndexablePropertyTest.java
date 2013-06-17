@@ -1,13 +1,14 @@
 package org.neo4j.neode.properties;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
+
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.PropertyContainer;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.neode.test.Db;
+
+import static org.junit.Assert.assertEquals;
 
 public class IndexablePropertyTest
 {

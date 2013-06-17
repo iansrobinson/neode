@@ -8,5 +8,5 @@ import org.neo4j.graphdb.Node;
 
 public interface NodeLabelResolver
 {
-    String labelFor(Node node);
+    String labelFor( Node node );
 }

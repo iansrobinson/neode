@@ -1,11 +1,11 @@
 package org.neo4j.neode.probabilities;
 
-import static org.neo4j.neode.Range.exactly;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.neo4j.neode.Range;
+
+import static org.neo4j.neode.Range.exactly;
 
 abstract class BaseUniqueProbabilityDistribution extends ProbabilityDistribution
 {
@@ -15,20 +15,20 @@ abstract class BaseUniqueProbabilityDistribution extends ProbabilityDistribution
         if ( (range.difference() + 1) < sizeRange.max() )
         {
             throw new IllegalArgumentException(
-                    String.format("(range.difference() + 1) must be greater or equal to numberOfResultsRange.max() " +
-                            "[numberOfResultsRange: %s, range: %s]", sizeRange, range) );
+                    String.format( "(range.difference() + 1) must be greater or equal to numberOfResultsRange.max() " +
+                            "[numberOfResultsRange: %s, range: %s]", sizeRange, range ) );
         }
 
         int numberOfResults = (sizeRange.difference() == 0) ?
                 sizeRange.max() :
                 sizeRange.min() + random().nextInt( sizeRange.difference() );
 
-        List<Integer> generatedNumbers = new ArrayList<Integer>( numberOfResults );
+        List<Integer> generatedNumbers = new ArrayList<>( numberOfResults );
 
         while ( generatedNumbers.size() < numberOfResults )
         {
             int nextNumber = getNextNumber( range );
-            if ( range.isInRange( nextNumber )  && !generatedNumbers.contains( nextNumber ) )
+            if ( range.isInRange( nextNumber ) && !generatedNumbers.contains( nextNumber ) )
             {
                 generatedNumbers.add( nextNumber );
             }

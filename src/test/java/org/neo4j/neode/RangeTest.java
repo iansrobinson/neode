@@ -1,12 +1,13 @@
 package org.neo4j.neode;
 
+import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.neo4j.neode.Range.minMax;
 
-import org.junit.Test;
+import static org.neo4j.neode.Range.minMax;
 
 public class RangeTest
 {
@@ -64,9 +65,9 @@ public class RangeTest
         Range range = minMax( 1, 5 );
 
         // then
-        assertTrue( range.isInRange(1) );
-        assertTrue( range.isInRange(3) );
-        assertTrue( range.isInRange(5) );
+        assertTrue( range.isInRange( 1 ) );
+        assertTrue( range.isInRange( 3 ) );
+        assertTrue( range.isInRange( 5 ) );
         assertFalse( range.isInRange( 0 ) );
         assertFalse( range.isInRange( 6 ) );
     }

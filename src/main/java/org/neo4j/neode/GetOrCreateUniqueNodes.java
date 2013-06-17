@@ -1,7 +1,5 @@
 package org.neo4j.neode;
 
-import static org.neo4j.neode.Range.minMax;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -9,6 +7,8 @@ import java.util.Set;
 
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
+
+import static org.neo4j.neode.Range.minMax;
 
 class GetOrCreateUniqueNodes implements TargetNodesSource
 {
@@ -24,8 +24,8 @@ class GetOrCreateUniqueNodes implements TargetNodesSource
         this.totalNumberOfNodes = totalNumberOfNodes;
         this.probabilityDistribution = probabilityDistribution;
 
-        nodeIds = new ArrayList<Long>( totalNumberOfNodes );
-        for (int i = 0; i < totalNumberOfNodes; i++)
+        nodeIds = new ArrayList<>( totalNumberOfNodes );
+        for ( int i = 0; i < totalNumberOfNodes; i++ )
         {
             nodeIds.add( null );
         }
@@ -49,12 +49,12 @@ class GetOrCreateUniqueNodes implements TargetNodesSource
                     nodeSpecification.label(), quantity, totalNumberOfNodes ) );
         }
 
-        Set<Long> returnNodeIds = new HashSet<Long>(quantity);
+        Set<Long> returnNodeIds = new HashSet<>( quantity );
 
         for ( Integer nodeIdPosition : nodeIdPositions )
         {
             Long returnNodeId = nodeIds.get( nodeIdPosition );
-            if ( returnNodeId == null)
+            if ( returnNodeId == null )
             {
                 nodeIds.set( nodeIdPosition, returnNodeId = nodeSpecification.build( nodeIdPosition ).getId() );
             }

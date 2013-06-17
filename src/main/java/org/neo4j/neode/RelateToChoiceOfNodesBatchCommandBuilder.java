@@ -11,7 +11,8 @@ class RelateToChoiceOfNodesBatchCommandBuilder implements UpdateDataset<List<Nod
     private final NodeCollection nodeCollection;
     private final ChoiceOfTargetNodesStrategy choiceOfTargetNodesStrategy;
 
-    RelateToChoiceOfNodesBatchCommandBuilder( NodeCollection nodeCollection, ChoiceOfTargetNodesStrategy choiceOfTargetNodesStrategy )
+    RelateToChoiceOfNodesBatchCommandBuilder( NodeCollection nodeCollection,
+                                              ChoiceOfTargetNodesStrategy choiceOfTargetNodesStrategy )
     {
         this.nodeCollection = nodeCollection;
         this.choiceOfTargetNodesStrategy = choiceOfTargetNodesStrategy;

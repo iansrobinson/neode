@@ -25,7 +25,8 @@ public abstract class PropertyValueGenerator
         return new IdBasedStringPropertyValueGenerator();
     }
 
-    public static PropertyValueGenerator integerRange( int min, int max, ProbabilityDistribution probabilityDistribution )
+    public static PropertyValueGenerator integerRange( int min, int max,
+                                                       ProbabilityDistribution probabilityDistribution )
     {
         return new RangeBasedIntegerPropertyValueGenerator( Range.minMax( min, max ), probabilityDistribution );
     }

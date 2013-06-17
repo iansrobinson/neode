@@ -5,13 +5,13 @@
 package org.neo4j.neode;
 
 
-import static org.neo4j.neode.probabilities.ProbabilityDistribution.flatDistribution;
-
 import org.neo4j.graphdb.Direction;
 import org.neo4j.neode.interfaces.SetNumberOfNodes;
 import org.neo4j.neode.interfaces.SetRelationshipConstraints;
 import org.neo4j.neode.interfaces.SetRelationshipInfo;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
+
+import static org.neo4j.neode.probabilities.ProbabilityDistribution.flatDistribution;
 
 public class TargetNodesStrategyBuilder implements SetNumberOfNodes, SetRelationshipInfo, SetRelationshipConstraints
 {
@@ -72,7 +72,8 @@ public class TargetNodesStrategyBuilder implements SetNumberOfNodes, SetRelation
         RelationshipConstraints relationshipConstraints = new RelationshipConstraints( cardinality,
                 relationshipUniqueness,
                 probabilityDistribution );
-        return new TargetNodesStrategy( targetNodesSource, nodeRange, this.targetNodesProbabilityDistribution, relationshipInfo, relationshipConstraints
+        return new TargetNodesStrategy( targetNodesSource, nodeRange, this.targetNodesProbabilityDistribution,
+                relationshipInfo, relationshipConstraints
 
         );
     }
@@ -98,7 +99,8 @@ public class TargetNodesStrategyBuilder implements SetNumberOfNodes, SetRelation
     }
 
     @Override
-    public TargetNodesStrategy relationshipConstraints( ProbabilityDistribution probabilityDistribution, RelationshipUniqueness relationshipUniqueness )
+    public TargetNodesStrategy relationshipConstraints( ProbabilityDistribution probabilityDistribution,
+                                                        RelationshipUniqueness relationshipUniqueness )
     {
         return relationshipConstraints( Range.exactly( 1 ), probabilityDistribution, relationshipUniqueness );
     }

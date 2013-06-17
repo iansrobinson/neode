@@ -9,5 +9,6 @@ import org.neo4j.graphdb.Node;
 interface TargetNodesSource
 {
     public String label();
+
     public Iterable<Node> getTargetNodes( int quantity, Node currentNode );
 }

@@ -1,13 +1,10 @@
 package org.neo4j.neode;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.neo4j.graphdb.DynamicRelationshipType.withName;
-
 import java.util.Collections;
 import java.util.Iterator;
 
 import org.junit.Test;
+
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.DynamicRelationshipType;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -16,6 +13,11 @@ import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.neode.properties.Property;
 import org.neo4j.neode.test.Db;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+
+import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 
 public class RelationshipUniquenessTest
 {

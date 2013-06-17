@@ -1,12 +1,14 @@
 package org.neo4j.neode.probabilities;
 
-import static org.junit.Assert.assertEquals;
-import static org.neo4j.neode.Range.minMax;
-
 import java.util.List;
 
 import org.junit.Test;
+
 import org.neo4j.neode.Range;
+
+import static org.junit.Assert.assertEquals;
+
+import static org.neo4j.neode.Range.minMax;
 
 public class BaseUniqueProbabilityDistributionTest
 {

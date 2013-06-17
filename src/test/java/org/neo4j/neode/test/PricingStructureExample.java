@@ -1,15 +1,9 @@
 package org.neo4j.neode.test;
 
-import static org.neo4j.neode.ChoiceOfTargetNodesStrategy.randomChoice;
-import static org.neo4j.neode.Range.minMax;
-import static org.neo4j.neode.TargetNodesStrategy.getOrCreate;
-import static org.neo4j.neode.properties.Property.indexableProperty;
-import static org.neo4j.neode.properties.Property.property;
-import static org.neo4j.neode.properties.PropertyValueGenerator.integerRange;
-
 import java.util.List;
 
 import org.junit.Test;
+
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.neode.Dataset;
 import org.neo4j.neode.DatasetManager;
@@ -19,6 +13,13 @@ import org.neo4j.neode.RelationshipSpecification;
 import org.neo4j.neode.logging.SysOutLog;
 import org.neo4j.neode.statistics.AsciiDocFormatter;
 import org.neo4j.neode.statistics.GraphStatistics;
+
+import static org.neo4j.neode.ChoiceOfTargetNodesStrategy.randomChoice;
+import static org.neo4j.neode.Range.minMax;
+import static org.neo4j.neode.TargetNodesStrategy.getOrCreate;
+import static org.neo4j.neode.properties.Property.indexableProperty;
+import static org.neo4j.neode.properties.Property.property;
+import static org.neo4j.neode.properties.PropertyValueGenerator.integerRange;
 
 public class PricingStructureExample
 {

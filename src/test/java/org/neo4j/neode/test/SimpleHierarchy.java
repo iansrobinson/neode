@@ -1,9 +1,7 @@
 package org.neo4j.neode.test;
 
-import static org.neo4j.neode.Range.minMax;
-import static org.neo4j.neode.TargetNodesStrategy.create;
-
 import org.junit.Test;
+
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.neode.Dataset;
 import org.neo4j.neode.DatasetManager;
@@ -11,6 +9,9 @@ import org.neo4j.neode.NodeCollection;
 import org.neo4j.neode.NodeSpecification;
 import org.neo4j.neode.RelationshipSpecification;
 import org.neo4j.neode.logging.SysOutLog;
+
+import static org.neo4j.neode.Range.minMax;
+import static org.neo4j.neode.TargetNodesStrategy.create;
 
 public class SimpleHierarchy
 {

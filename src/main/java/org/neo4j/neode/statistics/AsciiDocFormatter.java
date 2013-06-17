@@ -74,18 +74,18 @@ public class AsciiDocFormatter implements GraphStatisticsFormatter
             log.write( "" );
         }
         log.write( horizontalLine( lineLength ) );
-        log.write( String.format( "| %s |", padRight( "Totals", lineLength - 4 )));
+        log.write( String.format( "| %s |", padRight( "Totals", lineLength - 4 ) ) );
         log.write( horizontalLine( lineLength ) );
-        log.write( String.format( "| %s | %s |",padRight( "Nodes", maxLengthNodeLabel ),
+        log.write( String.format( "| %s | %s |", padRight( "Nodes", maxLengthNodeLabel ),
                 padRight( graphStatistics.totalNodes(), 6 + (3 * maxLengthNumber) ) ) );
-        log.write( String.format( "| %s | %s |",padRight( "Relationships", maxLengthNodeLabel ),
+        log.write( String.format( "| %s | %s |", padRight( "Relationships", maxLengthNodeLabel ),
                 padRight( graphStatistics.totalRelationships(), 6 + (3 * maxLengthNumber) ) ) );
         log.write( horizontalLine( lineLength ) );
 
-        Map<String,Integer> relationshipTotals = graphStatistics.totalsPerRelationship();
+        Map<String, Integer> relationshipTotals = graphStatistics.totalsPerRelationship();
         for ( String label : relationshipTotals.keySet() )
         {
-            log.write( String.format( "| %s | %s |",padRight( label, maxLengthNodeLabel ),
+            log.write( String.format( "| %s | %s |", padRight( label, maxLengthNodeLabel ),
                     padRight( relationshipTotals.get( label ), 6 + (3 * maxLengthNumber) ) ) );
         }
         log.write( horizontalLine( lineLength ) );

@@ -1,13 +1,9 @@
 package org.neo4j.neode;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-import static org.neo4j.graphdb.DynamicRelationshipType.withName;
-
 import java.util.Collections;
 
 import org.junit.Test;
+
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -15,10 +11,17 @@ import org.neo4j.graphdb.Transaction;
 import org.neo4j.neode.properties.Property;
 import org.neo4j.neode.test.Db;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
+import static org.neo4j.graphdb.DynamicRelationshipType.withName;
+
 public class RelationshipInfoTest
 {
     private static final RelationshipSpecification relationshipSpecification =
-            new RelationshipSpecification( withName( "FRIEND" ), Collections.<Property>emptyList(), Db.impermanentDb() );
+            new RelationshipSpecification( withName( "FRIEND" ), Collections.<Property>emptyList(),
+                    Db.impermanentDb() );
 
     @Test
     public void shouldReturnDescriptionOfRelationship() throws Exception

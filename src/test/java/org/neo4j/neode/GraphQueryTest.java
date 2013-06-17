@@ -1,12 +1,9 @@
 package org.neo4j.neode;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.neo4j.graphdb.DynamicRelationshipType.withName;
-
 import java.util.Iterator;
 
 import org.junit.Test;
+
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -15,6 +12,11 @@ import org.neo4j.graphdb.StopEvaluator;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.Traverser;
 import org.neo4j.neode.test.Db;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
+import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 
 public class GraphQueryTest
 {
@@ -26,7 +28,7 @@ public class GraphQueryTest
         Transaction tx = db.beginTx();
         Node firstNode = db.createNode();
         Node secondNode = db.createNode();
-        firstNode.createRelationshipTo( secondNode, withName("CONNECTED_TO") );
+        firstNode.createRelationshipTo( secondNode, withName( "CONNECTED_TO" ) );
         tx.success();
         tx.finish();
 
@@ -35,8 +37,8 @@ public class GraphQueryTest
             @Override
             public Iterable<Node> execute( Node startNode )
             {
-             return startNode.traverse( Traverser.Order.DEPTH_FIRST, StopEvaluator.DEPTH_ONE,
-                     ReturnableEvaluator.ALL_BUT_START_NODE,withName( "CONNECTED_TO"), Direction.OUTGOING );
+                return startNode.traverse( Traverser.Order.DEPTH_FIRST, StopEvaluator.DEPTH_ONE,
+                        ReturnableEvaluator.ALL_BUT_START_NODE, withName( "CONNECTED_TO" ), Direction.OUTGOING );
             }
         };
 
@@ -45,7 +47,7 @@ public class GraphQueryTest
 
         // then
         Iterator<Node> iterator = result.iterator();
-        assertEquals(secondNode, iterator.next());
-        assertFalse(iterator.hasNext());
+        assertEquals( secondNode, iterator.next() );
+        assertFalse( iterator.hasNext() );
     }
 }

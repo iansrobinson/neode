@@ -1,14 +1,15 @@
 package org.neo4j.neode.probabilities;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.neo4j.neode.Range.exactly;
-import static org.neo4j.neode.Range.minMax;
-import static org.neo4j.neode.probabilities.NormalProbabilityDistributionUnique.normalDistribution;
-
 import java.util.List;
 
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import static org.neo4j.neode.Range.exactly;
+import static org.neo4j.neode.Range.minMax;
+import static org.neo4j.neode.probabilities.NormalProbabilityDistributionUnique.normalDistribution;
 
 public class NormalProbabilityDistributionUniqueTest
 {

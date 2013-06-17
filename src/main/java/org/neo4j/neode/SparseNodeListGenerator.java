@@ -1,14 +1,15 @@
 package org.neo4j.neode;
 
-import static java.lang.Math.round;
-import static org.neo4j.neode.Range.minMax;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.neo4j.graphdb.Node;
 import org.neo4j.helpers.collection.IteratorUtil;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
+
+import static java.lang.Math.round;
+
+import static org.neo4j.neode.Range.minMax;
 
 class SparseNodeListGenerator
 {
@@ -32,8 +33,8 @@ class SparseNodeListGenerator
 
     public List<Node> getSparseListOfExistingNodes( int size, Node currentNode )
     {
-        List<Node> existingNodes = new ArrayList<Node>( IteratorUtil.asCollection( query.execute( currentNode ) ) );
-        List<Node> sparseList = new ArrayList<Node>( size );
+        List<Node> existingNodes = new ArrayList<>( IteratorUtil.asCollection( query.execute( currentNode ) ) );
+        List<Node> sparseList = new ArrayList<>( size );
 
         int candidatePoolSize = (int) round( size * proportionOfNodesToListSize );
         List<Integer> candidateIndexes = probabilityDistribution.generateList( candidatePoolSize,
@@ -41,7 +42,7 @@ class SparseNodeListGenerator
 
         for ( int i = 0; i < size; i++ )
         {
-            int candidateIndex =  candidateIndexes.get( i );
+            int candidateIndex = candidateIndexes.get( i );
             if ( candidateIndex < existingNodes.size() )
             {
                 sparseList.add( existingNodes.get( candidateIndex ) );

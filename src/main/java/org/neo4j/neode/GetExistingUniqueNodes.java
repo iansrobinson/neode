@@ -1,11 +1,11 @@
 package org.neo4j.neode;
 
-import static org.neo4j.neode.Range.minMax;
-
 import java.util.List;
 
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
+
+import static org.neo4j.neode.Range.minMax;
 
 class GetExistingUniqueNodes implements TargetNodesSource
 {

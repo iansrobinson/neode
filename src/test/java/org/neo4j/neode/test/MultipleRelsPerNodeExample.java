@@ -1,10 +1,7 @@
 package org.neo4j.neode.test;
 
-import static org.neo4j.neode.properties.Property.indexableProperty;
-import static org.neo4j.neode.properties.Property.property;
-import static org.neo4j.neode.properties.PropertyValueGenerator.integerRange;
-
 import org.junit.Test;
+
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.neode.Dataset;
 import org.neo4j.neode.DatasetManager;
@@ -16,6 +13,10 @@ import org.neo4j.neode.TargetNodesStrategy;
 import org.neo4j.neode.logging.SysOutLog;
 import org.neo4j.neode.statistics.AsciiDocFormatter;
 import org.neo4j.neode.statistics.GraphStatistics;
+
+import static org.neo4j.neode.properties.Property.indexableProperty;
+import static org.neo4j.neode.properties.Property.property;
+import static org.neo4j.neode.properties.PropertyValueGenerator.integerRange;
 
 public class MultipleRelsPerNodeExample
 {

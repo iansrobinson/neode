@@ -1,7 +1,5 @@
 package org.neo4j.neode;
 
-import static org.neo4j.kernel.Traversal.expanderForTypes;
-
 import java.util.List;
 
 import org.neo4j.graphdb.Direction;
@@ -11,6 +9,8 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.neode.properties.Property;
+
+import static org.neo4j.kernel.Traversal.expanderForTypes;
 
 public class RelationshipSpecification
 {

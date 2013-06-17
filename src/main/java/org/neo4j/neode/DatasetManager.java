@@ -1,12 +1,13 @@
 package org.neo4j.neode;
 
-import static java.util.Arrays.asList;
-import static org.neo4j.graphdb.DynamicRelationshipType.withName;
-
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.neode.logging.Log;
 import org.neo4j.neode.properties.Property;
+
+import static java.util.Arrays.asList;
+
+import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 
 public class DatasetManager
 {

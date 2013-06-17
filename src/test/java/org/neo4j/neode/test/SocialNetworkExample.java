@@ -1,17 +1,7 @@
 package org.neo4j.neode.test;
 
-import static org.neo4j.graphdb.DynamicRelationshipType.withName;
-import static org.neo4j.neode.GraphQuery.traversal;
-import static org.neo4j.neode.Range.minMax;
-import static org.neo4j.neode.TargetNodesStrategy.getExisting;
-import static org.neo4j.neode.TargetNodesStrategy.getOrCreate;
-import static org.neo4j.neode.TargetNodesStrategy.queryBasedGetOrCreate;
-import static org.neo4j.neode.probabilities.ProbabilityDistribution.flatDistribution;
-import static org.neo4j.neode.probabilities.ProbabilityDistribution.normalDistribution;
-import static org.neo4j.neode.properties.Property.indexableProperty;
-import static org.neo4j.neode.properties.Property.property;
-
 import org.junit.Test;
+
 import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Path;
@@ -28,6 +18,17 @@ import org.neo4j.neode.RelationshipUniqueness;
 import org.neo4j.neode.logging.SysOutLog;
 import org.neo4j.neode.statistics.AsciiDocFormatter;
 import org.neo4j.neode.statistics.GraphStatistics;
+
+import static org.neo4j.graphdb.DynamicRelationshipType.withName;
+import static org.neo4j.neode.GraphQuery.traversal;
+import static org.neo4j.neode.Range.minMax;
+import static org.neo4j.neode.TargetNodesStrategy.getExisting;
+import static org.neo4j.neode.TargetNodesStrategy.getOrCreate;
+import static org.neo4j.neode.TargetNodesStrategy.queryBasedGetOrCreate;
+import static org.neo4j.neode.probabilities.ProbabilityDistribution.flatDistribution;
+import static org.neo4j.neode.probabilities.ProbabilityDistribution.normalDistribution;
+import static org.neo4j.neode.properties.Property.indexableProperty;
+import static org.neo4j.neode.properties.Property.property;
 
 public class SocialNetworkExample
 {

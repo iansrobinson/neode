@@ -1,20 +1,22 @@
 package org.neo4j.neode;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.neo4j.graphdb.DynamicRelationshipType.withName;
-import static org.neo4j.neode.ChoiceOfTargetNodesStrategy.all;
-import static org.neo4j.neode.Range.exactly;
-import static org.neo4j.neode.TargetNodesStrategy.create;
-
 import java.util.Iterator;
 
 import org.junit.Test;
+
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.neode.logging.Log;
 import org.neo4j.neode.test.Db;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+
+import static org.neo4j.graphdb.DynamicRelationshipType.withName;
+import static org.neo4j.neode.ChoiceOfTargetNodesStrategy.all;
+import static org.neo4j.neode.Range.exactly;
+import static org.neo4j.neode.TargetNodesStrategy.create;
 
 public class ChooseAllTargetNodesStrategiesTest
 {

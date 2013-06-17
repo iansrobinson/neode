@@ -20,7 +20,7 @@ class CreateNodesBatchCommandBuilder implements UpdateDataset<NodeCollection>
     {
         NodeCollection nodeCollection = nodeSpecification.emptyNodeCollection( quantity );
         CreateNodesBatchCommand command = new CreateNodesBatchCommand( nodeSpecification, quantity, nodeCollection,
-                batchSize);
+                batchSize );
         return dataset.execute( command );
     }
 
@@ -34,7 +34,7 @@ class CreateNodesBatchCommandBuilder implements UpdateDataset<NodeCollection>
     public void updateNoReturn( Dataset dataset, int batchSize )
     {
         CreateNodesBatchCommand command = new CreateNodesBatchCommand( nodeSpecification, quantity,
-                NodeCollection.NULL, batchSize);
+                NodeCollection.NULL, batchSize );
         dataset.execute( command );
     }
 

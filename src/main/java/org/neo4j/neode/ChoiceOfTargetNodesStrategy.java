@@ -1,11 +1,11 @@
 package org.neo4j.neode;
 
-import static java.util.Arrays.asList;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.neo4j.graphdb.GraphDatabaseService;
+
+import static java.util.Arrays.asList;
 
 public abstract class ChoiceOfTargetNodesStrategy
 {
@@ -29,7 +29,7 @@ public abstract class ChoiceOfTargetNodesStrategy
     Commands createCommandSelector( GraphDatabaseService db, NodeCollection sourceNodes, int batchSize,
                                     NodeCollectionFactory nodeCollectionFactory )
     {
-        List<BatchCommand<NodeCollection>> commands = new ArrayList<BatchCommand<NodeCollection>>();
+        List<BatchCommand<NodeCollection>> commands = new ArrayList<>();
         for ( TargetNodesStrategy targetNodeStrategy : targetNodeStrategies )
         {
             RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodes, targetNodeStrategy,

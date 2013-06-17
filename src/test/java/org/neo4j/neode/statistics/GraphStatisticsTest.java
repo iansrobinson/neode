@@ -1,16 +1,18 @@
 package org.neo4j.neode.statistics;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.neo4j.graphdb.DynamicRelationshipType.withName;
-
 import java.util.Iterator;
 
 import org.junit.Test;
+
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.neode.test.Db;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
+import static org.neo4j.graphdb.DynamicRelationshipType.withName;
 
 public class GraphStatisticsTest
 {

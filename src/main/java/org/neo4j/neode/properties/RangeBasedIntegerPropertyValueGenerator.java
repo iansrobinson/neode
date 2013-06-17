@@ -1,8 +1,8 @@
 package org.neo4j.neode.properties;
 
 import org.neo4j.graphdb.PropertyContainer;
-import org.neo4j.neode.probabilities.ProbabilityDistribution;
 import org.neo4j.neode.Range;
+import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
 class RangeBasedIntegerPropertyValueGenerator extends PropertyValueGenerator
 {

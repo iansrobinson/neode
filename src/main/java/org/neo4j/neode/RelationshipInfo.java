@@ -13,7 +13,7 @@ class RelationshipInfo
     RelationshipInfo( RelationshipSpecification relationshipSpecification,
                       Direction direction )
     {
-        if (direction.equals( Direction.BOTH ))
+        if ( direction.equals( Direction.BOTH ) )
         {
             throw new IllegalArgumentException( "Direction must be either INCOMING or OUTGOING." );
         }

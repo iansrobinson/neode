@@ -31,10 +31,10 @@ public class NodeSpecification
     public NodeCollection getAll()
     {
         Iterable<Node> allNodes = GlobalGraphOperations.at( db ).getAllNodes();
-        Set<Long> nodeIds = new HashSet<Long>(  );
+        Set<Long> nodeIds = new HashSet<>();
         for ( Node node : allNodes )
         {
-            if (node.hasProperty( "_label" ) && node.getProperty( "_label" ).equals( label ))
+            if ( node.hasProperty( "_label" ) && node.getProperty( "_label" ).equals( label ) )
             {
                 nodeIds.add( node.getId() );
             }
@@ -59,7 +59,7 @@ public class NodeSpecification
         return new NodeCollection( db, label, new HashSet<Long>( capacity ) );
     }
 
-    NodeCollection newNodeCollection( Set<Long> nodeIds)
+    NodeCollection newNodeCollection( Set<Long> nodeIds )
     {
         return new NodeCollection( db, label, nodeIds );
     }

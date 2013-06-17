@@ -1,18 +1,20 @@
 package org.neo4j.neode;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.junit.Test;
+
+import org.neo4j.graphdb.Node;
+import org.neo4j.neode.probabilities.ProbabilityDistribution;
+
 import static java.util.Arrays.asList;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import java.util.Collections;
-import java.util.List;
-
-import org.junit.Test;
-import org.neo4j.graphdb.Node;
-import org.neo4j.neode.probabilities.ProbabilityDistribution;
 
 public class SparseNodeListGeneratorTest
 {
