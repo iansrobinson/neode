@@ -24,7 +24,7 @@ class GetOrCreateUniqueNodes implements TargetNodesSource
         this.totalNumberOfNodes = totalNumberOfNodes;
         this.probabilityDistribution = probabilityDistribution;
 
-        nodeIds = new ArrayList<>( totalNumberOfNodes );
+        nodeIds = new ArrayList<Long>( totalNumberOfNodes );
         for ( int i = 0; i < totalNumberOfNodes; i++ )
         {
             nodeIds.add( null );
@@ -49,7 +49,7 @@ class GetOrCreateUniqueNodes implements TargetNodesSource
                     nodeSpecification.label(), quantity, totalNumberOfNodes ) );
         }
 
-        Set<Long> returnNodeIds = new HashSet<>( quantity );
+        Set<Long> returnNodeIds = new HashSet<Long>( quantity );
 
         for ( Integer nodeIdPosition : nodeIdPositions )
         {

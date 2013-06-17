@@ -247,7 +247,7 @@ public class NodeCollectionTest
 
     private static <T> Set<T> toSet( T... values )
     {
-        return new HashSet<>( asList( values ) );
+        return new HashSet<T>( asList( values ) );
     }
 
 }

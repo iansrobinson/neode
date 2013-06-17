@@ -31,7 +31,7 @@ public class NodeSpecification
     public NodeCollection getAll()
     {
         Iterable<Node> allNodes = GlobalGraphOperations.at( db ).getAllNodes();
-        Set<Long> nodeIds = new HashSet<>();
+        Set<Long> nodeIds = new HashSet<Long>();
         for ( Node node : allNodes )
         {
             if ( node.hasProperty( "_label" ) && node.getProperty( "_label" ).equals( label ) )

@@ -29,7 +29,7 @@ public abstract class ChoiceOfTargetNodesStrategy
     Commands createCommandSelector( GraphDatabaseService db, NodeCollection sourceNodes, int batchSize,
                                     NodeCollectionFactory nodeCollectionFactory )
     {
-        List<BatchCommand<NodeCollection>> commands = new ArrayList<>();
+        List<BatchCommand<NodeCollection>> commands = new ArrayList<BatchCommand<NodeCollection>>();
         for ( TargetNodesStrategy targetNodeStrategy : targetNodeStrategies )
         {
             RelateNodesBatchCommand command = new RelateNodesBatchCommand( sourceNodes, targetNodeStrategy,

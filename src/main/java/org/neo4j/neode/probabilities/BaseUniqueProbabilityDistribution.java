@@ -23,7 +23,7 @@ abstract class BaseUniqueProbabilityDistribution extends ProbabilityDistribution
                 sizeRange.max() :
                 sizeRange.min() + random().nextInt( sizeRange.difference() );
 
-        List<Integer> generatedNumbers = new ArrayList<>( numberOfResults );
+        List<Integer> generatedNumbers = new ArrayList<Integer>( numberOfResults );
 
         while ( generatedNumbers.size() < numberOfResults )
         {

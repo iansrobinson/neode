@@ -33,8 +33,8 @@ class SparseNodeListGenerator
 
     public List<Node> getSparseListOfExistingNodes( int size, Node currentNode )
     {
-        List<Node> existingNodes = new ArrayList<>( IteratorUtil.asCollection( query.execute( currentNode ) ) );
-        List<Node> sparseList = new ArrayList<>( size );
+        List<Node> existingNodes = new ArrayList<Node>( IteratorUtil.asCollection( query.execute( currentNode ) ) );
+        List<Node> sparseList = new ArrayList<Node>( size );
 
         int candidatePoolSize = (int) round( size * proportionOfNodesToListSize );
         List<Integer> candidateIndexes = probabilityDistribution.generateList( candidatePoolSize,

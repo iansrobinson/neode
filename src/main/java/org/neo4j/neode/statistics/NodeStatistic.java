@@ -16,7 +16,7 @@ public class NodeStatistic
     {
         this.label = label;
         count = 0;
-        relationshipStatistics = new HashMap<>();
+        relationshipStatistics = new HashMap<String, RelationshipStatistic>();
     }
 
     public String label()
@@ -28,7 +28,7 @@ public class NodeStatistic
     {
         count++;
 
-        Map<String, RelationshipCounter> relationshipCounters = new HashMap<>();
+        Map<String, RelationshipCounter> relationshipCounters = new HashMap<String, RelationshipCounter>();
 
         for ( Relationship relationship : node.getRelationships() )
         {
