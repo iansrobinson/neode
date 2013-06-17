@@ -7,7 +7,7 @@ import java.util.Set;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.junit.Test;
-import org.hamcrest.TypeSafeMatcher;
+import org.junit.internal.matchers.TypeSafeMatcher;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
