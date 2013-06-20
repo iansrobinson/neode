@@ -11,8 +11,6 @@
   <packaging>jar</packaging>
 
   <properties>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -20,7 +18,7 @@
     <dependency>
       <groupId>org.neo4j</groupId>
       <artifactId>neo4j</artifactId>
-      <version>2.0.0-M02</version>
+      <version>1.8.1</version>
     </dependency>
     <dependency>
       <artifactId>junit</artifactId>
@@ -31,7 +29,7 @@
     <dependency>
       <groupId>org.neo4j</groupId>
       <artifactId>neo4j-kernel</artifactId>
-      <version>2.0.0-M02</version>
+      <version>1.8.1</version>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
