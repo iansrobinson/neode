@@ -36,7 +36,7 @@ class GetExistingUniqueNodes implements TargetNodesSource
                     "nodes specified when applying the relationship constraint. Number of nodes specified by " +
                     "relationship constraint: %s. Maximum number of nodes available: %s. Either adjust the " +
                     "relationship constraint or increase the number of nodes available.",
-                    nodeCollection.label(), quantity, nodeCollection.size() ) );
+                    nodeCollection.labelName(), quantity, nodeCollection.size() ) );
         }
         return nodeCollection.subset( nodeIdPositions );
     }
@@ -44,7 +44,7 @@ class GetExistingUniqueNodes implements TargetNodesSource
     @Override
     public String label()
     {
-        return nodeCollection.label();
+        return nodeCollection.labelName();
     }
 
 }

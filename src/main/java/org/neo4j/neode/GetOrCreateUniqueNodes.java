@@ -46,7 +46,7 @@ class GetOrCreateUniqueNodes implements TargetNodesSource
                     "nodes specified in the relationship constraint. Maximum number of nodes in relationship " +
                     "constraint: %s. Maximum number of nodes to get or create: %s. Either reduce the range in the " +
                     "relationship constraint or increase the number of nodes to get or create.",
-                    nodeSpecification.label(), quantity, totalNumberOfNodes ) );
+                    nodeSpecification.labelName(), quantity, totalNumberOfNodes ) );
         }
 
         Set<Long> returnNodeIds = new HashSet<Long>( quantity );
@@ -67,6 +67,6 @@ class GetOrCreateUniqueNodes implements TargetNodesSource
     @Override
     public String label()
     {
-        return nodeSpecification.label();
+        return nodeSpecification.labelName();
     }
 }

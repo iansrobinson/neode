@@ -79,7 +79,7 @@ public class NodeCollectionTest {
                 NodeCollection nodeCollection = new NodeCollection(db, "user",
                         toSet(firstNode.getId(), secondNode.getId(), thirdNode.getId()));
                 // then
-                assertEquals("user", nodeCollection.label());
+                assertEquals("user", nodeCollection.labelName());
             }
         });
     }

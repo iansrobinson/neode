@@ -4,10 +4,7 @@ import java.util.Collections;
 
 import org.junit.Test;
 
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.PropertyContainer;
-import org.neo4j.graphdb.Transaction;
+import org.neo4j.graphdb.*;
 import org.neo4j.neode.properties.Property;
 import org.neo4j.neode.test.Db;
 
@@ -23,10 +20,11 @@ public class NodeSpecificationTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
+        Label user = DynamicLabel.label("user");
         Node node;
         try ( Transaction tx = db.beginTx() )
         {
-            NodeSpecification nodeSpecification = new NodeSpecification( "user", Collections.<Property>emptyList(), db );
+            NodeSpecification nodeSpecification = new NodeSpecification( user, Collections.<Property>emptyList(), db );
 
             // when
             node = nodeSpecification.build( 1 );
@@ -37,7 +35,7 @@ public class NodeSpecificationTest
         try ( Transaction tx = db.beginTx() )
         {
             assertNotNull( node );
-            assertEquals( "user", node.getProperty( "_label" ) );
+            assertEquals( true, node.hasLabel( user ) );
             tx.success();
         }
     }

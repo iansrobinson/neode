@@ -49,7 +49,7 @@ class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
     @Override
     public String shortDescription()
     {
-        return targetNodesStrategy.description( sourceNodes.label() );
+        return targetNodesStrategy.description( sourceNodes.labelName() );
     }
 
     @Override
@@ -63,7 +63,7 @@ class RelateNodesBatchCommand implements BatchCommand<NodeCollection>
     {
         long average = sourceNodes.size() == 0 ? 0 : totalRels / sourceNodes.size();
         log.write( String.format( "      [Avg: %s relationship(s) per %s]",
-                average, sourceNodes.label() ) );
+                average, sourceNodes.labelName() ) );
     }
 
     @Override

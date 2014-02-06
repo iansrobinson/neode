@@ -5,9 +5,7 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Transaction;
+import org.neo4j.graphdb.*;
 import org.neo4j.neode.properties.Property;
 import org.neo4j.neode.test.Db;
 
@@ -21,10 +19,11 @@ public class CreateUniqueNodesTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
+        Label user = DynamicLabel.label("user");
         try ( Transaction tx = db.beginTx() ) {
 
         CreateUniqueNodes command = new CreateUniqueNodes(
-                new NodeSpecification( "user", Collections.<Property>emptyList(), db ) );
+                new NodeSpecification( user, Collections.<Property>emptyList(), db ) );
 
         // when
         Iterable<Node> nodes = command.getTargetNodes( 3, null );
@@ -32,9 +31,9 @@ public class CreateUniqueNodesTest
         // then
         Iterator<Node> iterator = nodes.iterator();
 
-        assertEquals( "user", iterator.next().getProperty( "_label" ) );
-        assertEquals( "user", iterator.next().getProperty( "_label" ) );
-        assertEquals( "user", iterator.next().getProperty( "_label" ) );
+        assertEquals( true, iterator.next().hasLabel( user ) );
+        assertEquals( true, iterator.next().hasLabel( user ) );
+        assertEquals( true, iterator.next().hasLabel( user ) );
         assertFalse( iterator.hasNext() );
 
         tx.success();

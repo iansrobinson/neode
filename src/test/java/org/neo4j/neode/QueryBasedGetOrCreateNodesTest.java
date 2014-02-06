@@ -6,9 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Transaction;
+import org.neo4j.graphdb.*;
 import org.neo4j.neode.properties.Property;
 import org.neo4j.neode.test.Db;
 
@@ -26,6 +24,7 @@ public class QueryBasedGetOrCreateNodesTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
+        Label label = DynamicLabel.label("user");
 
         Node node0, node4;
         Iterable<Node> results;
@@ -35,7 +34,7 @@ public class QueryBasedGetOrCreateNodesTest
             node0 = db.createNode();
             node4 = db.createNode();
 
-            NodeSpecification user = new NodeSpecification( "user", Collections.<Property>emptyList(), db );
+            NodeSpecification user = new NodeSpecification( label, Collections.<Property>emptyList(), db );
             SparseNodeListGenerator finder = mock( SparseNodeListGenerator.class );
 
             List<Node> sparseList = asList( node0, null, null, null, node4 );
@@ -55,9 +54,9 @@ public class QueryBasedGetOrCreateNodesTest
             Iterator<Node> iterator = results.iterator();
 
             assertEquals( node0, iterator.next() );
-            assertEquals( "user", iterator.next().getProperty( "_label" ) );
-            assertEquals( "user", iterator.next().getProperty( "_label" ) );
-            assertEquals( "user", iterator.next().getProperty( "_label" ) );
+            assertEquals( true, iterator.next().hasLabel( label ) );
+            assertEquals( true, iterator.next().hasLabel( label ) );
+            assertEquals( true, iterator.next().hasLabel( label ) );
             assertEquals( node4, iterator.next() );
             assertFalse( iterator.hasNext() );
             tx.success();

@@ -25,6 +25,6 @@ class CreateUniqueNodes implements TargetNodesSource
     @Override
     public String label()
     {
-        return nodeSpecification.label();
+        return nodeSpecification.labelName();
     }
 }

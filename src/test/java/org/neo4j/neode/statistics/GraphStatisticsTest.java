@@ -4,9 +4,7 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Transaction;
+import org.neo4j.graphdb.*;
 import org.neo4j.neode.test.Db;
 
 import static org.junit.Assert.assertEquals;
@@ -21,10 +19,10 @@ public class GraphStatisticsTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
+        Label user = DynamicLabel.label("user");
         try ( Transaction tx = db.beginTx() )
         {
-            Node node = db.createNode();
-            node.setProperty( "_label", "user" );
+            db.createNode(user);
             tx.success();
         }
 
@@ -36,7 +34,7 @@ public class GraphStatisticsTest
         {
             Iterator<NodeStatistic> iterator = graphStatistics.nodeStatistics().iterator();
             NodeStatistic nodeStatistic = iterator.next();
-            assertEquals( "user", nodeStatistic.label() );
+            assertEquals( user.name(), nodeStatistic.label() );
             assertEquals( 1, nodeStatistic.count() );
             assertFalse( iterator.hasNext() );
             tx.success();
@@ -48,11 +46,10 @@ public class GraphStatisticsTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
+        Label user = DynamicLabel.label("user");
         try ( Transaction tx = db.beginTx() ) {
-            Node firstNode = db.createNode();
-            firstNode.setProperty( "_label", "user" );
-            Node secondNode = db.createNode();
-            secondNode.setProperty( "_label", "user" );
+            Node firstNode = db.createNode( user );
+            Node secondNode = db.createNode( user );
             firstNode.createRelationshipTo( secondNode, withName( "FRIEND" ) );
             secondNode.createRelationshipTo( firstNode, withName( "FRIEND" ) );
             tx.success();
@@ -62,7 +59,7 @@ public class GraphStatisticsTest
         GraphStatistics graphStatistics = GraphStatistics.create( db, "test db" );
 
         // then
-        NodeStatistic nodeStatistic = graphStatistics.getNodeStatistic( "user" );
+        NodeStatistic nodeStatistic = graphStatistics.getNodeStatistic(user.name() );
 
         assertEquals( 2, nodeStatistic.count() );
         assertEquals( 2, nodeStatistic.getRelationshipStatistic( "FRIEND" ).incoming().total() );

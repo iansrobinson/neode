@@ -39,7 +39,7 @@ public class GraphStatistics
     {
         this.descripton = descripton;
         this.nodeLabelResolver = nodeLabelResolver;
-        nodeStatistics = new HashMap<String, NodeStatistic>();
+        nodeStatistics = new HashMap<>();
     }
 
     private void add( Node node )

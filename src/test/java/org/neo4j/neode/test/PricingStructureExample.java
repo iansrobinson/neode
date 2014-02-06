@@ -53,7 +53,7 @@ public class PricingStructureExample
 
         for ( NodeCollection subnode : subnodes )
         {
-            if ( subnode.label().equals( "intermediate" ) )
+            if ( subnode.labelName().equals( "intermediate" ) )
             {
                 subnode.createRelationshipsTo(
                         getOrCreate( leaf, 100 )
