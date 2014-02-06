@@ -27,16 +27,22 @@ public class IndexablePropertyTest
         Property property = new IndexableProperty( "name", generator, "indexname" );
 
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
-        Node node = db.createNode();
+        Node node;
+        try ( Transaction tx = db.beginTx() )
+        {
+            node = db.createNode();
 
-        // when
-        property.setProperty( node, db, "user", 1 );
-        tx.success();
-        tx.finish();
+            // when
+            property.setProperty( node, db, "user", 1 );
+            tx.success();
+        }
 
         // then
-        assertEquals( node, db.index().forNodes( "indexname" ).get( "name", "value" ).getSingle() );
+        try ( Transaction tx = db.beginTx() )
+        {
+            assertEquals( node, db.index().forNodes( "indexname" ).get( "name", "value" ).getSingle() );
+            tx.success();
+        }
     }
 
     @Test
@@ -54,15 +60,21 @@ public class IndexablePropertyTest
         Property property = new IndexableProperty( "name", generator );
 
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
-        Node node = db.createNode();
+        Node node;
+        try ( Transaction tx = db.beginTx() )
+        {
+            node = db.createNode();
 
-        // when
-        property.setProperty( node, db, "user", 1 );
-        tx.success();
-        tx.finish();
+            // when
+            property.setProperty( node, db, "user", 1 );
+            tx.success();
+        }
 
         // then
-        assertEquals( node, db.index().forNodes( "user" ).get( "name", "value" ).getSingle() );
+        try ( Transaction tx = db.beginTx() )
+        {
+            assertEquals( node, db.index().forNodes( "user" ).get( "name", "value" ).getSingle() );
+            tx.success();
+        }
     }
 }

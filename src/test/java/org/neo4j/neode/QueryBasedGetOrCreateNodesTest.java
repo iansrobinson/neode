@@ -27,33 +27,40 @@ public class QueryBasedGetOrCreateNodesTest
         // given
         GraphDatabaseService db = Db.impermanentDb();
 
-        Transaction tx = db.beginTx();
-        Node currentNode = db.createNode();
-        Node node0 = db.createNode();
-        Node node4 = db.createNode();
+        Node node0, node4;
+        Iterable<Node> results;
+        try ( Transaction tx = db.beginTx() )
+        {
+            Node currentNode = db.createNode();
+            node0 = db.createNode();
+            node4 = db.createNode();
 
-        NodeSpecification user = new NodeSpecification( "user", Collections.<Property>emptyList(), db );
-        SparseNodeListGenerator finder = mock( SparseNodeListGenerator.class );
+            NodeSpecification user = new NodeSpecification( "user", Collections.<Property>emptyList(), db );
+            SparseNodeListGenerator finder = mock( SparseNodeListGenerator.class );
 
-        List<Node> sparseList = asList( node0, null, null, null, node4 );
+            List<Node> sparseList = asList( node0, null, null, null, node4 );
 
-        when( finder.getSparseListOfExistingNodes( 5, currentNode ) ).thenReturn( sparseList );
+            when( finder.getSparseListOfExistingNodes( 5, currentNode ) ).thenReturn( sparseList );
 
-        QueryBasedGetOrCreateNodes queryBasedGetOrCreate = new QueryBasedGetOrCreateNodes( user, finder );
+            QueryBasedGetOrCreateNodes queryBasedGetOrCreate = new QueryBasedGetOrCreateNodes( user, finder );
 
-        // when
-        Iterable<Node> results = queryBasedGetOrCreate.getTargetNodes( 5, currentNode );
-        tx.success();
-        tx.finish();
+            // when
+            results = queryBasedGetOrCreate.getTargetNodes( 5, currentNode );
+            tx.success();
+        }
 
         // then
-        Iterator<Node> iterator = results.iterator();
+        try ( Transaction tx = db.beginTx() )
+        {
+            Iterator<Node> iterator = results.iterator();
 
-        assertEquals( node0, iterator.next() );
-        assertEquals( "user", iterator.next().getProperty( "_label" ) );
-        assertEquals( "user", iterator.next().getProperty( "_label" ) );
-        assertEquals( "user", iterator.next().getProperty( "_label" ) );
-        assertEquals( node4, iterator.next() );
-        assertFalse( iterator.hasNext() );
+            assertEquals( node0, iterator.next() );
+            assertEquals( "user", iterator.next().getProperty( "_label" ) );
+            assertEquals( "user", iterator.next().getProperty( "_label" ) );
+            assertEquals( "user", iterator.next().getProperty( "_label" ) );
+            assertEquals( node4, iterator.next() );
+            assertFalse( iterator.hasNext() );
+            tx.success();
+        }
     }
 }

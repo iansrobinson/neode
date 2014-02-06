@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.Transaction;
 import org.neo4j.neode.logging.Log;
 import org.neo4j.neode.test.Db;
 
@@ -55,31 +56,35 @@ public class ChooseAllTargetNodesStrategiesTest
                 .update( dataset );
 
         dataset.end();
+        try ( Transaction tx = db.beginTx() )
+        {
 
-        Node user1Node = users.getNodeByPosition( 0 );
+            Node user1Node = users.getNodeByPosition( 0 );
 
-        Iterator<Relationship> workAddressRels1 = user1Node.getRelationships( withName( "WORK_ADDRESS" ) ).iterator();
-        Iterator<Relationship> homeAddressRels1 = user1Node.getRelationships( withName( "HOME_ADDRESS" ) ).iterator();
+            Iterator<Relationship> workAddressRels1 = user1Node.getRelationships( withName( "WORK_ADDRESS" ) ).iterator();
+            Iterator<Relationship> homeAddressRels1 = user1Node.getRelationships( withName( "HOME_ADDRESS" ) ).iterator();
 
-        assertNotNull( workAddressRels1.next() );
-        assertNotNull( workAddressRels1.next() );
-        assertFalse( workAddressRels1.hasNext() );
+            assertNotNull( workAddressRels1.next() );
+            assertNotNull( workAddressRels1.next() );
+            assertFalse( workAddressRels1.hasNext() );
 
-        assertNotNull( homeAddressRels1.next() );
-        assertFalse( homeAddressRels1.hasNext() );
+            assertNotNull( homeAddressRels1.next() );
+            assertFalse( homeAddressRels1.hasNext() );
 
-        Node user2Node = users.getNodeByPosition( 1 );
+            Node user2Node = users.getNodeByPosition( 1 );
 
-        Iterator<Relationship> workAddressRels2 = user2Node.getRelationships( withName( "WORK_ADDRESS" ) ).iterator();
-        Iterator<Relationship> homeAddressRels2 = user2Node.getRelationships( withName( "HOME_ADDRESS" ) ).iterator();
+            Iterator<Relationship> workAddressRels2 = user2Node.getRelationships( withName( "WORK_ADDRESS" ) ).iterator();
+            Iterator<Relationship> homeAddressRels2 = user2Node.getRelationships( withName( "HOME_ADDRESS" ) ).iterator();
 
-        assertNotNull( workAddressRels2.next() );
-        assertNotNull( workAddressRels2.next() );
-        assertFalse( workAddressRels2.hasNext() );
+            assertNotNull( workAddressRels2.next() );
+            assertNotNull( workAddressRels2.next() );
+            assertFalse( workAddressRels2.hasNext() );
 
-        assertNotNull( homeAddressRels2.next() );
-        assertFalse( homeAddressRels2.hasNext() );
+            assertNotNull( homeAddressRels2.next() );
+            assertFalse( homeAddressRels2.hasNext() );
 
+            tx.success();
+        }
         db.shutdown();
     }
 }

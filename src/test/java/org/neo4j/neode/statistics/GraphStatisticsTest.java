@@ -21,22 +21,26 @@ public class GraphStatisticsTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
-        db.getNodeById( 0 ).delete();
-        Node node = db.createNode();
-        node.setProperty( "_label", "user" );
-        tx.success();
-        tx.finish();
+        try ( Transaction tx = db.beginTx() )
+        {
+            Node node = db.createNode();
+            node.setProperty( "_label", "user" );
+            tx.success();
+        }
 
         // when
         GraphStatistics graphStatistics = GraphStatistics.create( db, "test db" );
 
         // then
-        Iterator<NodeStatistic> iterator = graphStatistics.nodeStatistics().iterator();
-        NodeStatistic nodeStatistic = iterator.next();
-        assertEquals( "user", nodeStatistic.label() );
-        assertEquals( 1, nodeStatistic.count() );
-        assertFalse( iterator.hasNext() );
+        try ( Transaction tx = db.beginTx() )
+        {
+            Iterator<NodeStatistic> iterator = graphStatistics.nodeStatistics().iterator();
+            NodeStatistic nodeStatistic = iterator.next();
+            assertEquals( "user", nodeStatistic.label() );
+            assertEquals( 1, nodeStatistic.count() );
+            assertFalse( iterator.hasNext() );
+            tx.success();
+        }
     }
 
     @Test
@@ -44,15 +48,15 @@ public class GraphStatisticsTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
-        Node firstNode = db.createNode();
-        firstNode.setProperty( "_label", "user" );
-        Node secondNode = db.createNode();
-        secondNode.setProperty( "_label", "user" );
-        firstNode.createRelationshipTo( secondNode, withName( "FRIEND" ) );
-        secondNode.createRelationshipTo( firstNode, withName( "FRIEND" ) );
-        tx.success();
-        tx.finish();
+        try ( Transaction tx = db.beginTx() ) {
+            Node firstNode = db.createNode();
+            firstNode.setProperty( "_label", "user" );
+            Node secondNode = db.createNode();
+            secondNode.setProperty( "_label", "user" );
+            firstNode.createRelationshipTo( secondNode, withName( "FRIEND" ) );
+            secondNode.createRelationshipTo( firstNode, withName( "FRIEND" ) );
+            tx.success();
+        }
 
         // when
         GraphStatistics graphStatistics = GraphStatistics.create( db, "test db" );

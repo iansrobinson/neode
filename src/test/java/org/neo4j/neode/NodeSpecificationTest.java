@@ -23,18 +23,23 @@ public class NodeSpecificationTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
+        Node node;
+        try ( Transaction tx = db.beginTx() )
+        {
+            NodeSpecification nodeSpecification = new NodeSpecification( "user", Collections.<Property>emptyList(), db );
 
-        NodeSpecification nodeSpecification = new NodeSpecification( "user", Collections.<Property>emptyList(), db );
-
-        // when
-        Node node = nodeSpecification.build( 1 );
-        tx.success();
-        tx.finish();
+            // when
+            node = nodeSpecification.build( 1 );
+            tx.success();
+        }
 
         // then
-        assertNotNull( node );
-        assertEquals( "user", node.getProperty( "_label" ) );
+        try ( Transaction tx = db.beginTx() )
+        {
+            assertNotNull( node );
+            assertEquals( "user", node.getProperty( "_label" ) );
+            tx.success();
+        }
     }
 
     @Test
@@ -42,26 +47,29 @@ public class NodeSpecificationTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
+        Node node;
+        try ( Transaction tx = db.beginTx() ) {
 
-        Property property = new Property()
-        {
-            @Override
-            public void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String label,
-                                     int iteration )
+            Property property = new Property()
             {
-                propertyContainer.setProperty( "myproperty", "value" );
-            }
-        };
-        NodeSpecification nodeSpecification = new NodeSpecification( "user", asList( property ), db );
+                @Override
+                public void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String label,
+                                         int iteration )
+                {
+                    propertyContainer.setProperty( "myproperty", "value" );
+                }
+            };
+            NodeSpecification nodeSpecification = new NodeSpecification( "user", asList( property ), db );
 
-        // when
-        Node node = nodeSpecification.build( 1 );
-        tx.success();
-        tx.finish();
+            // when
+            node = nodeSpecification.build( 1 );
+            tx.success();
+        }
 
         // then
-        assertEquals( "value", node.getProperty( "myproperty" ) );
+        try ( Transaction tx = db.beginTx() ) {
+            assertEquals( "value", node.getProperty( "myproperty" ) );
+            tx.success();
+        }
     }
-
 }

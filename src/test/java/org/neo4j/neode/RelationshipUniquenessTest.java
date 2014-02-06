@@ -26,27 +26,35 @@ public class RelationshipUniquenessTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
-        Node firstNode = db.createNode();
-        Node secondNode = db.createNode();
         DynamicRelationshipType friend_of = withName( "FRIEND_OF" );
-        firstNode.createRelationshipTo( secondNode, friend_of );
+        Node firstNode;
+        try (Transaction tx = db.beginTx())
+        {
 
-        RelationshipSpecification relationshipSpecification = new RelationshipSpecification( friend_of,
-                Collections.<Property>emptyList(), db );
-        RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.OUTGOING );
+            firstNode = db.createNode();
+            Node secondNode = db.createNode();
+            firstNode.createRelationshipTo( secondNode, friend_of );
 
-        RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.SINGLE_DIRECTION;
+            RelationshipSpecification relationshipSpecification = new RelationshipSpecification( friend_of,
+                    Collections.<Property>emptyList(), db );
+            RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.OUTGOING );
 
-        // when
-        relationshipUniqueness.createRelationship( firstNode, secondNode, relationshipInfo, 0 );
-        tx.success();
-        tx.finish();
+            RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.SINGLE_DIRECTION;
+
+            // when
+            relationshipUniqueness.createRelationship( firstNode, secondNode, relationshipInfo, 0 );
+            tx.success();
+        }
 
         // then
-        Iterator<Relationship> iterator = firstNode.getRelationships( friend_of, Direction.OUTGOING ).iterator();
-        assertNotNull( iterator.next() );
-        assertFalse( iterator.hasNext() );
+        try (Transaction tx = db.beginTx())
+        {
+            Iterator<Relationship> iterator = firstNode.getRelationships( friend_of, Direction.OUTGOING ).iterator();
+            assertNotNull( iterator.next() );
+            assertFalse( iterator.hasNext() );
+            tx.success();
+        }
+
     }
 
     @Test
@@ -55,28 +63,34 @@ public class RelationshipUniquenessTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
-        Node firstNode = db.createNode();
-        Node secondNode = db.createNode();
-        DynamicRelationshipType friend_of = withName( "FRIEND_OF" );
-        secondNode.createRelationshipTo( firstNode, friend_of );
+        DynamicRelationshipType friend_of = withName("FRIEND_OF");
+        Node firstNode;
+        try (Transaction tx = db.beginTx())
+        {
+            firstNode = db.createNode();
+            Node secondNode = db.createNode();
+            secondNode.createRelationshipTo( firstNode, friend_of );
 
-        RelationshipSpecification relationshipSpecification = new RelationshipSpecification( friend_of,
-                Collections.<Property>emptyList(), db );
-        RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.OUTGOING );
+            RelationshipSpecification relationshipSpecification = new RelationshipSpecification( friend_of,
+                    Collections.<Property>emptyList(), db );
+            RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.OUTGOING );
 
-        RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.SINGLE_DIRECTION;
+            RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.SINGLE_DIRECTION;
 
-        // when
-        relationshipUniqueness.createRelationship( firstNode, secondNode, relationshipInfo, 0 );
-        tx.success();
-        tx.finish();
+            // when
+            relationshipUniqueness.createRelationship( firstNode, secondNode, relationshipInfo, 0 );
+            tx.success();
+        }
 
         // then
-        Iterator<Relationship> iterator = firstNode.getRelationships( friend_of, Direction.BOTH ).iterator();
-        assertNotNull( iterator.next() );
-        assertNotNull( iterator.next() );
-        assertFalse( iterator.hasNext() );
+        try (Transaction tx = db.beginTx())
+        {
+            Iterator<Relationship> iterator = firstNode.getRelationships( friend_of, Direction.BOTH ).iterator();
+            assertNotNull( iterator.next() );
+            assertNotNull( iterator.next() );
+            assertFalse( iterator.hasNext() );
+            tx.success();
+        }
     }
 
     @Test
@@ -84,27 +98,33 @@ public class RelationshipUniquenessTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
-        Node firstNode = db.createNode();
-        Node secondNode = db.createNode();
         DynamicRelationshipType friend_of = withName( "FRIEND_OF" );
-        firstNode.createRelationshipTo( secondNode, friend_of );
+        Node firstNode;
+        try (Transaction tx = db.beginTx())
+        {
+            firstNode = db.createNode();
+            Node secondNode = db.createNode();
+            firstNode.createRelationshipTo( secondNode, friend_of );
 
-        RelationshipSpecification relationshipSpecification = new RelationshipSpecification( friend_of,
-                Collections.<Property>emptyList(), db );
-        RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.OUTGOING );
+            RelationshipSpecification relationshipSpecification = new RelationshipSpecification( friend_of,
+                    Collections.<Property>emptyList(), db );
+            RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.OUTGOING );
 
-        RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.BOTH_DIRECTIONS;
+            RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.BOTH_DIRECTIONS;
 
-        // when
-        relationshipUniqueness.createRelationship( firstNode, secondNode, relationshipInfo, 0 );
-        tx.success();
-        tx.finish();
+            // when
+            relationshipUniqueness.createRelationship( firstNode, secondNode, relationshipInfo, 0 );
+            tx.success();
+        }
 
         // then
-        Iterator<Relationship> iterator = firstNode.getRelationships( friend_of, Direction.OUTGOING ).iterator();
-        assertNotNull( iterator.next() );
-        assertFalse( iterator.hasNext() );
+        try (Transaction tx = db.beginTx())
+        {
+            Iterator<Relationship> iterator = firstNode.getRelationships( friend_of, Direction.OUTGOING ).iterator();
+            assertNotNull( iterator.next() );
+            assertFalse( iterator.hasNext() );
+            tx.success();
+        }
     }
 
     @Test
@@ -113,56 +133,66 @@ public class RelationshipUniquenessTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
-        Node firstNode = db.createNode();
-        Node secondNode = db.createNode();
         DynamicRelationshipType friend_of = withName( "FRIEND_OF" );
-        secondNode.createRelationshipTo( firstNode, friend_of );
+        Node firstNode;
+        try (Transaction tx = db.beginTx())
+        {
+            firstNode = db.createNode();
+            Node secondNode = db.createNode();
+            secondNode.createRelationshipTo( firstNode, friend_of );
 
-        RelationshipSpecification relationshipSpecification = new RelationshipSpecification( friend_of,
-                Collections.<Property>emptyList(), db );
-        RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.OUTGOING );
+            RelationshipSpecification relationshipSpecification = new RelationshipSpecification( friend_of,
+                    Collections.<Property>emptyList(), db );
+            RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.OUTGOING );
 
-        RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.BOTH_DIRECTIONS;
+            RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.BOTH_DIRECTIONS;
 
-        // when
-        relationshipUniqueness.createRelationship( firstNode, secondNode, relationshipInfo, 0 );
-        tx.success();
-        tx.finish();
-
+            // when
+            relationshipUniqueness.createRelationship( firstNode, secondNode, relationshipInfo, 0 );
+            tx.success();
+        }
         // then
-        Iterator<Relationship> iterator = firstNode.getRelationships( friend_of, Direction.BOTH ).iterator();
-        assertNotNull( iterator.next() );
-        assertFalse( iterator.hasNext() );
+        try (Transaction tx = db.beginTx()) {
+            Iterator<Relationship> iterator = firstNode.getRelationships( friend_of, Direction.BOTH ).iterator();
+            assertNotNull( iterator.next() );
+            assertFalse( iterator.hasNext() );
+            tx.success();
+        }
     }
 
     @Test
     public void allowMultipleShouldCreateNewRelationshipEvenIfRelationshipAlreadyExists() throws Exception
     {
         // given
-        GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
-        Node firstNode = db.createNode();
-        Node secondNode = db.createNode();
         DynamicRelationshipType friend_of = withName( "FRIEND_OF" );
-        firstNode.createRelationshipTo( secondNode, friend_of );
+        GraphDatabaseService db = Db.impermanentDb();
+        Node firstNode;
+        try ( Transaction tx = db.beginTx() )
+        {
+            firstNode = db.createNode();
+            Node secondNode = db.createNode();
+            firstNode.createRelationshipTo( secondNode, friend_of );
 
-        RelationshipSpecification relationshipSpecification = new RelationshipSpecification( friend_of,
-                Collections.<Property>emptyList(), db );
-        RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.OUTGOING );
+            RelationshipSpecification relationshipSpecification = new RelationshipSpecification( friend_of,
+                    Collections.<Property>emptyList(), db );
+            RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.OUTGOING );
 
-        RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.ALLOW_MULTIPLE;
+            RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.ALLOW_MULTIPLE;
 
-        // when
-        relationshipUniqueness.createRelationship( firstNode, secondNode, relationshipInfo, 0 );
-        tx.success();
-        tx.finish();
+            // when
+            relationshipUniqueness.createRelationship( firstNode, secondNode, relationshipInfo, 0 );
+            tx.success();
+        }
 
         // then
-        Iterator<Relationship> iterator = firstNode.getRelationships( friend_of, Direction.OUTGOING ).iterator();
-        assertNotNull( iterator.next() );
-        assertNotNull( iterator.next() );
-        assertFalse( iterator.hasNext() );
+        try ( Transaction tx = db.beginTx() )
+        {
+            Iterator<Relationship> iterator = firstNode.getRelationships( friend_of, Direction.OUTGOING ).iterator();
+            assertNotNull( iterator.next() );
+            assertNotNull( iterator.next() );
+            assertFalse(iterator.hasNext());
+            tx.success();
+        }
     }
 
     @Test
@@ -171,27 +201,33 @@ public class RelationshipUniquenessTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
-        Node firstNode = db.createNode();
-        Node secondNode = db.createNode();
-        DynamicRelationshipType friend_of = withName( "FRIEND_OF" );
-        secondNode.createRelationshipTo( firstNode, friend_of );
+        DynamicRelationshipType friend_of = withName("FRIEND_OF");
+        Node firstNode = null;
+        try ( Transaction tx = db.beginTx() )
+        {
+            firstNode = db.createNode();
+            Node secondNode = db.createNode();
+            secondNode.createRelationshipTo( firstNode, friend_of );
 
-        RelationshipSpecification relationshipSpecification = new RelationshipSpecification( friend_of,
-                Collections.<Property>emptyList(), db );
-        RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.OUTGOING );
+            RelationshipSpecification relationshipSpecification = new RelationshipSpecification( friend_of,
+                    Collections.<Property>emptyList(), db );
+            RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.OUTGOING );
 
-        RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.ALLOW_MULTIPLE;
+            RelationshipUniqueness relationshipUniqueness = RelationshipUniqueness.ALLOW_MULTIPLE;
 
-        // when
-        relationshipUniqueness.createRelationship( firstNode, secondNode, relationshipInfo, 0 );
-        tx.success();
-        tx.finish();
+            // when
+            relationshipUniqueness.createRelationship( firstNode, secondNode, relationshipInfo, 0 );
+            tx.success();
+        }
 
         // then
-        Iterator<Relationship> iterator = firstNode.getRelationships( friend_of, Direction.BOTH ).iterator();
-        assertNotNull( iterator.next() );
-        assertNotNull( iterator.next() );
-        assertFalse( iterator.hasNext() );
+        try ( Transaction tx = db.beginTx() )
+        {
+            Iterator<Relationship> iterator = firstNode.getRelationships( friend_of, Direction.BOTH ).iterator();
+            assertNotNull( iterator.next() );
+            assertNotNull( iterator.next() );
+            assertFalse( iterator.hasNext() );
+            tx.success();
+        }
     }
 }

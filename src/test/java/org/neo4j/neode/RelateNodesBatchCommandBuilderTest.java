@@ -4,10 +4,7 @@ import java.util.Collections;
 
 import org.junit.Test;
 
-import org.neo4j.graphdb.Direction;
-import org.neo4j.graphdb.DynamicRelationshipType;
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.*;
 import org.neo4j.neode.logging.SysOutLog;
 import org.neo4j.neode.properties.Property;
 import org.neo4j.neode.test.Db;
@@ -60,18 +57,22 @@ public class RelateNodesBatchCommandBuilderTest
                 .update( dataset );
 
         // then
-        DynamicRelationshipType bought_rel = withName( "BOUGHT" );
+        try ( Transaction tx = db.beginTx() )
+        {
+            DynamicRelationshipType bought_rel = withName( "BOUGHT" );
 
-        Node product1 = db.getNodeById( 1 );
-        assertTrue( product1.hasRelationship( bought_rel, Direction.OUTGOING ) );
-        assertEquals( 4l, product1.getSingleRelationship( bought_rel, Direction.OUTGOING ).getEndNode().getId() );
+            Node product1 = db.getNodeById( 0 );
+            assertTrue( product1.hasRelationship( bought_rel, Direction.OUTGOING ) );
+            assertEquals( 3l, product1.getSingleRelationship( bought_rel, Direction.OUTGOING ).getEndNode().getId() );
 
-        Node product2 = db.getNodeById( 2 );
-        assertTrue( product2.hasRelationship( bought_rel, Direction.OUTGOING ) );
-        assertEquals( 5l, product2.getSingleRelationship( bought_rel, Direction.OUTGOING ).getEndNode().getId() );
+            Node product2 = db.getNodeById( 1 );
+            assertTrue( product2.hasRelationship( bought_rel, Direction.OUTGOING ) );
+            assertEquals( 4l, product2.getSingleRelationship( bought_rel, Direction.OUTGOING ).getEndNode().getId() );
 
-        Node product3 = db.getNodeById( 3 );
-        assertTrue( product3.hasRelationship( bought_rel, Direction.OUTGOING ) );
-        assertEquals( 6l, product3.getSingleRelationship( bought_rel, Direction.OUTGOING ).getEndNode().getId() );
+            Node product3 = db.getNodeById( 2 );
+            assertTrue( product3.hasRelationship( bought_rel, Direction.OUTGOING ) );
+            assertEquals( 5l, product3.getSingleRelationship( bought_rel, Direction.OUTGOING ).getEndNode().getId() );
+            tx.success();
+        }
     }
 }

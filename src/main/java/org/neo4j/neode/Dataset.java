@@ -3,6 +3,7 @@ package org.neo4j.neode;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
+import org.neo4j.kernel.GraphDatabaseAPI;
 import org.neo4j.neode.logging.Log;
 
 public class Dataset
@@ -41,7 +42,7 @@ public class Dataset
     public void end()
     {
         log.write( String.format( "Store [%s]\n\nEnd   [%s] %s\n",
-                ((EmbeddedGraphDatabase) db).getStoreDir(), description, elapsedTime( runStartTime ) ) );
+                ((GraphDatabaseAPI) db).getStoreDir(), description, elapsedTime( runStartTime ) ) );
     }
 
     GraphDatabaseService db()
@@ -54,19 +55,12 @@ public class Dataset
         log.write( String.format( "      [Beginning " + startIteration + " of " + command.numberOfIterations() +
                 ", '%s'] %s", command.shortDescription(), elapsedTime( startTime ) ) );
 
-        Transaction tx = db.beginTx();
-        try
-        {
-            for ( int iteration = startIteration; iterationIsInRange( startIteration, command,
-                    iteration ); iteration++ )
-            {
-                command.execute( iteration );
+        try (Transaction tx = db.beginTx()) {
+            for (int iteration = startIteration; iterationIsInRange(startIteration, command,
+                    iteration); iteration++) {
+                command.execute(iteration);
                 tx.success();
             }
-        }
-        finally
-        {
-            tx.finish();
         }
 
     }

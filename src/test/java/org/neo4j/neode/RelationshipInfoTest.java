@@ -40,19 +40,25 @@ public class RelationshipInfoTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
-        Node firstNode = db.createNode();
-        Node secondNode = db.createNode();
+        Node firstNode;
+        try ( Transaction tx = db.beginTx() )
+        {
+            firstNode = db.createNode();
+            Node secondNode = db.createNode();
 
-        RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.OUTGOING );
+            RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.OUTGOING );
 
-        // when
-        relationshipInfo.createRelationship( firstNode, secondNode, 0 );
-        tx.success();
-        tx.finish();
+            // when
+            relationshipInfo.createRelationship( firstNode, secondNode, 0 );
+            tx.success();
+        }
 
         // then
-        assertNotNull( firstNode.getSingleRelationship( withName( "FRIEND" ), Direction.OUTGOING ) );
+        try ( Transaction tx = db.beginTx() )
+        {
+            assertNotNull( firstNode.getSingleRelationship( withName( "FRIEND" ), Direction.OUTGOING ) );
+            tx.success();
+        }
     }
 
     @Test
@@ -60,19 +66,25 @@ public class RelationshipInfoTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
-        Node firstNode = db.createNode();
-        Node secondNode = db.createNode();
+        Node firstNode;
+        try ( Transaction tx = db.beginTx() )
+        {
+            firstNode = db.createNode();
+            Node secondNode = db.createNode();
 
-        RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.INCOMING );
+            RelationshipInfo relationshipInfo = new RelationshipInfo( relationshipSpecification, Direction.INCOMING );
 
-        // when
-        relationshipInfo.createRelationship( firstNode, secondNode, 0 );
-        tx.success();
-        tx.finish();
+            // when
+            relationshipInfo.createRelationship( firstNode, secondNode, 0 );
+            tx.success();
+        }
 
         // then
-        assertNotNull( firstNode.getSingleRelationship( withName( "FRIEND" ), Direction.INCOMING ) );
+        try ( Transaction tx = db.beginTx() )
+        {
+            assertNotNull( firstNode.getSingleRelationship( withName( "FRIEND" ), Direction.INCOMING ) );
+            tx.success();
+        }
     }
 
     @Test

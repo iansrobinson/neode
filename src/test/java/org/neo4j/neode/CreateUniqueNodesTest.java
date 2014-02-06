@@ -21,7 +21,7 @@ public class CreateUniqueNodesTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
+        try ( Transaction tx = db.beginTx() ) {
 
         CreateUniqueNodes command = new CreateUniqueNodes(
                 new NodeSpecification( "user", Collections.<Property>emptyList(), db ) );
@@ -38,6 +38,6 @@ public class CreateUniqueNodesTest
         assertFalse( iterator.hasNext() );
 
         tx.success();
-        tx.finish();
+        }
     }
 }

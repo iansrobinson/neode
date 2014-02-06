@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Transaction;
 import org.neo4j.neode.probabilities.ProbabilityDistribution;
 import org.neo4j.neode.test.Db;
 
@@ -26,36 +27,40 @@ public class GetOrCreateUniqueNodesTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        db.beginTx();
+        try (Transaction tx = db.beginTx())
+        {
 
-        NodeSpecification nodeSpecification = new NodeSpecification( "user",
-                asList( property( "name", iterationBased() ) ), db );
-        ProbabilityDistribution probabilityDistribution = mock( ProbabilityDistribution.class );
-        when( probabilityDistribution.generateList( 2, Range.minMax( 0, 4 ) ) ).thenReturn( asList( 0, 4 ) );
-        when( probabilityDistribution.generateList( 3, Range.minMax( 0, 4 ) ) ).thenReturn( asList( 1, 4, 2 ) );
+            NodeSpecification nodeSpecification = new NodeSpecification( "user",
+                    asList( property( "name", iterationBased() ) ), db );
+            ProbabilityDistribution probabilityDistribution = mock( ProbabilityDistribution.class );
+            when( probabilityDistribution.generateList( 2, Range.minMax( 0, 4 ) ) ).thenReturn( asList( 0, 4 ) );
+            when( probabilityDistribution.generateList( 3, Range.minMax( 0, 4 ) ) ).thenReturn( asList( 1, 4, 2 ) );
 
-        GetOrCreateUniqueNodes targetNodesSource = new GetOrCreateUniqueNodes( nodeSpecification, 5,
-                probabilityDistribution );
+            GetOrCreateUniqueNodes targetNodesSource = new GetOrCreateUniqueNodes( nodeSpecification, 5,
+                    probabilityDistribution );
 
-        // when
-        targetNodesSource.getTargetNodes( 2, null );
-        Iterable<Node> targetNodes = targetNodesSource.getTargetNodes( 3, null );
+            // when
+            targetNodesSource.getTargetNodes( 2, null );
+            Iterable<Node> targetNodes = targetNodesSource.getTargetNodes( 3, null );
 
-        // then
-        Iterator<Node> iterator = targetNodes.iterator();
-        Node firstNode = iterator.next();
-        Node secondNode = iterator.next();
-        Node thirdNode = iterator.next();
-        assertFalse( iterator.hasNext() );
+            // then
+            Iterator<Node> iterator = targetNodes.iterator();
+            Node firstNode = iterator.next();
+            Node secondNode = iterator.next();
+            Node thirdNode = iterator.next();
+            assertFalse( iterator.hasNext() );
 
 
-        assertEquals( "user-3", firstNode.getProperty( "name" ) );
-        assertEquals( 4L, firstNode.getId() );
+            assertEquals( "user-5", firstNode.getProperty( "name" ) );
+            assertEquals( 1L, firstNode.getId() );
 
-        assertEquals( "user-5", secondNode.getProperty( "name" ) );
-        assertEquals( 2L, secondNode.getId() );
+            assertEquals( "user-2", secondNode.getProperty( "name" ) );
+            assertEquals( 2L, secondNode.getId() );
 
-        assertEquals( "user-2", thirdNode.getProperty( "name" ) );
-        assertEquals( 3L, thirdNode.getId() );
+
+            assertEquals( "user-3", thirdNode.getProperty( "name" ) );
+            assertEquals( 3L, thirdNode.getId() );
+            tx.success();
+        }
     }
 }
