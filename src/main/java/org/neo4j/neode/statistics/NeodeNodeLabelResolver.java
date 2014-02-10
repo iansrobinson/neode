@@ -9,7 +9,7 @@ class NeodeNodeLabelResolver implements NodeLabelResolver
     @Override
     public String labelFor( Node node )
     {
-        Label label = IteratorUtil.singleOrNull(node.getLabels());
+        Label label = IteratorUtil.firstOrNull(node.getLabels());
         if (label == null) return null;
         return label.name();
     }
