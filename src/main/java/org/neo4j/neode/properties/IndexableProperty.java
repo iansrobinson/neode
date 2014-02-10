@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.neo4j.graphdb.*;
+import org.neo4j.graphdb.schema.IndexDefinition;
+import org.neo4j.helpers.collection.IteratorUtil;
 
 class IndexableProperty extends Property
 {
@@ -27,13 +29,20 @@ class IndexableProperty extends Property
     private void createIndexes(GraphDatabaseService db, Label label, String propertyName, List<Label> labelNames) {
         try ( Transaction tx = db.beginTx() )
         {
-            db.schema().indexFor( label ).on( propertyName ).create();
+            createIndex(db, label, propertyName);
             for ( Label l : labels )
             {
-                db.schema().indexFor( l ).on( propertyName ).create();
+                createIndex(db, l, propertyName);
             }
             tx.success();
         }
+    }
+
+    private void createIndex(GraphDatabaseService db, Label label, String propertyName) {
+        for (IndexDefinition definition : db.schema().getIndexes(label)) {
+            if (IteratorUtil.asCollection(definition.getPropertyKeys()).contains(propertyName)) return;
+        }
+        db.schema().indexFor( label ).on( propertyName ).create();
     }
 
     @Override
