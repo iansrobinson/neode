@@ -2,10 +2,8 @@ package org.neo4j.neode.properties;
 
 import org.junit.Test;
 
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.PropertyContainer;
-import org.neo4j.graphdb.Transaction;
+import org.neo4j.graphdb.*;
+import org.neo4j.helpers.collection.IteratorUtil;
 import org.neo4j.neode.test.Db;
 
 import static org.junit.Assert.assertEquals;
@@ -25,9 +23,10 @@ public class NonIndexablePropertyTest
                 return "value";
             }
         };
+        GraphDatabaseService db = Db.impermanentDb();
+
         Property property = new NonIndexableProperty( "name", generator );
 
-        GraphDatabaseService db = Db.impermanentDb();
         Node node;
         try ( Transaction tx = db.beginTx() ) {
             node = db.createNode();
@@ -40,7 +39,7 @@ public class NonIndexablePropertyTest
         // then
         try ( Transaction tx = db.beginTx() ) {
             assertEquals( "value", node.getProperty( "name" ) );
-            assertNull( db.index().forNodes( "user" ).get( "name", "value" ).getSingle() );
+            assertNull( IteratorUtil.singleOrNull(db.findNodesByLabelAndProperty(DynamicLabel.label("user"), "name", "value")) );
         }
     }
 }

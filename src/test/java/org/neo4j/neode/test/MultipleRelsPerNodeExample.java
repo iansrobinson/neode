@@ -27,7 +27,7 @@ public class MultipleRelsPerNodeExample
         DatasetManager dsm = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = dsm.newDataset( "Multiple Rels Per Node" );
 
-        NodeSpecification root = dsm.nodeSpecification( "root", indexableProperty( "name" ) );
+        NodeSpecification root = dsm.nodeSpecification( "root", indexableProperty( db, "root","name" ) );
         NodeSpecification leaf = dsm.nodeSpecification( "leaf", property( "price", integerRange( 1, 10 ) ) );
 
         RelationshipSpecification connected_to = dsm.relationshipSpecification( "CONNECTED_TO",

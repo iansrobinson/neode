@@ -2,8 +2,10 @@ package org.neo4j.neode;
 
 import org.junit.Test;
 
+import org.neo4j.graphdb.DynamicLabel;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
+import org.neo4j.helpers.collection.IteratorUtil;
 import org.neo4j.neode.logging.SysOutLog;
 import org.neo4j.neode.test.Db;
 
@@ -23,7 +25,7 @@ public class CreateNodesBatchCommandTest
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager dsm = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = dsm.newDataset( "Test" );
-        NodeSpecification user = new NodeSpecification( "user", asList( indexableProperty( "name" ) ), db );
+        NodeSpecification user = new NodeSpecification( "user", asList( indexableProperty( db, "user", "name" ) ), db );
 
         // when
         user.create( 1 ).update( dataset );
@@ -44,7 +46,7 @@ public class CreateNodesBatchCommandTest
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager dsm = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = dsm.newDataset( "Test" );
-        NodeSpecification user = new NodeSpecification( "user", asList( indexableProperty( "name" ) ), db );
+        NodeSpecification user = new NodeSpecification( "user", asList( indexableProperty( db, "user", "name" ) ), db );
 
         // when
         user.create( 1 ).update( dataset );
@@ -52,7 +54,7 @@ public class CreateNodesBatchCommandTest
         // then
         try ( Transaction tx = db.beginTx() )
         {
-            assertNotNull( db.index().forNodes( "user" ).get( "name", "user-1" ).getSingle() );
+            assertNotNull( IteratorUtil.singleOrNull(db.findNodesByLabelAndProperty(DynamicLabel.label("user"), "name", "user-1")) );
             tx.success();
         }
     }
@@ -64,7 +66,7 @@ public class CreateNodesBatchCommandTest
         GraphDatabaseService db = Db.impermanentDb();
         DatasetManager dsm = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = dsm.newDataset( "Test" );
-        NodeSpecification user = new NodeSpecification( "user", asList( indexableProperty( "key" ) ), db );
+        NodeSpecification user = new NodeSpecification( "user", asList( indexableProperty( db, "user", "key" ) ), db );
 
         // when
         NodeCollection results = user.create( 5 ).update( dataset );

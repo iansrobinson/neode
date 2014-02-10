@@ -30,7 +30,7 @@ public class PricingStructureExample
         DatasetManager dsm = new DatasetManager( db, SysOutLog.INSTANCE );
         Dataset dataset = dsm.newDataset( "Pricing tree" );
 
-        NodeSpecification root = dsm.nodeSpecification( "root", indexableProperty( "name" ) );
+        NodeSpecification root = dsm.nodeSpecification( "root", indexableProperty( db, "root", "name" ) );
         NodeSpecification intermediate = dsm.nodeSpecification( "intermediate" );
         NodeSpecification leaf = dsm.nodeSpecification( "leaf", property( "price", integerRange( 1, 10 ) ) );
 

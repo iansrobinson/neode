@@ -15,14 +15,14 @@ public abstract class Property
         return new NonIndexableProperty( name, generator );
     }
 
-    public static Property indexableProperty( String name, String... indexNames )
+    public static Property indexableProperty( GraphDatabaseService db, String label, String name, String... indexNames )
     {
-        return new IndexableProperty( name, new CounterBasedStringPropertyValueGenerator(), indexNames );
+        return indexableProperty( db,label, name, new CounterBasedStringPropertyValueGenerator(), indexNames );
     }
 
-    public static Property indexableProperty( String name, PropertyValueGenerator generator, String... indexNames )
+    public static Property indexableProperty( GraphDatabaseService db, String label, String name, PropertyValueGenerator generator, String... indexNames )
     {
-        return new IndexableProperty( name, generator, indexNames );
+        return new IndexableProperty( db,label,name, generator, indexNames );
     }
 
     public abstract void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String label,

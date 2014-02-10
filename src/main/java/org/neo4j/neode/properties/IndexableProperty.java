@@ -1,67 +1,71 @@
 package org.neo4j.neode.properties;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.PropertyContainer;
-import org.neo4j.graphdb.Relationship;
-
-import static java.util.Arrays.asList;
+import org.neo4j.graphdb.*;
 
 class IndexableProperty extends Property
 {
+    private Label label;
     private final String propertyName;
     private final PropertyValueGenerator generator;
-    private final List<String> indexNames;
+    private final List<Label> labels;
 
-    IndexableProperty( String propertyName, PropertyValueGenerator generator )
+    IndexableProperty( GraphDatabaseService db, String label, String propertyName, PropertyValueGenerator generator, String...labelNames )
     {
+        this.label = DynamicLabel.label(label);
         this.propertyName = propertyName;
         this.generator = generator;
-        this.indexNames = Collections.emptyList();
-
+        this.labels = new ArrayList<>(labelNames.length);
+        for (String labelName : labelNames) {
+            this.labels.add(DynamicLabel.label(labelName));
+        }
+        createIndexes(db,this.label,propertyName,this.labels);
     }
 
-    IndexableProperty( String propertyName, PropertyValueGenerator generator, String... indexNames )
-    {
-        this.propertyName = propertyName;
-        this.generator = generator;
-        this.indexNames = asList( indexNames );
-
+    private void createIndexes(GraphDatabaseService db, Label label, String propertyName, List<Label> labelNames) {
+        try ( Transaction tx = db.beginTx() )
+        {
+            db.schema().indexFor( label ).on( propertyName ).create();
+            for ( Label l : labels )
+            {
+                db.schema().indexFor( l ).on( propertyName ).create();
+            }
+            tx.success();
+        }
     }
 
     @Override
-    public void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String label,
+    public void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String labelName,
                              int iteration )
     {
-        Object value = generator.generateValue( propertyContainer, label, iteration );
+        Object value = generator.generateValue( propertyContainer, labelName, iteration );
         propertyContainer.setProperty( propertyName, value );
 
-        if ( indexNames.isEmpty() )
+        indexProperty( propertyContainer, db, label, value );
+        if (!labelName.equals(label.name())) {
+            indexProperty( propertyContainer, db, DynamicLabel.label(labelName), value );
+        }
+        for ( Label label : labels)
         {
             indexProperty( propertyContainer, db, label, value );
         }
-        else
-        {
-            for ( String indexName : indexNames )
-            {
-                indexProperty( propertyContainer, db, indexName, value );
-            }
-        }
     }
 
-    private void indexProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String indexName,
+    private void indexProperty( PropertyContainer propertyContainer, GraphDatabaseService db, Label label,
                                 Object value )
     {
         if ( propertyContainer instanceof Node )
         {
-            db.index().forNodes( indexName ).add( (Node) propertyContainer, propertyName, value );
+            Node node = (Node) propertyContainer;
+            if (! node.hasLabel(label)) {
+                node.addLabel(label);
+            }
         }
         else
         {
-            db.index().forRelationships( indexName ).add( (Relationship) propertyContainer, propertyName, value );
+            throw new UnsupportedOperationException("No schema indexes for relationships");
         }
     }
 }
