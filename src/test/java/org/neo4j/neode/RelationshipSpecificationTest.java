@@ -27,21 +27,27 @@ public class RelationshipSpecificationTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
-        Node startNode = db.createNode();
-        Node endNode = db.createNode();
+        Node startNode, endNode;
+        try ( Transaction tx = db.beginTx() )
+        {
+            startNode = db.createNode();
+            endNode = db.createNode();
 
-        RelationshipSpecification specification = new RelationshipSpecification( withName( "FRIEND" ),
-                Collections.<Property>emptyList(), db );
+            RelationshipSpecification specification = new RelationshipSpecification( withName( "FRIEND" ),
+                    Collections.<Property>emptyList(), db );
 
-        // when
-        specification.createRelationship( startNode, endNode, 0 );
-        tx.success();
-        tx.finish();
+            // when
+            specification.createRelationship( startNode, endNode, 0 );
+            tx.success();
+        }
 
         // then
-        assertEquals( endNode, startNode.getSingleRelationship( withName( "FRIEND" ),
-                Direction.OUTGOING ).getEndNode() );
+        try ( Transaction tx = db.beginTx() )
+        {
+            assertEquals( endNode, startNode.getSingleRelationship( withName( "FRIEND" ),
+                    Direction.OUTGOING ).getEndNode() );
+            tx.success();
+        }
     }
 
     @Test
@@ -49,30 +55,36 @@ public class RelationshipSpecificationTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
-        Node startNode = db.createNode();
-        Node endNode = db.createNode();
-
-        PropertyValueGenerator propertyValueGenerator = new PropertyValueGenerator()
+        Node startNode;
+        try ( Transaction tx = db.beginTx() )
         {
-            @Override
-            public Object generateValue( PropertyContainer propertyContainer, String nodeLabel, int
-                    iteration )
-            {
-                return "value";
-            }
-        };
-        RelationshipSpecification specification = new RelationshipSpecification( withName( "FRIEND" ),
-                asList( property( "name", propertyValueGenerator ) ), db );
+            startNode = db.createNode();
+            Node endNode = db.createNode();
 
-        // when
-        specification.createRelationship( startNode, endNode, 0 );
-        tx.success();
-        tx.finish();
+            PropertyValueGenerator propertyValueGenerator = new PropertyValueGenerator()
+            {
+                @Override
+                public Object generateValue( PropertyContainer propertyContainer, String nodeLabel, int
+                        iteration )
+                {
+                    return "value";
+                }
+            };
+            RelationshipSpecification specification = new RelationshipSpecification( withName( "FRIEND" ),
+                    asList( property( "name", propertyValueGenerator ) ), db );
+
+            // when
+            specification.createRelationship( startNode, endNode, 0 );
+            tx.success();
+        }
 
         // then
-        assertEquals( "value", startNode.getSingleRelationship( withName( "FRIEND" ),
-                Direction.OUTGOING ).getProperty( "name" ) );
+        try ( Transaction tx = db.beginTx() )
+        {
+            assertEquals( "value", startNode.getSingleRelationship( withName( "FRIEND" ),
+                    Direction.OUTGOING ).getProperty( "name" ) );
+            tx.success();
+        }
     }
 
     @Test

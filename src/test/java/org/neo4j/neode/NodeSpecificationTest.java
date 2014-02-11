@@ -4,10 +4,7 @@ import java.util.Collections;
 
 import org.junit.Test;
 
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.PropertyContainer;
-import org.neo4j.graphdb.Transaction;
+import org.neo4j.graphdb.*;
 import org.neo4j.neode.properties.Property;
 import org.neo4j.neode.test.Db;
 
@@ -23,18 +20,24 @@ public class NodeSpecificationTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
+        Label user = DynamicLabel.label("user");
+        Node node;
+        try ( Transaction tx = db.beginTx() )
+        {
+            NodeSpecification nodeSpecification = new NodeSpecification( user, Collections.<Property>emptyList(), db );
 
-        NodeSpecification nodeSpecification = new NodeSpecification( "user", Collections.<Property>emptyList(), db );
-
-        // when
-        Node node = nodeSpecification.build( 1 );
-        tx.success();
-        tx.finish();
+            // when
+            node = nodeSpecification.build( 1 );
+            tx.success();
+        }
 
         // then
-        assertNotNull( node );
-        assertEquals( "user", node.getProperty( "_label" ) );
+        try ( Transaction tx = db.beginTx() )
+        {
+            assertNotNull( node );
+            assertEquals( true, node.hasLabel( user ) );
+            tx.success();
+        }
     }
 
     @Test
@@ -42,26 +45,29 @@ public class NodeSpecificationTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
+        Node node;
+        try ( Transaction tx = db.beginTx() ) {
 
-        Property property = new Property()
-        {
-            @Override
-            public void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String label,
-                                     int iteration )
+            Property property = new Property()
             {
-                propertyContainer.setProperty( "myproperty", "value" );
-            }
-        };
-        NodeSpecification nodeSpecification = new NodeSpecification( "user", asList( property ), db );
+                @Override
+                public void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String label,
+                                         int iteration )
+                {
+                    propertyContainer.setProperty( "myproperty", "value" );
+                }
+            };
+            NodeSpecification nodeSpecification = new NodeSpecification( "user", asList( property ), db );
 
-        // when
-        Node node = nodeSpecification.build( 1 );
-        tx.success();
-        tx.finish();
+            // when
+            node = nodeSpecification.build( 1 );
+            tx.success();
+        }
 
         // then
-        assertEquals( "value", node.getProperty( "myproperty" ) );
+        try ( Transaction tx = db.beginTx() ) {
+            assertEquals( "value", node.getProperty( "myproperty" ) );
+            tx.success();
+        }
     }
-
 }

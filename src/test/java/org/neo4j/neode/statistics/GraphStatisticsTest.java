@@ -4,9 +4,7 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Transaction;
+import org.neo4j.graphdb.*;
 import org.neo4j.neode.test.Db;
 
 import static org.junit.Assert.assertEquals;
@@ -21,22 +19,26 @@ public class GraphStatisticsTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
-        db.getNodeById( 0 ).delete();
-        Node node = db.createNode();
-        node.setProperty( "_label", "user" );
-        tx.success();
-        tx.finish();
+        Label user = DynamicLabel.label("user");
+        try ( Transaction tx = db.beginTx() )
+        {
+            db.createNode(user);
+            tx.success();
+        }
 
         // when
         GraphStatistics graphStatistics = GraphStatistics.create( db, "test db" );
 
         // then
-        Iterator<NodeStatistic> iterator = graphStatistics.nodeStatistics().iterator();
-        NodeStatistic nodeStatistic = iterator.next();
-        assertEquals( "user", nodeStatistic.label() );
-        assertEquals( 1, nodeStatistic.count() );
-        assertFalse( iterator.hasNext() );
+        try ( Transaction tx = db.beginTx() )
+        {
+            Iterator<NodeStatistic> iterator = graphStatistics.nodeStatistics().iterator();
+            NodeStatistic nodeStatistic = iterator.next();
+            assertEquals( user.name(), nodeStatistic.label() );
+            assertEquals( 1, nodeStatistic.count() );
+            assertFalse( iterator.hasNext() );
+            tx.success();
+        }
     }
 
     @Test
@@ -44,21 +46,20 @@ public class GraphStatisticsTest
     {
         // given
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
-        Node firstNode = db.createNode();
-        firstNode.setProperty( "_label", "user" );
-        Node secondNode = db.createNode();
-        secondNode.setProperty( "_label", "user" );
-        firstNode.createRelationshipTo( secondNode, withName( "FRIEND" ) );
-        secondNode.createRelationshipTo( firstNode, withName( "FRIEND" ) );
-        tx.success();
-        tx.finish();
+        Label user = DynamicLabel.label("user");
+        try ( Transaction tx = db.beginTx() ) {
+            Node firstNode = db.createNode( user );
+            Node secondNode = db.createNode( user );
+            firstNode.createRelationshipTo( secondNode, withName( "FRIEND" ) );
+            secondNode.createRelationshipTo( firstNode, withName( "FRIEND" ) );
+            tx.success();
+        }
 
         // when
         GraphStatistics graphStatistics = GraphStatistics.create( db, "test db" );
 
         // then
-        NodeStatistic nodeStatistic = graphStatistics.getNodeStatistic( "user" );
+        NodeStatistic nodeStatistic = graphStatistics.getNodeStatistic(user.name() );
 
         assertEquals( 2, nodeStatistic.count() );
         assertEquals( 2, nodeStatistic.getRelationshipStatistic( "FRIEND" ).incoming().total() );

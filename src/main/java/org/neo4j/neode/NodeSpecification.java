@@ -4,7 +4,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.neo4j.graphdb.DynamicLabel;
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
 import org.neo4j.neode.interfaces.UpdateDataset;
 import org.neo4j.neode.properties.Property;
@@ -12,11 +14,16 @@ import org.neo4j.tooling.GlobalGraphOperations;
 
 public class NodeSpecification
 {
-    private final String label;
+    private final Label label;
     private final List<Property> properties;
     private final GraphDatabaseService db;
 
     NodeSpecification( String label, List<Property> properties, GraphDatabaseService db )
+    {
+        this( DynamicLabel.label(label), properties, db );
+    }
+
+    NodeSpecification( Label label, List<Property> properties, GraphDatabaseService db )
     {
         this.label = label;
         this.properties = properties;
@@ -34,7 +41,7 @@ public class NodeSpecification
         Set<Long> nodeIds = new HashSet<Long>();
         for ( Node node : allNodes )
         {
-            if ( node.hasProperty( "_label" ) && node.getProperty( "_label" ).equals( label ) )
+            if ( node.hasLabel( label ) )
             {
                 nodeIds.add( node.getId() );
             }
@@ -45,11 +52,10 @@ public class NodeSpecification
 
     Node build( int iteration )
     {
-        Node node = db.createNode();
-        node.setProperty( "_label", label );
+        Node node = db.createNode( label );
         for ( Property property : properties )
         {
-            property.setProperty( node, db, label, iteration );
+            property.setProperty( node, db, label.name(), iteration );
         }
         return node;
     }
@@ -64,7 +70,12 @@ public class NodeSpecification
         return new NodeCollection( db, label, nodeIds );
     }
 
-    String label()
+    String labelName()
+    {
+        return label.name();
+    }
+
+    Label label()
     {
         return label;
     }

@@ -59,8 +59,8 @@ public class SocialNetworkExample
                     }
                 } );
 
-        NodeSpecification user = dsm.nodeSpecification( "user", indexableProperty( "name" ) );
-        NodeSpecification topic = dsm.nodeSpecification( "topic", indexableProperty( "label" ) );
+        NodeSpecification user = dsm.nodeSpecification( "user", indexableProperty( db, "user", "name" ) );
+        NodeSpecification topic = dsm.nodeSpecification( "topic", indexableProperty( db, "topic", "label" ) );
         NodeSpecification company = dsm.nodeSpecification( "company", property( "name" ) );
         NodeSpecification project = dsm.nodeSpecification( "project", property( "name" ) );
 

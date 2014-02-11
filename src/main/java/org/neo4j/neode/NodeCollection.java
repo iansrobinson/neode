@@ -7,25 +7,28 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.*;
 import org.neo4j.neode.interfaces.UpdateDataset;
 
 public class NodeCollection implements Iterable<Node>
 {
-    public static final NodeCollection NULL = new NodeCollection( null, null, new NullSet<Long>() );
+    public static final NodeCollection NULL = new NodeCollection( null, (String)null, new NullSet<Long>() );
 
     private final GraphDatabaseService db;
-    private final String label;
+    private final Label label;
     private final Set<Long> nodeIds;
     private final List<Long> nodeIdList;
 
     NodeCollection( GraphDatabaseService db, String label, Set<Long> nodeIds )
     {
+        this( db, DynamicLabel.label( label ), nodeIds );
+    }
+    NodeCollection( GraphDatabaseService db, Label label, Set<Long> nodeIds )
+    {
         this.db = db;
         this.label = label;
         this.nodeIds = nodeIds;
-        nodeIdList = new ArrayList<Long>( nodeIds );
+        nodeIdList = new ArrayList<>( nodeIds );
     }
 
     void add( Node node )
@@ -39,10 +42,19 @@ public class NodeCollection implements Iterable<Node>
 
     Node getNodeByPosition( int position )
     {
-        return db.getNodeById( nodeIdList.get( position ) );
+        try (Transaction tx = db.beginTx()) {
+            Node node = db.getNodeById(nodeIdList.get(position));
+            tx.success();
+            return node;
+        }
     }
 
-    public String label()
+    public String labelName()
+    {
+        return label.name();
+    }
+
+    public Label label()
     {
         return label;
     }

@@ -2,10 +2,8 @@ package org.neo4j.neode.properties;
 
 import org.junit.Test;
 
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.PropertyContainer;
-import org.neo4j.graphdb.Transaction;
+import org.neo4j.graphdb.*;
+import org.neo4j.helpers.collection.IteratorUtil;
 import org.neo4j.neode.test.Db;
 
 import static org.junit.Assert.assertEquals;
@@ -24,19 +22,27 @@ public class IndexablePropertyTest
                 return "value";
             }
         };
-        Property property = new IndexableProperty( "name", generator, "indexname" );
-
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
-        Node node = db.createNode();
 
-        // when
-        property.setProperty( node, db, "user", 1 );
-        tx.success();
-        tx.finish();
+        Property property = new IndexableProperty( db, "user", "name", generator, "indexname" );
+
+        Node node;
+        try ( Transaction tx = db.beginTx() )
+        {
+            node = db.createNode();
+
+            // when
+            property.setProperty( node, db, "user", 1 );
+            tx.success();
+        }
 
         // then
-        assertEquals( node, db.index().forNodes( "indexname" ).get( "name", "value" ).getSingle() );
+        try ( Transaction tx = db.beginTx() )
+        {
+            assertEquals( node, IteratorUtil.singleOrNull(db.findNodesByLabelAndProperty(DynamicLabel.label("indexname"), "name", "value" )) );
+            assertEquals( node, IteratorUtil.singleOrNull(db.findNodesByLabelAndProperty(DynamicLabel.label("user"), "name", "value" )) );
+            tx.success();
+        }
     }
 
     @Test
@@ -51,18 +57,25 @@ public class IndexablePropertyTest
                 return "value";
             }
         };
-        Property property = new IndexableProperty( "name", generator );
-
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
-        Node node = db.createNode();
 
-        // when
-        property.setProperty( node, db, "user", 1 );
-        tx.success();
-        tx.finish();
+        Property property = new IndexableProperty( db, "user", "name", generator );
+
+        Node node;
+        try ( Transaction tx = db.beginTx() )
+        {
+            node = db.createNode();
+
+            // when
+            property.setProperty( node, db, "user", 1 );
+            tx.success();
+        }
 
         // then
-        assertEquals( node, db.index().forNodes( "user" ).get( "name", "value" ).getSingle() );
+        try ( Transaction tx = db.beginTx() )
+        {
+            assertEquals( node, IteratorUtil.singleOrNull(db.findNodesByLabelAndProperty(DynamicLabel.label("user"), "name", "value" )) );
+            tx.success();
+        }
     }
 }

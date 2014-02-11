@@ -58,14 +58,20 @@ public final class Db
     public static void usingSampleDataset( WithSampleDataset f )
     {
         GraphDatabaseService db = Db.impermanentDb();
-        Transaction tx = db.beginTx();
-        Node firstNode = db.createNode();
-        Node secondNode = db.createNode();
-        Node thirdNode = db.createNode();
-        tx.success();
-        tx.finish();
+        Node firstNode, secondNode, thirdNode;
+        try ( Transaction tx = db.beginTx() )
+        {
+            firstNode = db.createNode();
+            secondNode = db.createNode();
+            thirdNode = db.createNode();
+            tx.success();
+        }
 
-        f.execute( db, firstNode, secondNode, thirdNode );
+        try ( Transaction tx = db.beginTx() )
+        {
+            f.execute( db, firstNode, secondNode, thirdNode );
+            tx.success();
+        }
         db.shutdown();
     }
 

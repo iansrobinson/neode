@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Transaction;
 import org.neo4j.tooling.GlobalGraphOperations;
 
 public class GraphStatistics
@@ -13,12 +14,16 @@ public class GraphStatistics
     public static GraphStatistics create( GraphDatabaseService db, String description,
                                           NodeLabelResolver nodeLabelResolver )
     {
-        GraphStatistics graphStatistics = new GraphStatistics( description, nodeLabelResolver );
-        for ( Node node : GlobalGraphOperations.at( db ).getAllNodes() )
+        try ( Transaction tx = db.beginTx() )
         {
-            graphStatistics.add( node );
+            GraphStatistics graphStatistics = new GraphStatistics( description, nodeLabelResolver );
+            for ( Node node : GlobalGraphOperations.at( db ).getAllNodes() )
+            {
+                graphStatistics.add( node );
+            }
+            tx.success();
+            return graphStatistics;
         }
-        return graphStatistics;
     }
 
     public static GraphStatistics create( GraphDatabaseService db, String description )
@@ -34,7 +39,7 @@ public class GraphStatistics
     {
         this.descripton = descripton;
         this.nodeLabelResolver = nodeLabelResolver;
-        nodeStatistics = new HashMap<String, NodeStatistic>();
+        nodeStatistics = new HashMap<>();
     }
 
     private void add( Node node )

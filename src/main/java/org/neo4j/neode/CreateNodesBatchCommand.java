@@ -45,7 +45,7 @@ class CreateNodesBatchCommand implements BatchCommand<NodeCollection>
     @Override
     public String shortDescription()
     {
-        return nodeSpecification.label();
+        return nodeSpecification.labelName();
     }
 
     @Override
