@@ -31,7 +31,7 @@ public class RelationshipSpecification
 
         for ( Property property : properties )
         {
-            property.setProperty( rel, db, relationshipType.name(), iteration );
+            property.setProperty( rel, relationshipType.name(), iteration );
         }
 
         return rel;

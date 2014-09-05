@@ -1,6 +1,5 @@
 package org.neo4j.neode.properties;
 
-import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.PropertyContainer;
 
 class NonIndexableProperty extends Property
@@ -15,8 +14,8 @@ class NonIndexableProperty extends Property
     }
 
     @Override
-    public void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String label,
-                             int iteration )
+    public void setProperty(PropertyContainer propertyContainer, String label,
+                            int iteration)
     {
         propertyContainer.setProperty( propertyName,
                 generator.generateValue( propertyContainer, label, iteration ) );

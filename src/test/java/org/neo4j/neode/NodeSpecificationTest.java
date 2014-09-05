@@ -51,8 +51,8 @@ public class NodeSpecificationTest
             Property property = new Property()
             {
                 @Override
-                public void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String label,
-                                         int iteration )
+                public void setProperty(PropertyContainer propertyContainer, String label,
+                                        int iteration)
                 {
                     propertyContainer.setProperty( "myproperty", "value" );
                 }
