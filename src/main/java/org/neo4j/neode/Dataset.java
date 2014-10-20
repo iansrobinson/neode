@@ -41,8 +41,14 @@ public class Dataset
 
     public void end()
     {
-        log.write( String.format( "Store [%s]\n\nEnd   [%s] %s\n",
-                ((GraphDatabaseAPI) db).getStoreDir(), description, elapsedTime( runStartTime ) ) );
+    //this should be updated since it is going to be deprecated
+        //@deprecated This will be moved to internal packages in the next major release.
+        if(db instanceof GraphDatabaseAPI)
+        {
+            log.write(String.format("Store [%s]\n\nEnd   [%s] %s\n",
+                    ((GraphDatabaseAPI) db).getStoreDir(), description, elapsedTime(runStartTime)));
+        }
+        log.write( String.format( "End   [%s] %s\n", description, elapsedTime( runStartTime ) ) );
     }
 
     GraphDatabaseService db()
