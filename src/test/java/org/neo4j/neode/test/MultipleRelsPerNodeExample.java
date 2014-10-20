@@ -3,6 +3,7 @@ package org.neo4j.neode.test;
 import org.junit.Test;
 
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.neode.Dataset;
 import org.neo4j.neode.DatasetManager;
 import org.neo4j.neode.NodeCollection;
@@ -40,6 +41,35 @@ public class MultipleRelsPerNodeExample
 
         dataset.end();
 
+        GraphStatistics statistics = GraphStatistics.create( db, "Pricing Structure" );
+        new AsciiDocFormatter( SysOutLog.INSTANCE ).describe( statistics );
+
+        db.shutdown();
+
+    }
+
+    @Test
+    public void batchBuildMultipleRelsPerNode()
+    {
+        GraphDatabaseService db = Db.getBatchInserterDB("batch.db");
+        DatasetManager dsm = new DatasetManager( db, SysOutLog.INSTANCE );
+        Dataset dataset = dsm.newDataset( "Multiple Rels Per Node" );
+
+        NodeSpecification root = dsm.nodeSpecification( "root", property("name") );
+        NodeSpecification leaf = dsm.nodeSpecification( "leaf", property( "price", integerRange( 1, 10 ) ) );
+
+        RelationshipSpecification connected_to = dsm.relationshipSpecification( "CONNECTED_TO",
+                property( "quantity", integerRange( 1, 5 ) ) );
+
+        NodeCollection roots = root.create( 1 ).update( dataset );
+
+        roots.createRelationshipsTo( TargetNodesStrategy.create( leaf ).numberOfTargetNodes( 2 ).relationship(
+                connected_to ).relationshipConstraints( Range.exactly( 2 ) ) ).updateNoReturn( dataset );
+
+        dataset.end();
+        db.shutdown();
+        db = new GraphDatabaseFactory().newEmbeddedDatabase("batch.db");
+        //since we cant use graph statistics we have to end the dataset shut it down and open it up using graphFactory
         GraphStatistics statistics = GraphStatistics.create( db, "Pricing Structure" );
         new AsciiDocFormatter( SysOutLog.INSTANCE ).describe( statistics );
 

@@ -9,7 +9,9 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
+import org.neo4j.kernel.impl.util.FileUtils;
 import org.neo4j.test.TestGraphDatabaseFactory;
+import org.neo4j.unsafe.batchinsert.BatchInserters;
 
 public final class Db
 {
@@ -81,4 +83,20 @@ public final class Db
     }
 
 
+    public static GraphDatabaseService getBatchInserterDB(String location)
+    {
+        File file = new File(location);
+        if(file.exists() && file.isDirectory())
+        {
+            try
+            {
+                FileUtils.deleteRecursively(file);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return BatchInserters.batchDatabase(location);
+    }
 }

@@ -6,7 +6,9 @@ import java.util.Map;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
+import org.neo4j.kernel.GraphDatabaseAPI;
 import org.neo4j.tooling.GlobalGraphOperations;
+import org.neo4j.unsafe.batchinsert.BatchInserterImpl;
 
 public class GraphStatistics
 {
@@ -14,6 +16,12 @@ public class GraphStatistics
     public static GraphStatistics create( GraphDatabaseService db, String description,
                                           NodeLabelResolver nodeLabelResolver )
     {
+        //if db is not the normal graph database api
+        //We need to find another way to do this since the GraphDatabaseAPI is /** @deprecated */
+        if(!(db instanceof GraphDatabaseAPI))
+        {
+            return null;
+        }
         try ( Transaction tx = db.beginTx() )
         {
             GraphStatistics graphStatistics = new GraphStatistics( description, nodeLabelResolver );
