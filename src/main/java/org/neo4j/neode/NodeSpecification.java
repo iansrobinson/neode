@@ -37,14 +37,11 @@ public class NodeSpecification
 
     public NodeCollection getAll()
     {
-        Iterable<Node> allNodes = GlobalGraphOperations.at( db ).getAllNodes();
-        Set<Long> nodeIds = new HashSet<Long>();
+        Iterable<Node> allNodes = GlobalGraphOperations.at( db ).getAllNodesWithLabel( label );
+        Set<Long> nodeIds = new HashSet<>();
         for ( Node node : allNodes )
         {
-            if ( node.hasLabel( label ) )
-            {
-                nodeIds.add( node.getId() );
-            }
+            nodeIds.add( node.getId() );
         }
         return newNodeCollection( nodeIds );
     }
@@ -55,7 +52,7 @@ public class NodeSpecification
         Node node = db.createNode( label );
         for ( Property property : properties )
         {
-            property.setProperty( node, db, label.name(), iteration );
+            property.setProperty( node, label.name(), iteration );
         }
         return node;
     }

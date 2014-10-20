@@ -30,7 +30,7 @@ class IndexableProperty extends Property
         try ( Transaction tx = db.beginTx() )
         {
             createIndex(db, label, propertyName);
-            for ( Label l : labels )
+            for ( Label l : labelNames )
             {
                 createIndex(db, l, propertyName);
             }
@@ -46,24 +46,23 @@ class IndexableProperty extends Property
     }
 
     @Override
-    public void setProperty( PropertyContainer propertyContainer, GraphDatabaseService db, String labelName,
-                             int iteration )
+    public void setProperty(PropertyContainer propertyContainer, String labelName,
+                            int iteration)
     {
         Object value = generator.generateValue( propertyContainer, labelName, iteration );
         propertyContainer.setProperty( propertyName, value );
 
-        indexProperty( propertyContainer, db, label, value );
+        indexProperty( propertyContainer, label);
         if (!labelName.equals(label.name())) {
-            indexProperty( propertyContainer, db, DynamicLabel.label(labelName), value );
+            indexProperty( propertyContainer, DynamicLabel.label(labelName));
         }
         for ( Label label : labels)
         {
-            indexProperty( propertyContainer, db, label, value );
+            indexProperty( propertyContainer, label);
         }
     }
 
-    private void indexProperty( PropertyContainer propertyContainer, GraphDatabaseService db, Label label,
-                                Object value )
+    private void indexProperty(PropertyContainer propertyContainer, Label label)
     {
         if ( propertyContainer instanceof Node )
         {

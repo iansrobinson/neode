@@ -31,13 +31,13 @@ public class GraphStatistics
         return create( db, description, new NeodeNodeLabelResolver() );
     }
 
-    private final String descripton;
+    private final String description;
     private final NodeLabelResolver nodeLabelResolver;
     private final Map<String, NodeStatistic> nodeStatistics;
 
-    private GraphStatistics( String descripton, NodeLabelResolver nodeLabelResolver )
+    private GraphStatistics( String description, NodeLabelResolver nodeLabelResolver )
     {
-        this.descripton = descripton;
+        this.description = description;
         this.nodeLabelResolver = nodeLabelResolver;
         nodeStatistics = new HashMap<>();
     }
@@ -115,7 +115,7 @@ public class GraphStatistics
 
     public String description()
     {
-        return descripton;
+        return description;
     }
 
     public void describeTo( GraphStatisticsFormatter formatter )

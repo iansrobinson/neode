@@ -32,7 +32,7 @@ public class IndexablePropertyTest
             node = db.createNode();
 
             // when
-            property.setProperty( node, db, "user", 1 );
+            property.setProperty( node, "user", 1 );
             tx.success();
         }
 
@@ -67,7 +67,7 @@ public class IndexablePropertyTest
             node = db.createNode();
 
             // when
-            property.setProperty( node, db, "user", 1 );
+            property.setProperty( node, "user", 1 );
             tx.success();
         }
 
