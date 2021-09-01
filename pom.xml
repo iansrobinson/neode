@@ -14,7 +14,7 @@
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <neo4j.version>2.1.5</neo4j.version>
+    <neo4j.version>3.5.0</neo4j.version>
   </properties>
 
   <dependencies>
